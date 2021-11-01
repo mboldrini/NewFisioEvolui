@@ -25,7 +25,8 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#63C2D1"
-      }
+      },
+      "package": "com.mboldrini.FisioEvolui"
     },
     "web": {
       "favicon": "./assets/favicon.png"

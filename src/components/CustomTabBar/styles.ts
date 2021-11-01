@@ -6,7 +6,7 @@ export const Container = styled.View``;
 
 export const TabArea = styled.View`
     height: 60px;
-    background-color: #4EADBE;
+    background-color: ${({theme}) => theme.colors.secondary};
     flex-direction: row;
 `;
 
@@ -18,16 +18,16 @@ export const TabItem = styled.TouchableOpacity`
 
 export const Icon = styled(Ionicons)`
     color: #ffffff;
-    font-size: ${RFValue(30)}px;
+    font-size: ${RFValue(25)}px;
 `;
 
 export const TabItemCenter = styled.TouchableOpacity`
-    width: ${RFValue(75)}px;
-    height: ${RFValue(75)}px;
+    width: ${RFValue(65)}px;
+    height: ${RFValue(65)}px;
     justify-content: center;
     align-items: center;
     background-color: ${({ theme }) => theme.colors.shape};
-    border-radius: 35px;
+    border-radius: 50px;
     border: 3px solid ${({theme}) => theme.colors.secondary};
     margin-top: ${RFValue(-18)}px;
 `;

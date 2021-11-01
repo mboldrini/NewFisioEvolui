@@ -17,11 +17,22 @@ export default{
         text_dark: '#268596',
         background: '#F0F2F5',
 
+        input_background: '#83D6E3',
+
     },
     fonts:{
         regular: 'Poppins_400Regular',
         medium: 'Poppins_500Medium',
         bold: 'Poppins_700Bold'
+    },
+    bordas:{
+        padrao: 10,
+    },
+    padding:{
+        lateral: 24,
+    },
+    margin:{
+        input_bottom: 10,
     }
 }
 //    secondary: '#268596',
