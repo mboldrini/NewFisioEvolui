@@ -19,6 +19,11 @@ export default{
 
         input_background: '#83D6E3',
 
+        status_padrao: '#c3c3c3',
+        status_atendido: '#5cb85c',
+        status_cancelado: '#d9534f',
+        status_remarcado: '#f0ad4e',
+
     },
     fonts:{
         regular: 'Poppins_400Regular',

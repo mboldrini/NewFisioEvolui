@@ -1,6 +1,7 @@
 import styled, {css} from "styled-components/native";
 import { RFValue } from "react-native-responsive-fontsize";
 import { FontAwesome5 } from "@expo/vector-icons";
+import theme from "../../global/styles/theme";
 
 interface PropsDiaEscolhido{
     diaEscolhido: string;
@@ -34,6 +35,7 @@ export const DateWrapper = styled.View`
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    margin-bottom: ${({theme}) => theme.margin.bottom}px;
 `;
 
 export const Today = styled.Text`

@@ -19,9 +19,7 @@ import {
     DateItemWeekNumber
 
 } from './styles';
-
-
-
+import { AgendaItem } from '../../components/AgendaItem';
 
 export function Agenda(){
 
@@ -41,7 +39,6 @@ export function Agenda(){
     const [selectedDayWeek, setSelectedDayWeek] = useState(null);
 
     const [listDays, setListDays] = useState([]);
-
 
     const getAtualDay = () => {
         let today = new Date();
@@ -64,8 +61,6 @@ export function Agenda(){
         setSelectedMonth(mountDate.getMonth());
         setSelectedDay(0);
     }
-
-
 
     useEffect(() => {
         getAtualDay();
@@ -118,9 +113,6 @@ export function Agenda(){
         setDiaHoje(hoje.getDay());
     }, [selectedDay, selectedDayWeek]);
 
-
-
-
     return(
         <Container refreshControl={<RefreshControl refreshing={refreshing} onRefresh={getAtualDay}/>}>
 
@@ -150,6 +142,15 @@ export function Agenda(){
                 </DateList>
 
             </DateWrapper>
+
+
+            <AgendaItem idStatus="0" status="Não Atendido"/>
+
+            <AgendaItem idStatus="1" status="Atendido"/>
+
+            <AgendaItem idStatus="2" status="Remarcado"/>
+
+            <AgendaItem idStatus="3" status="Cancelado"/>
 
         </Container>
     )
