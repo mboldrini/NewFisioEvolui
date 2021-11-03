@@ -23,16 +23,20 @@ export default{
     fonts:{
         regular: 'Poppins_400Regular',
         medium: 'Poppins_500Medium',
-        bold: 'Poppins_700Bold'
+        bold: 'Poppins_700Bold',
+        thin: 'Poppins_300Light',
     },
     bordas:{
         padrao: 10,
     },
     padding:{
         lateral: 24,
+        superior: 5,
     },
     margin:{
         input_bottom: 10,
+        lateral: 24,
+        bottom: 10,
     }
 }
 //    secondary: '#268596',

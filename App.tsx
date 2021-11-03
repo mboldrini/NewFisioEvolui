@@ -7,7 +7,8 @@ import {
   useFonts,
   Poppins_400Regular,
   Poppins_500Medium,
-  Poppins_700Bold
+  Poppins_700Bold,
+  Poppins_300Light,
 } from '@expo-google-fonts/poppins';
 
 import theme from './src/global/styles/theme';
@@ -16,6 +17,7 @@ import MainStack from './src/stacks/Mainstack';
 
 export default () => {
   const [fontsLoaded] = useFonts({
+    Poppins_300Light,
     Poppins_400Regular,
     Poppins_500Medium,
     Poppins_700Bold

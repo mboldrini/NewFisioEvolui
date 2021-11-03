@@ -34,7 +34,7 @@ export const UserInfo = styled.View`
 export const Photo = styled.Image`
     width: ${RFValue(48)}px;
     height: ${RFValue(48)}px;
-    border-radius: 10px;
+    border-radius: ${({theme}) => theme.bordas.padrao};
 `;
 
 export const User = styled.View`
@@ -69,3 +69,11 @@ export const HighlightCards = styled.ScrollView.attrs({
     position: absolute;
     margin-top: ${RFPercentage(20)}px;
 `;
+
+export const Body = styled.View`
+    flex: 1;
+    background-color: #fff;
+    z-index: -3;
+    border-top-left-radius: 30px;
+`;
+

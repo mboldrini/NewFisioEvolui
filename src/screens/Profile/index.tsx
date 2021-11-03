@@ -10,7 +10,8 @@ import {
     UserGreeting,
     UserName,
     Logout,
-    HighlightCards
+    HighlightCards,
+    Body
 } from './styles';
 
 export function Profile(){
@@ -56,6 +57,8 @@ export function Profile(){
                     type="disabled"
                 />
             </HighlightCards>
+
+            <Body></Body>
 
         </Container>
     )

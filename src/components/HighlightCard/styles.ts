@@ -20,10 +20,20 @@ export const Container = styled.TouchableOpacity<Props>`
     height: ${RFValue(110)}px;
     justify-content: center;
     align-items: center;
-    border-radius: 5px;
+    border-radius: ${({theme}) => theme.bordas.padrao};
     margin-right: 16px;
-    border-width: 1px;
+    border-width: 2px;
     border-color: ${({theme}) => theme.colors.secondary_light};
+
+
+    border-width: 1;
+    border-bottom-width: 1;
+    shadow-color: #000;
+    shadow-offset: {width: 0, height: 2};
+    shadow-opacity: 0.8;
+    shadow-radius: 50;
+    elevation: 4;
+
 `;
 
 export const Icone = styled(FontAwesome5)`
@@ -35,7 +45,7 @@ export const Icone = styled(FontAwesome5)`
 export const Titulo = styled.Text`
     font-family: ${({theme}) => theme.fonts.regular};
     color: ${({theme}) => theme.colors.text_dark};
-    font-size: ${RFValue(14)}px;
+    font-size: ${RFValue(13)}px;
     padding-top: 5px;
 `;
 

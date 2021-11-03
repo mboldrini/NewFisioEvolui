@@ -27,11 +27,11 @@ export default ({state, navigation}) => {
                 <Icon name="search-sharp" style={{opacity: state.index===1 ? 1 : 0.5}}/>
             </TabItem> 
 
-            <TabItemCenter onPress={()=>goTo('Appointments')}>
+            <TabItemCenter onPress={()=>goTo('Agenda')}>
                 <IconCenter name="calendar-sharp" />
             </TabItemCenter> 
             
-            <TabItem onPress={()=>goTo('Favorites')}>
+            <TabItem onPress={()=>goTo('CadastrarPaciente')}>
                 <Icon name="person-add-sharp" style={{opacity: state.index===3 ? 1 : 0.5}}/>
             </TabItem> 
             
