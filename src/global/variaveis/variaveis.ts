@@ -32,7 +32,15 @@ export default{
             'Sexta',
             'Sábado'
         ]
-    }
- 
- 
+    },
+    status: [
+        'Default',/// JAMAIS ALTERAR ESSA SEQUÊNCIA
+        'Não Atendido',/// JAMAIS ALTERAR ESSA SEQUÊNCIA
+        'Atendido',/// JAMAIS ALTERAR ESSA SEQUÊNCIA
+        'Remarcado',/// JAMAIS ALTERAR ESSA SEQUÊNCIA
+        'Cancelado',/// JAMAIS ALTERAR ESSA SEQUÊNCIA
+        'Desmarcado',/// JAMAIS ALTERAR ESSA SEQUÊNCIA
+        'Avaliação'/// JAMAIS ALTERAR ESSA SEQUÊNCIA
+    ]
+  
 }
