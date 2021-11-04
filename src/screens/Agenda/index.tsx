@@ -116,7 +116,7 @@ export function Agenda(){
     return(
         <Container refreshControl={<RefreshControl refreshing={refreshing} onRefresh={getAtualDay}/>}>
 
-             <Header>
+            <Header>
                 <Titulo>Agenda do Dia</Titulo>
             </Header>
 
@@ -151,6 +151,10 @@ export function Agenda(){
             <AgendaItem idStatus="2" status="Remarcado"/>
 
             <AgendaItem idStatus="3" status="Cancelado"/>
+            
+            <AgendaItem idStatus="1" status="Atendido"/>
+
+            <AgendaItem idStatus="2" status="Remarcado"/>
 
         </Container>
     )

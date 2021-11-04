@@ -36,12 +36,20 @@ export const DateWrapper = styled.View`
     align-items: center;
     justify-content: center;
     margin-bottom: ${({theme}) => theme.margin.bottom}px;
+    border-width: 1;
+    border-color: #f5f5f5;
+    border-bottom-width: 1;
+    shadow-color: #000;
+    shadow-offset: {width: 0, height: 2};
+    shadow-opacity: 0.8;
+    shadow-radius: 1;
+    elevation: 1;
 `;
 
 export const Today = styled.Text`
     font-family: ${({theme}) => theme.fonts.regular};
     font-size: ${RFValue(14)}px;
-    padding: ${({theme}) => theme.padding.superior}px 0;
+    padding: ${({theme}) => theme.padding.superior}px ${RFValue(10)}px;
     border-color: #f5f5f5;
     border-bottom-width: 1;
     margin-bottom: ${({theme}) => theme.margin.bottom};

@@ -14,6 +14,14 @@ export const Container = styled.View`
     border-radius: ${({theme}) => theme.bordas.padrao};
     padding: 10px 15px;
     margin-bottom: ${({theme}) => theme.margin.bottom}px;
+    border-width: 1;
+    border-color: #f5f5f5;
+    border-bottom-width: 1;
+    shadow-color: #000;
+    shadow-offset: {width: 0, height: 2};
+    shadow-opacity: 0.8;
+    shadow-radius: 1;
+    elevation: 1;
 `;
 
 export const Header = styled.View`
@@ -88,6 +96,7 @@ export const StatusWrapper = styled.View<Props>`
     ${({ idStatus }) => idStatus == '3' && css `
         background-color: ${({theme}) => theme.colors.status_cancelado};
     `};
+    
 
 `;
 
