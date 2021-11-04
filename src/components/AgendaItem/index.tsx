@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text } from 'react-native';
+import variaveis from '../../global/variaveis/variaveis';
 
 import {
     Container,
@@ -16,25 +16,30 @@ import {
 } from './styles';
 
 interface Props{
-    idStatus: string;
-    status: string;
+    idStatus: number;
+    horaPassou: boolean;
+    horario: string;
+    tipo: string;
+    iconeTipo: string
 }
 
-export function AgendaItem({idStatus, status}: Props){
+export function AgendaItem({idStatus, horaPassou, horario, tipo, iconeTipo}: Props){
     return(
-        <Container>
+        <Container idStatus={idStatus}>
            <Header>
-               <IconeTipo name="money-bill-wave"/>
-               <Tipo>Particular</Tipo>
+               <IconeTipo name={iconeTipo}/>
+               <Tipo>{tipo}</Tipo>
            </Header>
            <Nome>Aroldo Arão</Nome>
            <Footer>
-                <HoraWrapper>
+                <HoraWrapper horaPassou={horaPassou}>
                     <Icone name="clock"/>
-                    <Horario>07:00</Horario>
+                    <Horario>{horario}</Horario>
                 </HoraWrapper>
                 <StatusWrapper idStatus={idStatus}>
-                    <Status idStatus={idStatus}>{status}</Status>
+                    { idStatus !== 0 && 
+                        <Status idStatus={idStatus}>{ variaveis.status[idStatus] }</Status> 
+                    }
                 </StatusWrapper>
            </Footer>
         </Container>

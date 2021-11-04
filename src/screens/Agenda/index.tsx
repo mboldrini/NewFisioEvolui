@@ -1,5 +1,6 @@
-import React, {useContext, useEffect, useState, useRef}from 'react';
-import {RefreshControl, Text, Dimensions} from 'react-native';
+import React, {useEffect, useState}from 'react';
+import { FlatList } from 'react-native';
+import {RefreshControl} from 'react-native';
 import {useNavigation } from '@react-navigation/native';
 import variaveis from '../../global/variaveis/variaveis';
 import { 
@@ -113,6 +114,65 @@ export function Agenda(){
         setDiaHoje(hoje.getDay());
     }, [selectedDay, selectedDayWeek]);
 
+    let listaAgenda = [
+        {
+            id: '0',
+            idStatus: 0,
+            horaPassou: true,
+            horario: '07:00',
+            tipo: 'Particular',
+            icone_tipo: 'money-bill-wave',
+        },
+        {
+            id: '1',
+            idStatus: 1,
+            horaPassou: true,
+            horario: '07:30',
+            tipo: 'Particular',
+            icone_tipo: 'money-bill-wave',
+        },
+        {
+            id: '2',
+            idStatus: 2,
+            horaPassou: false,
+            horario: '08:00',
+            tipo: 'Particular',
+            icone_tipo: 'money-bill-wave',
+        },
+        {
+            id: '3',
+            idStatus: 3,
+            horaPassou: false,
+            horario: '08:30',
+            tipo: 'Plano Amil 500FG',
+            icone_tipo: 'hospital',
+        },
+        {
+            id: '4',
+            idStatus: 4,
+            horaPassou: false,
+            horario: '09:00',
+            tipo: 'Particular',
+            icone_tipo: 'money-bill-wave',
+        },
+        {
+            id: '5',
+            idStatus: 5,
+            horaPassou: false,
+            horario: '09:30',
+            tipo: 'Particular',
+            icone_tipo: 'money-bill-wave',
+        },
+        {
+            id: '6',
+            idStatus: 6,
+            horaPassou: false,
+            horario: '11:00',
+            tipo: 'Particular',
+            icone_tipo: 'money-bill-wave',
+        }
+    ];
+
     return(
         <Container refreshControl={<RefreshControl refreshing={refreshing} onRefresh={getAtualDay}/>}>
 
@@ -143,18 +203,19 @@ export function Agenda(){
 
             </DateWrapper>
 
-
-            <AgendaItem idStatus="0" status="Não Atendido"/>
-
-            <AgendaItem idStatus="1" status="Atendido"/>
-
-            <AgendaItem idStatus="2" status="Remarcado"/>
-
-            <AgendaItem idStatus="3" status="Cancelado"/>
-            
-            <AgendaItem idStatus="1" status="Atendido"/>
-
-            <AgendaItem idStatus="2" status="Remarcado"/>
+            <FlatList 
+                data={listaAgenda}
+                keyExtractor={(item) => item.id}
+                renderItem={({item}) =>(
+                    <AgendaItem 
+                        idStatus={item.idStatus} 
+                        horaPassou={item.horaPassou}
+                        horario={item.horario}
+                        tipo={item.tipo}
+                        iconeTipo={item.icone_tipo}
+                    />
+                )}
+            />
 
         </Container>
     )
