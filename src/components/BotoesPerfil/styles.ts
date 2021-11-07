@@ -15,19 +15,19 @@ export const Container = styled.TouchableOpacity`
 export const AreaIcone = styled.View`
     align-items: center;
     justify-content: center;
-    padding: ${RFValue(18)}px 0;
-    padding-left: ${RFValue(20)}px;
+    padding: ${RFValue(10)}px 0;
+    padding-left: ${RFValue(10)}px;
 `;
 
 export const Icone = styled(FontAwesome5)`
-    font-size: ${RFValue(20)}px;
+    font-size: ${RFValue(18)}px;
     color: ${({theme}) => theme.colors.secondary};
 `;
 
 export const Titulo = styled.Text`
     font-family: ${({theme}) => theme.fonts.regular};
     color: ${({theme}) => theme.colors.secondary};
-    font-size: ${RFValue(18)}px;
+    font-size: ${RFValue(14)}px;
     padding: 0 0 0 ${RFValue(10)}px;
 `;
 
