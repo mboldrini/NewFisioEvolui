@@ -28,7 +28,7 @@ export function AgendaItem({status, horarioAgendado, tipo, iconeTipo, dataSeleci
     
     let dataHoje = new Date();
 
-    const horarioPassou = () => {
+    function horarioPassou(){
 
         if( dataHoje.toDateString() === dataSelecionada.toDateString()){
      
@@ -50,7 +50,7 @@ export function AgendaItem({status, horarioAgendado, tipo, iconeTipo, dataSeleci
 
     }
 
-    const iconeHorario = () => {
+    function iconeHorario(){
 
         let horaAgendada = horarioPassou();
 
