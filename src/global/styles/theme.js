@@ -23,7 +23,6 @@ export default{
         status_atendido: '#5cb85c',
         status_remarcado: '#f0ad4e',
         status_cancelado: '#d9534f',
-        //status_desmarcado: '#48cae4',
         status_desmarcado: '#3a86ff',
         status_avaliacao: '#8338ec'
 

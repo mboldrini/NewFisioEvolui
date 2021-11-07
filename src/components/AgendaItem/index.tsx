@@ -16,29 +16,69 @@ import {
 } from './styles';
 
 interface Props{
-    idStatus: number;
-    horaPassou: boolean;
-    horario: string;
+    status: number;
+    horarioAgendado: string;
     tipo: string;
-    iconeTipo: string
+    iconeTipo: string;
+    dataSelecionada: Date;
+    dataHoje: Date;
 }
 
-export function AgendaItem({idStatus, horaPassou, horario, tipo, iconeTipo}: Props){
+export function AgendaItem({status, horarioAgendado, tipo, iconeTipo, dataSelecionada}: Props){
+    
+    let dataHoje = new Date();
+
+    const horarioPassou = () => {
+
+        if( dataHoje.toDateString() === dataSelecionada.toDateString()){
+     
+            let horaAgendada = parseInt(horarioAgendado.split(":")[0] );
+
+            if( horaAgendada < dataHoje.getHours() ){
+                return 1;
+            }else if(horaAgendada == dataHoje.getHours()){
+                return 2;
+            }else{
+                return 0;
+            }
+
+        }else if(dataSelecionada < dataHoje){
+            return 1;
+        }else if(dataSelecionada > dataHoje ){
+            return 0;
+        }
+
+    }
+
+    const iconeHorario = () => {
+
+        let horaAgendada = horarioPassou();
+
+        if(horaAgendada  == 0){
+            return "clock";
+        }else if(horaAgendada == 1){
+            return "history";
+        }else{
+            return "stopwatch";
+        }
+
+    }
+
     return(
-        <Container idStatus={idStatus}>
+        <Container status={status}>
            <Header>
                <IconeTipo name={iconeTipo}/>
                <Tipo>{tipo}</Tipo>
            </Header>
            <Nome>Aroldo Arão</Nome>
            <Footer>
-                <HoraWrapper horaPassou={horaPassou}>
-                    <Icone name="clock"/>
-                    <Horario>{horario}</Horario>
+                <HoraWrapper horaPassou={ horarioPassou() }>
+                    <Icone name={ iconeHorario() }/>
+                    <Horario>{horarioAgendado}</Horario>
                 </HoraWrapper>
-                <StatusWrapper idStatus={idStatus}>
-                    { idStatus !== 0 && 
-                        <Status idStatus={idStatus}>{ variaveis.status[idStatus] }</Status> 
+                <StatusWrapper status={status}>
+                    { status !== 0 && 
+                        <Status status={status}>{ variaveis.status[status] }</Status> 
                     }
                 </StatusWrapper>
            </Footer>

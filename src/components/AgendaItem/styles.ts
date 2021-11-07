@@ -3,8 +3,8 @@ import { RFValue } from 'react-native-responsive-fontsize';
 import { FontAwesome5 } from "@expo/vector-icons";
 
 interface Props{
-    idStatus?: number;
-    horaPassou?: boolean;
+    status?: number;
+    horaPassou?: number;
 }
 
 export const Container = styled.View<Props>`
@@ -36,31 +36,31 @@ export const Container = styled.View<Props>`
 
     border-left-width: ${RFValue(5)}px;
 
-    ${({ idStatus }) => idStatus == 0 && css `
+    ${({ status }) => status == 0 && css `
         border-left-width: 0;
     `};
 
-    ${({ idStatus }) => idStatus == 1 && css `
+    ${({ status }) => status == 1 && css `
         border-left-color: ${({theme}) => theme.colors.status_default};
     `};
 
-    ${({ idStatus }) => idStatus == 2 && css `
+    ${({ status }) => status == 2 && css `
         border-left-color: ${({theme}) => theme.colors.status_atendido};
     `};
 
-    ${({ idStatus }) => idStatus == 3 && css `
+    ${({ status }) => status == 3 && css `
         border-left-color: ${({theme}) => theme.colors.status_remarcado};
     `};
 
-    ${({ idStatus }) => idStatus == 4 && css `
+    ${({ status }) => status == 4 && css `
         border-left-color: ${({theme}) => theme.colors.status_cancelado};
     `};
     
-    ${({ idStatus }) => idStatus == 5 && css `
+    ${({ status }) => status == 5 && css `
         border-left-color: ${({theme}) => theme.colors.status_desmarcado};
     `};
     
-    ${({ idStatus }) => idStatus == 6 && css `
+    ${({ status }) => status == 6 && css `
         border-left-color: ${({theme}) => theme.colors.status_avaliacao};
     `};
 
@@ -110,13 +110,18 @@ export const HoraWrapper = styled.View<Props>`
     padding: 0 ${RFValue(10)}px;
     margin-right: ${RFValue(10)}px;
 
-    ${({ horaPassou }) => horaPassou == true && css `
+    ${({ horaPassou }) => horaPassou == 0 && css `
+        background-color: ${({theme}) => theme.colors.secondary};
+    `};
+
+    ${({ horaPassou }) => horaPassou == 1 && css `
         background-color: ${({theme}) => theme.colors.status_default};
     `};
 
-    ${({ horaPassou }) => horaPassou == false && css `
-        background-color: ${({theme}) => theme.colors.secondary};
+    ${({ horaPassou }) => horaPassou == 2 && css `
+        background-color: ${({theme}) => theme.colors.status_remarcado};
     `};
+   
 
 `;
 
@@ -135,31 +140,31 @@ export const StatusWrapper = styled.View<Props>`
     justify-content: center;
     border-radius: 10px;
 
-    ${({ idStatus }) => idStatus == 0 && css `
+    ${({ status }) => status == 0 && css `
         background-color: ${({theme}) => theme.colors.status_default};
     `};
 
-    ${({ idStatus }) => idStatus == 1 && css `
+    ${({ status }) => status == 1 && css `
         background-color: ${({theme}) => theme.colors.status_default};
     `};
 
-    ${({ idStatus }) => idStatus == 2 && css `
+    ${({ status }) => status == 2 && css `
         background-color: ${({theme}) => theme.colors.status_atendido};
     `};
 
-    ${({ idStatus }) => idStatus == 3 && css `
+    ${({ status }) => status == 3 && css `
         background-color: ${({theme}) => theme.colors.status_remarcado};
     `};
 
-    ${({ idStatus }) => idStatus == 4 && css `
+    ${({ status }) => status == 4 && css `
         background-color: ${({theme}) => theme.colors.status_cancelado};
     `};
     
-    ${({ idStatus }) => idStatus == 5 && css `
+    ${({ status }) => status == 5 && css `
         background-color: ${({theme}) => theme.colors.status_desmarcado};
     `};
     
-    ${({ idStatus }) => idStatus == 6 && css `
+    ${({ status }) => status == 6 && css `
         background-color: ${({theme}) => theme.colors.status_avaliacao};
     `};
     
@@ -172,31 +177,31 @@ export const Status = styled.Text<Props>`
     padding:0 ${RFValue(10)}px;
     padding-top: ${RFValue(2)}px;
 
-    ${({ idStatus }) => idStatus == 0 && css `
+    ${({ status }) => status == 0 && css `
         color: #000000;
     `};
 
-    ${({ idStatus }) => idStatus == 1 && css `
+    ${({ status }) => status == 1 && css `
         color: #000000;
     `};
 
-    ${({ idStatus }) => idStatus == 2 && css `
+    ${({ status }) => status == 2 && css `
         color: ${({theme}) => theme.colors.shape};
     `};
 
-    ${({ idStatus }) => idStatus == 3 && css `
+    ${({ status }) => status == 3 && css `
         color: ${({theme}) => theme.colors.shape};
     `};
 
-    ${({ idStatus }) => idStatus == 4 && css `
+    ${({ status }) => status == 4 && css `
         color: ${({theme}) => theme.colors.shape};
     `};
 
-    ${({ idStatus }) => idStatus == 5 && css `
+    ${({ status }) => status == 5 && css `
         color: #000000;
     `};
 
-    ${({ idStatus }) => idStatus == 6 && css `
+    ${({ status }) => status == 6 && css `
         color: ${({theme}) => theme.colors.shape};
     `};
 

@@ -32,12 +32,15 @@ export function Agenda(){
     const days = variaveis.datas.days;
     const daysLong = variaveis.datas.daysLong;
 
+    const [atualDate, setAtualDate] = useState(null);
     const [dataHoje, setDataHoje] = useState(null);
     const [diaHoje, setDiaHoje] = useState(null);
+
     const [selectedYear, setSelectedYear] = useState(0);
     const [selectedMonth, setSelectedMonth] = useState(0);
     const [selectedDay, setSelectedDay] = useState(null);
     const [selectedDayWeek, setSelectedDayWeek] = useState(null);
+    const [selectedDate, setSelectedDate] = useState(null);
 
     const [listDays, setListDays] = useState([]);
 
@@ -47,6 +50,7 @@ export function Agenda(){
         setSelectedMonth( today.getMonth() );
         setSelectedDay( today.getDate() ); 
         setSelectedDayWeek(today.getDay());
+        setSelectedDate(today);
     }
 
     const handleDateClick = (side: String) => {
@@ -65,6 +69,11 @@ export function Agenda(){
 
     useEffect(() => {
         getAtualDay();
+
+        let d = new Date();
+        setDataHoje(`${daysLong[d.getDay()]} - ${d.getDate()}/${months[d.getMonth()]}/${d.getFullYear()}`);
+        setAtualDate(d);
+
     },[]);
 
     useEffect(()=>{
@@ -77,10 +86,10 @@ export function Agenda(){
 
             let d = new Date(selectedYear, selectedMonth, i);
             let year = d.getFullYear();
-            let month = d.getMonth +1;
+            let month = d.getMonth() +1;
             let day = d.getDate();
-            month = month < 10 ? '0'+month : month;
-            day = day < 10 ? '0'+day : day;
+            // month = month < 10 ? '0'+month : month;
+            // day = day < 10 ? '0'+day : day;
 
             newListDays.push({
                 weekday: days[ d.getDay() ],
@@ -103,74 +112,141 @@ export function Agenda(){
         }
 
 
-        setDataHoje(`${daysLong[d.getDay()]} - ${d.getDate()}/${months[d.getMonth()]}/${d.getFullYear()}`);
 
     }, [selectedMonth, selectedYear]);
 
     useEffect(()=>{
         let d = new Date(selectedYear, selectedMonth, selectedDay);
         setSelectedDayWeek(d.getDay());
+        setSelectedDate(d);
+        
         let hoje = new Date();
         setDiaHoje(hoje.getDay());
+
     }, [selectedDay, selectedDayWeek]);
 
     let listaAgenda = [
         {
             id: '0',
-            idStatus: 0,
-            horaPassou: true,
-            horario: '07:00',
-            tipo: 'Particular',
-            icone_tipo: 'money-bill-wave',
-        },
-        {
-            id: '1',
-            idStatus: 1,
+            status: 1,
             horaPassou: true,
             horario: '07:30',
             tipo: 'Particular',
             icone_tipo: 'money-bill-wave',
         },
         {
-            id: '2',
-            idStatus: 2,
+            id: '1',
+            status: 2,
             horaPassou: false,
             horario: '08:00',
             tipo: 'Particular',
             icone_tipo: 'money-bill-wave',
         },
         {
-            id: '3',
-            idStatus: 3,
+            id: '2',
+            status: 3,
             horaPassou: false,
             horario: '08:30',
             tipo: 'Plano Amil 500FG',
             icone_tipo: 'hospital',
         },
         {
-            id: '4',
-            idStatus: 4,
+            id: '3',
+            status: 4,
             horaPassou: false,
             horario: '09:00',
             tipo: 'Particular',
             icone_tipo: 'money-bill-wave',
         },
         {
-            id: '5',
-            idStatus: 5,
+            id: '4',
+            status: 5,
             horaPassou: false,
             horario: '09:30',
             tipo: 'Particular',
             icone_tipo: 'money-bill-wave',
         },
         {
-            id: '6',
-            idStatus: 6,
+            id: '5',
+            status: 5,
             horaPassou: false,
             horario: '11:00',
             tipo: 'Particular',
             icone_tipo: 'money-bill-wave',
+        },
+        {
+            id: '6',
+            status: 6,
+            horaPassou: false,
+            horario: '11:30',
+            tipo: 'Particular',
+            icone_tipo: 'money-bill-wave',
+        },
+        {
+            id: '9',
+            status: 2,
+            horaPassou: false,
+            horario: '13:00',
+            tipo: 'Particular',
+            icone_tipo: 'money-bill-wave',
+        },
+        {
+            id: '10',
+            status: 3,
+            horaPassou: false,
+            horario: '14:30',
+            tipo: 'Plano Amil 500FG',
+            icone_tipo: 'hospital',
+        },
+        {
+            id: '11',
+            status: 4,
+            horaPassou: false,
+            horario: '15:00',
+            tipo: 'Particular',
+            icone_tipo: 'money-bill-wave',
+        },
+        {
+            id: '12',
+            status: 5,
+            horaPassou: false,
+            horario: '16:30',
+            tipo: 'Particular',
+            icone_tipo: 'money-bill-wave',
+        },
+        {
+            id: '13',
+            status: 6,
+            horaPassou: false,
+            horario: '17:00',
+            tipo: 'Particular',
+            icone_tipo: 'money-bill-wave',
+        },
+        {
+            id: '14',
+            status: 4,
+            horaPassou: false,
+            horario: '18:00',
+            tipo: 'Particular',
+            icone_tipo: 'money-bill-wave',
+        },
+        {
+            id: '15',
+            status: 5,
+            horaPassou: false,
+            horario: '19:30',
+            tipo: 'Particular',
+            icone_tipo: 'money-bill-wave',
+        },
+        {
+            id: '16',
+            status: 6,
+            horaPassou: false,
+            horario: '20:00',
+            tipo: 'Particular',
+            icone_tipo: 'money-bill-wave',
         }
+
     ];
 
     return(
@@ -202,20 +278,36 @@ export function Agenda(){
                 </DateList>
 
             </DateWrapper>
+                    
+                {/* // <FlatList 
+                //     data={listaAgenda}
+                //     keyExtractor={(item) => item.id}
+                //     renderItem={({item}) =>(
+                //         <AgendaItem 
+                //             status={item.status} 
+                //             horarioAgendado={item.horario}
+                //             tipo={item.tipo}
+                //             iconeTipo={item.icone_tipo}
+                //             dataSelecionada={selectedDate}
+                //             dataHoje={atualDate}
+                //         />
+                //     )}
+                // /> */}
 
-            <FlatList 
-                data={listaAgenda}
-                keyExtractor={(item) => item.id}
-                renderItem={({item}) =>(
-                    <AgendaItem 
-                        idStatus={item.idStatus} 
-                        horaPassou={item.horaPassou}
-                        horario={item.horario}
-                        tipo={item.tipo}
-                        iconeTipo={item.icone_tipo}
-                    />
-                )}
-            />
+                { selectedDate != null && listaAgenda.length > 0 && listaAgenda.map((item, key) =>{
+                    return(
+                        <AgendaItem 
+                            status={item.status} 
+                            horarioAgendado={item.horario}
+                            tipo={item.tipo}
+                            iconeTipo={item.icone_tipo}
+                            dataSelecionada={selectedDate}
+                            dataHoje={atualDate}
+                        />
+                    )
+                }) }
+
+              
 
         </Container>
     )
