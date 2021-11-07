@@ -20,17 +20,17 @@ export default ({state, navigation}) => {
         <TabArea>
 
             <TabItem onPress={()=>goTo('Home')}>
-                <Icon name="home" style={{opacity: state.index===0 ? 1 : 0.5}}/>
+                <Icon name="home" style={{opacity: state.index===1 ? 1 : 0.5}}/>
             </TabItem> 
             
             <TabItem onPress={()=>goTo('Search')}>
-                <Icon name="search-sharp" style={{opacity: state.index===1 ? 1 : 0.5}}/>
+                <Icon name="search-sharp" style={{opacity: state.index===2 ? 1 : 0.5}}/>
             </TabItem> 
 
             <TabItemCenter onPress={()=>goTo('Agenda')}>
                 <IconCenter name="calendar-sharp" />
             </TabItemCenter> 
-            
+         
             <TabItem onPress={()=>goTo('CadastrarPaciente')}>
                 <Icon name="person-add-sharp" style={{opacity: state.index===3 ? 1 : 0.5}}/>
             </TabItem> 

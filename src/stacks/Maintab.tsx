@@ -20,8 +20,8 @@ export default () => (
             props=><CustomTabBar {...props} /> 
         }
     >
-        <Screen name="Agenda" component={Agenda} />
 
+        <Screen name="Agenda" component={Agenda} />
         <Screen name="Home" component={Home} />
         <Screen name="Search" component={Search} />
         <Screen name="CadastrarPaciente" component={CadastrarPaciente} />

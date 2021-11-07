@@ -10,7 +10,7 @@ export const Container = styled.View`
 
 export const Header = styled.View`
     width: 100%;
-    height: ${RFPercentage(28)}px;
+    height: ${RFPercentage(18)}px;
     background-color: ${({theme}) => theme.colors.primary};
     justify-content: center;
     align-items: flex-start;
@@ -53,27 +53,33 @@ export const UserName = styled.Text`
     font-family: ${({theme}) => theme.fonts.bold};
 `;
 
+export const AreaLogout = styled.TouchableOpacity``;
+
 export const Logout = styled(Ionicons)`
     color: ${({theme}) => theme.colors.attention};
     font-size: ${RFValue(24)}px;
 `;
 
 export const HighlightCards = styled.ScrollView.attrs({
-    horizontal: true,
+    vertical: true,
     showsHorizontalScrollIndicator:false,
     contentContainerStyle:{
-        paddingHorizontal: 24 
+        paddingHorizontal: 24 ,
     }
 })`
     width: 100%;
-    position: absolute;
-    margin-top: ${RFPercentage(20)}px;
+`;
+
+export const WrapperGroup = styled.View`
+    background-color: ${({theme}) => theme.colors.secondary};
+    padding: 0 ${RFValue(10)}px;
+    padding-top: ${RFValue(10)}px;
+    margin-bottom: ${({theme}) => theme.margin.bottom};
+    border-radius: ${({theme}) => theme.bordas.padrao};
 `;
 
 export const Body = styled.View`
     flex: 1;
-    background-color: #fff;
-    z-index: -3;
-    border-top-left-radius: 30px;
+    padding-top: ${RFValue(20)}px;
 `;
 

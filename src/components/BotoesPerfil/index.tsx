@@ -2,6 +2,7 @@ import React from 'react';
 
 import {
     Container,
+    AreaIcone,
     Icone,
     Titulo
 } from './styles';
@@ -9,17 +10,17 @@ import {
 interface Props{
     icone: string,
     titulo: string;
-    type: 'enabled' | 'disabled';
 }
 
-export function HighlightCard({
+export function BotoesPerfil({
     icone,
-    titulo, 
-    type
+    titulo
 }: Props){
     return(
-        <Container type={type}>
-            <Icone name={icone}/>
+        <Container>
+            <AreaIcone>
+                <Icone name={icone}/>
+            </AreaIcone>
             <Titulo>{titulo}</Titulo>
         </Container>
     )

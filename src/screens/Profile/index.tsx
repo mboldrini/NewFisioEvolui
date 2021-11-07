@@ -1,5 +1,5 @@
 import React from 'react';
-import { HighlightCard } from '../../components/HighlightCard';
+import { BotoesPerfil } from '../../components/BotoesPerfil';
 import { 
     Container,
     Header,
@@ -9,9 +9,11 @@ import {
     User,
     UserGreeting,
     UserName,
+    AreaLogout,
     Logout,
-    HighlightCards,
-    Body
+    Body,
+    WrapperGroup,
+    HighlightCards
 } from './styles';
 
 export function Profile(){
@@ -26,39 +28,52 @@ export function Profile(){
                             <UserName>Bartolomeu Santos</UserName>
                         </User>
                     </UserInfo>
-                    <Logout name="power"/>
+                    <AreaLogout>
+                        <Logout name="power"/>
+                    </AreaLogout>
                 </UserWrapper>
             </Header>
 
-            <HighlightCards>
-                <HighlightCard 
-                    icone="edit"
-                    titulo="Perfil"
-                    type="enabled"
-                />
-                <HighlightCard 
-                    icone="search-dollar"
-                    titulo="Financeiro"
-                    type="disabled"
-                />
-                <HighlightCard 
-                    icone="chart-line"
-                    titulo="Estatísticas"
-                    type="disabled"
-                />
-                <HighlightCard 
-                    icone="user-cog"
-                    titulo="Configurações"
-                    type="enabled"
-                />
-                 <HighlightCard 
-                    icone="question-circle"
-                    titulo="Sobre o app"
-                    type="disabled"
-                />
-            </HighlightCards>
+                <HighlightCards>
+                    <WrapperGroup>
+                        <BotoesPerfil 
+                            icone="user-edit"
+                            titulo="Editar Perfil"
+                        />
+                        <BotoesPerfil 
+                            icone="user-cog"
+                            titulo="Configurações de Atendimento"
+                        />
+                         <BotoesPerfil 
+                            icone="file-medical-alt"
+                            titulo="Tipos de Atendimento"
+                        />
+                    </WrapperGroup>
 
-            <Body></Body>
+                    <WrapperGroup>
+                        <BotoesPerfil 
+                            icone="search-dollar"
+                            titulo="Informações Financeiras"
+                        />
+                        <BotoesPerfil 
+                            icone="chart-line"
+                            titulo="Estatísticas de Atendimentos"
+                        />
+                    </WrapperGroup>
+                   
+                    <WrapperGroup>
+                        <BotoesPerfil 
+                            icone="wrench"
+                            titulo="Configurações do Aplicativo"
+                        />
+                        <BotoesPerfil 
+                            icone="question-circle"
+                            titulo="Sobre o app"
+                        />
+                    </WrapperGroup>
+
+                </HighlightCards>
+
 
         </Container>
     )
