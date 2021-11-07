@@ -41,6 +41,7 @@ export default{
         'Cancelado',/// JAMAIS ALTERAR ESSA SEQUÊNCIA
         'Desmarcado',/// JAMAIS ALTERAR ESSA SEQUÊNCIA
         'Avaliação'/// JAMAIS ALTERAR ESSA SEQUÊNCIA
-    ]
-  
+    ],
+
+ 
 }

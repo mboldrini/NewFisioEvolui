@@ -12,9 +12,6 @@ import { CadastrarPaciente } from '../screens/CadastrarPaciente';
 import { Profile } from '../screens/Profile';
 
 
-
-import { PacientePerfil } from '../screens/Paciente/Perfil';
-
 export default () => (
     <Navigator
         screenOptions={{
@@ -25,11 +22,11 @@ export default () => (
         }
     >
 
-        <Screen name="Search" component={PacientePerfil} />
+        <Screen name="CadastrarPaciente" component={CadastrarPaciente} />
 
         <Screen name="Agenda" component={Agenda} />
+        <Screen name="Search" component={Search} />
         <Screen name="Home" component={Home} />
-        <Screen name="CadastrarPaciente" component={CadastrarPaciente} />
         <Screen name="Profile" component={Profile} />
 
 
