@@ -14,7 +14,7 @@ export default{
             'Novembro',
             'Dezembro'
           ],
-          days:[
+        days:[
             'Dom',
             'Seg',
             'Ter',
@@ -42,6 +42,10 @@ export default{
         'Desmarcado',/// JAMAIS ALTERAR ESSA SEQUÊNCIA
         'Avaliação'/// JAMAIS ALTERAR ESSA SEQUÊNCIA
     ],
-
+    tipoAgendamento: [
+        'Recorrente',/// JAMAIS ALTERAR ESSA SEQUÊNCIA
+        'Único',/// JAMAIS ALTERAR ESSA SEQUÊNCIA
+        'Avaliação'/// JAMAIS ALTERAR ESSA SEQUÊNCIA
+    ]
  
 }
