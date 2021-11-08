@@ -10,6 +10,8 @@ export const Container = styled.View`
     margin-top: ${RFValue(35)}px ;
 `;
 
+export const WrapIcon = styled.TouchableOpacity``;
+
 export const Icone = styled(FontAwesome5)`
     color: ${({theme}) => theme.colors.shape};
     font-size: ${RFValue(30)}px;

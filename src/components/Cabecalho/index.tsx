@@ -4,6 +4,7 @@ import {useNavigation } from '@react-navigation/native';
 import { Text } from 'react-native';
 import { 
     Container,
+    WrapIcon,
     Icone,
     Titulo
 } from './styles';
@@ -16,7 +17,9 @@ interface Props{
 export function Cabecalho({titulo, onPress}: Props){
     return(
         <Container>
-            <Icone name="chevron-left"/>
+            <WrapIcon>
+                <Icone name="chevron-left"/>
+            </WrapIcon>
             <Titulo>{titulo}</Titulo>
         </Container>
     )

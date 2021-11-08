@@ -36,7 +36,7 @@ export function PacientePerfil(){
             
             <Cabecalho 
                 titulo="Perfil do Paciente"
-                onPress={()=>{  navigation.navigate("Home" )}}
+                onPress={()=>{  navigation.navigate("Home" as never )}}
             />
 
             <PacienteHeader 
