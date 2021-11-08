@@ -13,7 +13,7 @@ import {
 import { Select } from '../../components/Forms/Select';
 
 // import da tela que vai virar modal
-import { CategorySelect } from '../ModalCategorySelect';
+import { CategorySelect } from '../ModalSelect';
 import { categories } from '../../global/variaveis/categories';
 
 
