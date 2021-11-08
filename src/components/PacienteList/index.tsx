@@ -14,22 +14,26 @@ import {
 } from './styles';
 
 interface Props{
+    id: number;
     companyIcon: string;
     companyName: string;
     lastConsult: string;
     personName: string;
     address: string;
+    onPress: () => void;
 }
 
 export function PacienteList({
+    id,
     companyIcon,
     companyName,
     lastConsult,
     personName,
-    address
+    address,
+    onPress
 }: Props){
     return(
-        <Container>
+        <Container onPress={onPress}>
             <Header>
                 <Company><Icone name={companyIcon}/> {companyName}</Company>
                 <LastDate><Icone name="calendar"/> {lastConsult}</LastDate>

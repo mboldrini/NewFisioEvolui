@@ -18,14 +18,14 @@ export const Picture = styled(FontAwesome5)`
     color: ${({theme}) => theme.colors.secondary};
     padding: ${RFValue(15)}px;
     background-color: ${({theme}) => theme.colors.shape};
-    margin: 0 ${RFValue(5)}px;
     border-radius: ${({theme}) => theme.bordas.padrao};
+    margin-right: ${RFValue(5)}px;
 `;
 
 export const InfosWrapper = styled.View`
     justify-content: flex-start;
     align-items: flex-start;
-    margin-left: ${RFValue(10)}px;
+    margin-left: ${RFValue(5)}px;
 `;
 
 export const IconeTipo = styled(FontAwesome5)`
