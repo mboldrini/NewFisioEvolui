@@ -43,9 +43,28 @@ export default{
         'Avaliação'/// JAMAIS ALTERAR ESSA SEQUÊNCIA
     ],
     tipoAgendamento: [
-        'Recorrente',/// JAMAIS ALTERAR ESSA SEQUÊNCIA
-        'Único',/// JAMAIS ALTERAR ESSA SEQUÊNCIA
-        'Avaliação'/// JAMAIS ALTERAR ESSA SEQUÊNCIA
-    ]
+        {
+            nome: 'Recorrente',
+            icone: 'redo'
+        },
+        {
+            nome: 'Único',
+            icone: 'calendar-day'
+        },
+        {
+            nome: 'Avaliação',
+            icone: 'notes-medical'
+        }
+    ],
  
 }
+
+
+
+
+// tipoAgendamento: [
+//     'Recorrente',/// JAMAIS ALTERAR ESSA SEQUÊNCIA
+//     'Único',/// JAMAIS ALTERAR ESSA SEQUÊNCIA
+//     'Avaliação'/// JAMAIS ALTERAR ESSA SEQUÊNCIA
+// ],
+

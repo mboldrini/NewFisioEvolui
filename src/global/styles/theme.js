@@ -27,6 +27,12 @@ export default{
         status_avaliacao: '#8338ec',
 
 
+        /*******************************\
+        | Cadastro e Perfil do Paciente |
+        \*******************************/
+        status_recorrente: '#219ebc',
+
+
         button_ok: '#268596'
 
     },

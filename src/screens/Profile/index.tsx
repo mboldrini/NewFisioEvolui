@@ -34,46 +34,47 @@ export function Profile(){
                 </UserWrapper>
             </Header>
 
-                <HighlightCards>
-                    <WrapperGroup>
+            <HighlightCards>
+                <WrapperGroup>
+                    <BotoesPerfil 
+                        icone="user-edit"
+                        titulo="Editar Perfil"
+                    />
+                    <BotoesPerfil 
+                        icone="user-cog"
+                        titulo="Configurações de Atendimento"
+                    />
                         <BotoesPerfil 
-                            icone="user-edit"
-                            titulo="Editar Perfil"
-                        />
-                        <BotoesPerfil 
-                            icone="user-cog"
-                            titulo="Configurações de Atendimento"
-                        />
-                         <BotoesPerfil 
-                            icone="file-medical-alt"
-                            titulo="Tipos de Atendimento"
-                        />
-                    </WrapperGroup>
+                        icone="file-medical-alt"
+                        titulo="Tipos de Atendimento"
+                    />
+                </WrapperGroup>
 
-                    <WrapperGroup>
-                        <BotoesPerfil 
-                            icone="search-dollar"
-                            titulo="Informações Financeiras"
-                        />
-                        <BotoesPerfil 
-                            icone="chart-line"
-                            titulo="Estatísticas de Atendimentos"
-                        />
-                    </WrapperGroup>
-                   
-                    <WrapperGroup>
-                        <BotoesPerfil 
-                            icone="wrench"
-                            titulo="Configurações do Aplicativo"
-                        />
-                        <BotoesPerfil 
-                            icone="question-circle"
-                            titulo="Sobre o app"
-                        />
-                    </WrapperGroup>
+                <WrapperGroup>
+                    <BotoesPerfil 
+                        icone="search-dollar"
+                        titulo="Informações Financeiras"
+                    />
+                    <BotoesPerfil 
+                        icone="chart-line"
+                        titulo="Estatísticas de Atendimentos"
+                    />
+                </WrapperGroup>
+                
+                <WrapperGroup>
+                    <BotoesPerfil 
+                        icone="wrench"
+                        titulo="Configurações do Aplicativo"
+                    />
+                    <BotoesPerfil 
+                        icone="question-circle"
+                        titulo="Sobre o app"
+                    />
+                </WrapperGroup>
 
-                </HighlightCards>
+            </HighlightCards>
 
+            
 
         </Container>
     )

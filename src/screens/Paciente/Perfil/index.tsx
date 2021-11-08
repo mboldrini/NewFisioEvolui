@@ -16,6 +16,7 @@ import {
 import { Cabecalho } from '../../../components/Cabecalho';
 import { PacienteHeader } from '../../../components/PacienteHeader';
 import { BottomSpacer } from '../../../components/BottomSpacer';
+import { PacienteAgendamento } from '../../../components/AgendamentoPaciente'; 
 
 export function PacientePerfil(){
 
@@ -35,7 +36,7 @@ export function PacientePerfil(){
             
             <Cabecalho 
                 titulo="Perfil do Paciente"
-                onPress={()=>{  navigation.navigate("Home" as never)}}
+                onPress={()=>{  navigation.navigate("Home" )}}
             />
 
             <PacienteHeader 
@@ -133,6 +134,49 @@ export function PacientePerfil(){
 
             </WrapGroup>
 
+            <WrapGroup>
+                <Title>Agendamentos do Paciente</Title>
+
+                <PacienteAgendamento 
+                    diaSemana={1}
+                    dataMes="08/11"
+                    horario="09:00AM"
+                    tipoAgendamento={0}
+                    dataLimite="11/11/2023"
+                />
+
+                <PacienteAgendamento 
+                    diaSemana={2}
+                    dataMes="09/11"
+                    horario="09:00AM"
+                    tipoAgendamento={0}
+                    dataLimite="11/11/2023"
+                />
+
+                <PacienteAgendamento 
+                    diaSemana={3}
+                    dataMes="10/11"
+                    horario="11:00AM"
+                    tipoAgendamento={1}
+                />
+
+                <PacienteAgendamento 
+                    diaSemana={4}
+                    dataMes="11/11"
+                    horario="09:00AM"
+                    tipoAgendamento={0}
+                    dataLimite="11/11/2023"
+                />
+
+                <PacienteAgendamento 
+                    diaSemana={5}
+                    dataMes="10/11"
+                    horario="13:00PM"
+                    tipoAgendamento={2}
+                />
+            </WrapGroup>
+
+            
 
             <BottomSpacer/>
               

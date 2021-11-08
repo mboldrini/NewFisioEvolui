@@ -1,5 +1,6 @@
 import React from 'react';
 import { Text } from 'react-native';
+import { Cabecalho } from '../../components/Cabecalho';
 import { 
     Container
 } from './styles';
@@ -7,7 +8,6 @@ import {
 export function Search(){
     return(
         <Container>
-            <Text>Search</Text>
         </Container>
     )
 }

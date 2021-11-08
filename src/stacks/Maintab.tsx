@@ -22,7 +22,6 @@ export default () => (
         }
     >
 
-
         <Screen name="Agenda" component={Agenda} />
         <Screen name="Home" component={Home} />
         <Screen name="Search" component={Search} />
