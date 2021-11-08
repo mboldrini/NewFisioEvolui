@@ -28,14 +28,17 @@ export const Titulo = styled.Text`
 `;
 
 export const Category = styled.TouchableOpacity<Props>`
-    width: 100%;
     padding: ${RFValue(15)}px;
     flex-direction: row;
     align-items: center;
  
     background-color: ${({isActive}) => 
-        isActive ? theme.colors.secondary_light : theme.colors.shape
+        isActive ? theme.colors.status_remarcado : theme.colors.shape
     };
+
+    margin: 0 ${({theme}) => theme.margin.lateral}px;
+    margin-bottom: ${RFValue(5)}px;
+    border-radius: 10px;
 
 `;
 
@@ -45,9 +48,9 @@ export const Name = styled.Text`
 `;
 
 export const Separator = styled.View`
-    height: 1px;
-    width: 100%;
+    /* height: 1px;
     background-color: ${({theme}) => theme.colors.text};
+    margin: 0 ${({theme}) => theme.margin.lateral}px; */
 `;
 
 export const Footer = styled.View`

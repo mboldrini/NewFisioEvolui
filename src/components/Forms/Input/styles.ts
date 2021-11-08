@@ -9,17 +9,17 @@ export const Container = styled(TextInput)`
     margin: 0 ${({theme}) => theme.padding.lateral}px;
     margin-bottom: ${({theme}) => theme.margin.input_bottom};
     padding: 0 20px;
-    color: #000000;
-
-
+    color: ${({theme}) => theme.colors.text_dark};
     border-width: 1;
     border-color: ${({theme}) => theme.colors.input_background};
     border-bottom-width: 1;
     shadow-color: ${({theme}) => theme.colors.text_dark};
-    shadow-offset: {width: 0, height: 2};
+    shadow-offset: {width: 0};
+    shadow-offset: {height: 2};
     shadow-opacity: 0.3;
-    shadow-radius: 5;
+    shadow-radius: 5px;
     elevation: 2;
+
 `;
 
 

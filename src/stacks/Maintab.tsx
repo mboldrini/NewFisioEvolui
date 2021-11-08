@@ -22,11 +22,11 @@ export default () => (
         }
     >
 
-        <Screen name="CadastrarPaciente" component={CadastrarPaciente} />
 
         <Screen name="Agenda" component={Agenda} />
-        <Screen name="Search" component={Search} />
         <Screen name="Home" component={Home} />
+        <Screen name="Search" component={Search} />
+        <Screen name="CadastrarPaciente" component={CadastrarPaciente} />
         <Screen name="Profile" component={Profile} />
 
 

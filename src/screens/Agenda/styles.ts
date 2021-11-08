@@ -42,7 +42,7 @@ export const DateWrapper = styled.View`
     shadow-color: #000;
     shadow-offset: {width: 0, height: 2};
     shadow-opacity: 0.8;
-    shadow-radius: 1;
+    shadow-radius: 1px;
     elevation: 1;
 `;
 

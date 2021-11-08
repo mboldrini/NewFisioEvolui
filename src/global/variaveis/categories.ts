@@ -1,26 +1,26 @@
 export const categories = [
     {
-        key: 'purchases', 
-        name: 'Compras'
+        key: 1, 
+        name: 'Particular'
     },
     {
-        key: 'food',
-        name: 'Alimentação'
+        key: 2,
+        name: 'Plano de Saúde Amil'
     },
     {
-        key: 'salary', 
-        name: 'Salário'
+        key: 3,
+        name: 'Unimed SP'
     },
     {
-        key: 'car',
-        name: 'Carro'
+        key: 4,
+        name: 'Plano SAMP'
     },
     {
-        key: 'leisure', 
-        name: 'Lazer'
+        key: 5, 
+        name: 'Cobrindo Férias'
     },
     {
-        key: 'studies', 
-        name: 'Estudos'
+        key: 6, 
+        name: 'Voluntário'
     },
 ];

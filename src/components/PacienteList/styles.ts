@@ -18,7 +18,7 @@ export const Container = styled.TouchableOpacity`
     shadow-offset: {width: 0};
     shadow-offset: {height: 2};
     shadow-opacity: 0.8;
-    shadow-radius: 1;
+    shadow-radius: 1px;
     elevation: 1;
 `;
 

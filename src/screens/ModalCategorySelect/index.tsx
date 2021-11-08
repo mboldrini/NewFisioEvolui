@@ -12,24 +12,29 @@ import {
     Footer,
 } from './styles';
 
-import { categories } from '../../global/variaveis/categories';
 
 interface Category{
-    key: string;
+    key: number;
     name: string;
 }
 
 interface Props{
+    titulo: string;
     category: Category;
     setCategory: (category: Category) => void;
     closeSelectCategory: () => void;
+    optionsList: Category[];
 }
 
 export function CategorySelect({
+    titulo,
     category,
     setCategory,
-    closeSelectCategory
+    closeSelectCategory,
+    optionsList
 }: Props){
+
+    console.log(optionsList);
 
     function handleCategorySelect(category: Category){
         setCategory(category);
@@ -38,12 +43,11 @@ export function CategorySelect({
     return(
         <Container>
             <Header>
-                <Titulo>Titulo do Modal</Titulo>
+                <Titulo>{ titulo }</Titulo>
             </Header>
 
             <FlatList 
-                data={categories}
-                style={{flex: 1, width: '100%'}}
+                data={optionsList}
                 keyExtractor={(item) => item.key}
                 renderItem={({item}) =>(
                     <Category
