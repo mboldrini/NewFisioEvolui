@@ -41,11 +41,13 @@ export default{
     },
     padding:{
         lateral: 24,
+        lateral_half: 12,
         superior: 5,
     },
     margin:{
         input_bottom: 10,
         lateral: 24,
+        lateral_half: 12,
         bottom: 10,
     }
 }
