@@ -48,9 +48,7 @@ export const Name = styled.Text`
 `;
 
 export const Separator = styled.View`
-    /* height: 1px;
-    background-color: ${({theme}) => theme.colors.text};
-    margin: 0 ${({theme}) => theme.margin.lateral}px; */
+
 `;
 
 export const Footer = styled.View`

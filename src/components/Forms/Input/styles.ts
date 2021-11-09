@@ -15,7 +15,7 @@ export const Container = styled(TextInput)`
     border-bottom-width: 1;
     shadow-color: ${({theme}) => theme.colors.text_dark};
     shadow-offset: {width: 0};
-    shadow-offset: {height: 2};
+    shadow-offset: {height: 2px};
     shadow-opacity: 0.3;
     shadow-radius: 5px;
     elevation: 2;

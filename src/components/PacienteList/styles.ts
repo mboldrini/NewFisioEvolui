@@ -16,7 +16,7 @@ export const Container = styled(RectButton)`
     border-bottom-width: 1;
     shadow-color: #000;
     shadow-offset: {width: 0};
-    shadow-offset: {height: 2};
+    shadow-offset: {height: 2px};
     shadow-opacity: 0.8;
     shadow-radius: 1px;
     elevation: 1;

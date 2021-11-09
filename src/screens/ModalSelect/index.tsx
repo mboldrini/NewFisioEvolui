@@ -26,15 +26,13 @@ interface Props{
     optionsList: Category[];
 }
 
-export function CategorySelect({
+export function ModalSelect({
     titulo,
     category,
     setCategory,
     closeSelectCategory,
     optionsList
 }: Props){
-
-    console.log(optionsList);
 
     function handleCategorySelect(category: Category){
         setCategory(category);

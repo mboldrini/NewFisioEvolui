@@ -22,7 +22,7 @@ export const Container = styled.TouchableOpacity.attrs({
     border-bottom-width: 1px;
     shadow-color: ${({theme}) => theme.colors.text_dark};
     shadow-offset: {width:0};
-    shadow-offset: {height:2};
+    shadow-offset: {height:2px};
     shadow-opacity: 0.8;
     shadow-radius: 5px;
     elevation: 2;

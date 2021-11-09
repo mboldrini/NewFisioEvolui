@@ -28,7 +28,6 @@ export function PacientePerfil(){
 
     
     function handleNavigate(){
-        console.log("back?");
         navigation.navigate('Home' as never);
     }
 
