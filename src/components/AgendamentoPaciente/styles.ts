@@ -1,102 +1,101 @@
 import { RFValue } from 'react-native-responsive-fontsize';
 import styled, {css} from "styled-components/native";
 import { FontAwesome5 } from "@expo/vector-icons";
+import { RectButton } from "react-native-gesture-handler";
 
 interface Props{
     tipoAtendimento: number;
 }
 
-export const Container = styled.View`
+export const Container = styled(RectButton)<Props>`
+    flex-direction: row;
     background-color: ${({theme}) => theme.colors.shape};
     border-radius: ${({theme}) => theme.bordas.padrao};
-    flex-direction: row;
-    margin-bottom: ${({theme}) => theme.margin.bottom}px;
-`;
-
-export const WraperData = styled.View<Props>`
     align-items: center;
-    justify-content: center;
-    border-top-left-radius: ${({theme}) => theme.bordas.padrao}px;
-    border-bottom-left-radius: ${({theme}) => theme.bordas.padrao}px;
-    background-color: ${({theme}) => theme.colors.secondary};
-    /*margin: ${RFValue(5)}px;*/
-    padding: 0 ${RFValue(10)}px;
-    min-width: ${RFValue(65)}px;
+    justify-content: space-between;
+    margin-bottom: ${({theme}) => theme.margin.bottom}px;
+    padding: 5px 0;
+
+    border-left-width: 5px;
 
     ${({ tipoAtendimento }) => tipoAtendimento == 0 && css `
-        background-color: ${({theme}) => theme.colors.status_recorrente};
+        border-left-color: ${({theme}) => theme.colors.status_recorrente};
     `};
 
     ${({ tipoAtendimento }) => tipoAtendimento == 1 && css `
-        background-color: ${({theme}) => theme.colors.status_default};
-    `};
+    border-left-color: ${({theme}) => theme.colors.status_default};
+     `};
 
-    ${({ tipoAtendimento }) => tipoAtendimento == 2 && css `
-        background-color: ${({theme}) => theme.colors.status_avaliacao};
-        color: #ffffff;
-    `};
+     ${({ tipoAtendimento }) => tipoAtendimento == 2 && css `
+     border-left-color: ${({theme}) => theme.colors.status_avaliacao};
+         color: #ffffff;
+     `};
 
 `;
 
-export const DiaSemana = styled.Text<Props>`
-    font-size: ${RFValue(18)}px;
-    font-family: ${({theme}) => theme.fonts.bold};
-    color: ${({theme}) => theme.colors.shape};
+export const WrapIcone = styled.View`
+    margin-left: ${RFValue(20)}px;
+    align-items: center;
+    justify-content: center;
+`;
+
+export const DiaSemana = styled.Text`
     text-transform: uppercase;
-
-    ${({ tipoAtendimento }) => tipoAtendimento == 1 && css `
-        color: #000000;
-    `};
-
+    font-family: ${({theme}) => theme.fonts.bold};
+    font-size: ${RFValue(14)}px;
 `;
 
 export const Icone = styled(FontAwesome5)<Props>`
-   color: #ffffff;
-   font-size: ${RFValue(20)}px;
-   padding-bottom: ${RFValue(5)}px;
+    font-size: ${RFValue(20)}px;
 
-   ${({ tipoAtendimento }) => tipoAtendimento == 1 && css `
-        color: #000000;
+    
+    ${({ tipoAtendimento }) => tipoAtendimento == 0 && css `
+        color: ${({theme}) => theme.colors.status_recorrente};
     `};
-
-`;
-
-export const DiaMes = styled.Text<Props>`
-    font-size: ${RFValue(18)}px;
-    font-family: ${({theme}) => theme.fonts.bold};
-    color: ${({theme}) => theme.colors.shape};
 
     ${({ tipoAtendimento }) => tipoAtendimento == 1 && css `
-        color: #000000;
+        color: ${({theme}) => theme.colors.status_default};
     `};
+
+    ${({ tipoAtendimento }) => tipoAtendimento == 2 && css `
+        color: ${({theme}) => theme.colors.status_avaliacao};
+    `};
+
+ 
 `;
 
-export const WraperInfos = styled.View`
-    flex-direction: column;
-    padding-top: ${RFValue(5)}px;
-    align-items: flex-start;
-    padding: 0 ${RFValue(5)}px;
-    justify-content:center;
+export const WrapHora = styled.View`
+    align-items: center;
+    justify-content: center;
 `;
-
 
 export const Horario = styled.Text`
-    font-family: ${({theme}) => theme.fonts.regular};
-    font-size: ${RFValue(16)}px;
-    color: #000000;
-`;
-
-export const Limite = styled.Text`
-    font-family: ${({theme}) => theme.fonts.regular};
-    font-size: ${RFValue(16)}px;
-    color: #000000;
-`;
-
-export const LimiteBold = styled.Text`
     font-family: ${({theme}) => theme.fonts.bold};
-    font-size: ${RFValue(16)}px;
-    color: #000000;
+    font-size: ${RFValue(14)}px;
 `;
+
+export const Tipo = styled.Text`
+    font-family: ${({theme}) => theme.fonts.thin};
+    font-size: ${RFValue(12)}px;
+`;
+
+export const WrapData = styled.View`
+    margin-right: ${RFValue(20)}px;
+    align-items: center;
+    justify-content: center;
+`;
+
+export const Data = styled.Text`
+    font-family: ${({theme}) => theme.fonts.bold};
+    font-size: ${RFValue(14)}px;
+`;
+
+export const DataLimite = styled.Text`
+    font-family: ${({theme}) => theme.fonts.thin};
+    font-size: ${RFValue(12)}px;
+`;
+
+
 
 
 

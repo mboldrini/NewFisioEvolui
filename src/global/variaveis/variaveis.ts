@@ -48,7 +48,7 @@ export default{
             icone: 'redo'
         },
         {
-            nome: 'Único',
+            nome: 'Não Recorrente',
             icone: 'calendar-day'
         },
         {

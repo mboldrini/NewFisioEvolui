@@ -1,7 +1,5 @@
-import React, {useEffect, useState}from 'react';
-import {RefreshControl} from 'react-native';
-import {useNavigation } from '@react-navigation/native';
-import { Text } from 'react-native';
+import React from 'react';
+import { RectButtonProps } from 'react-native-gesture-handler';
 import { 
     Container,
     WrapIcon,
@@ -9,15 +7,15 @@ import {
     Titulo
 } from './styles';
 
-interface Props{
+interface Props extends RectButtonProps{
     titulo: string,
     onPress: () => void;
 }
 
-export function Cabecalho({titulo, onPress}: Props){
+export function Cabecalho({titulo, onPress, ...rest}: Props){
     return(
         <Container>
-            <WrapIcon>
+            <WrapIcon onPress={onPress} {...rest}>
                 <Icone name="chevron-left"/>
             </WrapIcon>
             <Titulo>{titulo}</Titulo>

@@ -1,4 +1,5 @@
 import React from 'react';
+import { RectButtonProps } from 'react-native-gesture-handler';
 
 import {
     Container,
@@ -7,17 +8,20 @@ import {
     Titulo
 } from './styles';
 
-interface Props{
+interface Props extends RectButtonProps{
     icone: string,
     titulo: string;
+    onPress: () => void;
 }
 
 export function BotoesPerfil({
     icone,
-    titulo
+    titulo,
+    onPress,
+    ...rest
 }: Props){
     return(
-        <Container>
+        <Container onPress={onPress} {...rest}>
             <AreaIcone>
                 <Icone name={icone}/>
             </AreaIcone>

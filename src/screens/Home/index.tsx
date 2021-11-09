@@ -14,10 +14,14 @@ export function Home(){
     const navigation = useNavigation();
 
     function handleNavigate(numero: number){
-        navigation.navigate('PacientePerfil' as never,{
+        navigation.navigate('PacientePerfil' as number,{
             id: 1
         });
     }
+
+    // useEffect(()=>{
+    //     handleNavigate(1);
+    // }, []);
 
     return(
         <Container>
@@ -28,7 +32,7 @@ export function Home(){
             </Header>
 
             <PacienteList
-                id={1}
+                // id={1}
                 companyIcon="hospital"
                 companyName="Plano Amil 500FG"
                 lastConsult="01/11/2021"
@@ -38,7 +42,7 @@ export function Home(){
             />
 
             <PacienteList
-                id={2}
+                // id={2}
                 companyIcon="money-bill-wave"
                 companyName="Particular"
                 lastConsult="08/09/2021"
@@ -48,7 +52,7 @@ export function Home(){
             />
 
             <PacienteList
-                id={3}
+                // id={3}
                 companyIcon="hospital"
                 companyName="Plano Unimed"
                 lastConsult="28/07/2021"
@@ -58,7 +62,7 @@ export function Home(){
             />
 
             <PacienteList
-                id={4}
+                // id={4}
                 companyIcon="hospital"
                 companyName="Plano Unimed"
                 lastConsult="28/07/2021"

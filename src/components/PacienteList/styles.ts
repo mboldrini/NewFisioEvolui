@@ -1,9 +1,9 @@
 import styled, {css} from "styled-components/native";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { RFPercentage, RFValue } from "react-native-responsive-fontsize";
+import { RectButton } from "react-native-gesture-handler";
 
-
-export const Container = styled.TouchableOpacity`
+export const Container = styled(RectButton)`
     background-color: ${({theme}) => theme.colors.shape};
     margin-left: ${({theme}) => theme.margin.lateral}px;
     margin-right: ${({theme}) => theme.margin.lateral}px;

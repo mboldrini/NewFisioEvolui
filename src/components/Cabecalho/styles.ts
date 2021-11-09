@@ -1,6 +1,7 @@
 import styled, {css} from "styled-components/native";
 import { RFValue } from "react-native-responsive-fontsize";
 import { FontAwesome5 } from "@expo/vector-icons";
+import { RectButton } from "react-native-gesture-handler";
 
 export const Container = styled.View`
     flex-direction: row;
@@ -10,7 +11,7 @@ export const Container = styled.View`
     margin-top: ${RFValue(35)}px ;
 `;
 
-export const WrapIcon = styled.TouchableOpacity``;
+export const WrapIcon = styled(RectButton)``;
 
 export const Icone = styled(FontAwesome5)`
     color: ${({theme}) => theme.colors.shape};

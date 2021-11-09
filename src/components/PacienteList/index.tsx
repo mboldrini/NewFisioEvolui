@@ -1,5 +1,6 @@
 import React from 'react';
 import { Text } from 'react-native';
+import { RectButtonProps } from 'react-native-gesture-handler';
 
 import {
     Container,
@@ -13,8 +14,7 @@ import {
     Address
 } from './styles';
 
-interface Props{
-    id: number;
+interface Props extends RectButtonProps{
     companyIcon: string;
     companyName: string;
     lastConsult: string;
@@ -24,16 +24,16 @@ interface Props{
 }
 
 export function PacienteList({
-    id,
     companyIcon,
     companyName,
     lastConsult,
     personName,
     address,
-    onPress
+    onPress,
+    ...rest
 }: Props){
     return(
-        <Container onPress={onPress}>
+        <Container onPress={onPress} {...rest}>
             <Header>
                 <Company><Icone name={companyIcon}/> {companyName}</Company>
                 <LastDate><Icone name="calendar"/> {lastConsult}</LastDate>

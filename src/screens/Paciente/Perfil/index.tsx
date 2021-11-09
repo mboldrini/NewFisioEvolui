@@ -26,6 +26,12 @@ export function PacientePerfil(){
 
     const [data, setData] = useState(route.params);
 
+    
+    function handleNavigate(){
+        console.log("back?");
+        navigation.navigate('Home' as never);
+    }
+
     useEffect(()=>{
         console.log(`Recebeu via URL: ${route.params}`);
     }, []);
@@ -36,7 +42,7 @@ export function PacientePerfil(){
             
             <Cabecalho 
                 titulo="Perfil do Paciente"
-                onPress={()=>{  navigation.navigate("Home" as never )}}
+                onPress={handleNavigate}
             />
 
             <PacienteHeader 
@@ -139,7 +145,7 @@ export function PacientePerfil(){
 
                 <PacienteAgendamento 
                     diaSemana={1}
-                    dataMes="08/11"
+                    dataAgendamento="08/11/2021"
                     horario="09:00AM"
                     tipoAgendamento={0}
                     dataLimite="11/11/2023"
@@ -147,7 +153,7 @@ export function PacientePerfil(){
 
                 <PacienteAgendamento 
                     diaSemana={2}
-                    dataMes="09/11"
+                    dataAgendamento="09/11/2021"
                     horario="09:00AM"
                     tipoAgendamento={0}
                     dataLimite="11/11/2023"
@@ -155,14 +161,14 @@ export function PacientePerfil(){
 
                 <PacienteAgendamento 
                     diaSemana={3}
-                    dataMes="10/11"
+                    dataAgendamento="10/11/2021"
                     horario="11:00AM"
                     tipoAgendamento={1}
                 />
 
                 <PacienteAgendamento 
                     diaSemana={4}
-                    dataMes="11/11"
+                    dataAgendamento="11/11/2021"
                     horario="09:00AM"
                     tipoAgendamento={0}
                     dataLimite="11/11/2023"
@@ -170,7 +176,7 @@ export function PacientePerfil(){
 
                 <PacienteAgendamento 
                     diaSemana={5}
-                    dataMes="10/11"
+                    dataAgendamento="10/11/2021"
                     horario="13:00PM"
                     tipoAgendamento={2}
                 />

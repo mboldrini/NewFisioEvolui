@@ -1,50 +1,51 @@
 import React from 'react';
-import { Text } from 'react-native';
-import { Cabecalho } from '../Cabecalho';
+import { RectButtonProps } from 'react-native-gesture-handler';
 import variaveis from '../../global/variaveis/variaveis';
 import { 
     Container,
-    WraperData,
-    Icone,
+    WrapIcone,
     DiaSemana,
-    DiaMes,
-    WraperInfos,
+    Icone,
+    WrapHora,
     Horario,
-    Limite,
-    LimiteBold
+    Tipo,
+    WrapData,
+    Data,
+    DataLimite,
 } from './styles';
 
-interface TipoAgendamento{
-    icone: ['hospital', 'ice-cream', 'wordpress'];
-    tipo: ['Recorrente', 'Único', 'Avaliação']
-}
-
-interface Props{
+interface Props extends RectButtonProps{
     diaSemana: number;
-    dataMes: string;
+    dataAgendamento: string;
     horario: string;
     tipoAgendamento: number;
     dataLimite?: string;
+    onPress: () => void;
 }
 
 export function PacienteAgendamento({
     diaSemana,
-    dataMes,
+    dataAgendamento,
     horario,
     tipoAgendamento,
-    dataLimite
+    dataLimite,
+    onPress,
+    ...rest
 }: Props){
     return(
-        <Container>
-            <WraperData tipoAtendimento={tipoAgendamento}>
-                <DiaSemana tipoAtendimento={tipoAgendamento}>{ variaveis.datas.days[diaSemana] }</DiaSemana>
+        <Container tipoAtendimento={tipoAgendamento}  onPress={onPress} {...rest}>
+            <WrapIcone>
+                <DiaSemana>{ variaveis.datas.days[diaSemana] }</DiaSemana>
                 <Icone name={variaveis.tipoAgendamento[tipoAgendamento].icone} tipoAtendimento={tipoAgendamento}/>
-                <DiaMes tipoAtendimento={tipoAgendamento}>{dataMes}</DiaMes>
-            </WraperData>
-            <WraperInfos>
-                <Horario><LimiteBold>{horario}</LimiteBold> - { variaveis.tipoAgendamento[tipoAgendamento].nome }</Horario>
-                <Limite>Data Limite: { dataLimite ? <Limite>31/02/2033</Limite> : <Limite>Não</Limite> }</Limite>
-            </WraperInfos>
+            </WrapIcone>
+            <WrapHora>
+                <Horario>{horario}</Horario>
+                <Tipo>{ variaveis.tipoAgendamento[tipoAgendamento].nome }</Tipo>
+            </WrapHora>
+            <WrapData>
+                <Data>{dataAgendamento}</Data>
+                { dataLimite ? <DataLimite>{dataLimite}</DataLimite> : <DataLimite>-</DataLimite> }
+            </WrapData>
         </Container>
     )
 }
