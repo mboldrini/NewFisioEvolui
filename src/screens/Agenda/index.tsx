@@ -297,6 +297,7 @@ export function Agenda(){
                 { selectedDate != null && listaAgenda.length > 0 && listaAgenda.map((item, key) =>{
                     return(
                         <AgendaItem 
+                            key={item.id}
                             status={item.status} 
                             horarioAgendado={item.horario}
                             tipo={item.tipo}

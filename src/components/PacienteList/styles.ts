@@ -11,11 +11,11 @@ export const Container = styled(RectButton)`
     flex-direction:column;
     padding: 10px 15px;
     margin-bottom: ${({theme}) => theme.margin.bottom}px;
-    border-width: 1;
+    border-width: 1px;
     border-color: #f5f5f5;
-    border-bottom-width: 1;
+    border-bottom-width: 1px;
     shadow-color: #000;
-    shadow-offset: {width: 0};
+    shadow-offset: {width: 0px};
     shadow-offset: {height: 2px};
     shadow-opacity: 0.8;
     shadow-radius: 1px;

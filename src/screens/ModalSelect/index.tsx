@@ -31,7 +31,7 @@ export function ModalSelect({
     category,
     setCategory,
     closeSelectCategory,
-    optionsList
+    optionsList,
 }: Props){
 
     function handleCategorySelect(category: Category){

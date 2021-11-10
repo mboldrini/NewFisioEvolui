@@ -8,9 +8,9 @@ export const Container = styled(RectButton)`
     flex-direction: row;
     align-items: center;
     justify-content: flex-start;
-    margin-bottom: ${({theme}) => theme.margin.bottom};
+    margin-bottom: ${({theme}) => theme.margin.bottom}px;
     background-color: ${({theme}) => theme.colors.shape};
-    border-radius: ${({theme}) => theme.bordas.padrao};
+    border-radius: ${({theme}) => theme.bordas.padrao}px;
 `;
 
 export const AreaIcone = styled.View`

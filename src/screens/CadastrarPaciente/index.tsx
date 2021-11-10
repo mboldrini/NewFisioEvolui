@@ -21,28 +21,13 @@ import { ModalSelect } from '../ModalSelect';
 import { categories } from '../../global/variaveis/categories';
 
 interface FormData{
-    name: string;
+    nome: string,
     dataNascimento: number,
     cpf: number,
     celular: number,
     email: string,
-    tipo: number,
-    comorbidade: number,
-    tipoComorbidade: string,
     endereco: string
 }
-
-
-const schema = Yup.object().shape({
-    nome: Yup.string().required("Nome é obrigatório"),
-    dataNascimento: Yup.number().required("Data de Nascimento é obrigatório"),
-    cpf: Yup.string().required("CPF é Obrigatório").matches(/^[0-9]+$/, "Apenas números").test('len', 'CPF deve ter 11 dígitos', val => val.toString().length === 11),
-    celular: Yup.number().required("Celular é obrigatório"),
-    email: Yup.string().optional().email(),
-    endereco: Yup.string().required("Endereço é obrigatório"),
-    comorbidade: Yup.number().required(),
-});
-
 
 export function CadastrarPaciente(){
 
@@ -65,14 +50,12 @@ export function CadastrarPaciente(){
     }
 
     const {
-        control, 
-        handleSubmit, 
-        formState: {errors} 
-    } = useForm({
-        resolver: yupResolver(schema)
-    });
+        control,
+        handleSubmit,
+    } = useForm();
 
     function handleRegister(form: FormData){
+
         const data = {
             nome: form.nome,
             dataNascimento: form.dataNascimento,
@@ -81,17 +64,11 @@ export function CadastrarPaciente(){
             email: form.email,
             tipo: category.key,
             comorbidade: temComorbidade.key,
-            tipoComorbidade: form.tipoComorbidade,
             endereco: form.endereco
         }
+        console.log(data);
+        alert(JSON.stringify(data));
     }
-
-    useEffect(()=>{
-        console.log(errors);
-    }, [errors]);
-
-
-        
 
 
     useEffect(()=>{
@@ -114,7 +91,7 @@ export function CadastrarPaciente(){
                 <Titulo>Cadastrar Paciente</Titulo>
             </Header>
 
-            <Form>
+            <Form >
                 <Fields>
                     <InputForm 
                         name="nome"
@@ -122,7 +99,8 @@ export function CadastrarPaciente(){
                         placeholder="Nome"
                         autoCapitalize="words"
                         autoCorrect={false}
-                        error={errors.nome && errors.nome.message}
+                        error={null}
+                        // error={errors.nome && errors.nome.message}
                     />
 
                     <InputForm 
@@ -130,39 +108,44 @@ export function CadastrarPaciente(){
                         control={control}
                         placeholder="Data de Nascimento"
                         keyboardType="numeric"
-                        error={errors.dataNascimento && errors.dataNascimento.message}
+                        error={null}
+                        //error={errors.dataNascimento && errors.dataNascimento.message}
                     /> 
-
+  
                     <InputForm
                         name="cpf"
                         control={control}
                         placeholder="CPF"
                         keyboardType="numeric"
-                        error={errors.cpf && errors.cpf.message}
+                        //error={errors.cpf && errors.cpf.message}
+                        error={null}
+                        maxLength={11}
                     />
 
-                    <InputForm
+                     <InputForm
                         name="celular"
                         control={control}
                         placeholder="Celular"
-                        keyboardType="number-pad"
-                        error={errors.celular && errors.celular.message}
-                    />
+                        keyboardType="numeric"
+                        //error={errors.celular && errors.celular.message}
+                        error={null}
+                    /> 
 
                     <InputForm
                         name="email"
                         control={control}
                         placeholder="Email"
                         keyboardType="email-address"
-                        error={errors.email && errors.email.message}
-                    />
+                        //error={errors.email && errors.email.message}
+                        error={null}
+                    /> 
 
                     <Select 
                         title={category.name}
                         isActive={categoryNotDefault}
                         onPress={()=>{handleSelectCategoryModal(1)}}
                     />
-
+ 
                     <Select 
                         title={"Paciente com comorbidade: "+ temComorbidade.name}
                         isActive={comorbidadeDefault}
@@ -176,9 +159,10 @@ export function CadastrarPaciente(){
                             placeholder="Tipo da(s) Comorbidade(s)"
                             autoCapitalize="words"
                             autoCorrect={false}
-                            error={errors.tipoComorbidade && errors.tipoComorbidade.message}
+                            //error={errors.tipoComorbidade && errors.tipoComorbidade.message}
+                            error={null}
                         />
-                    }
+                    } 
 
                     <InputForm
                         name="endereco"
@@ -186,8 +170,9 @@ export function CadastrarPaciente(){
                         placeholder="Endereco"
                         autoCapitalize="words"
                         autoCorrect={false}
-                        error={errors.endereco && errors.endereco.message}
-                    /> 
+                        error={null}
+                        //error={errors.endereco && errors.endereco.message}
+                    />  
                 </Fields>
 
                 <Button 
@@ -198,12 +183,12 @@ export function CadastrarPaciente(){
             </Form>
 
             <Modal visible={categoryModalOpen}>
-                { tipoModalOpen == 1 &&
+               { tipoModalOpen == 1 &&
                     <ModalSelect 
                         titulo="Tipo de Paciente"
                         category={category}
                         setCategory={setCategory}
-                        closeSelectCategory={()=>{handleSelectCategoryModal(0)}}
+                        closeSelectCategory={()=>handleSelectCategoryModal(0)}
                         optionsList={categoriesList}
                     />
                 }
@@ -212,10 +197,10 @@ export function CadastrarPaciente(){
                         titulo="Paciente tem comorbidade"
                         category={temComorbidade}
                         setCategory={setTemComorbidade}
-                        closeSelectCategory={()=>{handleSelectCategoryModal(0)}}
+                        closeSelectCategory={()=>handleSelectCategoryModal(1)}
                         optionsList={temComorbidadeList}
                     />
-                }
+                } 
             </Modal>
 
         </Container>

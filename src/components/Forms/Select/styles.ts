@@ -34,7 +34,7 @@ export const Container = styled.TouchableOpacity.attrs({
 export const Category = styled.Text<Props>`
 
     color: ${({isActive}) => 
-        isActive ? theme.colors.text_dark : theme.colors.secondary 
+        isActive ? '#000000' : theme.colors.secondary 
     };
 
 `;
@@ -42,7 +42,7 @@ export const Category = styled.Text<Props>`
 export const Icon = styled(FontAwesome5)<Props>`
     font-size: ${RFValue(18)}px;
     color: ${({isActive}) => 
-        isActive ? theme.colors.shape : theme.colors.secondary_light
+        isActive ? '#000000' : theme.colors.secondary_light
     };
 `;
 

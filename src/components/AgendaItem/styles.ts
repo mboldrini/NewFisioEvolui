@@ -11,28 +11,9 @@ export const Container = styled.View<Props>`
     flex: 1;
     margin: 0 ${({theme}) => theme.margin.lateral}px;
     background-color: ${({theme}) => theme.colors.shape};
-    border-radius: ${({theme}) => theme.bordas.padrao};
+    border-radius: ${({theme}) => theme.bordas.padrao}px;
     padding: 10px 15px;
     margin-bottom: ${({theme}) => theme.margin.bottom}px;
-
-    border-top-width: 1;
-    border-right-width: 1;
-    border-bottom-width: 1;
-
-    border-top-color: #f5f5f5;
-    border-right-color: #f5f5f5;
-    border-bottom-color: #f5f5f5;
-
-    border-top-width: 1;
-    border-right-width: 1;
-    border-bottom-width: 1;
-    
-    shadow-color: #000;
-    shadow-offset: {width: 0};
-    shadow-offset: {height:2px};
-    shadow-opacity: 0.8;
-    shadow-radius: 1px;
-    elevation: 1;
 
     border-left-width: ${RFValue(5)}px;
 

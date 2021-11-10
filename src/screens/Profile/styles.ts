@@ -74,8 +74,8 @@ export const WrapperGroup = styled.View`
     background-color: ${({theme}) => theme.colors.secondary};
     padding: 0 ${RFValue(10)}px;
     padding-top: ${RFValue(10)}px;
-    margin-bottom: ${({theme}) => theme.margin.bottom};
-    border-radius: ${({theme}) => theme.bordas.padrao};
+    margin-bottom: ${({theme}) => theme.margin.bottom}px;
+    border-radius: ${({theme}) => theme.bordas.padrao}px;
 `;
 
 export const Body = styled.View`
