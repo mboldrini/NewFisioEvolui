@@ -2,7 +2,7 @@ import React, {useEffect, useState}from 'react';
 import { FlatList } from 'react-native';
 import {RefreshControl} from 'react-native';
 import {useNavigation } from '@react-navigation/native';
-import variaveis from '../../global/variaveis/variaveis';
+import {vars} from '../../global/variaveis/variaveis';
 import { 
     Container,
     Header,
@@ -28,9 +28,9 @@ export function Agenda(){
 
     const [refreshing, setRefresh] = useState(false);
 
-    const months = variaveis.datas.months;
-    const days = variaveis.datas.days;
-    const daysLong = variaveis.datas.daysLong;
+    const months = vars.months;
+    const days = vars.days;
+    const daysLong = vars.daysLong;
 
     const [atualDate, setAtualDate] = useState(null);
     const [dataHoje, setDataHoje] = useState(null);

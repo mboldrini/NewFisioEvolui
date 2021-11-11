@@ -14,5 +14,11 @@ export const Container = styled(TextInput)`
     border-color: ${({theme}) => theme.colors.input_background};
     border-bottom-width: 1px;
 `;
+export const Error = styled.Text`
+    padding-left: ${({theme}) => theme.margin.lateral}px;
+    font-family: ${({theme}) => theme.fonts.regular};
+    font-size: ${RFValue(14)}px;
+    color: #f00;
+`;
 
 

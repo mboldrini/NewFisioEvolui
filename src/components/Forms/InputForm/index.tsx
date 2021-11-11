@@ -1,37 +1,30 @@
-import React from "react";
-import { TextInputProps } from "react-native";
-import { Control, Controller } from 'react-hook-form';
-import { Input } from "../Input";
-import { Container, Error } from "./styles";
+import React from 'react';
+import {StyleSheet} from 'react-native';
 
-interface Props extends TextInputProps{
-    control: Control;
-    name: string;
-    error: string;
+import {
+    Container
+} from './styles';
+
+interface Props{
+    tipo: 'cel-phone' | 'cpf' | 'cnpj' | 'credit-card' | 'custom' | 'datetime' | 'money' | 'only-numbers' | 'zip-code';
+    value: any;
+    onChangeText: ()=> void;
+    placeholder: string;
+    opcoes?: any;
 }
 
-export function InputForm({
-    control,
-    name,
-    error,
-    ...rest
-}: Props){
+
+   
+export function InputMasked({tipo, value, onChangeText, placeholder, opcoes}: Props){
     return(
-        <Container>
-            {error && <Error>{error}</Error>}
-            <Controller 
-                 control={control}
-                render={({field: {onChange, value}}) => (
-                    <Input 
-                        onChangeText={onChange}
-                        value={value}
-                        {...rest}
-                    />
-                )}
-                name={name}
-            />
-        </Container>
+        <Container
+            type={tipo}
+            options={opcoes}
+            value={value}
+            onChangeText={onChangeText}
+            placeholder={placeholder}
+            placeholderTextColor="#4EADBE"
+        />
     );
 }
-
 

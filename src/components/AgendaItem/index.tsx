@@ -1,5 +1,5 @@
 import React from 'react';
-import variaveis from '../../global/variaveis/variaveis';
+import {vars} from '../../global/variaveis/variaveis';
 
 import {
     Container,
@@ -78,7 +78,7 @@ export function AgendaItem({status, horarioAgendado, tipo, iconeTipo, dataSeleci
                 </HoraWrapper>
                 <StatusWrapper status={status}>
                     { status !== 0 && 
-                        <Status status={status}>{ variaveis.status[status] }</Status> 
+                        <Status status={status}>{ vars.status[status] }</Status> 
                     }
                 </StatusWrapper>
            </Footer>

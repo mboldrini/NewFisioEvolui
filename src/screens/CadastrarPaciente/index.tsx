@@ -1,10 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Modal, TouchableWithoutFeedback, Keyboard } from 'react-native';
+import {InputMasked} from '../../components/Forms/InputForm';
 import { Input } from '../../components/Forms/Input';
-import { InputForm } from '../../components/Forms/InputForm';
-import { useForm } from 'react-hook-form';
-import * as Yup from 'yup';
-import { yupResolver }  from '@hookform/resolvers/yup';
 import { Button } from '../../components/Forms/Button/Index';
 import { 
     Container,
@@ -20,6 +17,8 @@ import { Select } from '../../components/Forms/Select';
 import { ModalSelect } from '../ModalSelect';
 import { categories } from '../../global/variaveis/categories';
 
+
+
 interface FormData{
     nome: string,
     dataNascimento: number,
@@ -33,6 +32,8 @@ export function CadastrarPaciente(){
 
     const [categoryModalOpen, setCategoryModalOpen] = useState(false);
     const [tipoModalOpen, setTipoModalOpen] = useState(0);
+
+    const [errors, setErrors] = useState(false);
 
     const [categoryNotDefault, setCategoryNotDefault] = useState(false);
     const [category, setCategory] = useState({key: -1,name: 'Tipo de Atendimento'});
@@ -49,26 +50,15 @@ export function CadastrarPaciente(){
         setCategoryModalOpen(!categoryModalOpen);
     }
 
-    const {
-        control,
-        handleSubmit,
-    } = useForm();
 
-    function handleRegister(form: FormData){
-
-        const data = {
-            nome: form.nome,
-            dataNascimento: form.dataNascimento,
-            cpf: form.cpf,
-            celular: form.celular,
-            email: form.email,
-            tipo: category.key,
-            comorbidade: temComorbidade.key,
-            endereco: form.endereco
-        }
-        console.log(data);
-        alert(JSON.stringify(data));
+    function handleRegister(){
     }
+
+
+    const [nome, setNome] = useState('');
+    const [dataNasc, setDataNasc] = useState('');
+    const [cpf, setCpf] = useState('');
+    const [celular, setCelular] = useState('');
 
 
     useEffect(()=>{
@@ -93,51 +83,52 @@ export function CadastrarPaciente(){
 
             <Form >
                 <Fields>
-                    <InputForm 
-                        name="nome"
-                        control={control}
-                        placeholder="Nome"
-                        autoCapitalize="words"
-                        autoCorrect={false}
-                        error={null}
-                        // error={errors.nome && errors.nome.message}
+
+                    <Input 
+                        placeholder="Nome do Paciente"
+                        value={nome}
+                        onChangeText={t=>setNome(t)}
                     />
 
-                    <InputForm 
-                        name="dataNascimento"
-                        control={control}
+                    <InputMasked
                         placeholder="Data de Nascimento"
-                        keyboardType="numeric"
-                        error={null}
-                        //error={errors.dataNascimento && errors.dataNascimento.message}
-                    /> 
-  
-                    <InputForm
-                        name="cpf"
-                        control={control}
-                        placeholder="CPF"
-                        keyboardType="numeric"
-                        //error={errors.cpf && errors.cpf.message}
-                        error={null}
-                        maxLength={11}
+                        value={dataNasc}
+                        onChangeText={t=>setDataNasc(t)}
+                        tipo="datetime"
+                        opcoes={{
+                            format: 'DD/MM/YYYY'
+                        }}
                     />
 
-                     <InputForm
-                        name="celular"
-                        control={control}
+
+                    <InputMasked
+                        placeholder="CPF"
+                        value={cpf}
+                        onChangeText={t=>setCpf235(t)}
+                        tipo="cpf"
+                    />
+
+                  
+                    <InputMasked
                         placeholder="Celular"
-                        keyboardType="numeric"
-                        //error={errors.celular && errors.celular.message}
-                        error={null}
-                    /> 
+                        value={celular}
+                        onChangeText={t=>setCelular(t)}
+                        tipo="cel-phone"
+                        options={{
+                            maskType: 'BRL',
+                            withDDD: true,
+                            dddMask: '(99) '
+                          }}
+                      
+                    />
+{/*
 
                     <InputForm
                         name="email"
                         control={control}
                         placeholder="Email"
                         keyboardType="email-address"
-                        //error={errors.email && errors.email.message}
-                        error={null}
+                        error={errors && errors.email}
                     /> 
 
                     <Select 
@@ -159,8 +150,7 @@ export function CadastrarPaciente(){
                             placeholder="Tipo da(s) Comorbidade(s)"
                             autoCapitalize="words"
                             autoCorrect={false}
-                            //error={errors.tipoComorbidade && errors.tipoComorbidade.message}
-                            error={null}
+                            error={errors && errors.tipoComorbidade}
                         />
                     } 
 
@@ -170,14 +160,13 @@ export function CadastrarPaciente(){
                         placeholder="Endereco"
                         autoCapitalize="words"
                         autoCorrect={false}
-                        error={null}
-                        //error={errors.endereco && errors.endereco.message}
-                    />  
+                        error={errors && errors.endereco}
+                    />   */}
                 </Fields>
 
                 <Button 
                     title="Cadastrar" 
-                    onPress={handleSubmit(handleRegister) }
+                    onPress={ handleRegister }
                 />
 
             </Form>
