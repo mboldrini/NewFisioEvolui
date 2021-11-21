@@ -7,7 +7,7 @@ import {
 } from './styles';
 
 interface Props{
-    isActive: boolean;
+    isActive: number;
     title: string;
     onPress: () => void;
 }

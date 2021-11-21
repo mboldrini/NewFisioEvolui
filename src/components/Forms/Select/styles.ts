@@ -4,7 +4,7 @@ import { RFValue } from 'react-native-responsive-fontsize';
 import theme from "../../../global/styles/theme";
 
 interface Props{
-    isActive: boolean;
+    isActive: number;
 }
 
 
@@ -13,19 +13,10 @@ export const Container = styled.TouchableOpacity.attrs({
 })`
     background-color: ${({theme}) => theme.colors.input_background};
     border-radius: ${({theme}) => theme.bordas.padrao}px;
-    height: ${RFValue(60)};
+    height: ${RFValue(60)}px;
     margin: 0 ${({theme}) => theme.padding.lateral}px;
     margin-bottom: ${({theme}) => theme.margin.input_bottom}px;
     padding: 0 20px;
-    border-width: 1px;
-    border-color: ${({theme}) => theme.colors.input_background};
-    border-bottom-width: 1px;
-    shadow-color: ${({theme}) => theme.colors.text_dark};
-    shadow-offset: {width:0};
-    shadow-offset: {height:2px};
-    shadow-opacity: 0.8;
-    shadow-radius: 5px;
-    elevation: 2;
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
@@ -33,17 +24,27 @@ export const Container = styled.TouchableOpacity.attrs({
 
 export const Category = styled.Text<Props>`
 
-    color: ${({isActive}) => 
-        isActive ? '#000000' : theme.colors.secondary 
-    };
+    ${({ isActive }) => isActive !== -1 && css `
+        color: #000000;
+    `};
+
+    ${({ isActive }) => isActive === -1 && css `
+        color: ${({theme}) => theme.colors.secondary};
+    `};
 
 `;
 
 export const Icon = styled(FontAwesome5)<Props>`
     font-size: ${RFValue(18)}px;
-    color: ${({isActive}) => 
-        isActive ? '#000000' : theme.colors.secondary_light
-    };
+    ${({ isActive }) => isActive !== -1 && css `
+        color: #000000;
+    `};
+
+    ${({ isActive }) => isActive === -1 && css `
+        color: #ffffff;
+    `};
+
+    
 `;
 
 

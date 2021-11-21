@@ -1,8 +1,10 @@
 import { RFValue } from 'react-native-responsive-fontsize';
 import styled from 'styled-components/native';
 import { TextInput } from 'react-native';
+import { TextInputMask } from 'react-native-masked-text';
 
-export const Container = styled(TextInput)`
+//export const Container = styled(TextInput)`
+export const Container = styled(TextInputMask)`
     background-color: ${({theme}) => theme.colors.input_background};
     border-radius: ${({theme}) => theme.bordas.padrao}px;
     height: ${RFValue(60)}px;

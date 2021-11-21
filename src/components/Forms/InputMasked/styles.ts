@@ -1,9 +1,11 @@
 import { RFValue } from 'react-native-responsive-fontsize';
 import styled from 'styled-components/native';
-import { TextInput } from 'react-native';
+import { TextInputMask } from 'react-native-masked-text';
 
-export const Container = styled(TextInput)`
-    background-color: ${({theme}) => theme.colors.input_background};
+export const Container = styled.View``;
+
+export const Input = styled(TextInputMask)`
+ background-color: ${({theme}) => theme.colors.input_background};
     border-radius: ${({theme}) => theme.bordas.padrao}px;
     height: ${RFValue(60)}px;
     margin: 0 ${({theme}) => theme.padding.lateral}px;
@@ -14,11 +16,12 @@ export const Container = styled(TextInput)`
     border-color: ${({theme}) => theme.colors.input_background};
     border-bottom-width: 1px;
 `;
-export const Error = styled.Text`
-    padding-left: ${({theme}) => theme.margin.lateral}px;
-    font-family: ${({theme}) => theme.fonts.regular};
-    font-size: ${RFValue(14)}px;
-    color: #f00;
-`;
 
+
+export const Error = styled.Text`
+    color: #f00;
+    font-size: ${RFValue(14)}px;
+    margin: 0 ${({theme}) => theme.margin.lateral}px;
+    font-family: ${({theme}) => theme.fonts.thin};
+`;
 
