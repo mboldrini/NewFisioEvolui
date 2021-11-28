@@ -1,29 +1,27 @@
 import React, { useEffect, useState } from 'react';
-import {Text} from 'react-native';
-import { vars } from '../../global/variaveis/variaveis';
-import { Button } from '../../components/Forms/Button/Index';
+import {Text, Alert} from 'react-native';
 import { 
     Container,
+    Body,
     Header,
     WrapIcone,
     Icone,
     WrapTitulo,
     Titulo,
     Wrap,
-    DataHoje,
     Calendario,
-
     TimeList,
     TimeItem,
     TimeItemText,
-
     Footer,
+    WrapBtn
 } from './styles';
-
-
+import { ButtonSimple } from '../../components/Forms/ButtonSimple/Index';
 
 interface Props{
     closeSelectCategory: () => void;
+    dataEscolhida: () => void;
+    horaEscolhida: () => void;
 }
 
 interface PropsDt{
@@ -32,73 +30,78 @@ interface PropsDt{
 
 export function ModalAgendamento({
     closeSelectCategory,
+    dataEscolhida,
+    horaEscolhida
 }: Props){
 
-    const [selectedDate, setSelectedDate] = useState(new Date());
-    const [selectedStringDate, setSelectedStringDate] = useState();
+    const [selectedDate, setSelectedDate] = useState();
+    const [selectedHour, setSelectedHour] = useState(null);
 
-    function dataPadrao(){
-        let now = new Date();
-        setSelectedDate(now);
-        setSelectedStringDate(JSON.stringify(now));
+    const [listHours, setListHours] = useState();
+
+
+    function defaultDate(){
+        let dateNow = new Date();
+        setSelectedDate(dateNow);
     }
-
     useEffect(()=>{
         if(!selectedDate){
-            dataPadrao();
+            defaultDate();
         }
     },[]);
 
+
     function atualizaDataEscolhida(dt: PropsDt){
         let dtEscolhida = JSON.stringify(dt);
-        setSelectedStringDate(dtEscolhida);
-
         let dtEscolhidaDate = new Date(JSON.parse(dtEscolhida));
         setSelectedDate(dtEscolhidaDate);
     }
 
-    const [selectedHour, setSelectedHour] = useState(null);
-    const [listHours, setListHours] = useState([
-        {
-            hora: '08:00',
-            disponivel: true
-        },
-        {
-            hora: '09:00',
-            disponivel: false
-        },
-        {
-            hora: '10:00',
-            disponivel: true
-        },
-        {
-            hora: '11:00',
-            disponivel: true
-        },
-        {
-            hora: '12:00',
-            disponivel: true
-        },
-        {
-            hora: '13:00',
-            disponivel: true
-        },
-        {
-            hora: '14:00',
-            disponivel: true
-        },
-      
-    ]);
+    function listaHorasDisponiveis(){
+        setListHours(null);
+
+        let horarios: { hora: string, disponivel: boolean }[] = [
+            { hora: '08:00', disponivel: true},
+            { hora: '09:00', disponivel: false },
+            { hora: '10:00', disponivel: true },
+            { hora: '11:00', disponivel: true },
+            { hora: '12:00', disponivel: true },
+            { hora: '13:00', disponivel: true },
+            { hora: '14:00', disponivel: true },
+        ];
+
+        setListHours(horarios);
+    }
 
     useEffect(()=>{
-        console.log(selectedHour);
-    }, [selectedHour]);
+        listaHorasDisponiveis();
+    },[selectedDate]);
+
+    
+    
+    function validaData(){
+        if(!selectedHour){
+            Alert.alert(
+                "Ops!",
+                "Você precisa escolher um horário",
+                [
+                    { text: "OK" }
+                ]
+            );
+            return;
+        }
+        horaEscolhida(selectedHour);
+        dataEscolhida(selectedDate);
+        closeSelectCategory();
+    }
+
 
     return(
         <Container>
+            <Body>
             <Header>
                 <WrapIcone>
-                    <Icone name="chevron-down"/>
+                    <Icone name="chevron-down" onPress={closeSelectCategory}/>
                 </WrapIcone>
                 <WrapTitulo>
                     <Titulo>Agendar Paciente</Titulo>
@@ -114,34 +117,45 @@ export function ModalAgendamento({
 
             </Wrap>
 
-            <Wrap>
-                <TimeList>
-                    {listHours.map((item, key)=>(
-                        <TimeItem 
-                            escolhido={item.hora == selectedHour}
-                            ativo={item.disponivel}
-                            key={key}
-                            onPress={()=>{
-                                if(item.disponivel == true){
-                                    setSelectedHour(item.hora)
-                                }  
-                            }}
-                        >
-                            <TimeItemText
+            { listHours &&
+                <Wrap>
+                    <TimeList>
+                        {listHours.map((item, key)=>(
+                            <TimeItem 
                                 escolhido={item.hora == selectedHour}
                                 ativo={item.disponivel}
+                                key={key}
+                                onPress={()=>{
+                                    if(item.disponivel == true){
+                                        setSelectedHour(item.hora)
+                                    }  
+                                }}
                             >
-                                {item.hora}
-                            </TimeItemText>
-                        </TimeItem>
-                    ))} 
-                </TimeList>
-            </Wrap>
-          
+                                <TimeItemText
+                                    escolhido={item.hora == selectedHour}
+                                    ativo={item.disponivel}
+                                >
+                                    {item.hora}
+                                </TimeItemText>
+                            </TimeItem>
+                        ))} 
+                    </TimeList>
+                </Wrap>
+            }
+            </Body>
             <Footer>
-                <Button 
-                    title="Selecionar" 
+                <WrapBtn>
+                    <ButtonSimple
+                        title="Selecionar" 
+                        onPress={()=>{validaData()}}
+                        type="default"
+                    />
+                </WrapBtn>
+
+                <ButtonSimple
+                    title="Cancelar" 
                     onPress={closeSelectCategory}
+                    type="cancel"
                 />
             </Footer>
         </Container>

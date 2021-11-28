@@ -19,7 +19,10 @@ interface PropsHoraEscolhida{
 export const Container = styled(GestureHandlerRootView)`
     flex: 1;
     background-color: ${({theme}) => theme.colors.primary};
+    justify-content: space-between;
 `;
+
+export const Body = styled.View``;
 
 export const Header = styled.View`
     flex-direction: row;
@@ -90,7 +93,7 @@ export const TimeItem = styled.TouchableOpacity<PropsHoraEscolhida>`
     height: ${RFValue(40)}px;
     justify-content: center;
     align-items: center;
-    border-radius: ${({theme}) => theme.bordas.padrao};
+    border-radius: ${({theme}) => theme.bordas.padrao}px;
     margin-right: ${RFValue(5)}px;
     color: #000000;
     
@@ -127,13 +130,13 @@ export const TimeItemText = styled.Text<PropsHoraEscolhida>`
 
 `;
 
-
-
-
 export const Footer = styled.View`
-    width: 100%;
-    padding: 24px;
+    margin: 0 ${({theme}) => theme.margin.lateral}px;
+    margin-bottom: ${RFValue(25)}px;
+`;
+
+export const WrapBtn = styled.View`
+    margin-bottom: ${({theme}) => theme.margin.bottom}px;
 `;
 
 
-        //color: ${({theme}) => theme.colors.shape};

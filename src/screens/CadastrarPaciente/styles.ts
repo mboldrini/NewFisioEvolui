@@ -25,7 +25,23 @@ export const Form = styled.View`
 `;
 
 export const Fields = styled.View`
-    margin-bottom: ${RFValue(30)}px;
+    margin-bottom: ${({theme}) => theme.margin.bottom}px;
+`;
+
+export const Wrap = styled.View`
+    background-color: ${({theme}) => theme.colors.secondary};
+    border-radius: ${({theme}) => theme.bordas.padrao}px;
+    margin: 0 ${({theme}) => theme.margin.lateral}px;
+`;
+
+export const WrapBtn = styled.View`
+    margin: 5px;
+`;
+
+export const WrapFooterCadastro = styled.View`
+    margin: 0 ${({theme}) => theme.margin.lateral}px;
+    margin-bottom: ${RFValue(20)}px;
+    margin-top: ${RFValue(20)}px;
 `;
 
 

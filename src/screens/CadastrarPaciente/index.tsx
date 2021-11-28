@@ -12,7 +12,9 @@ import {
     Titulo,
     Form,
     Fields,
-
+    Wrap,
+    WrapBtn,
+    WrapFooterCadastro
 } from './styles';
 
 import { Select } from '../../components/Forms/Select';
@@ -22,6 +24,7 @@ import { ModalSelect } from '../ModalSelect';
 import { categories } from '../../global/variaveis/categories';
 
 import { ModalAgendamento } from '../ModalAgendamento';
+import { ButtonSimple } from '../../components/Forms/ButtonSimple/Index';
 
 interface FormData{
     nome: string,
@@ -53,6 +56,10 @@ export function CadastrarPaciente(){
     const [categoriesList, setCategoriesList] = useState(categories);
     const [temComorbidade, setTemComorbidade] = useState({key: -1,name: ''});
     const [temComorbidadeList, setTemComorbidadeList] = useState([{key: 1, name: "Sim"}, {key: 0,name: "Não"}]);
+
+
+    const [selectedDate, setSelectedDate] = useState();
+    const [selectedHour, setSelectedHour] = useState();
  
    
     function handleSelectCategoryModal(tipoModal: number){
@@ -89,10 +96,12 @@ export function CadastrarPaciente(){
      
     }
 
-    useEffect(()=>{
-        handleSelectCategoryModal(3);
-    },[]);
 
+
+    useEffect(()=>{
+        console.log(`SelectedDate: ${selectedDate}`);
+        console.log(`SelectedHour: ${selectedHour}`);
+    },[selectedDate, selectedHour]);
 
 
     return(
@@ -193,19 +202,24 @@ export function CadastrarPaciente(){
                     
                 </Fields>
 
-                <Button 
-                    title="Agendar Paciente" 
-                    onPress={()=>handleSelectCategoryModal(3)}
-                />
-
-                <Button 
-                    title="Cadastrar" 
-                    onPress={handleSubmit((d) => handleRegister(d))}
-                />
-
-              
+                <Wrap>
+                    <WrapBtn>
+                        <ButtonSimple
+                            type="default"
+                            title="Agendar Horario" 
+                            onPress={()=>handleSelectCategoryModal(3)}
+                        />
+                    </WrapBtn>
+                </Wrap>
 
             </Form>
+
+            <WrapFooterCadastro>
+                <Button 
+                    title="Cadastrar Paciente" 
+                    onPress={handleSubmit((d) => handleRegister(d))}
+                />
+            </WrapFooterCadastro>
                 
 
             <Modal visible={categoryModalOpen}>
@@ -230,6 +244,8 @@ export function CadastrarPaciente(){
                 {tipoModalOpen == 3 &&
                     <ModalAgendamento
                         closeSelectCategory={()=>handleSelectCategoryModal(3)}
+                        dataEscolhida={setSelectedDate}
+                        horaEscolhida={setSelectedHour}
                     />
                 }
             </Modal>
