@@ -17,11 +17,11 @@ import {
 
 import { Select } from '../../components/Forms/Select';
 
-import { Text } from 'react-native-elements';
-
 // import da tela que vai virar modal
 import { ModalSelect } from '../ModalSelect';
 import { categories } from '../../global/variaveis/categories';
+
+import { ModalAgendamento } from '../ModalAgendamento';
 
 interface FormData{
     nome: string,
@@ -88,6 +88,10 @@ export function CadastrarPaciente(){
         alert(JSON.stringify(data));
      
     }
+
+    useEffect(()=>{
+        handleSelectCategoryModal(3);
+    },[]);
 
 
 
@@ -190,11 +194,19 @@ export function CadastrarPaciente(){
                 </Fields>
 
                 <Button 
+                    title="Agendar Paciente" 
+                    onPress={()=>handleSelectCategoryModal(3)}
+                />
+
+                <Button 
                     title="Cadastrar" 
                     onPress={handleSubmit((d) => handleRegister(d))}
                 />
 
+              
+
             </Form>
+                
 
             <Modal visible={categoryModalOpen}>
                { tipoModalOpen == 1 &&
@@ -215,6 +227,11 @@ export function CadastrarPaciente(){
                         optionsList={temComorbidadeList}
                     />
                 } 
+                {tipoModalOpen == 3 &&
+                    <ModalAgendamento
+                        closeSelectCategory={()=>handleSelectCategoryModal(3)}
+                    />
+                }
             </Modal>
 
         </Container>

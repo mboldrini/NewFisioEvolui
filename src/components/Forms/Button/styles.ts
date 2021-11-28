@@ -5,8 +5,8 @@ import { RectButton } from "react-native-gesture-handler";
 
 export const Container = styled(TouchableOpacity)`
     background-color: ${({theme}) => theme.colors.button_ok};
-    margin: 0 ${({theme}) => theme.margin.lateral}px;
     border-radius: ${({theme}) => theme.bordas.padrao}px;
+    margin: 0 ${({theme}) => theme.margin.lateral}px;
     align-items: center;
     justify-content: center;
     height: ${RFValue(60)}px;
