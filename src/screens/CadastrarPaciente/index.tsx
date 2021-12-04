@@ -97,13 +97,6 @@ export function CadastrarPaciente(){
     }
 
 
-
-    useEffect(()=>{
-        console.log(`SelectedDate: ${selectedDate}`);
-        console.log(`SelectedHour: ${selectedHour}`);
-    },[selectedDate, selectedHour]);
-
-
     return(
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <Container>

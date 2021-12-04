@@ -11,7 +11,7 @@ export const Container = styled(TouchableOpacity)<Props>`
     border-radius: ${({theme}) => theme.bordas.padrao}px;
     align-items: center;
     justify-content: center;
-    height: ${RFValue(60)}px;
+    height: ${RFValue(45)}px;
 
     ${({ type }) => type == 'default' && css `
         background-color: ${({theme}) => theme.colors.button_ok};

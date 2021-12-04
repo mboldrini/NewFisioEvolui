@@ -42,11 +42,7 @@ export const vars = {
     ],
     tipoAgendamento: [
         {
-            nome: 'Recorrente',
-            icone: 'redo'
-        },
-        {
-            nome: 'Não Recorrente',
+            nome: 'Comum',
             icone: 'calendar-day'
         },
         {

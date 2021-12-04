@@ -44,7 +44,6 @@ export function PacienteAgendamento({
             </WrapHora>
             <WrapData>
                 <Data>{dataAgendamento}</Data>
-                { dataLimite ? <DataLimite>{dataLimite}</DataLimite> : <DataLimite>-</DataLimite> }
             </WrapData>
         </Container>
     )

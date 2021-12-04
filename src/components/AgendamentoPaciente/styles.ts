@@ -23,13 +23,9 @@ export const Container = styled(RectButton)<Props>`
     `};
 
     ${({ tipoAtendimento }) => tipoAtendimento == 1 && css `
-    border-left-color: ${({theme}) => theme.colors.status_default};
+    border-left-color: ${({theme}) => theme.colors.status_avaliacao};
      `};
 
-     ${({ tipoAtendimento }) => tipoAtendimento == 2 && css `
-     border-left-color: ${({theme}) => theme.colors.status_avaliacao};
-         color: #ffffff;
-     `};
 
 `;
 
@@ -54,14 +50,9 @@ export const Icone = styled(FontAwesome5)<Props>`
     `};
 
     ${({ tipoAtendimento }) => tipoAtendimento == 1 && css `
-        color: ${({theme}) => theme.colors.status_default};
-    `};
-
-    ${({ tipoAtendimento }) => tipoAtendimento == 2 && css `
         color: ${({theme}) => theme.colors.status_avaliacao};
     `};
 
- 
 `;
 
 export const WrapHora = styled.View`

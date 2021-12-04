@@ -8,7 +8,7 @@ export const Container = styled(TouchableOpacity)`
     border-radius: ${({theme}) => theme.bordas.padrao}px;
     align-items: center;
     justify-content: center;
-    height: ${RFValue(60)}px;
+    height: ${RFValue(45)}px;
 `;
 
 export const Title = styled.Text`

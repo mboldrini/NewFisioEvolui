@@ -148,21 +148,16 @@ export function PacientePerfil(){
                     horario="09:00AM"
                     tipoAgendamento={0}
                     dataLimite="11/11/2023"
+                    onPress={()=>{console.log("1")}}
                 />
 
                 <PacienteAgendamento 
                     diaSemana={2}
                     dataAgendamento="09/11/2021"
                     horario="09:00AM"
-                    tipoAgendamento={0}
-                    dataLimite="11/11/2023"
-                />
-
-                <PacienteAgendamento 
-                    diaSemana={3}
-                    dataAgendamento="10/11/2021"
-                    horario="11:00AM"
                     tipoAgendamento={1}
+                    dataLimite="11/11/2023"
+                    onPress={()=>{console.log("2")}}
                 />
 
                 <PacienteAgendamento 
@@ -171,13 +166,15 @@ export function PacientePerfil(){
                     horario="09:00AM"
                     tipoAgendamento={0}
                     dataLimite="11/11/2023"
+                    onPress={()=>{console.log("3")}}
                 />
 
                 <PacienteAgendamento 
                     diaSemana={5}
                     dataAgendamento="10/11/2021"
                     horario="13:00PM"
-                    tipoAgendamento={2}
+                    tipoAgendamento={1}
+                    onPress={()=>{console.log("4")}}
                 />
             </WrapGroup>
 
