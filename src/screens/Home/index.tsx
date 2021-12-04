@@ -23,6 +23,43 @@ export function Home(){
     //     handleNavigate(1);
     // }, []);
 
+    let pacienteList = [
+        {
+            companyIcon:"hospital",
+            companyName:"Plano Amil 500FG",
+            lastConsult:"01/11/2021",
+            personName:"Armelio Silva Boetchi",
+            address:"Rua Jataí Nº 358"
+        },{
+            companyIcon:"hospital",
+            companyName:"Plano Amil 500FG",
+            lastConsult:"01/11/2021",
+            personName:"Armelio Silva Boetchi",
+            address:"Rua Jataí Nº 358",
+        },
+        {        
+            companyIcon:"money-bill-wave",
+            companyName:"Particular",
+            lastConsult:"08/09/2021",
+            personName:"John Cena",
+            address:"Avenida Carlos Lindemberg",
+        },
+        {
+            companyIcon:"hospital",
+            companyName:"Plano Unimed",
+            lastConsult:"28/07/2021",
+            personName:"Senor Abravanel",
+            address:"Rua Roberto Schwartzmann",
+        },
+        {
+            companyIcon:"hospital",
+            companyName:"Plano Unimed",
+            lastConsult:"28/07/2021",
+            personName:"Senor Abravanel",
+            address:"Rua Roberto Schwartzmann",
+        }
+    ];
+
     return(
         <Container>
 
@@ -31,47 +68,19 @@ export function Home(){
                 <Icon name="search"/>
             </Header>
 
-            <PacienteList
-                // id={1}
-                companyIcon="hospital"
-                companyName="Plano Amil 500FG"
-                lastConsult="01/11/2021"
-                personName="Armelio Silva Boetchi"
-                address="Rua Jataí Nº 358"
-                onPress={()=>{handleNavigate(1)}}
-            />
-
-            <PacienteList
-                // id={2}
-                companyIcon="money-bill-wave"
-                companyName="Particular"
-                lastConsult="08/09/2021"
-                personName="John Cena"
-                address="Avenida Carlos Lindemberg"
-                onPress={()=>{handleNavigate(2)}}
-            />
-
-            <PacienteList
-                // id={3}
-                companyIcon="hospital"
-                companyName="Plano Unimed"
-                lastConsult="28/07/2021"
-                personName="Senor Abravanel"
-                address="Rua Roberto Schwartzmann"
-                onPress={()=>{handleNavigate(3)}}
-            />
-
-            <PacienteList
-                // id={4}
-                companyIcon="hospital"
-                companyName="Plano Unimed"
-                lastConsult="28/07/2021"
-                personName="Senor Abravanel"
-                address="Rua Roberto Schwartzmann"
-                onPress={()=>{handleNavigate(4)}}
-            />
-          
-
+            
+            { pacienteList.length > 0 && pacienteList.map((item, key) =>{
+                return(
+                    <PacienteList
+                        companyIcon={item.companyIcon}
+                        companyName={item.companyName}
+                        lastConsult={item.lastConsult}
+                        personName={item.personName}
+                        address={item.address}
+                        onPress={()=>{console.log(key)}}
+                    />
+                )
+            }) }
 
         </Container>
     )
