@@ -279,21 +279,6 @@ export function Agenda(){
 
             </DateWrapper>
                     
-                {/* // <FlatList 
-                //     data={listaAgenda}
-                //     keyExtractor={(item) => item.id}
-                //     renderItem={({item}) =>(
-                //         <AgendaItem 
-                //             status={item.status} 
-                //             horarioAgendado={item.horario}
-                //             tipo={item.tipo}
-                //             iconeTipo={item.icone_tipo}
-                //             dataSelecionada={selectedDate}
-                //             dataHoje={atualDate}
-                //         />
-                //     )}
-                // /> */}
-
                 { selectedDate != null && listaAgenda.length > 0 && listaAgenda.map((item, key) =>{
                     return(
                         <AgendaItem 

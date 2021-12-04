@@ -19,9 +19,9 @@ export function Home(){
         });
     }
 
-    useEffect(()=>{
-        handleNavigate(1);
-    }, []);
+    // useEffect(()=>{
+    //     handleNavigate(1);
+    // }, []);
 
     return(
         <Container>

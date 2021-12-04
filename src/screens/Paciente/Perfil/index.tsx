@@ -17,6 +17,7 @@ import { Cabecalho } from '../../../components/Cabecalho';
 import { PacienteHeader } from '../../../components/PacienteHeader';
 import { BottomSpacer } from '../../../components/BottomSpacer';
 import { PacienteAgendamento } from '../../../components/AgendamentoPaciente'; 
+import { DataLimite } from '../../../components/AgendamentoPaciente/styles';
 
 export function PacientePerfil(){
 
@@ -35,6 +36,37 @@ export function PacientePerfil(){
         console.log(`Recebeu via URL: ${route.params}`);
     }, []);
 
+
+    let listaAgenda = [
+        {
+            diaSemana: 1,
+            dataAgendamento: "08/11/2021",
+            horario: "09:00AM",
+            tipoAgendamento:0,
+            DataLimite:"11/11/2023",
+        },
+        {
+            diaSemana: 2,
+            dataAgendamento: "09/11/2021",
+            horario: "09:00AM",
+            tipoAgendamento:1,
+            DataLimite:"11/11/2023",
+        },
+        {
+            diaSemana: 3,
+            dataAgendamento: "08/11/2021",
+            horario: "09:00AM",
+            tipoAgendamento:0,
+            DataLimite:"11/11/2023",
+        },
+        {
+            diaSemana: 5,
+            dataAgendamento: "08/11/2021",
+            horario: "09:00AM",
+            tipoAgendamento:0,
+            DataLimite:"11/11/2023",
+        }
+    ];
 
     return(
         <Container refreshControl={<RefreshControl refreshing={refreshing} onRefresh={()=>{}}/>}>
@@ -142,40 +174,18 @@ export function PacientePerfil(){
             <WrapGroup>
                 <Title>Agendamentos do Paciente</Title>
 
-                <PacienteAgendamento 
-                    diaSemana={1}
-                    dataAgendamento="08/11/2021"
-                    horario="09:00AM"
-                    tipoAgendamento={0}
-                    dataLimite="11/11/2023"
-                    onPress={()=>{console.log("1")}}
-                />
-
-                <PacienteAgendamento 
-                    diaSemana={2}
-                    dataAgendamento="09/11/2021"
-                    horario="09:00AM"
-                    tipoAgendamento={1}
-                    dataLimite="11/11/2023"
-                    onPress={()=>{console.log("2")}}
-                />
-
-                <PacienteAgendamento 
-                    diaSemana={4}
-                    dataAgendamento="11/11/2021"
-                    horario="09:00AM"
-                    tipoAgendamento={0}
-                    dataLimite="11/11/2023"
-                    onPress={()=>{console.log("3")}}
-                />
-
-                <PacienteAgendamento 
-                    diaSemana={5}
-                    dataAgendamento="10/11/2021"
-                    horario="13:00PM"
-                    tipoAgendamento={1}
-                    onPress={()=>{console.log("4")}}
-                />
+                { listaAgenda.length > 0 && listaAgenda.map((item, key) =>{
+                    return(
+                        <PacienteAgendamento 
+                            diaSemana={item.diaSemana}
+                            dataAgendamento={item.dataAgendamento}
+                            horario={item.horario}
+                            tipoAgendamento={item.tipoAgendamento}
+                            dataLimite={item.DataLimite}
+                            onPress={()=>{console.log(key)}}
+                        />
+                    )
+                }) }
             </WrapGroup>
 
             
