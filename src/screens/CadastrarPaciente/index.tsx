@@ -210,19 +210,20 @@ export function CadastrarPaciente(){
                 </Fields>
 
                 <Wrap>
-                    
-                    <WrapItensAgendados>
-                        { listaAgendamentos.length > 0 && listaAgendamentos.map((item, key) =>{
-                            return(
-                                <PacienteAgendamento 
-                                    dataAgendamento={item.dataAgendada}
-                                    horario={item.horaAgendada}
-                                    tipoAgendamento={0}
-                                    onPress={()=>{console.log(key)}}
-                                />
-                            )
-                        }) }
-                    </WrapItensAgendados>
+                    {listaAgendamentos.length > 0 && 
+                        <WrapItensAgendados>
+                            { listaAgendamentos.length > 0 && listaAgendamentos.map((item, key) =>{
+                                return(
+                                    <PacienteAgendamento 
+                                        dataAgendamento={item.dataAgendada}
+                                        horario={item.horaAgendada}
+                                        tipoAgendamento={0}
+                                        onPress={()=>{console.log(key)}}
+                                    />
+                                )
+                            }) }
+                        </WrapItensAgendados>
+                    }
 
                     <WrapBtn>
                         <ButtonSimple
@@ -231,7 +232,10 @@ export function CadastrarPaciente(){
                             onPress={()=>handleSelectCategoryModal(3)}
                         />
                     </WrapBtn>
+
                 </Wrap>
+
+              
 
             </Form>
 
