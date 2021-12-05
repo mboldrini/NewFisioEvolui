@@ -44,8 +44,6 @@ export function PacienteAgendamento({
         let [ano, mes, dia] = data.split("-");
             ano = ano.replace("\"", "");
         let newData = new Date(ano, mes-1, dia);
-        console.log("ff");
-        console.log(newData);
         return(newData.getDay());
     }
 

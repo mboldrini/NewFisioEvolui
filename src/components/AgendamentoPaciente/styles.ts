@@ -10,7 +10,7 @@ interface Props{
 export const Container = styled(RectButton)<Props>`
     flex-direction: row;
     background-color: ${({theme}) => theme.colors.shape};
-    border-radius: ${({theme}) => theme.bordas.padrao};
+    border-radius: ${({theme}) => theme.bordas.padrao}px;
     align-items: center;
     justify-content: space-between;
     margin-bottom: ${({theme}) => theme.margin.bottom}px;

@@ -35,8 +35,8 @@ export const Wrap = styled.View`
 `;
 
 export const WrapItensAgendados = styled.View`
-    margin: 0 ${RFValue(10)}px;
-    margin-top: ${RFValue(10)}px
+    margin: 0 ${RFValue(5)}px;
+    margin-top: ${RFValue(10)}px;
 `;
 
 export const WrapBtn = styled.View`

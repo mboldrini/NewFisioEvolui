@@ -34,7 +34,7 @@ export const UserInfo = styled.View`
 export const Photo = styled.Image`
     width: ${RFValue(48)}px;
     height: ${RFValue(48)}px;
-    border-radius: ${({theme}) => theme.bordas.padrao};
+    border-radius: ${({theme}) => theme.bordas.padrao}px;
 `;
 
 export const User = styled.View`

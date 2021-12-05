@@ -24,13 +24,21 @@ export const Container = styled(GestureHandlerRootView)`
 
 export const Body = styled.View``;
 
-export const Header = styled.View`
+export const Header = styled.View<Props>`
     flex-direction: row;
     align-items: center;
-    justify-content: flex-start;
+
     margin-top: ${RFValue(35)}px ;
     margin-bottom: ${RFValue(10)}px;
     padding: 0 ${({theme}) => theme.padding.lateral}px;
+
+    ${({ isActive }) => isActive == true && css `
+        justify-content: space-between;
+    `}; 
+
+    ${({ isActive }) => isActive == false && css `
+    `}; 
+
 `;
 
 export const WrapIcone = styled(RectButton)``;
@@ -41,9 +49,9 @@ export const Icone = styled(FontAwesome5)`
 `;
 
 export const WrapTitulo = styled.View`
-    width: 100%;
     align-items: center;
     justify-content: center;
+    flex: 1;
 `;
 
 export const Titulo = styled.Text`

@@ -22,9 +22,11 @@ interface Props{
     closeSelectCategory: () => void;
     setAgendamento: () => void;
     dataEscolhida?: PropsDt;
+    setAgendamentoExcluir?: () => void;
 }
 
 interface PropsDt{
+    id: number;
     dataEscolhida: Date;
     horaEscolhida: string;
     tipoAgendamento: number;
@@ -33,7 +35,8 @@ interface PropsDt{
 export function ModalAgendamento({
     closeSelectCategory,
     dataEscolhida,
-    setAgendamento
+    setAgendamento,
+    setAgendamentoExcluir,
 }: Props){
 
     const [selectedDate, setSelectedDate] = useState();
@@ -55,6 +58,13 @@ export function ModalAgendamento({
         } 
     },[]);
 
+    function temDtPrevia(){
+        if(dataEscolhida){
+            return true;
+        }else{
+            return false;
+        }
+    }
 
     function handleData(dt: Date){
         let dtEscolhida = JSON.stringify(dt);
@@ -113,17 +123,27 @@ export function ModalAgendamento({
         closeSelectCategory();
     }
 
+    function excluiAgendamento(id: number){
+        setAgendamentoExcluir(id);
+        closeSelectCategory
+    }
+
 
     return(
         <Container>
             <Body>
-            <Header>
+            <Header isActive={ temDtPrevia() }>
                 <WrapIcone>
                     <Icone name="chevron-down" onPress={closeSelectCategory}/>
                 </WrapIcone>
                 <WrapTitulo>
                     <Titulo>Agendar Paciente</Titulo>
                 </WrapTitulo>
+                {   dataEscolhida && 
+                    <WrapIcone>
+                        <Icone name="trash-alt" onPress={()=>{ excluiAgendamento(dataEscolhida.id) } }/>
+                    </WrapIcone>
+                }
             </Header>
 
             <Wrap>

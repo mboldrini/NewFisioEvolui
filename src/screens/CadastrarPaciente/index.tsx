@@ -61,11 +61,16 @@ export function CadastrarPaciente(){
 
     const [listaAgendamentos, setListaAgendamentos] = useState([]);
     const [agendamento, setAgendamento] = useState(null);
+    const [agendamentoLoading, setAgendamentoLoading] = useState(null);
+    const [agendamentoExcluir, setAgendamentoExcluir] = useState(null);
    
 
     function handleSelectCategoryModal(tipoModal: number){
         setTipoModalOpen(tipoModal);
         setCategoryModalOpen(!categoryModalOpen);
+        if(!categoryModalOpen == false){
+            setAgendamentoLoading(null);
+        }
     }
 
 
@@ -97,7 +102,16 @@ export function CadastrarPaciente(){
      
     }
 
-   let nwDt = new Date(2021,11,2);
+    function handleAgendamento(id: number){
+        let infosAgendamento = {
+            id: id,
+            dataEscolhida: listaAgendamentos[id].dataAgendada,
+            horaEscolhida: listaAgendamentos[id].horaAgendada,
+            tipoAgendamento: listaAgendamentos[id].tipoAgendamento
+        }
+        setAgendamentoLoading(infosAgendamento);
+        handleSelectCategoryModal(3);
+    }
 
     useEffect(()=>{
         if(agendamento){
@@ -106,9 +120,24 @@ export function CadastrarPaciente(){
             lista.push(agendamento);
             setListaAgendamentos(lista);
             setAgendamento(null);
+            setAgendamentoLoading(null);
 
         }
     }, [agendamento]);
+
+    useEffect(()=>{
+        if(agendamentoExcluir != null){
+            let lista = listaAgendamentos;
+            delete lista[agendamentoExcluir];
+            setAgendamentoExcluir(null);
+            handleSelectCategoryModal(3);
+        }
+    },[agendamentoExcluir]);
+
+    useEffect(()=>{
+        console.log("aAa");
+        console.log(listaAgendamentos);
+    }, [listaAgendamentos]);
 
 
     return(
@@ -210,15 +239,16 @@ export function CadastrarPaciente(){
                 </Fields>
 
                 <Wrap>
-                    {listaAgendamentos.length > 0 && 
+                    { listaAgendamentos && listaAgendamentos.length > 0 && 
                         <WrapItensAgendados>
                             { listaAgendamentos.length > 0 && listaAgendamentos.map((item, key) =>{
                                 return(
                                     <PacienteAgendamento 
+                                        key={key}
                                         dataAgendamento={item.dataAgendada}
                                         horario={item.horaAgendada}
                                         tipoAgendamento={0}
-                                        onPress={()=>{console.log(key)}}
+                                        onPress={()=>{handleAgendamento(key)}}
                                     />
                                 )
                             }) }
@@ -234,8 +264,6 @@ export function CadastrarPaciente(){
                     </WrapBtn>
 
                 </Wrap>
-
-              
 
             </Form>
 
@@ -270,11 +298,8 @@ export function CadastrarPaciente(){
                     <ModalAgendamento
                         closeSelectCategory={()=>handleSelectCategoryModal(3)}
                         setAgendamento={setAgendamento}
-                        // dataEscolhida={{
-                        //     dataEscolhida: nwDt,
-                        //     horaEscolhida: "11:00",
-                        //     tipoAgendamento: 1
-                        // }}
+                        dataEscolhida={agendamentoLoading}
+                        setAgendamentoExcluir={setAgendamentoExcluir}
                     />
                 }
             </Modal>
