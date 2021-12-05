@@ -13,6 +13,7 @@ import {
     Form,
     Fields,
     Wrap,
+    WrapItensAgendados,
     WrapBtn,
     WrapFooterCadastro
 } from './styles';
@@ -25,6 +26,7 @@ import { categories } from '../../global/variaveis/categories';
 
 import { ModalAgendamento } from '../ModalAgendamento';
 import { ButtonSimple } from '../../components/Forms/ButtonSimple/Index';
+import { PacienteAgendamento } from '../../components/AgendamentoPaciente';
 
 interface FormData{
     nome: string,
@@ -57,11 +59,10 @@ export function CadastrarPaciente(){
     const [temComorbidade, setTemComorbidade] = useState({key: -1,name: ''});
     const [temComorbidadeList, setTemComorbidadeList] = useState([{key: 1, name: "Sim"}, {key: 0,name: "Não"}]);
 
-
-    const [selectedDate, setSelectedDate] = useState();
-    const [selectedHour, setSelectedHour] = useState();
- 
+    const [listaAgendamentos, setListaAgendamentos] = useState([]);
+    const [agendamento, setAgendamento] = useState(null);
    
+
     function handleSelectCategoryModal(tipoModal: number){
         setTipoModalOpen(tipoModal);
         setCategoryModalOpen(!categoryModalOpen);
@@ -95,6 +96,19 @@ export function CadastrarPaciente(){
         alert(JSON.stringify(data));
      
     }
+
+   let nwDt = new Date(2021,11,2);
+
+    useEffect(()=>{
+        if(agendamento){
+
+            let lista = listaAgendamentos;
+            lista.push(agendamento);
+            setListaAgendamentos(lista);
+            setAgendamento(null);
+
+        }
+    }, [agendamento]);
 
 
     return(
@@ -196,6 +210,20 @@ export function CadastrarPaciente(){
                 </Fields>
 
                 <Wrap>
+                    
+                    <WrapItensAgendados>
+                        { listaAgendamentos.length > 0 && listaAgendamentos.map((item, key) =>{
+                            return(
+                                <PacienteAgendamento 
+                                    dataAgendamento={item.dataAgendada}
+                                    horario={item.horaAgendada}
+                                    tipoAgendamento={0}
+                                    onPress={()=>{console.log(key)}}
+                                />
+                            )
+                        }) }
+                    </WrapItensAgendados>
+
                     <WrapBtn>
                         <ButtonSimple
                             type="default"
@@ -237,8 +265,12 @@ export function CadastrarPaciente(){
                 {tipoModalOpen == 3 &&
                     <ModalAgendamento
                         closeSelectCategory={()=>handleSelectCategoryModal(3)}
-                        dataEscolhida={setSelectedDate}
-                        horaEscolhida={setSelectedHour}
+                        setAgendamento={setAgendamento}
+                        // dataEscolhida={{
+                        //     dataEscolhida: nwDt,
+                        //     horaEscolhida: "11:00",
+                        //     tipoAgendamento: 1
+                        // }}
                     />
                 }
             </Modal>

@@ -11,31 +11,48 @@ import {
     Tipo,
     WrapData,
     Data,
-    DataLimite,
 } from './styles';
 
 interface Props extends RectButtonProps{
-    diaSemana: number;
-    dataAgendamento: string;
+    dataAgendamento: Date;
     horario: string;
     tipoAgendamento: number;
-    dataLimite?: string;
     onPress: () => void;
 }
 
 export function PacienteAgendamento({
-    diaSemana,
     dataAgendamento,
     horario,
     tipoAgendamento,
-    dataLimite,
     onPress,
     ...rest
 }: Props){
+
+    function validaData(dataAgendamento: Date){
+
+        let dtString = JSON.stringify(dataAgendamento);
+        let [data, hora] = dtString.split("T");
+        let [ano, mes, dia] = data.split("-");
+            ano = ano.replace("\"", "");
+
+        return( dia+"/"+ mes +"/"+ ano );
+    }
+
+    function validaDiaSemana(dataAgendamento: Date){
+        let dtString = JSON.stringify(dataAgendamento);
+        let [data, hora] = dtString.split("T");
+        let [ano, mes, dia] = data.split("-");
+            ano = ano.replace("\"", "");
+        let newData = new Date(ano, mes-1, dia);
+        console.log("ff");
+        console.log(newData);
+        return(newData.getDay());
+    }
+
     return(
         <Container tipoAtendimento={tipoAgendamento}  onPress={onPress} {...rest}>
             <WrapIcone>
-                <DiaSemana>{ vars.days[diaSemana] }</DiaSemana>
+                <DiaSemana>{ vars.days[validaDiaSemana(dataAgendamento)] }</DiaSemana>
                 <Icone name={vars.tipoAgendamento[tipoAgendamento].icone} tipoAtendimento={tipoAgendamento}/>
             </WrapIcone>
             <WrapHora>
@@ -43,7 +60,7 @@ export function PacienteAgendamento({
                 <Tipo>{ vars.tipoAgendamento[tipoAgendamento].nome }</Tipo>
             </WrapHora>
             <WrapData>
-                <Data>{dataAgendamento}</Data>
+                <Data>{ validaData(dataAgendamento) }</Data>
             </WrapData>
         </Container>
     )

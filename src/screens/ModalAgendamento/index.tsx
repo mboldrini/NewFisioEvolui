@@ -20,18 +20,20 @@ import { ButtonSimple } from '../../components/Forms/ButtonSimple/Index';
 
 interface Props{
     closeSelectCategory: () => void;
-    dataEscolhida: () => void;
-    horaEscolhida: () => void;
+    setAgendamento: () => void;
+    dataEscolhida?: PropsDt;
 }
 
 interface PropsDt{
-    dt: Date;
+    dataEscolhida: Date;
+    horaEscolhida: string;
+    tipoAgendamento: number;
 }
 
 export function ModalAgendamento({
     closeSelectCategory,
     dataEscolhida,
-    horaEscolhida
+    setAgendamento
 }: Props){
 
     const [selectedDate, setSelectedDate] = useState();
@@ -39,19 +41,22 @@ export function ModalAgendamento({
 
     const [listHours, setListHours] = useState();
 
-
-    function defaultDate(){
-        let dateNow = new Date();
-        setSelectedDate(dateNow);
-    }
     useEffect(()=>{
-        if(!selectedDate){
-            defaultDate();
+        if(!selectedDate && !dataEscolhida){
+            let dateNow = new Date();
+            setSelectedDate(dateNow);
         }
+        if(dataEscolhida){
+            setSelectedDate(null);
+            let dtEscolhida = JSON.stringify(dataEscolhida.dataEscolhida);
+            let dtEscolhidaDate = new Date(JSON.parse(dtEscolhida));
+            setSelectedDate(dtEscolhidaDate);
+            setSelectedHour(dataEscolhida.horaEscolhida);
+        } 
     },[]);
 
 
-    function atualizaDataEscolhida(dt: PropsDt){
+    function handleData(dt: Date){
         let dtEscolhida = JSON.stringify(dt);
         let dtEscolhidaDate = new Date(JSON.parse(dtEscolhida));
         setSelectedDate(dtEscolhidaDate);
@@ -76,8 +81,6 @@ export function ModalAgendamento({
     useEffect(()=>{
         listaHorasDisponiveis();
     },[selectedDate]);
-
-    
     
     function validaData(){
         if(!selectedHour){
@@ -90,8 +93,23 @@ export function ModalAgendamento({
             );
             return;
         }
-        horaEscolhida(selectedHour);
-        dataEscolhida(selectedDate);
+        if(!selectedDate){
+            Alert.alert(
+                "Ops!",
+                "Você precisa escolher uma data",
+                [
+                    { text: "OK" }
+                ]
+            );
+            return;
+        }
+
+        let novoAgendamento = {
+            dataAgendada: selectedDate,
+            horaAgendada: selectedHour,
+            tipoAgendamento: 0
+        }
+        setAgendamento( novoAgendamento );
         closeSelectCategory();
     }
 
@@ -109,12 +127,10 @@ export function ModalAgendamento({
             </Header>
 
             <Wrap>
-
                 <Calendario
-                    onDateChange={e => atualizaDataEscolhida(e)}
+                    onDateChange={e => handleData(e)}
                     selectedStartDate={selectedDate}
                 />
-
             </Wrap>
 
             { listHours &&
@@ -146,7 +162,7 @@ export function ModalAgendamento({
             <Footer>
                 <WrapBtn>
                     <ButtonSimple
-                        title="Selecionar" 
+                        title="Agendar Horario" 
                         onPress={()=>{validaData()}}
                         type="default"
                     />

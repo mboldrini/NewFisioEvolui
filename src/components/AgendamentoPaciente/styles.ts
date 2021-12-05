@@ -81,12 +81,6 @@ export const Data = styled.Text`
     font-size: ${RFValue(14)}px;
 `;
 
-export const DataLimite = styled.Text`
-    font-family: ${({theme}) => theme.fonts.thin};
-    font-size: ${RFValue(12)}px;
-`;
-
-
 
 
 
