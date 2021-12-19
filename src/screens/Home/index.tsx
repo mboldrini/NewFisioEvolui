@@ -77,7 +77,7 @@ export function Home(){
                         lastConsult={item.lastConsult}
                         personName={item.personName}
                         address={item.address}
-                        onPress={()=>{console.log(key)}}
+                        onPress={()=>{handleNavigate(key)}}
                     />
                 )
             }) }

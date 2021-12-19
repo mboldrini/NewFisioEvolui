@@ -41,9 +41,10 @@ export function PacienteAgendamento({
     function validaDiaSemana(dataAgendamento: Date){
         let dtString = JSON.stringify(dataAgendamento);
         let [data, hora] = dtString.split("T");
-        let [ano, mes, dia] = data.split("-");
-            ano = ano.replace("\"", "");
-        let newData = new Date(ano, mes-1, dia);
+        data = data.replace("\"", "").replace("\"", "");
+        let [dia, mes, ano] = data.split("/");
+        let newData = new Date(parseInt(ano), parseInt(mes)-1, parseInt(dia) ); 
+        let diaSemana = newData.getDay();
         return(newData.getDay());
     }
 
@@ -58,7 +59,7 @@ export function PacienteAgendamento({
                 <Tipo>{ vars.tipoAgendamento[tipoAgendamento].nome }</Tipo>
             </WrapHora>
             <WrapData>
-                <Data>{ validaData(dataAgendamento) }</Data>
+                <Data>{ dataAgendamento }</Data>
             </WrapData>
         </Container>
     )
