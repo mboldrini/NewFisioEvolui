@@ -1,7 +1,9 @@
 import React from 'react';
 import AppLoading from 'expo-app-loading';
-import {ThemeProvider} from 'styled-components';
-import {NavigationContainer} from '@react-navigation/native';
+import { ThemeProvider } from 'styled-components';
+import { NavigationContainer } from '@react-navigation/native';
+
+import { AuthProvider, useAuth } from './src/hooks/auth';
 
 import {
   useFonts,
@@ -30,7 +32,9 @@ export default () => {
   return (
     <ThemeProvider theme={theme}>
       <NavigationContainer>
-        <MainStack/>
+        <AuthProvider>
+          <MainStack/>
+        </AuthProvider> 
       </NavigationContainer>
     </ThemeProvider>
   );

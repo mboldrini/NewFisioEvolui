@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useContext } from 'react';
 import { Text } from 'react-native';
 import { PacienteList } from '../../components/PacienteList';
 import {useNavigation} from '@react-navigation/native';
@@ -9,6 +9,8 @@ import {
     Icon
 } from './styles';
 
+import { useAuth } from '../../hooks/auth';
+
 export function Home(){
 
     const navigation = useNavigation();
@@ -18,10 +20,6 @@ export function Home(){
             id: 1
         });
     }
-
-    // useEffect(()=>{
-    //     handleNavigate(1);
-    // }, []);
 
     let pacienteList = [
         {
@@ -60,6 +58,15 @@ export function Home(){
         }
     ];
 
+    const { user } = useAuth();
+    
+    
+    useEffect(()=>{
+        console.log( user );
+    },[]);
+
+
+
     return(
         <Container>
 
@@ -72,6 +79,7 @@ export function Home(){
             { pacienteList.length > 0 && pacienteList.map((item, key) =>{
                 return(
                     <PacienteList
+                        key={key}
                         companyIcon={item.companyIcon}
                         companyName={item.companyName}
                         lastConsult={item.lastConsult}
