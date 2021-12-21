@@ -72,7 +72,7 @@ export const HighlightCards = styled.ScrollView.attrs({
 
 export const WrapperGroup = styled.View`
     background-color: ${({theme}) => theme.colors.secondary};
-    padding: 0 ${RFValue(10)}px;
+    padding: 0 ${({theme}) => theme.margin.lateral_half}px
     padding-top: ${RFValue(10)}px;
     margin-bottom: ${({theme}) => theme.margin.bottom}px;
     border-radius: ${({theme}) => theme.bordas.padrao}px;

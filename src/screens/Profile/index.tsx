@@ -39,14 +39,17 @@ export function Profile(){
                     <BotoesPerfil 
                         icone="user-edit"
                         titulo="Editar Perfil"
+                        onPress={()=>(console.log("aAa"))}
                     />
                     <BotoesPerfil 
                         icone="user-cog"
                         titulo="Configurações de Atendimento"
+                        onPress={()=>(console.log("aAa"))}
                     />
                         <BotoesPerfil 
                         icone="file-medical-alt"
                         titulo="Tipos de Atendimento"
+                        onPress={()=>(console.log("aAa"))}
                     />
                 </WrapperGroup>
 
@@ -54,10 +57,12 @@ export function Profile(){
                     <BotoesPerfil 
                         icone="search-dollar"
                         titulo="Informações Financeiras"
+                        onPress={()=>(console.log("aAa"))}
                     />
                     <BotoesPerfil 
                         icone="chart-line"
                         titulo="Estatísticas de Atendimentos"
+                        onPress={()=>(console.log("aAa"))}
                     />
                 </WrapperGroup>
                 
@@ -65,10 +70,12 @@ export function Profile(){
                     <BotoesPerfil 
                         icone="wrench"
                         titulo="Configurações do Aplicativo"
+                        onPress={()=>(console.log("aAa"))}
                     />
                     <BotoesPerfil 
                         icone="question-circle"
                         titulo="Sobre o app"
+                        onPress={()=>(console.log("aAa"))}
                     />
                 </WrapperGroup>
 
