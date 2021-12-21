@@ -40,28 +40,28 @@ export function PacientePerfil(){
     let listaAgenda = [
         {
             diaSemana: 1,
-            dataAgendamento: "08/11/2021",
+            dataAgendamento: new Date(2021,10,8),//"08/11/2021",
             horario: "09:00AM",
             tipoAgendamento:0,
             DataLimite:"11/11/2023",
         },
         {
             diaSemana: 2,
-            dataAgendamento: "09/11/2021",
+            dataAgendamento: new Date(2021,10,9),//"09/11/2021",
             horario: "09:00AM",
             tipoAgendamento:1,
             DataLimite:"11/11/2023",
         },
         {
             diaSemana: 3,
-            dataAgendamento: "08/11/2021",
+            dataAgendamento: new Date(2021,10,8),// "08/11/2021",
             horario: "09:00AM",
             tipoAgendamento:0,
             DataLimite:"11/11/2023",
         },
         {
             diaSemana: 5,
-            dataAgendamento: "08/11/2021",
+            dataAgendamento: new Date(2021,10,8),//"08/11/2021",
             horario: "09:00AM",
             tipoAgendamento:0,
             DataLimite:"11/11/2023",

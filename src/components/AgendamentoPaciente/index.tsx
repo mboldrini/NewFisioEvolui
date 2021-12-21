@@ -1,5 +1,6 @@
 import React from 'react';
 import { RectButtonProps } from 'react-native-gesture-handler';
+import { date } from 'yup';
 import {vars} from '../../global/variaveis/variaveis';
 import { 
     Container,
@@ -39,13 +40,14 @@ export function PacienteAgendamento({
     }
 
     function validaDiaSemana(dataAgendamento: Date){
-        let dtString = JSON.stringify(dataAgendamento);
-        let [data, hora] = dtString.split("T");
-        data = data.replace("\"", "").replace("\"", "");
-        let [dia, mes, ano] = data.split("/");
-        let newData = new Date(parseInt(ano), parseInt(mes)-1, parseInt(dia) ); 
-        let diaSemana = newData.getDay();
-        return(newData.getDay());
+        // let dtString = JSON.stringify(dataAgendamento);
+        // let [data, hora] = dtString.split("T");
+        // data = data.replace("\"", "").replace("\"", "");
+        // let [dia, mes, ano] = data.split("/");
+        // let newData = new Date(parseInt(ano), parseInt(mes)-1, parseInt(dia) ); 
+        // let diaSemana = newData.getDay();
+        let dt = new Date(dataAgendamento);
+        return(dt.getDay());
     }
 
     return(
@@ -59,7 +61,7 @@ export function PacienteAgendamento({
                 <Tipo>{ vars.tipoAgendamento[tipoAgendamento].nome }</Tipo>
             </WrapHora>
             <WrapData>
-                <Data>{ dataAgendamento }</Data>
+                <Data>{ validaData( dataAgendamento ) }</Data>
             </WrapData>
         </Container>
     )
