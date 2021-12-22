@@ -12,7 +12,6 @@ import {
 } from '@expo-google-fonts/poppins';
 
 import theme from './src/global/styles/theme';
-
 import MainStack from './src/stacks/Mainstack';
 
 export default () => {
@@ -30,7 +29,7 @@ export default () => {
   return (
     <ThemeProvider theme={theme}>
       <NavigationContainer>
-          <MainStack/>
+        <MainStack/>
       </NavigationContainer>
     </ThemeProvider>
   );

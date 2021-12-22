@@ -1,5 +1,4 @@
 import React, { useEffect, useContext } from 'react';
-import { Text } from 'react-native';
 import { PacienteList } from '../../components/PacienteList';
 import {useNavigation} from '@react-navigation/native';
 import { 
@@ -8,8 +7,6 @@ import {
     Titulo,
     Icon
 } from './styles';
-
-import { useAuth } from '../../hooks/auth';
 
 export function Home(){
 
@@ -57,14 +54,6 @@ export function Home(){
             address:"Rua Roberto Schwartzmann",
         }
     ];
-
-    const { user } = useAuth();
-    
-    
-    useEffect(()=>{
-        console.log( user );
-    },[]);
-
 
 
     return(
