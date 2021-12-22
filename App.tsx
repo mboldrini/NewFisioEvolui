@@ -3,8 +3,6 @@ import AppLoading from 'expo-app-loading';
 import { ThemeProvider } from 'styled-components';
 import { NavigationContainer } from '@react-navigation/native';
 
-import { AuthProvider, useAuth } from './src/hooks/auth';
-
 import {
   useFonts,
   Poppins_400Regular,
@@ -32,9 +30,7 @@ export default () => {
   return (
     <ThemeProvider theme={theme}>
       <NavigationContainer>
-        <AuthProvider>
           <MainStack/>
-        </AuthProvider> 
       </NavigationContainer>
     </ThemeProvider>
   );
