@@ -6,6 +6,7 @@ import {
     WrapLogo,
     Photo,
     WrapInput,
+    LoadingIcon
 } from './styles';
 
 
@@ -14,9 +15,10 @@ export function Login(){
     const navigation = useNavigation();
 
     function handleLogin(){
-        navigation.reset({
-            routes:[{name:'MainTab'}]
-        });
+        // navigation.reset({
+        //     routes:[{name:'MainTab'}]
+        // });
+        alert("apertotu");
     }
 
     return(
@@ -31,7 +33,7 @@ export function Login(){
                 />
             </WrapInput>
             
-            {/* <LoadingIcon size="large" color="#FFFFFF"/> */}
+            {/* <LoadingIcon size="large" color="#FFFFFF"/>  */}
         
         </Container>
     );
