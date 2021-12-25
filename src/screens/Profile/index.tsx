@@ -16,16 +16,21 @@ import {
     HighlightCards
 } from './styles';
 
+import { useAuth } from '../../hooks/auth';
+
 export function Profile(){
+
+    const { user, signInWithGoogle } = useAuth();
+
     return(
         <Container>
             <Header>
                 <UserWrapper>
                     <UserInfo>
-                        <Photo source={{ uri: "https://i.pinimg.com/564x/a1/2b/56/a12b562237ca785697e50573cec31bef.jpg" }}/>
+                        <Photo source={{ uri: user.photo }}/>
                         <User>
                             <UserGreeting>Olá</UserGreeting>
-                            <UserName>Bartolomeu Santos</UserName>
+                            <UserName>{ user.name }</UserName>
                         </User>
                     </UserInfo>
                     <AreaLogout>

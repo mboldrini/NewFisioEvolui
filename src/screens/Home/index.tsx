@@ -8,6 +8,7 @@ import {
     Icon
 } from './styles';
 
+
 export function Home(){
 
     const navigation = useNavigation();
@@ -54,7 +55,6 @@ export function Home(){
             address:"Rua Roberto Schwartzmann",
         }
     ];
-
 
     return(
         <Container>

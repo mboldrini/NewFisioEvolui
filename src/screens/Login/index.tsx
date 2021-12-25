@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { Alert } from 'react-native';
 import { ButtonGoogle } from '../../components/Forms/ButtonGoogle/Index';
-import {useNavigation} from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 import { 
     Container,
     WrapLogo,
@@ -9,49 +10,27 @@ import {
     LoadingIcon
 } from './styles';
 
-import * as Google from 'expo-google-app-auth';
+import { useAuth } from '../../hooks/auth';
 
 export function Login(){
+
 
     const [loading, setLoading] = useState(false);
 
     const navigation = useNavigation();
 
-    async function signInWithGoogle(){
+    const { user, signInWithGoogle } = useAuth();
+    
+    async function handleSignInWithGoogle(){
         try{
             setLoading(true);
-
-            const result = await Google.logInAsync({
-                androidClientId: '19918590573-iegpvh191l2qeoc24i9nvf0jbii6dpk6.apps.googleusercontent.com',
-                scopes: ['profile', 'email']
-            });
-
-            if(result.type === 'success'){
-                const userLogged = {
-                    id: String(result.user.id),
-                    email: result.user.email,
-                    name: result.user.name!,
-                    photo: result.user.photoUrl!,
-                }
-
-                alert(JSON.stringify(userLogged));
-
-            }
-
-            setLoading(false);
-
-        }catch(error){
-            throw(`Erro: ${error}`);
-        }finally{
-            setLoading(false);
-        }
-    }
-
-    async function handleLogin(){
-        try{
             await signInWithGoogle();
-        }catch(e){
-            alert(e);
+
+            alert("muda?");
+        }catch(error){
+            console.log("ERRO");
+            console.log(error);
+            Alert.alert('Não foi possível conectar a conta Google');
         }finally{
             setLoading(false);
         }
@@ -66,7 +45,7 @@ export function Login(){
             { !loading &&
                 <WrapInput>
                     <ButtonGoogle
-                        onPress={()=>{signInWithGoogle()}}
+                        onPress={()=>{handleSignInWithGoogle()}}
                     />
                 </WrapInput>
             }

@@ -14,6 +14,8 @@ import {
 import theme from './src/global/styles/theme';
 import MainStack from './src/stacks/Mainstack';
 
+import { AuthProvider } from './src/hooks/auth';
+
 export default () => {
   const [fontsLoaded] = useFonts({
     Poppins_300Light,
@@ -29,7 +31,11 @@ export default () => {
   return (
     <ThemeProvider theme={theme}>
       <NavigationContainer>
-        <MainStack/>
+
+        <AuthProvider> 
+          <MainStack/>
+        </AuthProvider>
+
       </NavigationContainer>
     </ThemeProvider>
   );

@@ -21,12 +21,13 @@ export default () => (
             props=><CustomTabBar {...props} /> 
         }
     >
+        <Screen name="Profile" component={Profile} />
+
 
         <Screen name="Agenda" component={Agenda} />
         <Screen name="Home" component={Home} />
         <Screen name="Search" component={Search} />
         <Screen name="CadastrarPaciente" component={CadastrarPaciente} />
-        <Screen name="Profile" component={Profile} />
 
 
     </Navigator>
