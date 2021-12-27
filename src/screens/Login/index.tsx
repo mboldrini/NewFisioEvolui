@@ -22,11 +22,10 @@ export function Login(){
     const { user, signInWithGoogle } = useAuth();
     
     async function handleSignInWithGoogle(){
+        setLoading(true);
         try{
-            setLoading(true);
             await signInWithGoogle();
 
-            alert("muda?");
         }catch(error){
             console.log("ERRO");
             console.log(error);
@@ -45,7 +44,7 @@ export function Login(){
             { !loading &&
                 <WrapInput>
                     <ButtonGoogle
-                        onPress={()=>{handleSignInWithGoogle()}}
+                        onPress={handleSignInWithGoogle}
                     />
                 </WrapInput>
             }

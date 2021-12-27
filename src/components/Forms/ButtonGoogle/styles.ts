@@ -4,7 +4,7 @@ import { TouchableOpacity } from 'react-native';
 import { RectButton } from 'react-native-gesture-handler';
 import { FontAwesome5 } from '@expo/vector-icons';
 
-export const Container = styled(RectButton)`
+export const Container = styled(TouchableOpacity)`
     height: ${RFValue(56)}px;
     background-color: ${({theme}) => theme.colors.shape}; 
     align-items: center;

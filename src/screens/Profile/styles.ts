@@ -23,7 +23,7 @@ export const UserWrapper = styled.View`
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-    margin-top: ${RFValue(40)};
+    margin-top: ${RFValue(40)}px;
 `;
 
 export const UserInfo = styled.View`

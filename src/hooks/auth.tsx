@@ -50,14 +50,14 @@ function AuthProvider({ children }: AuthProviderProps){
                     photo: result.user.photoUrl!,
                 }
 
-                setUser(userLogged);
-                await AsyncStorage.setItem(userStorageKey, JSON.stringify(userLogged));
-
-                alert(JSON.stringify(userLogged));
+                 setUser(userLogged);
+                // await AsyncStorage.setItem(userStorageKey, JSON.stringify(userLogged));
 
             }
 
         }catch(error){
+            alert("ERRO: "+ error);
+        }finally{
 
         }
     }
@@ -71,7 +71,7 @@ function AuthProvider({ children }: AuthProviderProps){
                 setUser(userLogged);
             }
         }
-        loadUserStorageDate();
+       // loadUserStorageDate();
     },[]);
 
     useEffect(()=>{
