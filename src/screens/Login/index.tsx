@@ -2,7 +2,9 @@ import React, { useState, useEffect } from 'react';
 //import { Alert } from 'react-native';
 import { ButtonGoogle } from '../../components/Forms/ButtonGoogle/Index';
 import { useNavigation } from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as AuthSession from 'expo-auth-session';
+import { StorageUserKey } from '../../global/variaveis/variaveis';
 import { 
     Container,
     WrapLogo,
@@ -10,47 +12,33 @@ import {
     WrapInput,
     LoadingIcon
 } from './styles';
-import { Text } from 'react-native';
-
-// type AuthResponse = {
-//     type: string;
-//     params: {
-//         access_token: string;
-//     }
-// }
 
 import { useDispatch, useSelector } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { actionCreators, State } from '../../state';
-import { UserInfo } from '../Profile/styles';
+
+type AuthResponse = {
+    type: string;
+    params: {
+        access_token: string;
+    }
+}
 
 export function Login(){
 
+    // Navegação
+    const navigation = useNavigation();
 
+    // Redux de Usuários
     const dispatch = useDispatch();
     const { setUserInfos } = bindActionCreators(actionCreators, dispatch);
     const usrState = useSelector((state: State) => state.user);
 
-    useEffect(()=>{
-        console.log(`UsrState: ${JSON.stringify(usrState)}`);
-    },[usrState]);
-
+    // Padrão do Login + Usuário
     const [loading, setLoading] = useState(false);
     const [token, setToken] = useState(null);
-    //const [userInfos, setUserInfos] = useState(null);
-
-    const navigation = useNavigation();
 
     async function newhandleSignInWithGoogle(){
-
-        //setUserInfos("batata");
-        // setUserInfos({
-        //     email: "admin@admin.com",
-        //     id: '777'
-        // });
-
-
-        // navigation.navigate('MainTab');
 
         setLoading(true);
 
@@ -63,23 +51,29 @@ export function Login(){
         const { type, params } = await AuthSession.startAsync({ authUrl }) as AuthResponse;
 
         if(type === 'success'){
-            console.log("SUCESSO!");
-            //loadProfile(params.access_token);
             setToken(params.access_token);
         }else{
-            alert("erro");
+            alert("Login Cancelado");
+            setLoading(false);
         }
     }
 
     async function loadProfile(tkn: string){
-        console.log("vai pegar os parametrros via token");
         const response = await fetch(`https://www.googleapis.com/oauth2/v2/userinfo?alt=json&access_token=${token}`);
         const userInfo = await response.json();
-        console.log(userInfo);
 
-        setUserInfos(
-            userInfo    
-        );
+        await AsyncStorage.setItem(StorageUserKey, JSON.stringify(userInfo) );
+        setUserInfos( userInfo );
+        setLoading(false);
+    }
+
+    async function handleUserInfoStorage(){
+        setLoading(true);
+        const usrInfosLocal = await AsyncStorage.getItem(StorageUserKey);
+        if(usrInfosLocal != null){
+            const usrInfos = JSON.parse(usrInfosLocal);
+            setUserInfos(usrInfos);
+        }
 
         setLoading(false);
     }
@@ -96,7 +90,9 @@ export function Login(){
         }
     },[usrState]);
 
-  
+    useEffect(()=>{
+        handleUserInfoStorage();
+    },[]);
 
     return(
         <Container>
@@ -112,11 +108,6 @@ export function Login(){
                 </WrapInput>
             }
           
-            {/* { userInfos &&
-                <Text>Olá {userInfos.name}</Text>
-            } */}
-
-            
             { loading &&
                 <LoadingIcon size="large" color="#FFFFFF"/>            
             }

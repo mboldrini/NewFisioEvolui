@@ -14,11 +14,8 @@ import {
 import theme from './src/global/styles/theme';
 import MainStack from './src/stacks/Mainstack';
 
-// import { AuthProvider } from './src/hooks/auth';
-
 import { Provider } from 'react-redux';
 import { store } from './src/state/';
-
 
 export default () => {
   const [fontsLoaded] = useFonts({
@@ -35,13 +32,9 @@ export default () => {
   return (
     <ThemeProvider theme={theme}>
       <NavigationContainer>
-
-        {/* <AuthProvider> */}
         <Provider store={store}>
           <MainStack/>
         </Provider>
-        {/* </AuthProvider> */}
-
       </NavigationContainer>
     </ThemeProvider>
   );

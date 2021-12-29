@@ -1,6 +1,8 @@
 import React from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { BotoesPerfil } from '../../components/BotoesPerfil';
+import { StorageUserKey } from '../../global/variaveis/variaveis';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { 
     Container,
     Header,
@@ -17,8 +19,6 @@ import {
     HighlightCards
 } from './styles';
 
-//import { useAuth } from '../../hooks/auth';
-
 import { useDispatch, useSelector } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { actionCreators, State } from '../../state';
@@ -26,14 +26,16 @@ import { actionCreators, State } from '../../state';
 
 export function Profile(){
 
-//    const { user, signInWithGoogle } = useAuth();
-
     const navigation = useNavigation();
 
-  const dispatch = useDispatch();
-  const { setUserInfos } = bindActionCreators(actionCreators, dispatch);
-  const usrState = useSelector((state: State) => state.user);
+    const dispatch = useDispatch();
+    const { setUserInfos } = bindActionCreators(actionCreators, dispatch);
+    const usrState = useSelector((state: State) => state.user);
 
+    function handleLogoff(){
+        AsyncStorage.removeItem(StorageUserKey);
+        navigation.navigate('Login');
+    }
 
 
     return(
@@ -44,10 +46,10 @@ export function Profile(){
                         <Photo source={{ uri: usrState.picture }}/> 
                         <User>
                             <UserGreeting>Olá</UserGreeting>
-                            <UserName>{ usrState.name }</UserName>
+                            <UserName>{ usrState.given_name }</UserName>
                         </User>
                     </UserInfo>
-                    <AreaLogout onPress={()=>{navigation.navigate('Login')}}>
+                    <AreaLogout onPress={()=>{handleLogoff()}}>
                         <Logout name="power"/>
                     </AreaLogout>
                 </UserWrapper>

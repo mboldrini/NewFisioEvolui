@@ -53,6 +53,8 @@ export const vars = {
  
 }
 
+export const StorageUserKey = "fisioEvolui:user";
+
 
 
 
