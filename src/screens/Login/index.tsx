@@ -12,22 +12,39 @@ import {
 } from './styles';
 import { Text } from 'react-native';
 
-type AuthResponse = {
-    type: string;
-    params: {
-        access_token: string;
-    }
-}
+// type AuthResponse = {
+//     type: string;
+//     params: {
+//         access_token: string;
+//     }
+// }
+
+import { useDispatch, useSelector } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { actionCreators, State } from '../../state';
 
 export function Login(){
 
+
+    const dispatch = useDispatch();
+    const { setUserInfos } = bindActionCreators(actionCreators, dispatch);
+    const usrState = useSelector((state: State) => state.user);
+
+    useEffect(()=>{
+        console.log(`UsrState: ${JSON.stringify(usrState)}`);
+    },[usrState]);
+
     const [loading, setLoading] = useState(false);
     const [token, setToken] = useState(null);
-    const [userInfos, setUserInfos] = useState(null);
+    //const [userInfos, setUserInfos] = useState(null);
 
     const navigation = useNavigation();
 
     async function newhandleSignInWithGoogle(){
+
+        // setUserInfos("batata");
+
+        // navigation.navigate('MainTab');
 
         setLoading(true);
 
@@ -54,7 +71,7 @@ export function Login(){
         const userInfo = await response.json();
         console.log(userInfo);
 
-        setUserInfos(userInfo);
+      //  setUserInfos(userInfo);
 
         setLoading(false);
     }
@@ -79,9 +96,9 @@ export function Login(){
                 </WrapInput>
             }
           
-            { userInfos &&
+            {/* { userInfos &&
                 <Text>Olá {userInfos.name}</Text>
-            }
+            } */}
 
             
             { loading &&

@@ -16,21 +16,33 @@ import {
     HighlightCards
 } from './styles';
 
-import { useAuth } from '../../hooks/auth';
+//import { useAuth } from '../../hooks/auth';
+
+import { useDispatch, useSelector } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { actionCreators, State } from '../../state';
+
 
 export function Profile(){
 
-    const { user, signInWithGoogle } = useAuth();
+  //  const { user, signInWithGoogle } = useAuth();
+
+//   const dispatch = useDispatch();
+//   const { setUserInfos } = bindActionCreators(actionCreators, dispatch);
+//   const usrState = useSelector((state: State) => state.user);
+
+//   console.log(usrState);
+
 
     return(
         <Container>
             <Header>
                 <UserWrapper>
                     <UserInfo>
-                        <Photo source={{ uri: user.photo }}/>
+                        {/* <Photo source={{ uri: user.photo }}/> */}
                         <User>
                             <UserGreeting>Olá</UserGreeting>
-                            <UserName>{ user.name }</UserName>
+                            {/* <UserName>{ usrState.name }</UserName> */}
                         </User>
                     </UserInfo>
                     <AreaLogout>
