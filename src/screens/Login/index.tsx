@@ -22,6 +22,7 @@ import { Text } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { actionCreators, State } from '../../state';
+import { UserInfo } from '../Profile/styles';
 
 export function Login(){
 
@@ -42,7 +43,12 @@ export function Login(){
 
     async function newhandleSignInWithGoogle(){
 
-        // setUserInfos("batata");
+        //setUserInfos("batata");
+        // setUserInfos({
+        //     email: "admin@admin.com",
+        //     id: '777'
+        // });
+
 
         // navigation.navigate('MainTab');
 
@@ -71,7 +77,9 @@ export function Login(){
         const userInfo = await response.json();
         console.log(userInfo);
 
-      //  setUserInfos(userInfo);
+        setUserInfos(
+            userInfo    
+        );
 
         setLoading(false);
     }
@@ -81,6 +89,14 @@ export function Login(){
             loadProfile(token);
         }
     }, [token]);
+
+    useEffect(()=>{
+        if(usrState.name){
+            navigation.navigate('MainTab');
+        }
+    },[usrState]);
+
+  
 
     return(
         <Container>

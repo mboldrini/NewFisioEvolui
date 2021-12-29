@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigation } from '@react-navigation/native';
 import { BotoesPerfil } from '../../components/BotoesPerfil';
 import { 
     Container,
@@ -25,13 +26,14 @@ import { actionCreators, State } from '../../state';
 
 export function Profile(){
 
-  //  const { user, signInWithGoogle } = useAuth();
+//    const { user, signInWithGoogle } = useAuth();
 
-//   const dispatch = useDispatch();
-//   const { setUserInfos } = bindActionCreators(actionCreators, dispatch);
-//   const usrState = useSelector((state: State) => state.user);
+    const navigation = useNavigation();
 
-//   console.log(usrState);
+  const dispatch = useDispatch();
+  const { setUserInfos } = bindActionCreators(actionCreators, dispatch);
+  const usrState = useSelector((state: State) => state.user);
+
 
 
     return(
@@ -39,13 +41,13 @@ export function Profile(){
             <Header>
                 <UserWrapper>
                     <UserInfo>
-                        {/* <Photo source={{ uri: user.photo }}/> */}
+                        <Photo source={{ uri: usrState.picture }}/> 
                         <User>
                             <UserGreeting>Olá</UserGreeting>
-                            {/* <UserName>{ usrState.name }</UserName> */}
+                            <UserName>{ usrState.name }</UserName>
                         </User>
                     </UserInfo>
-                    <AreaLogout>
+                    <AreaLogout onPress={()=>{navigation.navigate('Login')}}>
                         <Logout name="power"/>
                     </AreaLogout>
                 </UserWrapper>
