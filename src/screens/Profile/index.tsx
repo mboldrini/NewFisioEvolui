@@ -21,11 +21,11 @@ import {
     InfoDesc,
 
     Body,
-    WrapArea,
-    Linha,
-    Btn,
-    Icone,
-    Titulo
+    WrapList,
+    BtnList,
+    IconeList,
+    TituloList,
+
 } from './styles';
 
 import { useDispatch, useSelector } from 'react-redux';
@@ -78,33 +78,34 @@ export function Profile(){
 
 
             <Body>
-                <WrapArea>
-                    <Linha>
-                        <Btn>
-                            <Icone source={require('../../../src/assets/icons/profile.png')}/>
-                            <Titulo>Meu Perfil</Titulo>
-                        </Btn>
-                        <Btn>
-                            <Icone source={require('../../../src/assets/icons/check_list.png')}/>
-                            <Titulo>Tipo Atend.</Titulo>
-                        </Btn>
-                        <Btn>
-                            <Icone source={require('../../../src/assets/icons/graph.png')}/>
-                            <Titulo>Estatísticas</Titulo>
-                        </Btn>
-                    </Linha>
-                    <Linha>
-                        <Btn>
-                            <Icone source={require('../../../src/assets/icons/config.png')}/>
-                            <Titulo>Config.</Titulo>
-                        </Btn>
-                        <Btn>
-                            <Icone source={require('../../../src/assets/icons/question.png')}/>
-                            <Titulo>Sobre</Titulo>
-                        </Btn>
-                    </Linha>
-                    
-                </WrapArea>
+                <WrapList>
+                    <BtnList>
+                        <IconeList source={require('../../../src/assets/icons/profile.png')}/>
+                        <TituloList>Meu Perfil</TituloList>
+                    </BtnList>
+
+                    <BtnList>
+                        <IconeList source={require('../../../src/assets/icons/check_list.png')}/>
+                        <TituloList>Tipo de Atendimento</TituloList>
+                    </BtnList>
+
+                    <BtnList>
+                        <IconeList source={require('../../../src/assets/icons/graph.png')}/>
+                        <TituloList>Estatísticas</TituloList>
+                    </BtnList>
+
+                    <BtnList>
+                        <IconeList source={require('../../../src/assets/icons/config.png')}/>
+                        <TituloList>Configurações</TituloList>
+                    </BtnList>
+
+                    <BtnList>
+                        <IconeList source={require('../../../src/assets/icons/question.png')}/>
+                        <TituloList>Sobre</TituloList>
+                    </BtnList>
+                </WrapList>
+
+
             </Body>
 
         </Container>

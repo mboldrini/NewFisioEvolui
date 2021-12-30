@@ -107,38 +107,39 @@ export const Body = styled.ScrollView.attrs({
     flex: 1;
 `;
 
-export const WrapArea = styled.View`
+export const WrapList = styled.View`
     background-color: ${({theme}) => theme.colors.secondary};
     border-radius: ${({theme}) => theme.bordas.padrao}px;
-    flex: 1;
+    padding-top: ${RFValue(10)}px;
+    flex-direction: column;
+    align-items: center;
+    padding: ${RFValue(10)}px ${({theme}) => theme.padding.lateral_half}px;
+    margin-bottom: 50px;
 `;
 
-export const Linha = styled.View`
+export const BtnList = styled(RectButton)`
+    margin: ${RFValue(5)}px;
+    width: 100%;
+    background-color: ${({theme}) => theme.colors.shape};
+    border-radius: ${({theme}) => theme.bordas.padrao}px;
+    padding: 5px;
     flex-direction: row;
     align-items: center;
-    justify-content: space-around;
-    margin: ${RFValue(5)}px;
+    justify-content: flex-start;
 `;
 
-export const Btn = styled(RectButton)`
-    flex: 1;
+export const IconeList = styled.Image`
+    width: ${RFValue(40)}px;
+    height: ${RFValue(40)}px;
+    margin-left: ${RFValue(10)}px;
+`;
+
+export const TituloList = styled.Text`
+    font-family: ${({theme}) => theme.fonts.regular};
+    font-size: ${RFValue(18)}px;
+    color: #000000;
     align-items: center;
     justify-content: center;
-    margin: 0 5px;
-    border-radius: ${RFValue(15)}px;
+    padding-left: ${RFValue(15)}px;
 `;
 
-export const Icone = styled.Image`
-    /* color: #ffffff;
-    font-size: ${RFValue(30)}px;
-    padding-top: ${RFValue(10)}px; */
-    width: ${RFValue(50)}px;
-    height: ${RFValue(50)}px;
-`;
-
-export const Titulo = styled.Text`
-    font-family: ${({theme}) => theme.fonts.bold};
-    font-size: ${RFValue(16)}px;
-    color: #ffffff;
-    padding-top: ${RFValue(10)}px;
-`;
