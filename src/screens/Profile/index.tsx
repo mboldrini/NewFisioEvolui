@@ -14,9 +14,18 @@ import {
     UserName,
     AreaLogout,
     Logout,
+
+    InfosWrap,
+    Infos,
+    QtdInfos,
+    InfoDesc,
+
     Body,
-    WrapperGroup,
-    HighlightCards
+    WrapArea,
+    Linha,
+    Btn,
+    Icone,
+    Titulo
 } from './styles';
 
 import { useDispatch, useSelector } from 'react-redux';
@@ -50,59 +59,53 @@ export function Profile(){
                         </User>
                     </UserInfo>
                     <AreaLogout onPress={()=>{handleLogoff()}}>
-                        <Logout name="power"/>
+                        <Logout source={require('../../../src/assets/icons/logout.png')}/>
                     </AreaLogout>
                 </UserWrapper>
             </Header>
 
-            <HighlightCards>
-                <WrapperGroup>
-                    <BotoesPerfil 
-                        icone="user-edit"
-                        titulo="Editar Perfil"
-                        onPress={()=>(console.log("aAa"))}
-                    />
-                    <BotoesPerfil 
-                        icone="user-cog"
-                        titulo="Configurações de Atendimento"
-                        onPress={()=>(console.log("aAa"))}
-                    />
-                        <BotoesPerfil 
-                        icone="file-medical-alt"
-                        titulo="Tipos de Atendimento"
-                        onPress={()=>(console.log("aAa"))}
-                    />
-                </WrapperGroup>
+            <InfosWrap>
+                <Infos>
+                    <QtdInfos>150</QtdInfos>
+                    <InfoDesc>Pacientes</InfoDesc>
+                </Infos>
+               
+                <Infos>
+                    <QtdInfos>230</QtdInfos>
+                    <InfoDesc>Atendimentos</InfoDesc>
+                </Infos>
+            </InfosWrap>
 
-                <WrapperGroup>
-                    <BotoesPerfil 
-                        icone="search-dollar"
-                        titulo="Informações Financeiras"
-                        onPress={()=>(console.log("aAa"))}
-                    />
-                    <BotoesPerfil 
-                        icone="chart-line"
-                        titulo="Estatísticas de Atendimentos"
-                        onPress={()=>(console.log("aAa"))}
-                    />
-                </WrapperGroup>
-                
-                <WrapperGroup>
-                    <BotoesPerfil 
-                        icone="wrench"
-                        titulo="Configurações do Aplicativo"
-                        onPress={()=>(console.log("aAa"))}
-                    />
-                    <BotoesPerfil 
-                        icone="question-circle"
-                        titulo="Sobre o app"
-                        onPress={()=>(console.log("aAa"))}
-                    />
-                </WrapperGroup>
 
-            </HighlightCards>
-
-            
+            <Body>
+                <WrapArea>
+                    <Linha>
+                        <Btn>
+                            <Icone source={require('../../../src/assets/icons/profile.png')}/>
+                            <Titulo>Meu Perfil</Titulo>
+                        </Btn>
+                        <Btn>
+                            <Icone source={require('../../../src/assets/icons/check_list.png')}/>
+                            <Titulo>Tipo Atend.</Titulo>
+                        </Btn>
+                        <Btn>
+                            <Icone source={require('../../../src/assets/icons/graph.png')}/>
+                            <Titulo>Estatísticas</Titulo>
+                        </Btn>
+                    </Linha>
+                    <Linha>
+                        <Btn>
+                            <Icone source={require('../../../src/assets/icons/config.png')}/>
+                            <Titulo>Config.</Titulo>
+                        </Btn>
+                        <Btn>
+                            <Icone source={require('../../../src/assets/icons/question.png')}/>
+                            <Titulo>Sobre</Titulo>
+                        </Btn>
+                    </Linha>
+                    
+                </WrapArea>
+            </Body>
 
         </Container>
     )
