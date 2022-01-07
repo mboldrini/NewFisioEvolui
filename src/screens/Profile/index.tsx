@@ -43,7 +43,7 @@ export function Profile(){
 
     function handleLogoff(){
         AsyncStorage.removeItem(StorageUserKey);
-        navigation.navigate('Login');
+        navigation.navigate('SignIn');
     }
 
 
