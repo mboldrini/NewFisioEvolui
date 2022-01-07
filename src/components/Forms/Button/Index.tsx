@@ -8,12 +8,13 @@ import {
 
 interface Props extends TouchableOpacityProps{
     title: string;
+    type?: 'ok' | 'cancel';
     onPress: () => void;
 }
 
-export function Button({title, onPress, ...rest}: Props){
+export function Button({title, type, onPress, ...rest}: Props){
     return(
-        <Container onPress={onPress} {...rest}>
+        <Container onPress={onPress} {...rest} type={type}>
             <Title>
                 { title }
             </Title>
