@@ -22,10 +22,9 @@ import {
 
 } from './styles';
 import { AgendaItem } from '../../components/AgendaItem';
-import { parseISO, format } from 'date-fns';
+import { getDayOfYear, getDay, getMonth, getYear, addMonths, getDaysInMonth, getDate } from 'date-fns';
 
 import { devAgenda } from '../../global/devVariaveis';
-
 
 export function Agenda(){
 
@@ -54,10 +53,11 @@ export function Agenda(){
 
     const getAtualDay = () => {
         let today = new Date();
-        setSelectedYear( today.getFullYear() );
-        setSelectedMonth( today.getMonth() );
-        setSelectedDay( today.getDate() ); 
-        setSelectedDayWeek(today.getDay());
+
+        setSelectedYear( getYear(today) );
+        setSelectedMonth( getMonth(today) );
+        setSelectedDay( getDayOfYear(today) ); 
+        setSelectedDayWeek( getDay(today) );
         setSelectedDate(today);
     }
 
@@ -70,9 +70,10 @@ export function Agenda(){
             mountDate.setMonth( mountDate.getMonth() +1 );
         }
 
-        setSelectedYear(mountDate.getFullYear());
-        setSelectedMonth(mountDate.getMonth());
+        setSelectedYear( getYear(mountDate) );
+        setSelectedMonth( getMonth(mountDate) );
         setSelectedDay(0);
+        setSelectedDate(mountDate);
     }
 
     useEffect(() => {
@@ -82,31 +83,22 @@ export function Agenda(){
         setDataHoje(`${diasLong[d.getDay()]} - ${d.getDate()}/${meses[d.getMonth()]}/${d.getFullYear()}`);
         setAtualDate(d);
 
-        const dt = '2020-01-01 22:22';
-        console.log( parseISO(dt) ); 
-        console.log( format(parseISO(dt), 'h:mm a') );
-
         setAgendamentos(devAgenda);
 
     },[]);
 
     useEffect(()=>{
         setListdias([]);
-        // if(dia != null){
-        let diasInMonth = new Date(selectedYear, selectedMonth+1, 0).getDate();
+
+        let diasInMonth = getDaysInMonth(new Date(selectedYear, selectedMonth)); //new Date(selectedYear, selectedMonth+1, 0).getDate();
         let newListdias = [];
 
         for(let i = 1;  i <= diasInMonth; i++ ){
 
             let d = new Date(selectedYear, selectedMonth, i);
-            let year = d.getFullYear();
-            let month = d.getMonth() +1;
-            let day = d.getDate();
-            // month = month < 10 ? '0'+month : month;
-            // day = day < 10 ? '0'+day : day;
 
             newListdias.push({
-                weekday: dias[ d.getDay() ],
+                weekday: dias[ getDay(d) ],
                 number: i,
                 status: true
             });
@@ -116,13 +108,14 @@ export function Agenda(){
         setListdias(newListdias);
 
         if(selectedMonth != d.getMonth() ){
-            let dtEscolhida = new Date(selectedYear, selectedMonth, 0);
+            let dtEscolhida = new Date(selectedDate);
+            console.log(`DtEscolhida: ${dtEscolhida}`);
             setSelectedDay(1);
-            setSelectedDayWeek(dtEscolhida.getDay());
+            setSelectedDayWeek(getDay(dtEscolhida));
 
         }else{
-            setSelectedDay(d.getDate());
-            setSelectedDayWeek(d.getDay());
+            setSelectedDay(getDate(d));
+            setSelectedDayWeek(getDay(d));
         }
 
 
@@ -138,8 +131,6 @@ export function Agenda(){
         setDiaHoje(hoje.getDay());
 
     }, [selectedDay, selectedDayWeek]);
-
-    let listaAgenda = devAgenda;
 
     return(
         <Container refreshControl={<RefreshControl refreshing={refreshing} onRefresh={getAtualDay}/>}>

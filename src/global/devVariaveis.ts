@@ -8,12 +8,12 @@ export const devAgenda = [
     {
         id: '0',
         status: 2,
-        dataHora: '2022-01-07 14:30',
+        dataHora: '2022-01-07 15:00',
         tipo: 'Particular',
     },
     {
         id: '0',
-        status: 2,
+        status: 5,
         dataHora: '2022-01-07 18:30',
         tipo: 'Particular',
     }
