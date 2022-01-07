@@ -1,7 +1,7 @@
 import React from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { BotoesPerfil } from '../../components/BotoesPerfil';
-import { StorageUserKey } from '../../global/variaveis/variaveis';
+import { StorageUserKey } from '../../global/variaveis/globais';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { 
     Container,

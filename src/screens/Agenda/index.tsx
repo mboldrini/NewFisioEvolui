@@ -2,7 +2,7 @@ import React, {useEffect, useState}from 'react';
 import { FlatList } from 'react-native';
 import {RefreshControl} from 'react-native';
 import {useNavigation } from '@react-navigation/native';
-import { months, days, daysLong} from '../../global/variaveis/variaveis';
+import { months, days, daysLong} from '../../global/variaveis/globais';
 import { ITipoAgendamento } from '../../global/interfaces';
 import { 
     Container,

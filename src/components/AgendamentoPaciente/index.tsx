@@ -1,7 +1,7 @@
 import React from 'react';
 import { RectButtonProps } from 'react-native-gesture-handler';
 import { date } from 'yup';
-import {days, tipoDeAgendamento} from '../../global/variaveis/variaveis';
+import {days, tipoDeAgendamento} from '../../global/variaveis/globais';
 import { 
     Container,
     WrapIcone,

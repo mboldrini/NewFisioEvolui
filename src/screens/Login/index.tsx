@@ -4,7 +4,7 @@ import { ButtonGoogle } from '../../components/Forms/ButtonGoogle/Index';
 import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as AuthSession from 'expo-auth-session';
-import { StorageUserKey } from '../../global/variaveis/variaveis';
+import { StorageUserKey } from '../../global/variaveis/globais';
 import { 
     Container,
     WrapLogo,
@@ -36,7 +36,7 @@ export function Login(){
 
     // Padrão do Login + Usuário
     const [loading, setLoading] = useState(false);
-    const [token, setToken] = useState(null);
+    const [oAuthToken, setoAuthToken] = useState(null);
 
     async function newhandleSignInWithGoogle(){
 
@@ -51,7 +51,7 @@ export function Login(){
         const { type, params } = await AuthSession.startAsync({ authUrl }) as AuthResponse;
 
         if(type === 'success'){
-            setToken(params.access_token);
+            setoAuthToken(params.access_token);
         }else{
             alert("Login Cancelado");
             setLoading(false);
@@ -59,30 +59,25 @@ export function Login(){
     }
 
     async function loadProfile(tkn: string){
-        const response = await fetch(`https://www.googleapis.com/oauth2/v2/userinfo?alt=json&access_token=${token}`);
+
+        const response = await fetch(`https://www.googleapis.com/oauth2/v2/userinfo?alt=json&access_token=${tkn}`);
         const userInfo = await response.json();
 
-        await AsyncStorage.setItem(StorageUserKey, JSON.stringify(userInfo) );
-        setUserInfos( userInfo );
+        console.log(userInfo);
+
+        // await AsyncStorage.setItem(StorageUserKey, JSON.stringify(userInfo) );
+        // setUserInfos( userInfo );
         setLoading(false);
+        return;
     }
 
-    async function handleUserInfoStorage(){
-        setLoading(true);
-        const usrInfosLocal = await AsyncStorage.getItem(StorageUserKey);
-        if(usrInfosLocal != null){
-            const usrInfos = JSON.parse(usrInfosLocal);
-            setUserInfos(usrInfos);
-        }
-
-        setLoading(false);
-    }
+   
 
     useEffect(()=>{
-        if(token != null){
-            loadProfile(token);
+        if(oAuthToken != null){
+            loadProfile(oAuthToken);
         }
-    }, [token]);
+    }, [oAuthToken]);
 
     useEffect(()=>{
         if(usrState.name){
@@ -91,7 +86,17 @@ export function Login(){
     },[usrState]);
 
     useEffect(()=>{
-        handleUserInfoStorage();
+        async function handleUserInfoStorage(){
+            setLoading(true);
+            const usrInfosLocal = await AsyncStorage.getItem(StorageUserKey);
+            if(usrInfosLocal != null){
+                const usrInfos = JSON.parse(usrInfosLocal);
+                setUserInfos(usrInfos);
+            }
+    
+            setLoading(false);
+        }
+       // handleUserInfoStorage();
     },[]);
 
     return(

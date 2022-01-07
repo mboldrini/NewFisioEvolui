@@ -1,5 +1,5 @@
 import React from 'react';
-import { statusAtendimento } from '../../global/variaveis/variaveis';
+import { statusAtendimento } from '../../global/variaveis/globais';
 import { parseISO, format, isBefore, isSameHour } from 'date-fns';
 
 import {
