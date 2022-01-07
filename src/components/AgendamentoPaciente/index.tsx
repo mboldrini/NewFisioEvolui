@@ -1,7 +1,7 @@
 import React from 'react';
 import { RectButtonProps } from 'react-native-gesture-handler';
 import { date } from 'yup';
-import {vars} from '../../global/variaveis/variaveis';
+import {days, tipoDeAgendamento} from '../../global/variaveis/variaveis';
 import { 
     Container,
     WrapIcone,
@@ -53,12 +53,12 @@ export function PacienteAgendamento({
     return(
         <Container tipoAtendimento={tipoAgendamento}  onPress={onPress} {...rest}>
             <WrapIcone>
-                <DiaSemana>{ vars.days[validaDiaSemana(dataAgendamento)] }</DiaSemana>
-                <Icone name={vars.tipoAgendamento[tipoAgendamento].icone} tipoAtendimento={tipoAgendamento}/>
+                <DiaSemana>{ days[validaDiaSemana(dataAgendamento)] }</DiaSemana>
+                <Icone name={tipoDeAgendamento[tipoAgendamento].icone} tipoAtendimento={tipoAgendamento}/>
             </WrapIcone>
             <WrapHora>
                 <Horario>{horario}</Horario>
-                <Tipo>{ vars.tipoAgendamento[tipoAgendamento].nome }</Tipo>
+                <Tipo>{ tipoDeAgendamento[tipoAgendamento].nome }</Tipo>
             </WrapHora>
             <WrapData>
                 <Data>{ validaData( dataAgendamento ) }</Data>

@@ -1,5 +1,5 @@
 import React from 'react';
-import {vars} from '../../global/variaveis/variaveis';
+import { statusAtendimento } from '../../global/variaveis/variaveis';
 import { parseISO, format, isBefore, isSameHour } from 'date-fns';
 
 import {
@@ -22,7 +22,7 @@ interface Props{
     tipo: string;
 }
 
-const icones: string = {
+const icones = {
     Particular: 'money-bill-wave',
     plano: 'hospital'
 }
@@ -30,11 +30,6 @@ const icones: string = {
 
 export function AgendaItem({status, dataHora, tipo}: Props){
     
-    let dataHoje = new Date();
-
-    // console.log(`Status: ${status}`);
-
-
     function horarioPassou(dataHora: string){
 
         let today = new Date();
@@ -47,28 +42,6 @@ export function AgendaItem({status, dataHora, tipo}: Props){
         }else{
             return 0;// Azul = Ainda ta vindo
         }
-
-
- 
-        // if( dataHoje.toDateString() === dataSelecionada.toDateString()){
-     
-        //     let horaAgendada = parseInt(horarioAgendado.split(":")[0] );
-
-        //     if( horaAgendada < dataHoje.getHours() ){
-        //         return 1;
-        //     }else if(horaAgendada == dataHoje.getHours()){
-        //         return 2;
-        //     }else{
-        //         return 0;
-        //     }
-
-        // }else if(dataSelecionada < dataHoje){
-        //     return 1;
-        // }else if(dataSelecionada > dataHoje ){
-        //     return 0;
-        // }
-
-        return 0;
 
     }
 
@@ -104,7 +77,7 @@ export function AgendaItem({status, dataHora, tipo}: Props){
                 </HoraWrapper>
                 <StatusWrapper status={status}>
                     { status !== 0 && 
-                        <Status status={status}>{ vars.status[status] }</Status> 
+                        <Status status={status}>{ statusAtendimento[status] }</Status> 
                     }
                 </StatusWrapper>
            </Footer>

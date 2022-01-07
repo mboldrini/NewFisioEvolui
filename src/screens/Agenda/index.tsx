@@ -2,7 +2,8 @@ import React, {useEffect, useState}from 'react';
 import { FlatList } from 'react-native';
 import {RefreshControl} from 'react-native';
 import {useNavigation } from '@react-navigation/native';
-import {vars} from '../../global/variaveis/variaveis';
+import { months, days, daysLong} from '../../global/variaveis/variaveis';
+import { ITipoAgendamento } from '../../global/interfaces';
 import { 
     Container,
     Header,
@@ -25,12 +26,6 @@ import { parseISO, format } from 'date-fns';
 
 import { devAgenda } from '../../global/devVariaveis';
 
-interface ITipoAgenda{
-    id: string,
-    status: number,
-    dataHora: string,
-    tipo: string,
-}
 
 export function Agenda(){
 
@@ -38,9 +33,9 @@ export function Agenda(){
 
     const [refreshing, setRefresh] = useState(false);
 
-    const months = vars.months;
-    const days = vars.days;
-    const daysLong = vars.daysLong;
+    const meses = months;
+    const dias = days;
+    const diasLong = daysLong;
 
     const [atualDate, setAtualDate] = useState(null);
     const [dataHoje, setDataHoje] = useState(null);
@@ -52,10 +47,9 @@ export function Agenda(){
     const [selectedDayWeek, setSelectedDayWeek] = useState(null);
     const [selectedDate, setSelectedDate] = useState(null);
 
-    const [listDays, setListDays] = useState([]);
+    const [listdias, setListdias] = useState([]);
 
-    const [agendamentos, setAgendamentos] = useState<ITipoAgenda[]>([]);
-    //setAgendamentos(devAgenda);
+    const [agendamentos, setAgendamentos] = useState<ITipoAgendamento[]>([]);
 
 
     const getAtualDay = () => {
@@ -85,7 +79,7 @@ export function Agenda(){
         getAtualDay();
 
         let d = new Date();
-        setDataHoje(`${daysLong[d.getDay()]} - ${d.getDate()}/${months[d.getMonth()]}/${d.getFullYear()}`);
+        setDataHoje(`${diasLong[d.getDay()]} - ${d.getDate()}/${meses[d.getMonth()]}/${d.getFullYear()}`);
         setAtualDate(d);
 
         const dt = '2020-01-01 22:22';
@@ -97,12 +91,12 @@ export function Agenda(){
     },[]);
 
     useEffect(()=>{
-        setListDays([]);
+        setListdias([]);
         // if(dia != null){
-        let daysInMonth = new Date(selectedYear, selectedMonth+1, 0).getDate();
-        let newListDays = [];
+        let diasInMonth = new Date(selectedYear, selectedMonth+1, 0).getDate();
+        let newListdias = [];
 
-        for(let i = 1;  i <= daysInMonth; i++ ){
+        for(let i = 1;  i <= diasInMonth; i++ ){
 
             let d = new Date(selectedYear, selectedMonth, i);
             let year = d.getFullYear();
@@ -111,15 +105,15 @@ export function Agenda(){
             // month = month < 10 ? '0'+month : month;
             // day = day < 10 ? '0'+day : day;
 
-            newListDays.push({
-                weekday: days[ d.getDay() ],
+            newListdias.push({
+                weekday: dias[ d.getDay() ],
                 number: i,
                 status: true
             });
             
         }
         let d = new Date();
-        setListDays(newListDays);
+        setListdias(newListdias);
 
         if(selectedMonth != d.getMonth() ){
             let dtEscolhida = new Date(selectedYear, selectedMonth, 0);
@@ -160,14 +154,14 @@ export function Agenda(){
                     <ChangeMonthLeft onPress={ ()=> handleDateClick("left") }>
                         <IconeChangeMonth name="chevron-left"/>
                     </ChangeMonthLeft>
-                    <Month>{months[selectedMonth]} - {selectedYear}</Month>
+                    <Month>{meses[selectedMonth]} - {selectedYear}</Month>
                     <ChangeMonthRight onPress={ ()=> handleDateClick("right") }>
                         <IconeChangeMonth name="chevron-right"/>
                     </ChangeMonthRight>
                 </SelectDateWrapper>
 
                 <DateList >
-                    {listDays.map((item,key)=>(
+                    {listdias.map((item,key)=>(
                         <DateItem key={key} diaEscolhido={selectedDay} diaHoje={diaHoje}  onPress={()=>{ item.status ? setSelectedDay(item.number) : null}} style={{backgroundColor: item.number === selectedDay ? '#4EADBE' : '#FFFFFF' }}>
                             <DateItemWeekDay style={{color: item.number === selectedDay ? '#FFFFFF' : '#000000'}}>{item.weekday}</DateItemWeekDay>
                             <DateItemWeekNumber style={{ color: item.number === selectedDay ? '#FFFFFF' : '#000000'}}>{item.number}</DateItemWeekNumber>
