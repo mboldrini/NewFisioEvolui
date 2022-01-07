@@ -21,6 +21,16 @@ import {
 
 } from './styles';
 import { AgendaItem } from '../../components/AgendaItem';
+import { parseISO, format } from 'date-fns';
+
+import { devAgenda } from '../../global/devVariaveis';
+
+interface ITipoAgenda{
+    id: string,
+    status: number,
+    dataHora: string,
+    tipo: string,
+}
 
 export function Agenda(){
 
@@ -43,6 +53,10 @@ export function Agenda(){
     const [selectedDate, setSelectedDate] = useState(null);
 
     const [listDays, setListDays] = useState([]);
+
+    const [agendamentos, setAgendamentos] = useState<ITipoAgenda[]>([]);
+    //setAgendamentos(devAgenda);
+
 
     const getAtualDay = () => {
         let today = new Date();
@@ -73,6 +87,12 @@ export function Agenda(){
         let d = new Date();
         setDataHoje(`${daysLong[d.getDay()]} - ${d.getDate()}/${months[d.getMonth()]}/${d.getFullYear()}`);
         setAtualDate(d);
+
+        const dt = '2020-01-01 22:22';
+        console.log( parseISO(dt) ); 
+        console.log( format(parseISO(dt), 'h:mm a') );
+
+        setAgendamentos(devAgenda);
 
     },[]);
 
@@ -125,129 +145,7 @@ export function Agenda(){
 
     }, [selectedDay, selectedDayWeek]);
 
-    let listaAgenda = [
-        {
-            id: '0',
-            status: 1,
-            horaPassou: true,
-            horario: '07:30',
-            tipo: 'Particular',
-            icone_tipo: 'money-bill-wave',
-        },
-        {
-            id: '1',
-            status: 2,
-            horaPassou: false,
-            horario: '08:00',
-            tipo: 'Particular',
-            icone_tipo: 'money-bill-wave',
-        },
-        {
-            id: '2',
-            status: 3,
-            horaPassou: false,
-            horario: '08:30',
-            tipo: 'Plano Amil 500FG',
-            icone_tipo: 'hospital',
-        },
-        {
-            id: '3',
-            status: 4,
-            horaPassou: false,
-            horario: '09:00',
-            tipo: 'Particular',
-            icone_tipo: 'money-bill-wave',
-        },
-        {
-            id: '4',
-            status: 5,
-            horaPassou: false,
-            horario: '09:30',
-            tipo: 'Particular',
-            icone_tipo: 'money-bill-wave',
-        },
-        {
-            id: '5',
-            status: 5,
-            horaPassou: false,
-            horario: '11:00',
-            tipo: 'Particular',
-            icone_tipo: 'money-bill-wave',
-        },
-        {
-            id: '6',
-            status: 6,
-            horaPassou: false,
-            horario: '11:30',
-            tipo: 'Particular',
-            icone_tipo: 'money-bill-wave',
-        },
-        {
-            id: '9',
-            status: 2,
-            horaPassou: false,
-            horario: '13:00',
-            tipo: 'Particular',
-            icone_tipo: 'money-bill-wave',
-        },
-        {
-            id: '10',
-            status: 3,
-            horaPassou: false,
-            horario: '14:30',
-            tipo: 'Plano Amil 500FG',
-            icone_tipo: 'hospital',
-        },
-        {
-            id: '11',
-            status: 4,
-            horaPassou: false,
-            horario: '15:00',
-            tipo: 'Particular',
-            icone_tipo: 'money-bill-wave',
-        },
-        {
-            id: '12',
-            status: 5,
-            horaPassou: false,
-            horario: '16:30',
-            tipo: 'Particular',
-            icone_tipo: 'money-bill-wave',
-        },
-        {
-            id: '13',
-            status: 6,
-            horaPassou: false,
-            horario: '17:00',
-            tipo: 'Particular',
-            icone_tipo: 'money-bill-wave',
-        },
-        {
-            id: '14',
-            status: 4,
-            horaPassou: false,
-            horario: '18:00',
-            tipo: 'Particular',
-            icone_tipo: 'money-bill-wave',
-        },
-        {
-            id: '15',
-            status: 5,
-            horaPassou: false,
-            horario: '19:30',
-            tipo: 'Particular',
-            icone_tipo: 'money-bill-wave',
-        },
-        {
-            id: '16',
-            status: 6,
-            horaPassou: false,
-            horario: '20:00',
-            tipo: 'Particular',
-            icone_tipo: 'money-bill-wave',
-        }
-
-    ];
+    let listaAgenda = devAgenda;
 
     return(
         <Container refreshControl={<RefreshControl refreshing={refreshing} onRefresh={getAtualDay}/>}>
@@ -279,16 +177,13 @@ export function Agenda(){
 
             </DateWrapper>
                     
-                { selectedDate != null && listaAgenda.length > 0 && listaAgenda.map((item, key) =>{
+                { selectedDate && agendamentos.map((item, key) =>{
                     return(
                         <AgendaItem 
-                            key={item.id}
+                            key={key}
                             status={item.status} 
-                            horarioAgendado={item.horario}
+                            dataHora={item.dataHora}
                             tipo={item.tipo}
-                            iconeTipo={item.icone_tipo}
-                            dataSelecionada={selectedDate}
-                            dataHoje={atualDate}
                         />
                     )
                 }) }

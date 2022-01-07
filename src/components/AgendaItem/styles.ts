@@ -106,11 +106,15 @@ export const HoraWrapper = styled.View<Props>`
 
 `;
 
-export const Horario = styled.Text`
+export const Horario = styled.Text<Props>`
     color: ${({theme}) => theme.colors.shape};
     font-family: ${({theme}) => theme.fonts.regular};
     font-size: ${RFValue(14)}px;
     padding-top: ${RFValue(2)}px;
+
+    ${({ horaPassou }) => horaPassou == 1 && css `
+        color: #000000;
+    `};
 `;
 
 
