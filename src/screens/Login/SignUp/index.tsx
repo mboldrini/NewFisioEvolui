@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Modal, TouchableWithoutFeedback, Keyboard } from 'react-native';
+import { Modal, TouchableWithoutFeedback, Keyboard, KeyboardAvoidingView } from 'react-native';
 import { InputMasked } from '../../../components/Forms/InputMasked';
 import { useForm } from 'react-hook-form';
 import { InputForm } from '../../../components/Forms/InputForm';
@@ -73,7 +73,7 @@ export function SignUp(){
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <Container>
             <Header>
-                <Titulo>Cadastrar Paciente</Titulo>
+                <Titulo>Olá! Matheus "p/ criar sua conta preciso que nos forneça algumas informações"</Titulo>
             </Header>
 
                 <Form >
@@ -94,87 +94,116 @@ export function SignUp(){
                             placeholder="Sobrenome"
                             autoCapitalize="words"
                             autoCorrect={false}
-                            error={errors.nome && errors.nome.message}
+                            error={errors.sobrenome && errors.sobrenome.message}
                         />
 
                         <InputForm 
-                            name="email"
+                            name="emailCadastro"
                             control={control}
-                            placeholder="E-mail"
+                            value="email_cadastrado"
+                            editable={false}
+                            placeholder="Email"
                             autoCorrect={false}
-                            error={errors.email && errors.email.message}
-                        />
-                            <InputForm 
-                            name="email"
-                            control={control}
-                            placeholder="E-mail"
-                            autoCorrect={false}
-                            error={errors.email && errors.email.message}
-                        />
-                            <InputForm 
-                            name="email"
-                            control={control}
-                            placeholder="E-mail"
-                            autoCorrect={false}
-                            error={errors.email && errors.email.message}
-                        />
-                            <InputForm 
-                            name="email"
-                            control={control}
-                            placeholder="E-mail"
-                            autoCorrect={false}
-                            error={errors.email && errors.email.message}
-                        />
-                            <InputForm 
-                            name="email"
-                            control={control}
-                            placeholder="E-mail"
-                            autoCorrect={false}
-                            error={errors.email && errors.email.message}
-                        />
-                            <InputForm 
-                            name="email"
-                            control={control}
-                            placeholder="E-mail"
-                            autoCorrect={false}
-                            error={errors.email && errors.email.message}
-                        />
-                            <InputForm 
-                            name="email"
-                            control={control}
-                            placeholder="E-mail"
-                            autoCorrect={false}
-                            error={errors.email && errors.email.message}
-                        />
-                            <InputForm 
-                            name="email"
-                            control={control}
-                            placeholder="E-mail"
-                            autoCorrect={false}
-                            error={errors.email && errors.email.message}
-                        />
-                            <InputForm 
-                            name="email"
-                            control={control}
-                            placeholder="E-mail"
-                            autoCorrect={false}
-                            error={errors.email && errors.email.message}
-                        />
-                            <InputForm 
-                            name="email"
-                            control={control}
-                            placeholder="E-mail"
-                            autoCorrect={false}
-                            error={errors.email && errors.email.message}
-                        />
-                            <InputForm 
-                            name="email"
-                            control={control}
-                            placeholder="E-mail"
-                            autoCorrect={false}
-                            error={errors.email && errors.email.message}
+                            error={errors.emailCadastro && errors.emailCadastro.message}
                         />
 
+                        <InputForm 
+                            name="emailProfissional"
+                            control={control}
+                            placeholder="Email profissional"
+                            autoCorrect={false}
+                            error={errors.emailProfissional && errors.emailProfissional.message}
+                        />
+
+                        <InputForm 
+                            name="crefito"
+                            control={control}
+                            placeholder="CREFITO"
+                            autoCorrect={false}
+                            error={errors.crefito && errors.crefito.message}
+                        />
+
+                        <InputMasked
+                            name="celular"
+                            control={control}
+                            placeholder="Celular"
+                            error={errors.celular && errors.celular.message}
+                            type="cel-phone"
+                            options={{
+                                maskType: 'BRL',
+                                withDDD: true,
+                                dddMask: '(99) '
+                            }}
+                        /> 
+                        
+                     
+                        <InputMasked
+                            name="celular"
+                            control={control}
+                            placeholder="Celular"
+                            error={errors.celular && errors.celular.message}
+                            type="cel-phone"
+                            options={{
+                                maskType: 'BRL',
+                                withDDD: true,
+                                dddMask: '(99) '
+                            }}
+                        /> 
+                             <InputMasked
+                            name="celular"
+                            control={control}
+                            placeholder="Celular"
+                            error={errors.celular && errors.celular.message}
+                            type="cel-phone"
+                            options={{
+                                maskType: 'BRL',
+                                withDDD: true,
+                                dddMask: '(99) '
+                            }}
+                        /> 
+                             <InputMasked
+                            name="celular"
+                            control={control}
+                            placeholder="Celular"
+                            error={errors.celular && errors.celular.message}
+                            type="cel-phone"
+                            options={{
+                                maskType: 'BRL',
+                                withDDD: true,
+                                dddMask: '(99) '
+                            }}
+                        /> 
+                             <InputMasked
+                            name="celular"
+                            control={control}
+                            placeholder="Celular"
+                            error={errors.celular && errors.celular.message}
+                            type="cel-phone"
+                            options={{
+                                maskType: 'BRL',
+                                withDDD: true,
+                                dddMask: '(99) '
+                            }}
+                        /> 
+                             <InputMasked
+                            name="celular"
+                            control={control}
+                            placeholder="Celular"
+                            error={errors.celular && errors.celular.message}
+                            type="cel-phone"
+                            options={{
+                                maskType: 'BRL',
+                                withDDD: true,
+                                dddMask: '(99) '
+                            }}
+                        /> 
+                        
+             
+             
+                      
+             
+                      
+             
 
                         {/* <InputMasked 
                             name="cpf"
@@ -197,18 +226,7 @@ export function SignUp(){
                             }}
                         />
 
-                        <InputMasked
-                            name="celular"
-                            control={control}
-                            placeholder="Celular"
-                            error={errors.celular && errors.celular.message}
-                            type="cel-phone"
-                            options={{
-                                maskType: 'BRL',
-                                withDDD: true,
-                                dddMask: '(99) '
-                            }}
-                        />
+                    
 
                         <InputForm 
                             name="email"
@@ -233,16 +251,21 @@ export function SignUp(){
                         
                     </Fields>
 
+                    <WrapFooterCadastro>
+                    <Button 
+                        title="Criar" 
+                        type="ok"
+                        onPress={()=>{}}
+                    />
+                </WrapFooterCadastro>
+
+
                 </Form>
 
+                {/* </KeyboardAvoidingView> */}
       
-            <WrapFooterCadastro>
-                <Button 
-                    title="Criar Conta" 
-                    type="ok"
-                    onPress={()=>{}}
-                />
-            </WrapFooterCadastro>
+  
+              
 
         </Container>
 

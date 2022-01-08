@@ -15,7 +15,7 @@ interface Props extends TouchableOpacityProps{
 export function Button({title, type, onPress, ...rest}: Props){
     return(
         <Container onPress={onPress} {...rest} type={type}>
-            <Title>
+            <Title type={type}>
                 { title }
             </Title>
         </Container>
