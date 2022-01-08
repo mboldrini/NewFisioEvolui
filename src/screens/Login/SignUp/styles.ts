@@ -8,18 +8,39 @@ export const Container = styled.View`
 `;
 
 export const Header = styled.View`
-    align-items: center;
-    justify-content: flex-end;
+    align-items: flex-start;
+    justify-content: flex-start;
     margin-top: ${RFValue(35)}px ;
     margin-bottom: ${RFValue(10)}px;
     padding: 0 ${({theme}) => theme.padding.lateral}px;
 `;
 
-export const Titulo = styled.Text`
+export const Title = styled.View`
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+`;
+
+export const Greetings = styled.Text`
+    font-family: ${({theme}) => theme.fonts.regular};
+    font-size: ${RFValue(26)}px;
+    color: #ffffff;
+
+`;
+
+export const Name = styled.Text`
+    font-family: ${({theme}) => theme.fonts.bold};
     font-size: ${RFValue(22)}px;
     color: #ffffff;
-    font-family: ${({theme}) => theme.fonts.bold};
 `;
+
+export const Message = styled.Text`
+    font-family: ${({theme}) => theme.fonts.thin};
+    font-size: ${RFValue(18)}px;
+    color: #ffffff;
+    padding-left: ${RFValue(10)}px;
+`;
+
 
 export const Form = styled.View`
     flex: 1;
