@@ -82,6 +82,14 @@ export function SignIn(){
                     console.log(err.response.data);
                     if(err.response.data.message === "Usuário não encontrado"){
                         console.log("REDIR p/ CRIAR User");
+                        navigation.navigate('SignUp',{
+                            email: userInfo.email,
+                            family_name: userInfo.family_name,
+                            given_name: userInfo.given_name,
+                            id: userInfo.id,
+                            name: userInfo.name,
+                            picture: userInfo.picture
+                        });
                     }else{
                         alert(err);
                     }
@@ -130,7 +138,6 @@ export function SignIn(){
         }
        // handleUserInfoStorage();
 
-       navigation.navigate('SignUp');
     },[]);
 
     return(

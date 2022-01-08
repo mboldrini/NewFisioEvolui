@@ -17,7 +17,6 @@ import { Cabecalho } from '../../../components/Cabecalho';
 import { PacienteHeader } from '../../../components/PacienteHeader';
 import { BottomSpacer } from '../../../components/BottomSpacer';
 import { PacienteAgendamento } from '../../../components/AgendamentoPaciente'; 
-import { DataLimite } from '../../../components/AgendamentoPaciente/styles';
 
 export function PacientePerfil(){
 
