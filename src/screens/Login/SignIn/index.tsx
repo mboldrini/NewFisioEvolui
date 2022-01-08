@@ -91,7 +91,7 @@ export function SignIn(){
                             picture: userInfo.picture
                         });
                     }else{
-                        alert(err);
+                        alert(JSON.stringify(err.response.data));
                     }
 
                 });
