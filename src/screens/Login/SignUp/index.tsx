@@ -24,7 +24,7 @@ import { api } from '../../../global/api';
 import { useDispatch, useSelector } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { actionCreators, State } from '../../../state';
-import { StorageUserKey } from '../../../global/variaveis/globais';
+import { StorageKeys } from '../../../global/variaveis/globais';
 
 interface FormData{
     crefito: string,
@@ -50,7 +50,7 @@ export function SignUp(){
 
     const navigation = useNavigation();
     const route = useRoute();
-    const [routeParams, setRouteParams] = useState<IUserInfos>(route.params as IUserInfos);
+    const { id, email, family_name, given_name, name, picture } = route.params as IUserInfos;
 
     // Redux de Usuários
     const dispatch = useDispatch();
@@ -70,12 +70,12 @@ export function SignUp(){
     async function handleRegister(form: FormData){
 
         const data = {
-            id: routeParams.id,
-            email: routeParams.email,
-            family_name: routeParams.family_name,
-            given_name: routeParams.given_name,
-            name: routeParams.name,
-            picture: routeParams.picture,
+            id,
+            email,
+            family_name,
+            given_name,
+            name,
+            picture,
             crefito: form.crefito,
             celular: form.celular,
         }
@@ -91,7 +91,7 @@ export function SignUp(){
             console.log(err.response.data);
         });
 
-        await AsyncStorage.setItem(StorageUserKey, JSON.stringify(data) );
+        await AsyncStorage.setItem(StorageKeys.user, JSON.stringify(data) );
         /// Seta o REDUX
         setUserInfos( data );
     

@@ -4,7 +4,7 @@ import { ButtonGoogle } from '../../../components/Forms/ButtonGoogle/Index';
 import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as AuthSession from 'expo-auth-session';
-import { StorageUserKey } from '../../../global/variaveis/globais';
+import { StorageKeys, StorageUserKey } from '../../../global/variaveis/globais';
 import { 
     Container,
     WrapLogo,
@@ -28,6 +28,17 @@ type AuthResponse = {
     }
 }
 
+interface IgData{
+    email: string;
+    family_name: string;
+    given_name: string;
+    id: string,
+    locale: string;
+    name: string;
+    picture: string;
+    verified_email: boolean;
+}
+
 export function SignIn(){
 
     // Navegação
@@ -39,8 +50,9 @@ export function SignIn(){
     const usrState = useSelector((state: State) => state.user);
 
     // Padrão do Login + Usuário
-    const [loading, setLoading] = useState(false);
-   // const [oAuthToken, setoAuthToken] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const [googleUserInfos, setGoogleUserInfos] = useState<IgData>({} as IgData);
+    const [appApiToken, setAppApiToken] = useState(null);
 
     async function handleSignInWithGoogle(){
 
@@ -55,49 +67,25 @@ export function SignIn(){
         const { type, params } = await AuthSession.startAsync({ authUrl }) as AuthResponse;
 
         if(type === 'success'){
-            //setoAuthToken(params.access_token);
-            loadProfile(params.access_token);
+            getGoogleToken(params.access_token);
         }else{
             alert("Login Cancelado");
             setLoading(false);
         }
     }
 
-    async function loadProfile(tkn: string){
+    async function getGoogleToken(googleToken: string){
         try{
 
-            const response = await fetch(`https://www.googleapis.com/oauth2/v2/userinfo?alt=json&access_token=${tkn}`);
+            const response = await fetch(`https://www.googleapis.com/oauth2/v2/userinfo?alt=json&access_token=${googleToken}`);
             const userInfo = await response.json();
-    
+
             console.log(userInfo);
             if(userInfo.email){
-
-                api.post('/sessions', {
-                    email: userInfo.email,
-                    uid: userInfo.id
-                }).then(res =>{
-                    console.log("SUCESSO?");
-                    alert("SUCESSO?");
-                }).catch(err =>{
-                    console.log(err.response.data);
-                    if(err.response.data.message === "Usuário não encontrado"){
-                        console.log("REDIR p/ CRIAR User");
-                        navigation.navigate('SignUp',{
-                            email: userInfo.email,
-                            family_name: userInfo.family_name,
-                            given_name: userInfo.given_name,
-                            id: userInfo.id,
-                            name: userInfo.name,
-                            picture: userInfo.picture
-                        });
-                    }else{
-                        alert(JSON.stringify(err.response.data));
-                    }
-
-                });
-
-            }
-            
+                await AsyncStorage.setItem(StorageKeys.googleUserInfos, JSON.stringify(userInfo));
+                console.log(`Setou no Storage o GoogleUserInfos`);
+                setGoogleUserInfos(userInfo);
+            }   
 
         }catch(err){
             alert(err);
@@ -111,34 +99,79 @@ export function SignIn(){
 
     }
 
-   
+    async function GetApiToken(data: IgData){
+        console.group("GetApiToken");
 
-    // useEffect(()=>{
-    //     if(oAuthToken != null){
-    //         loadProfile(oAuthToken);
-    //     }
-    // }, [oAuthToken]);
+        if(data.email){
 
-    // useEffect(()=>{
-    //     // if(usrState.name){
-    //     //     navigation.navigate('MainTab');
-    //     // }
-    // },[usrState]);
+            await api.post('/sessions', {
+                email: data.email,
+                id: data.id
+            }).then(res =>{
+
+                console.log("SUCESSO AO PEGAR TOKEN VIA API");
+                const token = res.data.token;
+                setAppApiToken(token);
+
+            }).catch(err =>{
+
+                console.log(err.response.data);
+
+                if(err.response.data.message === "Usuário não encontrado"){
+
+                    console.log("REDIRECIONA p/ CRIAR User");
+                    navigation.navigate('SignUp',{ userInfo });
+
+                }else{
+                    console.log("ERRO ao fazer GET p/ a api /sessions");
+                    alert(JSON.stringify(err.response.data));
+                    setLoading(false);
+                }
+
+            });
+
+        }
+
+        console.groupEnd();
+    }
 
     useEffect(()=>{
-        async function handleUserInfoStorage(){
-            setLoading(true);
-            const usrInfosLocal = await AsyncStorage.getItem(StorageUserKey);
-            if(usrInfosLocal != null){
-                const usrInfos = JSON.parse(usrInfosLocal);
-                setUserInfos(usrInfos);
-            }
-    
-            setLoading(false);
+        if(appApiToken){
+            console.log("tem token pego da api");
+            console.log("pegando user infos via api...");
         }
-       // handleUserInfoStorage();
+    }, [appApiToken]); 
 
-    },[]);
+    useEffect(()=>{
+        setLoading(true);
+
+        async function GetGoogleInfosStorage(){
+
+            let googleInfos = await AsyncStorage.getItem(StorageKeys.googleUserInfos);
+                googleInfos = JSON.parse(googleInfos);
+
+                console.group("EFFECT_LOADING - Get Google Infos Storage");
+                    console.log(googleInfos);
+                console.groupEnd();
+            
+            if(googleInfos.email){
+                GetApiToken(googleInfos);
+            }else{
+                setLoading(false);
+            }
+
+        }
+        GetGoogleInfosStorage();
+    }, []);
+
+    useEffect(()=>{
+        if(googleUserInfos){
+            setLoading(true);
+            GetApiToken(googleUserInfos);
+        }
+    },[googleUserInfos]);
+
+
 
     return(
         <Container>

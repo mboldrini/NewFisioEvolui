@@ -53,7 +53,12 @@ export const tipoDeAgendamento = [
     }
 ]
 
-export const StorageUserKey = "fisioEvolui:user";
+export const StorageKeys = {
+    appToken: 'fisioevolui:appToken',
+    googleUserInfos: 'fisioevolui:googleUserInfos',
+    user: 'fisioEvolui:user'
+};
+
 
 
 
