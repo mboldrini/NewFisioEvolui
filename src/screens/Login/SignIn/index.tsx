@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from 'react';
-//import { Alert } from 'react-native';
 import { ButtonGoogle } from '../../../components/Forms/ButtonGoogle/Index';
 import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as AuthSession from 'expo-auth-session';
-import { StorageKeys, StorageUserKey } from '../../../global/variaveis/globais';
+import { StorageKeys } from '../../../global/variaveis/globais';
 import { 
     Container,
     WrapLogo,
@@ -135,10 +134,46 @@ export function SignIn(){
         console.groupEnd();
     }
 
+    async function GetUserInfos(token: string){
+        console.group("GetUserInfos");
+
+        const config = {
+            headers: { Authorization: `Bearer ${token}` }
+        };
+        
+        const bodyParameters = {
+           key: "value"
+        };
+        
+        await api.get('/users', config)
+        .then(res =>{
+
+            console.log( res.data.user );
+
+            const userInfos = res.data.user;
+
+            if(userInfos.id){
+                setUserInfos( userInfos );
+            }
+          
+
+        }).catch(err =>{
+
+            console.log(err.response.data);
+
+        });
+
+        console.groupEnd();
+    }
+
     useEffect(()=>{
+        async function SalvaApiTokenEPegaUserInfos(){
+            await AsyncStorage.setItem(StorageKeys.appToken, appApiToken);
+            console.log("Salvou novo token no storage...");
+            GetUserInfos(appApiToken);
+        }
         if(appApiToken){
-            console.log("tem token pego da api");
-            console.log("pegando user infos via api...");
+            SalvaApiTokenEPegaUserInfos();
         }
     }, [appApiToken]); 
 
@@ -154,14 +189,16 @@ export function SignIn(){
                     console.log(googleInfos);
                 console.groupEnd();
             
-            if(googleInfos.email){
-                GetApiToken(googleInfos);
+            if(googleInfos){
+                 GetApiToken(googleInfos);
             }else{
                 setLoading(false);
             }
 
         }
         GetGoogleInfosStorage();
+
+
     }, []);
 
     useEffect(()=>{
@@ -170,6 +207,13 @@ export function SignIn(){
             GetApiToken(googleUserInfos);
         }
     },[googleUserInfos]);
+
+
+    useEffect(()=>{
+        if(usrState.id){
+            navigation.navigate("MainTab");
+        }
+    }, [usrState]);
 
 
 

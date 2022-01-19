@@ -32,6 +32,7 @@ export const daysLong = [
     'Sábado'
 ]
    
+/// TRANSFORMAR EM ENUM
 export const statusAtendimento = [
     'Default',/// JAMAIS ALTERAR ESSA SEQUÊNCIA
     'Não Atendido',/// JAMAIS ALTERAR ESSA SEQUÊNCIA
