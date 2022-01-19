@@ -66,14 +66,14 @@ export function SignIn(){
         const { type, params } = await AuthSession.startAsync({ authUrl }) as AuthResponse;
 
         if(type === 'success'){
-            getGoogleToken(params.access_token);
+            GetGoogleToken(params.access_token);
         }else{
             alert("Login Cancelado");
             setLoading(false);
         }
     }
 
-    async function getGoogleToken(googleToken: string){
+    async function GetGoogleToken(googleToken: string){
         try{
 
             const response = await fetch(`https://www.googleapis.com/oauth2/v2/userinfo?alt=json&access_token=${googleToken}`);
@@ -178,19 +178,18 @@ export function SignIn(){
     }, [appApiToken]); 
 
     useEffect(()=>{
-        setLoading(true);
-
         async function GetGoogleInfosStorage(){
+            setLoading(true);
 
-            let googleInfos = await AsyncStorage.getItem(StorageKeys.googleUserInfos);
-                googleInfos = JSON.parse(googleInfos);
+            let storageGoogleString = await AsyncStorage.getItem(StorageKeys.googleUserInfos);
+            let googleInfos = JSON.parse(storageGoogleString) as IgData;
 
-                console.group("EFFECT_LOADING - Get Google Infos Storage");
-                    console.log(googleInfos);
+                console.group("Loading - Get Google Infos Storage");
+                console.log(googleInfos);
                 console.groupEnd();
             
             if(googleInfos){
-                 GetApiToken(googleInfos);
+                GetApiToken(googleInfos);
             }else{
                 setLoading(false);
             }

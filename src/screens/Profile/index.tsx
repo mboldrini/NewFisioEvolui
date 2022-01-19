@@ -1,7 +1,7 @@
 import React from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { BotoesPerfil } from '../../components/BotoesPerfil';
-import { StorageUserKey } from '../../global/variaveis/globais';
+import { StorageKeys, StorageUserKey } from '../../global/variaveis/globais';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { 
     Container,
@@ -41,8 +41,10 @@ export function Profile(){
     const { setUserInfos } = bindActionCreators(actionCreators, dispatch);
     const usrState = useSelector((state: State) => state.user);
 
-    function handleLogoff(){
-        AsyncStorage.removeItem(StorageUserKey);
+    async function handleLogoff(){
+        await AsyncStorage.removeItem(StorageKeys.appToken);
+        await AsyncStorage.removeItem(StorageKeys.googleUserInfos);
+        await AsyncStorage.removeItem(StorageKeys.user);
         navigation.navigate('SignIn');
     }
 
