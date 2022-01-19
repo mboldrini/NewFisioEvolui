@@ -22,7 +22,7 @@ import { Select } from '../../components/Forms/Select';
 
 // import da tela que vai virar modal
 import { ModalSelect } from '../ModalSelect';
-import { categories } from '../../global/variaveis/categories';
+import { categories } from '../../global/devVariaveis';
 
 import { ModalAgendamento } from '../ModalAgendamento';
 import { ButtonSimple } from '../../components/Forms/ButtonSimple/Index';
