@@ -120,7 +120,6 @@ export function ModalAgendamento({
             {id: 42, dataHora: '2022-02-19T10:00', data: '2022-02-19T03:00:00.000Z'}
         ];
 
-
     }
   
     useEffect(()=>{
