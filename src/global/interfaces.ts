@@ -5,3 +5,4 @@ export interface ITipoAgendamento{
     dataHora: string,
     tipo: string,
 }
+
