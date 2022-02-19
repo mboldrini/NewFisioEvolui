@@ -8,6 +8,7 @@ const initialState = {
     id: '',
     name: '',
     picture: '',
+    token: '',
 } as IUserType
 
 const reducer = (state = initialState, action: Action) => {
@@ -20,8 +21,9 @@ const reducer = (state = initialState, action: Action) => {
                 given_name: action.payload.infos.given_name,
                 id: action.payload.infos.id,
                 name: action.payload.infos.name,
-                picture: action.payload.infos.picture
-            };
+                picture: action.payload.infos.picture,
+                token: action.payload.infos.token
+            }
         default: 
             return state;
     }

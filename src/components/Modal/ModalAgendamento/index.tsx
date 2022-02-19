@@ -2,10 +2,9 @@ import { FontAwesome5 } from '@expo/vector-icons';
 import React, { useEffect, useState } from 'react';
 import { useTheme } from 'styled-components';
 
-import { StorageKeys } from '../../../global/variaveis/globais';
-// import { useDispatch, useSelector } from 'react-redux';
-// import { bindActionCreators } from 'redux';
-// import { actionCreators, State } from '../../../state';
+import { useDispatch, useSelector } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { actionCreators, State } from '../../../state';
 
 import {
     Container,
@@ -54,36 +53,33 @@ interface ISelectedDay{
     [iDate: string]: ISelectedDayConfigs;
 }
 
+// Lista de Objeto que a api retorna
+interface IHorariosApi{
+    id: number,
+    data: Date,
+    dataHora: string,
+}
+
 export function ModalAgendamento({
         closeSelectCategory,
     }: Props){
 
     const theme = useTheme();
 
-    // const dispatch = useDispatch();
-    // const { setUserInfos } = bindActionCreators(actionCreators, dispatch);
-    // const usrState = useSelector((state: State) => state.user);
+    const dispatch = useDispatch();
+    const { setUserInfos } = bindActionCreators(actionCreators, dispatch);
+    const usrState = useSelector((state: State) => state.user);
 
     const [minimDate, setMinimDate] = useState(null);
     const [selectedDate, setSelectedDate] = useState<ISelectedDay>(null);
 
     const [listaHorasDisponiveis, setListaHorasDisponiveis] = useState([]);
 
-    async function GetHorariosDisponiveis(){
+    async function ApiGetHorariosDisponiveis(){
 
-        console.log("obtendo lista de horas");
+        console.log("API - obtendo lista de horas");
  
-        const token = await AsyncStorage.getItem(StorageKeys.appToken);
-
-        const strHeader = `Bearer ${token}`;
-
-        const cabecalho = {
-            headers: { Authorization: `Bearer ${token}` }
-        };
-        const corpo = {
-            "dataInicio": "2022-02-19",
-            "dataFim": "2022-02-19",
-        }
+        const token = usrState.token;
 
         try{
 
@@ -95,21 +91,18 @@ export function ModalAgendamento({
                 error => {
                     return Promise.reject(error);
                 }
-            )
+            );
+
+            const dtInicio = Object.keys(selectedDate)[0] + "T00:01";
+            const dtFim = Object.keys(selectedDate)[0] + "T23:59";
 
             await api.post('/agendamento/allday', {
-            
-                    dataInicio: "2022-02-19T00:00",
-                    dataFim: "2022-02-19T00:00",
-            }     
-
-            ).then(res =>{
-                console.log("ok?");
-                console.log(res);
+                dataInicio: dtInicio,
+                dataFim: dtFim,
+            }).then(res =>{
                 console.log(res.data);
             }).catch(err =>{
-                console.log("ERR!");
-                console.log(err.response);
+                console.log("Nenhum horario agendado p/ esse dia!");
                 console.log(err.response.data)
             });
     
@@ -120,6 +113,15 @@ export function ModalAgendamento({
         }
      
     }
+
+    function ListaHorariosDisponiveis(/*horariosMUDAR: IHorariosApi[]*/){
+        let horariosRecebidos = [
+            {id: 41, dataHora: '2022-02-19T08:00', data: '2022-02-19T03:00:00.000Z'},
+            {id: 42, dataHora: '2022-02-19T10:00', data: '2022-02-19T03:00:00.000Z'}
+        ];
+
+
+    }
   
     useEffect(()=>{
         function desativaDataRetroativa(){
@@ -127,13 +129,16 @@ export function ModalAgendamento({
                 setMinimDate( format(new Date(), 'yyyy-M-dd') );
             }
         }
-        desativaDataRetroativa();       
+        desativaDataRetroativa();     
+        
+        ListaHorariosDisponiveis();
+
     }, []);
 
     useEffect(()=>{
         setListaHorasDisponiveis([]);
         if(selectedDate != null){
-            GetHorariosDisponiveis();
+            ApiGetHorariosDisponiveis();
         }
     },[selectedDate]);
 

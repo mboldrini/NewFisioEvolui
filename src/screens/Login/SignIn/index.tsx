@@ -20,6 +20,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { actionCreators, State } from '../../../state';
 
+
 type AuthResponse = {
     type: string;
     params: {
@@ -91,15 +92,11 @@ export function SignIn(){
         }finally{
             setLoading(false);
         }
-    
-        // await AsyncStorage.setItem(StorageUserKey, JSON.stringify(userInfo) );
-        // seta o REDUX
-        // setUserInfos( userInfo );
 
     }
 
     async function GetApiToken(data: IgData){
-        console.group("GetApiToken");
+        // console.group("GetApiToken");
 
         if(data.email){
 
@@ -108,7 +105,7 @@ export function SignIn(){
                 id: data.id
             }).then(res =>{
 
-                console.log("SUCESSO AO PEGAR TOKEN VIA API");
+                // console.log("SUCESSO AO PEGAR TOKEN VIA API");
                 const token = res.data.token;
                 setAppApiToken(token);
 
@@ -131,11 +128,11 @@ export function SignIn(){
 
         }
 
-        console.groupEnd();
+        // console.groupEnd();
     }
 
     async function GetUserInfos(token: string){
-        console.group("GetUserInfos");
+        // console.group("GetUserInfos");
 
         const config = {
             headers: { Authorization: `Bearer ${token}` }
@@ -148,9 +145,13 @@ export function SignIn(){
         await api.get('/users', config)
         .then(res =>{
 
-            console.log( res.data.user );
+            // console.log( res.data.user );
 
-            const userInfos = res.data.user;
+            let userInfos = res.data.user;
+            userInfos = {
+                ...userInfos,
+                token: token
+            }
 
             if(userInfos.id){
                 setUserInfos( userInfos );
@@ -163,13 +164,13 @@ export function SignIn(){
 
         });
 
-        console.groupEnd();
+        // console.groupEnd();
     }
 
     useEffect(()=>{
         async function SalvaApiTokenEPegaUserInfos(){
             await AsyncStorage.setItem(StorageKeys.appToken, appApiToken);
-            console.log("Salvou novo token no storage...");
+            // console.log("Salvou novo token no storage...");
             GetUserInfos(appApiToken);
         }
         if(appApiToken){
@@ -184,9 +185,9 @@ export function SignIn(){
             let storageGoogleString = await AsyncStorage.getItem(StorageKeys.googleUserInfos);
             let googleInfos = JSON.parse(storageGoogleString) as IgData;
 
-                console.group("Loading - Get Google Infos Storage");
-                console.log(googleInfos);
-                console.groupEnd();
+                // console.group("Loading - Get Google Infos Storage");
+                // console.log(googleInfos);
+                // console.groupEnd();
             
             if(googleInfos){
                 GetApiToken(googleInfos);
@@ -196,7 +197,6 @@ export function SignIn(){
 
         }
         GetGoogleInfosStorage();
-
 
     }, []);
 

@@ -9,4 +9,5 @@ export interface IUserType{
     id: string,
     name: string,
     picture: string;
+    token: string;
 }

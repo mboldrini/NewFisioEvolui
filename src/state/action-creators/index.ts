@@ -3,7 +3,7 @@ import { ActionType } from "../action-types";
 import { Dispatch } from "react";
 import { Action } from '../actions/index';
 
-export const setUserInfos = ({email, family_name, given_name, id, name, picture}: IUserType) => {
+export const setUserInfos = ({email, family_name, given_name, id, name, picture, token}: IUserType) => {
     return (dispatch: Dispatch<Action>) => {
         dispatch({
             type: ActionType.SETINFOS,
@@ -14,10 +14,10 @@ export const setUserInfos = ({email, family_name, given_name, id, name, picture}
                     given_name,
                     id,
                     name,
-                    picture
+                    picture,
+                    token
                 }
             }
         })
     }
 }
-

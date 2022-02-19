@@ -5,4 +5,5 @@ type SetInfos = {
     payload: any
 }
 
+
 export type Action = SetInfos; // | OutraAction

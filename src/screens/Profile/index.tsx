@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { BotoesPerfil } from '../../components/BotoesPerfil';
 import { StorageKeys, StorageUserKey } from '../../global/variaveis/globais';
@@ -38,7 +38,7 @@ export function Profile(){
     const navigation = useNavigation();
 
     const dispatch = useDispatch();
-    const { setUserInfos } = bindActionCreators(actionCreators, dispatch);
+    const { setUserInfos, setUserToken } = bindActionCreators(actionCreators, dispatch);
     const usrState = useSelector((state: State) => state.user);
 
     async function handleLogoff(){
@@ -47,6 +47,15 @@ export function Profile(){
         await AsyncStorage.removeItem(StorageKeys.user);
         navigation.navigate('SignIn');
     }
+
+    useEffect(()=>{
+        setUserToken("aaaaaaaa");
+        console.log(usrState);
+    },[]);
+
+    useEffect(()=>{
+        console.log(usrState);
+    },[usrState]);
 
 
     return(
