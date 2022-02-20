@@ -56,8 +56,8 @@ interface ISelectedDay{
 // Lista de Objeto que a api retorna
 interface IHorariosApi{
     id: number,
-    data: Date,
-    dataHora: string,
+    hora: number,
+    indisponivel: boolean
 }
 
 export function ModalAgendamento({
@@ -75,50 +75,66 @@ export function ModalAgendamento({
 
     const [listaHorasDisponiveis, setListaHorasDisponiveis] = useState([]);
 
+    const [selectedHour, setSelectedHour] = useState(null);
+
     async function ApiGetHorariosDisponiveis(){
 
-        console.log("API - obtendo lista de horas");
+        if(selectedDate){
+
+            console.log("API - obtendo lista de horas");
+            setListaHorasDisponiveis([]);
+            setSelectedHour(null);
  
-        const token = usrState.token;
+            const token = usrState.token;
 
-        try{
+            try{
 
-            api.interceptors.request.use(
-                config => {
-                    config.headers.authorization = `Bearer ${token}`;
-                    return config;
-                },
-                error => {
-                    return Promise.reject(error);
-                }
-            );
+                api.interceptors.request.use(
+                    config => {
+                        config.headers.authorization = `Bearer ${token}`;
+                        return config;
+                    },
+                    error => {
+                        return Promise.reject(error);
+                    }
+                );
 
-            const dtInicio = Object.keys(selectedDate)[0] + "T00:01";
-            const dtFim = Object.keys(selectedDate)[0] + "T23:59";
+                const dtInicio = Object.keys(selectedDate)[0] + "T00:01";
+                const dtFim = Object.keys(selectedDate)[0] + "T23:59";
 
-            await api.post('/agendamento/allday', {
-                dataInicio: dtInicio,
-                dataFim: dtFim,
-            }).then(res =>{
-                console.log(res.data);
-            }).catch(err =>{
-                console.log("Nenhum horario agendado p/ esse dia!");
-                console.log(err.response.data)
-            });
-    
+                await api.post('/agendamento/allday', {
+                    dataInicio: dtInicio,
+                    dataFim: dtFim,
+                }).then(res =>{
 
-        }catch(err){
-            console.log("ERR");
-            console.log(err);
+                    ListaHorariosDisponiveis(res.data);
+
+                }).catch(err =>{
+                    console.log("Nenhum horario agendado p/ esse dia!");
+                    console.log(err.response.data)
+                });
+        
+
+            }catch(err){
+                console.log("ERR");
+                console.log(err);
+            }
+
         }
      
     }
 
-    function ListaHorariosDisponiveis(/*horariosMUDAR: IHorariosApi[]*/){
-        let horariosRecebidos = [
-            {id: 41, dataHora: '2022-02-19T08:00', data: '2022-02-19T03:00:00.000Z'},
-            {id: 42, dataHora: '2022-02-19T10:00', data: '2022-02-19T03:00:00.000Z'}
-        ];
+    function ListaHorariosDisponiveis(horarios: IHorariosApi[]){
+
+        let horas = horarios.filter( (horario) => {
+            if( horario.hora >= 8 && horario.hora <= 20 ){
+                return horario;
+            }
+        });
+        
+        setListaHorasDisponiveis(horas);
+
+        console.log( horas );
 
     }
   
@@ -128,17 +144,12 @@ export function ModalAgendamento({
                 setMinimDate( format(new Date(), 'yyyy-M-dd') );
             }
         }
-        desativaDataRetroativa();     
+        //desativaDataRetroativa();     
         
-        ListaHorariosDisponiveis();
-
     }, []);
 
     useEffect(()=>{
-        setListaHorasDisponiveis([]);
-        if(selectedDate != null){
             ApiGetHorariosDisponiveis();
-        }
     },[selectedDate]);
 
     // useEffect(()=>{
@@ -146,7 +157,6 @@ export function ModalAgendamento({
     //         GetHorariosDisponiveis();
     //     }
     // },[listaHorasDisponiveis]);
-    
 
     return(
         <Container>
@@ -207,17 +217,53 @@ export function ModalAgendamento({
                         };
                         setSelectedDate(diaSelecionado);
                     }}
+
+                    onDayPress={day=>{
+                        const diaSelecionado: ISelectedDay = {};
+                        diaSelecionado[day.dateString] = {
+                            marked: true,
+                            color: '#4EADBE', 
+                            textColor: 'white'
+                        };
+                        setSelectedDate(diaSelecionado);
+                    }}
+
                     onMonthChange={month => {
                         console.log('month changed', month);
                     }}
                 />
             </WrapCalendar>
 
-            <Wrap>
-                { listaHorasDisponiveis.length <= 0 &&
+            {  listaHorasDisponiveis.length <= 0 &&
+                <Wrap>
                     <TextCarregandoHoras>Procurando Horarios Disponíveis...</TextCarregandoHoras>
-                }
-            </Wrap>
+                </Wrap>
+            } 
+            { listaHorasDisponiveis.length > 0 &&
+                <Wrap>
+                   <TimeList>
+                       {listaHorasDisponiveis.map((item, key)=>(
+                           <TimeItem
+                               escolhido={item.hora == selectedHour}
+                               ativo={!item.indisponivel}
+                               key={key}
+                               onPress={()=>{
+                                   if(item.indisponivel == false){
+                                       setSelectedHour(item.hora)
+                                   }
+                               }}
+                           >
+                               <TimeItemText
+                                   escolhido={item.hora == selectedHour}
+                                   ativo={!item.indisponivel}
+                               >
+                                   {item.hora}
+                               </TimeItemText>
+                           </TimeItem>
+                       ))}
+                   </TimeList>
+                </Wrap>
+            }
 
 
             {/* { listHours &&

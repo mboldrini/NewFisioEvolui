@@ -65,13 +65,11 @@ export const Wrap = styled.View`
     align-items:center;
     justify-content: center;
     padding: ${({theme}) => theme.padding.superior}px 0;
-    margin: 0 ${({theme}) => theme.margin.lateral}px;
+    margin: ${({theme}) => theme.margin.lateral_half}px ${({theme}) => theme.margin.lateral}px;
     margin-bottom: ${({theme}) => theme.margin.bottom}px;
 `;
 
-export const WrapCalendar = styled.View`
-    margin-bottom: ${({ theme }) => theme.margin.lateral };
-`;
+export const WrapCalendar = styled.View``;
 
 export const WrapCarregandoHoras = styled.View`
     background-color: ${({theme}) => theme.colors.shape};
@@ -93,7 +91,8 @@ export const TimeList = styled.ScrollView.attrs({
     horizontal:true,
     showsHorizontalScrollIndicator:false,
     contentContainerStyle: { paddingHorizontal: 10 }
-})``;
+})`
+`;
 
 export const TimeItem = styled.TouchableOpacity<PropsHoraEscolhida>`
     width: ${RFValue(75)}px;

@@ -49,11 +49,6 @@ export function Profile(){
     }
 
     useEffect(()=>{
-        setUserToken("aaaaaaaa");
-        console.log(usrState);
-    },[]);
-
-    useEffect(()=>{
         console.log(usrState);
     },[usrState]);
 
