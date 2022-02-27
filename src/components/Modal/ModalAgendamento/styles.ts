@@ -145,4 +145,4 @@ export const WrapBtn = styled.View`
     margin-bottom: ${({theme}) => theme.margin.bottom}px;
 `;
 
-
+export const View = styled.View``;
