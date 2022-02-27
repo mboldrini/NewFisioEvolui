@@ -5,7 +5,6 @@ import { RectButton } from "react-native-gesture-handler";
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import theme from "../../global/styles/theme";
 
-import CalendarPicker from 'react-native-calendar-picker';
 
 interface Props{
     isActive: boolean;
@@ -69,26 +68,6 @@ export const Wrap = styled.View`
     margin: 0 ${({theme}) => theme.margin.lateral}px;
     margin-bottom: ${({theme}) => theme.margin.bottom}px;
 `;
-
-export const DataHoje = styled.Text`
-    font-size: ${RFValue(16)}px;
-    font-family: ${({theme}) => theme.fonts.regular};
-`;
-
-export const Calendario = styled(CalendarPicker).attrs({
-    startFromMonday:true,
-    allowRangeSelection:false,
-    weekdays:['Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab', 'Dom'],
-    months:['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'],
-    previousTitle: "Anterior",
-    nextTitle:"Próximo",
-    todayBackgroundColor: theme.colors.status_default,
-    selectedDayColor: theme.colors.primary,
-    selectedDayTextColor:"#ffffff",
-    width: 300,
-})`
-`;
-
 
 export const TimeList = styled.ScrollView.attrs({
     horizontal:true,

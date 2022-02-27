@@ -1,11 +1,10 @@
 import { FontAwesome5 } from '@expo/vector-icons';
 import React, { useEffect, useState } from 'react';
 import { useTheme } from 'styled-components';
-
+// REDUX
 import { useDispatch, useSelector } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { actionCreators, State } from '../../../state';
-
 import {
     Container,
     Body,
@@ -33,56 +32,57 @@ import {
 import { ILocalesPtBr } from './localeConfig';
 import { format } from 'date-fns';
 import { api } from '../../../global/api';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-
 
 interface Props{
     closeSelectCategory: () => void;
 }
 
-//Configs de locale do calendario
+//Configs Locale - Calendar
 LocaleConfig.locales['pt-br'] = ILocalesPtBr;
 LocaleConfig.defaultLocale = 'pt-br';
-
 interface ISelectedDayConfigs{
     marked: boolean;
     color: string;
     textColor: string;
+    selected: boolean
 }
 interface ISelectedDay{
     [iDate: string]: ISelectedDayConfigs;
 }
 
-// Lista de Objeto que a api retorna
+// List of Scheduled Objects
 interface IHorariosApi{
     id: number,
     hora: number,
     indisponivel: boolean
 }
 
-export function ModalAgendamento({
-        closeSelectCategory,
-    }: Props){
+export function ModalAgendamento({ closeSelectCategory }: Props){
 
+    /* CSS Theme */
     const theme = useTheme();
 
+    /* User Redux */
     const dispatch = useDispatch();
     const { setUserInfos } = bindActionCreators(actionCreators, dispatch);
     const usrState = useSelector((state: State) => state.user);
 
-    const [minimDate, setMinimDate] = useState(null);
+    // Permit to choose a retroactive date
+    const [retroactive, setRetroactive] = useState(null);
+    // Day selected by the user
     const [selectedDate, setSelectedDate] = useState<ISelectedDay>(null);
 
-    const [listaHorasDisponiveis, setListaHorasDisponiveis] = useState([]);
-
+    // Available times - LIST
+    const [availableTimesList, setAvailableTimesList] = useState([]);
+    // Hour Selected by the user
     const [selectedHour, setSelectedHour] = useState(null);
 
-    async function ApiGetHorariosDisponiveis(){
+    async function GetScheduledHours(){
 
         if(selectedDate){
 
             console.log("API - obtendo lista de horas");
-            setListaHorasDisponiveis([]);
+            setAvailableTimesList([]);
             setSelectedHour(null);
  
             const token = usrState.token;
@@ -107,7 +107,7 @@ export function ModalAgendamento({
                     dataFim: dtFim,
                 }).then(res =>{
 
-                    ListaHorariosDisponiveis(res.data);
+                    ShowScheduledHours(res.data);
 
                 }).catch(err =>{
                     console.log("Nenhum horario agendado p/ esse dia!");
@@ -124,7 +124,7 @@ export function ModalAgendamento({
      
     }
 
-    function ListaHorariosDisponiveis(horarios: IHorariosApi[]){
+    function ShowScheduledHours(horarios: IHorariosApi[]){
 
         let horas = horarios.filter( (horario) => {
             if( horario.hora >= 8 && horario.hora <= 20 ){
@@ -132,31 +132,25 @@ export function ModalAgendamento({
             }
         });
         
-        setListaHorasDisponiveis(horas);
+        setAvailableTimesList(horas);
 
         console.log( horas );
 
     }
   
     useEffect(()=>{
-        function desativaDataRetroativa(){
-            if(minimDate == null){
-                setMinimDate( format(new Date(), 'yyyy-M-dd') );
+        function EnableRetroactiveDate(){
+            if(retroactive == null){
+                setRetroactive( format(new Date(), 'yyyy-M-dd') );
             }
         }
-        //desativaDataRetroativa();     
+        //EnableRetroactiveDate();     
         
     }, []);
 
     useEffect(()=>{
-            ApiGetHorariosDisponiveis();
+        GetScheduledHours();
     },[selectedDate]);
-
-    // useEffect(()=>{
-    //     if(listaHorasDisponiveis.length <= 0 && selectedDate != null){
-    //         GetHorariosDisponiveis();
-    //     }
-    // },[listaHorasDisponiveis]);
 
     return(
         <Container>
@@ -186,34 +180,53 @@ export function ModalAgendamento({
                             color={theme.colors.primary}
                         />
                     }
+
                     headerStyle={{
                         borderBottomWidth: 0.5,
                         borderBottomColor: "#cfcfcf",
                         paddingBottom: 2,
                         marginBottom: 2,
                     }}
+
                     style={{
                         marginRight: theme.margin.lateral,
                         marginLeft: theme.margin.lateral,
                         borderRadius: theme.bordas.padrao,
                     }}
+
                     theme={{
                         textDayFontFamily: theme.fonts.regular,
                         textDayHeaderFontFamily: theme.fonts.bold,
                         textMonthFontSize: 14,
                         textDayFontSize: 15,
+                        textSectionTitleColor: '#000000',
+                        textMonthFontFamily: theme.fonts.bold,
+
+                        todayTextColor: '#00adf5',
+                        selectedDayBackgroundColor: '#4EADBE',
+                        dotColor: '#4EADBE',
                     }}
-                    minDate={minimDate}
+
+                    minDate={retroactive}
                     hideExtraDays={true}
-                    markingType='period'
-                    markedDates={ selectedDate }
+                    markingType="dot"
+
+                    markedDates={selectedDate}
+
+                    // markedDates={{ 
+                    //     '2022-02-19': {disabled: false,  color: '#4EADBE',  },
+                    //     '2022-02-20': {disabled: false,  color: '#4EADBE',   }
+                    // }}
+
+                    disabledDaysIndexes={[0, 6]}
+
                     // Handler which gets executed on day long press. Default = undefined
                     onDayLongPress={day => {
                         const diaSelecionado: ISelectedDay = {};
                         diaSelecionado[day.dateString] = {
                             marked: true,
-                            color: '#4EADBE', 
-                            textColor: 'white'
+                            textColor: 'white',
+                            selected: true
                         };
                         setSelectedDate(diaSelecionado);
                     }}
@@ -222,8 +235,8 @@ export function ModalAgendamento({
                         const diaSelecionado: ISelectedDay = {};
                         diaSelecionado[day.dateString] = {
                             marked: true,
-                            color: '#4EADBE', 
-                            textColor: 'white'
+                            textColor: 'white',
+                            selected: true
                         };
                         setSelectedDate(diaSelecionado);
                     }}
@@ -234,15 +247,16 @@ export function ModalAgendamento({
                 />
             </WrapCalendar>
 
-            {  listaHorasDisponiveis.length <= 0 &&
+
+            {  availableTimesList.length <= 0 &&
                 <Wrap>
                     <TextCarregandoHoras>Procurando Horarios Disponíveis...</TextCarregandoHoras>
                 </Wrap>
             } 
-            { listaHorasDisponiveis.length > 0 &&
+            { availableTimesList.length > 0 &&
                 <Wrap>
                    <TimeList>
-                       {listaHorasDisponiveis.map((item, key)=>(
+                       {availableTimesList.map((item, key)=>(
                            <TimeItem
                                escolhido={item.hora == selectedHour}
                                ativo={!item.indisponivel}
