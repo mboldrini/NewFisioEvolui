@@ -290,7 +290,7 @@ export function ModalAgendamento({ closeSelectCategory }: Props){
                 </Wrap>
             }
 
-            <Wrap>
+            <Wrap> 
                 <Checkbox
                     //style={styles.checkbox}
                     value={isChecked}
@@ -299,32 +299,6 @@ export function ModalAgendamento({ closeSelectCategory }: Props){
                 />
             </Wrap>
 
-
-            {/* { listHours &&
-                <Wrap>
-                    <TimeList>
-                        {listHours.map((item, key)=>(
-                            <TimeItem
-                                escolhido={item.hora == selectedHour}
-                                ativo={item.disponivel}
-                                key={key}
-                                onPress={()=>{
-                                    if(item.disponivel == true){
-                                        setSelectedHour(item.hora)
-                                    }
-                                }}
-                            >
-                                <TimeItemText
-                                    escolhido={item.hora == selectedHour}
-                                    ativo={item.disponivel}
-                                >
-                                    {item.hora}
-                                </TimeItemText>
-                            </TimeItem>
-                        ))}
-                    </TimeList>
-                </Wrap>
-            } */}
         </Body>
 
             {/* <Footer>
