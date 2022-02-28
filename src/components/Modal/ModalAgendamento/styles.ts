@@ -8,6 +8,10 @@ import {GestureHandlerRootView} from 'react-native-gesture-handler';
 
 interface Props{
     isActive: boolean;
+  
+}
+interface PropsFooterButton{
+    type: 'ok' | 'cancel';
 }
 
 interface PropsHoraEscolhida{
@@ -15,10 +19,9 @@ interface PropsHoraEscolhida{
     ativo: boolean;
 }
 
-export const Container = styled(GestureHandlerRootView)`
+export const Container = styled.ScrollView`
     flex: 1;
     background-color: ${({theme}) => theme.colors.primary};
-    justify-content: space-between;
 `;
 
 export const Body = styled.View``;
@@ -65,8 +68,8 @@ export const Wrap = styled.View`
     align-items:center;
     justify-content: center;
     padding: ${({theme}) => theme.padding.superior}px 0;
-    margin: ${({theme}) => theme.margin.lateral_half}px ${({theme}) => theme.margin.lateral}px;
-    margin-bottom: ${({theme}) => theme.margin.bottom}px;
+    margin: 0 ${({theme}) => theme.margin.lateral}px;
+    margin-top: ${({theme}) => theme.margin.lateral_half}px;
 `;
 
 export const WrapCalendar = styled.View``;
@@ -136,11 +139,55 @@ export const TimeItemText = styled.Text<PropsHoraEscolhida>`
 
 `;
 
-export const Footer = styled.View`
+export const WrapIsEvaluation = styled.View`
+    flex-direction: row;
+    background-color: ${({theme}) => theme.colors.shape};
+    border-radius: ${({theme}) => theme.bordas.padrao}px;
+    align-items:center;
+    justify-content: flex-start;
     margin: 0 ${({theme}) => theme.margin.lateral}px;
-    margin-bottom: ${RFValue(25)}px;
+    margin-top: ${({theme}) => theme.margin.lateral_half}px;
+    padding-left: ${({theme}) => theme.padding.lateral}px;
 `;
 
-export const WrapBtn = styled.View`
-    margin-bottom: ${({theme}) => theme.margin.bottom}px;
+export const TextEvaluation = styled.Text`
+    font-size: ${RFValue(15)}px;
+    font-family: ${({ theme }) => theme.fonts.regular};
+    padding: ${RFValue(5)}px;
 `;
+
+
+export const WrapButtons = styled.View`
+    margin: 0 ${({theme}) => theme.margin.lateral}px;
+    margin-top: ${({theme}) => theme.margin.lateral + RFValue(5)}px;
+    margin-bottom: ${({theme}) => theme.margin.lateral}px;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+`;
+
+export const Button = styled.TouchableOpacity<PropsFooterButton>`
+
+    align-items: center;
+    justify-content: center;
+    border-radius: ${({theme}) => theme.bordas.padrao}px;
+    width: 45%;
+
+     ${({ type }) => type === "ok" && css `
+         background-color: ${({theme}) => theme.colors.success};
+         height: ${RFValue(40)}px;
+     `};
+
+     ${({ type }) => type === "cancel" && css `
+         background-color: ${({theme}) => theme.colors.status_cancelado};
+         height: ${RFValue(40)}px;
+     `};
+
+`;
+
+export const Title = styled.Text`
+    font-family: ${({theme}) => theme.fonts.bold};
+    color: ${({theme}) => theme.colors.shape};
+    font-size: ${RFValue(16)}px;
+`;
+

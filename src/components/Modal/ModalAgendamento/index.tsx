@@ -22,8 +22,14 @@ import {
     TimeList,
     TimeItem,
     TimeItemText,
-    Footer,
-    WrapBtn,
+
+    WrapIsEvaluation,
+    TextEvaluation,
+
+    WrapButtons,
+    Button,
+    Title,
+
 } from './styles';
 // Calendar
 import { 
@@ -79,12 +85,8 @@ export function ModalAgendamento({ closeSelectCategory }: Props){
     // Hour Selected by the user
     const [selectedHour, setSelectedHour] = useState(null);
 
-
-
-
-    const [isChecked, setIsChecked] = useState(false);
-
-
+    // Is an Avaliation
+    const [isAnEvaluation, setIsAnEvaluation] = useState(false);
 
 
     async function GetScheduledHours(){
@@ -163,10 +165,13 @@ export function ModalAgendamento({ closeSelectCategory }: Props){
 
     },[selectedDate]);
 
-
     useEffect(()=>{
         console.log(`Selected Hour: ${selectedHour}`);
     }, [selectedHour]);
+
+    function HandleButton(aa: string){
+        console.log(aa);
+    }
 
     return(
         <Container>
@@ -259,7 +264,7 @@ export function ModalAgendamento({ closeSelectCategory }: Props){
             </WrapCalendar>
 
 
-            {  availableTimesList.length <= 0 &&
+            {  availableTimesList.length <= 0 && selectedDate != null &&
                 <Wrap>
                     <TextCarregandoHoras>Procurando Horarios Disponíveis...</TextCarregandoHoras>
                 </Wrap>
@@ -290,32 +295,31 @@ export function ModalAgendamento({ closeSelectCategory }: Props){
                 </Wrap>
             }
 
-            <Wrap> 
-                <Checkbox
-                    //style={styles.checkbox}
-                    value={isChecked}
-                    onValueChange={setIsChecked}
-                    color={isChecked ? '#4630EB' : undefined}
-                />
-            </Wrap>
+            { selectedHour != null && 
+                <WrapIsEvaluation>
+                    <TextEvaluation>Avaliação: </TextEvaluation>
+                    <Checkbox
+                        //style={styles.checkbox}
+                        value={isAnEvaluation}
+                        onValueChange={setIsAnEvaluation}
+                        color={isAnEvaluation ? '#8338ec' : undefined}
+                    />
+                </WrapIsEvaluation>
+            }
+          
+            <WrapButtons>
+
+                <Button type="ok" onPress={()=> console.warn("OK") } >
+                    <Title>Agendar</Title>
+                </Button>
+
+                <Button type="cancel" onPress={()=> console.error("cancelou") } >
+                    <Title>Cancelar</Title>
+                </Button>
+
+            </WrapButtons>
 
         </Body>
-
-            {/* <Footer>
-                <WrapBtn>
-                    <ButtonSimple
-                        title="Agendar Horario"
-                        onPress={()=>{}}
-                        type="default"
-                    />
-                </WrapBtn>
-
-                <ButtonSimple
-                    title="Cancelar"
-                    onPress={closeSelectCategory}
-                    type="cancel"
-                />
-            </Footer> */}
 
         </Container>
     )
