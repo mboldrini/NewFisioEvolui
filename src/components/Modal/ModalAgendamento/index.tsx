@@ -1,5 +1,6 @@
 import { FontAwesome5 } from '@expo/vector-icons';
 import React, { useEffect, useState } from 'react';
+import { Alert } from 'react-native';
 import { useTheme } from 'styled-components';
 import Checkbox from 'expo-checkbox';
 // REDUX
@@ -32,18 +33,18 @@ import {
 
 } from './styles';
 // Calendar
-import { 
-    Calendar as CustomCalendar, 
-    Agenda,
-    LocaleConfig
-} from 'react-native-calendars';
+import { Calendar as CustomCalendar, LocaleConfig } from 'react-native-calendars';
 import { ILocalesPtBr } from './localeConfig';
 import { format } from 'date-fns';
 // API
 import { api } from '../../../global/api';
+// Interfaces
+import IApointment from '../../../global/DTO/Apointment';
 
+// Received Props on This Modal
 interface Props{
     closeSelectCategory: () => void;
+    setSelectedApointment: ({data, hora, status, tipo}: IApointment) => void;
 }
 
 //Configs Locale - Calendar
@@ -65,7 +66,7 @@ interface IHorariosApi{
     indisponivel: boolean
 }
 
-export function ModalAgendamento({ closeSelectCategory }: Props){
+export function ModalAgendamento({ closeSelectCategory, setSelectedApointment }: Props){
 
     /* CSS Theme */
     const theme = useTheme();
@@ -149,6 +150,29 @@ export function ModalAgendamento({ closeSelectCategory }: Props){
         console.log( horas );
 
     }
+
+    function HandleApointment(){
+        if(!selectedDate){
+            Alert.alert( "Ops!", "Você precisa escolher uma data", [ { text: "Ok"} ] );
+            return;
+        }
+        if(!selectedHour){
+            Alert.alert( "Ops!", "Você precisa escolher um horário", [ { text: "Ok"} ] );
+            return;
+        }
+
+        const apointment = {
+            data: Object.keys(selectedDate)[0],
+            hora: selectedHour,
+            status: 0,
+            tipo:  isAnEvaluation == true ? 1 : 0 
+        }
+
+        setSelectedApointment(apointment);
+        closeSelectCategory();
+
+
+    }
   
     useEffect(()=>{
         function EnableRetroactiveDate(){
@@ -168,10 +192,7 @@ export function ModalAgendamento({ closeSelectCategory }: Props){
     useEffect(()=>{
         console.log(`Selected Hour: ${selectedHour}`);
     }, [selectedHour]);
-
-    function HandleButton(aa: string){
-        console.log(aa);
-    }
+    
 
     return(
         <Container>
@@ -309,11 +330,11 @@ export function ModalAgendamento({ closeSelectCategory }: Props){
           
             <WrapButtons>
 
-                <Button type="ok" onPress={()=> console.warn("OK") } >
+                <Button type="ok" onPress={()=> HandleApointment() } >
                     <Title>Agendar</Title>
                 </Button>
 
-                <Button type="cancel" onPress={()=> console.error("cancelou") } >
+                <Button type="cancel" onPress={()=> closeSelectCategory() } >
                     <Title>Cancelar</Title>
                 </Button>
 

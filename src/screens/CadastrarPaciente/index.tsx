@@ -20,6 +20,8 @@ import {
 
 import { Select } from '../../components/Forms/Select';
 
+import IApointment from '../../global/DTO/Apointment';
+
 // import da tela que vai virar modal
 import { ModalSelect } from '../ModalSelect';
 import { categories } from '../../global/devVariaveis';
@@ -64,6 +66,9 @@ export function CadastrarPaciente(){
     const [agendamento, setAgendamento] = useState(null);
     const [agendamentoLoading, setAgendamentoLoading] = useState(null);
     const [agendamentoExcluir, setAgendamentoExcluir] = useState(null);
+
+
+    const [apointment, setApointment] = useState({} as IApointment);
    
 
     function handleSelectCategoryModal(tipoModal: number){
@@ -73,7 +78,6 @@ export function CadastrarPaciente(){
             setAgendamentoLoading(null);
         }
     }
-
 
     const {
         control,
@@ -148,6 +152,11 @@ export function CadastrarPaciente(){
         handleSelectCategoryModal(3);
     },[]);
 
+
+    useEffect(()=>{
+        console.log("Apointment:");
+        console.log(apointment);
+    },[apointment]);
 
 
     return(
@@ -307,9 +316,9 @@ export function CadastrarPaciente(){
                 {tipoModalOpen == 3 &&
                     <ModalAgendamento
                         closeSelectCategory={()=>handleSelectCategoryModal(3)}
-                        setAgendamento={setAgendamento}
-                        dataEscolhida={agendamentoLoading}
-                        setAgendamentoExcluir={setAgendamentoExcluir}
+                        setSelectedApointment={setApointment}
+                        //dataEscolhida={agendamentoLoading}
+                        //setAgendamentoExcluir={setAgendamentoExcluir}
                     />
                 }
             </Modal>
