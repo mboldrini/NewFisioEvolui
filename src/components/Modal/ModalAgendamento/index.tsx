@@ -94,7 +94,7 @@ export function ModalAgendamento({ closeSelectCategory, setSelectedApointment }:
 
         if(selectedDate){
 
-            console.log("API - obtendo lista de horas");
+        //    console.log("API - obtendo lista de horas");
             setAvailableTimesList([]);
             setSelectedHour(null);
  
@@ -147,7 +147,7 @@ export function ModalAgendamento({ closeSelectCategory, setSelectedApointment }:
         
         setAvailableTimesList(horas);
 
-        console.log( horas );
+      //  console.log( horas );
 
     }
 
@@ -189,9 +189,9 @@ export function ModalAgendamento({ closeSelectCategory, setSelectedApointment }:
 
     },[selectedDate]);
 
-    useEffect(()=>{
-        console.log(`Selected Hour: ${selectedHour}`);
-    }, [selectedHour]);
+    // useEffect(()=>{
+    //     console.log(`Selected Hour: ${selectedHour}`);
+    // }, [selectedHour]);
     
 
     return(
@@ -278,9 +278,9 @@ export function ModalAgendamento({ closeSelectCategory, setSelectedApointment }:
                         setSelectedDate(diaSelecionado);
                     }}
 
-                    onMonthChange={month => {
-                        console.log('month changed', month);
-                    }}
+                    // onMonthChange={month => {
+                    //     console.log('month changed', month);
+                    // }}
                 />
             </WrapCalendar>
 
