@@ -13,13 +13,13 @@ import {
     Form,
     Fields,
     Wrap,
-    WrapItensAgendados,
     WrapBtn,
     WrapFooterCadastro
 } from './styles';
 
 import { Select } from '../../components/Forms/Select';
 
+// Interface's
 import IApointment from '../../global/DTO/Apointment';
 
 // import da tela que vai virar modal
@@ -29,7 +29,7 @@ import { categories } from '../../global/devVariaveis';
 //import { ModalAgendamento } from '../ModalAgendamento';
 import { ModalAgendamento } from '../../components/Modal/ModalAgendamento';
 import { ButtonSimple } from '../../components/Forms/ButtonSimple/Index';
-import { PacienteAgendamento } from '../../components/AgendamentoPaciente';
+import { AppointmentSimple } from '../../components/AppointmentSimple';
 
 interface FormData{
     nome: string,
@@ -53,8 +53,9 @@ const schema = Yup.object().shape({
 
 export function CadastrarPaciente(){
 
+    // Modal's
     const [categoryModalOpen, setCategoryModalOpen] = useState(false);
-    const [tipoModalOpen, setTipoModalOpen] = useState(0);
+    const [wichModalIsOpened, setWichModalIsOpened] = useState(0);
 
 
     const [category, setCategory] = useState({key: -1,name: 'Tipo de Atendimento'});
@@ -62,20 +63,18 @@ export function CadastrarPaciente(){
     const [temComorbidade, setTemComorbidade] = useState({key: -1,name: ''});
     const [temComorbidadeList, setTemComorbidadeList] = useState([{key: 1, name: "Sim"}, {key: 0,name: "Não"}]);
 
-    const [listaAgendamentos, setListaAgendamentos] = useState([]);
-    const [agendamento, setAgendamento] = useState(null);
-    const [agendamentoLoading, setAgendamentoLoading] = useState(null);
-    const [agendamentoExcluir, setAgendamentoExcluir] = useState(null);
+
+    // APPOINTMENT'S
+    // Appointment received from Modal
+    const [appointment, setAppointment] = useState({} as IApointment | null);
+    const [appointmentList, setAppointmentList] = useState([]);
 
 
-    const [apointment, setApointment] = useState({} as IApointment);
-   
-
-    function handleSelectCategoryModal(tipoModal: number){
-        setTipoModalOpen(tipoModal);
+    function HandleSelectCategoryModal(tipoModal: number){
+        setWichModalIsOpened(tipoModal);
         setCategoryModalOpen(!categoryModalOpen);
         if(!categoryModalOpen == false){
-            setAgendamentoLoading(null);
+          //  setAgendamentoLoading(null);
         }
     }
 
@@ -86,7 +85,6 @@ export function CadastrarPaciente(){
     } = useForm({
         resolver: yupResolver(schema)
     });
-
 
     function handleRegister(form: FormData){
 
@@ -107,57 +105,16 @@ export function CadastrarPaciente(){
      
     }
 
-    function handleAgendamento(id: number){
-        let infosAgendamento = {
-            id: id,
-            dataEscolhida: listaAgendamentos[id].dataAgendada,
-            horaEscolhida: listaAgendamentos[id].horaAgendada,
-            tipoAgendamento: listaAgendamentos[id].tipoAgendamento
+    useEffect(()=>{
+        if(appointment && appointment.data){
+            const newArray = [...appointmentList, appointment];
+            setAppointmentList(newArray);
+            setAppointment(null);
         }
-        setAgendamentoLoading(infosAgendamento);
-        handleSelectCategoryModal(3);
-    }
-
-    useEffect(()=>{
-        if(agendamento){
-
-            let lista = listaAgendamentos;
-            lista.push(agendamento);
-            setListaAgendamentos(lista);
-            setAgendamento(null);
-            setAgendamentoLoading(null);
-
-        }
-    }, [agendamento]);
-
-    useEffect(()=>{
-        if(agendamentoExcluir != null){
-            let lista = listaAgendamentos;
-            delete lista[agendamentoExcluir];
-            setAgendamentoExcluir(null);
-            handleSelectCategoryModal(3);
-        }
-    },[agendamentoExcluir]);
-
-    useEffect(()=>{
-        console.log("aAa");
-        console.log(listaAgendamentos);
-    }, [listaAgendamentos]);
+    },[appointment]);
 
 
-
-
-
-    useEffect(()=>{
-        handleSelectCategoryModal(3);
-    },[]);
-
-
-    useEffect(()=>{
-        console.log("Apointment:");
-        console.log(apointment);
-    },[apointment]);
-
+  
 
     return(
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
@@ -223,13 +180,13 @@ export function CadastrarPaciente(){
                     <Select 
                         title={category.name}
                         isActive={category.key}
-                        onPress={()=>{handleSelectCategoryModal(1)}}
+                        onPress={()=>{HandleSelectCategoryModal(1)}}
                     />
 
                     <Select 
                         title={"Paciente com comorbidade: "+ temComorbidade.name}
                         isActive={temComorbidade.key}
-                        onPress={()=>{handleSelectCategoryModal(2)}}
+                        onPress={()=>{HandleSelectCategoryModal(2)}}
                     /> 
 
                     { temComorbidade.key == 1 && 
@@ -258,27 +215,24 @@ export function CadastrarPaciente(){
                 </Fields>
 
                 <Wrap>
-                    { listaAgendamentos && listaAgendamentos.length > 0 && 
-                        <WrapItensAgendados>
-                            { listaAgendamentos.length > 0 && listaAgendamentos.map((item, key) =>{
-                                return(
-                                    <PacienteAgendamento 
-                                        key={key}
-                                        dataAgendamento={item.dataAgendada}
-                                        horario={item.horaAgendada}
-                                        tipoAgendamento={0}
-                                        onPress={()=>{handleAgendamento(key)}}
-                                    />
-                                )
-                            }) }
-                        </WrapItensAgendados>
-                    }
+
+                    { appointmentList && appointmentList.length > 0 && appointmentList.map( (item, key) => {
+                        return(
+                            <AppointmentSimple
+                                key={key}
+                                dataAgendamento={item.data}
+                                horario={item.hora}
+                                tipoAgendamento={item.tipo}
+                                onPress={()=>{console.log("AA")}}
+                            />
+                        )
+                    }) } 
 
                     <WrapBtn>
                         <ButtonSimple
                             type="default"
                             title="Agendar Horario" 
-                            onPress={()=>handleSelectCategoryModal(3)}
+                            onPress={()=>HandleSelectCategoryModal(3)}
                         />
                     </WrapBtn>
 
@@ -295,28 +249,28 @@ export function CadastrarPaciente(){
                 
 
             <Modal visible={categoryModalOpen}>
-               { tipoModalOpen == 1 &&
+               { wichModalIsOpened == 1 &&
                     <ModalSelect 
                         titulo="Tipo de Paciente"
                         category={category}
                         setCategory={setCategory}
-                        closeSelectCategory={()=>handleSelectCategoryModal(0)}
+                        closeSelectCategory={()=>HandleSelectCategoryModal(0)}
                         optionsList={categoriesList}
                     />
                 }
-                {tipoModalOpen == 2 &&
+                {wichModalIsOpened == 2 &&
                     <ModalSelect 
                         titulo="Paciente tem comorbidade"
                         category={temComorbidade}
                         setCategory={setTemComorbidade}
-                        closeSelectCategory={()=>handleSelectCategoryModal(1)}
+                        closeSelectCategory={()=>HandleSelectCategoryModal(1)}
                         optionsList={temComorbidadeList}
                     />
                 } 
-                {tipoModalOpen == 3 &&
+                {wichModalIsOpened == 3 &&
                     <ModalAgendamento
-                        closeSelectCategory={()=>handleSelectCategoryModal(3)}
-                        setSelectedApointment={setApointment}
+                        closeSelectCategory={()=>HandleSelectCategoryModal(3)}
+                        setSelectedApointment={setAppointment}
                         //dataEscolhida={agendamentoLoading}
                         //setAgendamentoExcluir={setAgendamentoExcluir}
                     />

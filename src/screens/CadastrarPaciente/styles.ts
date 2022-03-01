@@ -34,13 +34,9 @@ export const Wrap = styled.View`
     margin: 0 ${({theme}) => theme.margin.lateral}px;
 `;
 
-export const WrapItensAgendados = styled.View`
-    margin: 0 ${RFValue(5)}px;
-    margin-top: ${RFValue(10)}px;
-`;
 
 export const WrapBtn = styled.View`
-    margin: 5px;
+    margin: ${({theme}) => theme.margin.lateral_third}px;
 `;
 
 export const WrapFooterCadastro = styled.View`
