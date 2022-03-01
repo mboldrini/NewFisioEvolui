@@ -255,7 +255,8 @@ export function ModalAgendamento({ closeSelectCategory, setSelectedApointment }:
 
                     markedDates={selectedDate}
 
-                    disabledDaysIndexes={[0, 6]}
+                    firstDay={6}
+                    disabledDaysIndexes={[0,6]}
 
                     // Handler which gets executed on day long press. Default = undefined
                     onDayLongPress={day => {
