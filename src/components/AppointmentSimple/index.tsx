@@ -1,7 +1,8 @@
 import React from 'react';
 import { RectButtonProps } from 'react-native-gesture-handler';
-import { date } from 'yup';
-import {days, tipoDeAgendamento} from '../../global/variaveis/globais';
+import { days } from '../../global/variaveis/Dates';
+import { tipoDeAgendamento } from '../../global/variaveis/TipoDeAgendamento';
+import { parseISO } from 'date-fns';
 import { 
     Container,
     WrapIcone,
@@ -15,13 +16,13 @@ import {
 } from './styles';
 
 interface Props extends RectButtonProps{
-    dataAgendamento: Date;
-    horario: string;
+    dataAgendamento: string;
+    horario: number;
     tipoAgendamento: number;
     onPress: () => void;
 }
 
-export function PacienteAgendamento({
+export function AppointmentSimple({
     dataAgendamento,
     horario,
     tipoAgendamento,
@@ -29,25 +30,28 @@ export function PacienteAgendamento({
     ...rest
 }: Props){
 
-    function validaData(dataAgendamento: Date){
-
-        let dtString = JSON.stringify(dataAgendamento);
-        let [data, hora] = dtString.split("T");
-        let [ano, mes, dia] = data.split("-");
-            ano = ano.replace("\"", "");
-
+    function validaData(dataAgendamento: string){
+        let [ ano, mes, dia] = dataAgendamento.split("-");
         return( dia+"/"+ mes +"/"+ ano );
     }
 
-    function validaDiaSemana(dataAgendamento: Date){
-        // let dtString = JSON.stringify(dataAgendamento);
-        // let [data, hora] = dtString.split("T");
-        // data = data.replace("\"", "").replace("\"", "");
-        // let [dia, mes, ano] = data.split("/");
-        // let newData = new Date(parseInt(ano), parseInt(mes)-1, parseInt(dia) ); 
-        // let diaSemana = newData.getDay();
-        let dt = new Date(dataAgendamento);
-        return(dt.getDay());
+    function validaDiaSemana(dataAgendamento: string){
+        const date = parseISO(dataAgendamento);
+        return date.getDay();
+    }
+
+
+
+    function HandleHour(hour: number){
+        if( hour < 12){
+            if( hour < 10){
+                return "0"+ hour +":00 AM"
+            }else{
+                return hour +":00 AM"
+            }
+        }else{
+                return hour +":00 PM"
+        }
     }
 
     return(
@@ -57,7 +61,7 @@ export function PacienteAgendamento({
                 <Icone name={tipoDeAgendamento[tipoAgendamento].icone} tipoAtendimento={tipoAgendamento}/>
             </WrapIcone>
             <WrapHora>
-                <Horario>{horario}</Horario>
+                <Horario>{ HandleHour(horario) }</Horario>
                 <Tipo>{ tipoDeAgendamento[tipoAgendamento].nome }</Tipo>
             </WrapHora>
             <WrapData>

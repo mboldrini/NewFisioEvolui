@@ -26,6 +26,9 @@ export const Container = styled(RectButton)<Props>`
     border-left-color: ${({theme}) => theme.colors.status_avaliacao};
      `};
 
+     margin: 0 ${({theme}) => theme.margin.lateral_third}px;
+     margin-top: ${({theme}) => theme.margin.lateral_third}px;
+
 
 `;
 

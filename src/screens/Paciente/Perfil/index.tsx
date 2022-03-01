@@ -16,7 +16,7 @@ import {
 import { Cabecalho } from '../../../components/Cabecalho';
 import { PacienteHeader } from '../../../components/PacienteHeader';
 import { BottomSpacer } from '../../../components/BottomSpacer';
-import { PacienteAgendamento } from '../../../components/AgendamentoPaciente'; 
+//import { AppointmentSimple } from '../../../components/AppointmentSimple'; 
 
 export function PacientePerfil(){
 
@@ -173,9 +173,9 @@ export function PacientePerfil(){
             <WrapGroup>
                 <Title>Agendamentos do Paciente</Title>
 
-                { listaAgenda.length > 0 && listaAgenda.map((item, key) =>{
+                {/* { listaAgenda.length > 0 && listaAgenda.map((item, key) =>{
                     return(
-                        <PacienteAgendamento 
+                        <AppointmentSimple 
                             diaSemana={item.diaSemana}
                             dataAgendamento={item.dataAgendamento}
                             horario={item.horario}
@@ -184,7 +184,7 @@ export function PacientePerfil(){
                             onPress={()=>{console.log(key)}}
                         />
                     )
-                }) }
+                }) } */}
             </WrapGroup>
 
             
