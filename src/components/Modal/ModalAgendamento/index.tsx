@@ -94,7 +94,7 @@ export function ModalAgendamento({ closeSelectCategory, setSelectedApointment }:
 
         if(selectedDate){
 
-        //    console.log("API - obtendo lista de horas");
+            console.log("API - obtendo lista de horas");
             setAvailableTimesList([]);
             setSelectedHour(null);
  
@@ -124,7 +124,7 @@ export function ModalAgendamento({ closeSelectCategory, setSelectedApointment }:
 
                 }).catch(err =>{
                     console.log("Nenhum horario agendado p/ esse dia!");
-                    console.log(err.response.data)
+                    console.log(err.response);
                 });
         
 

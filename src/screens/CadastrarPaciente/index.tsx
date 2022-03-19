@@ -30,6 +30,7 @@ import { categories } from '../../global/devVariaveis';
 import { ModalAgendamento } from '../../components/Modal/ModalAgendamento';
 import { ButtonSimple } from '../../components/Forms/ButtonSimple/Index';
 import { AppointmentSimple } from '../../components/AppointmentSimple';
+import { AppointmentList } from '../../components/AppointmentList';
 
 interface FormData{
     nome: string,
@@ -213,6 +214,28 @@ export function CadastrarPaciente(){
                  
                     
                 </Fields>
+
+                <Wrap>
+                    <AppointmentList
+                        status={1}
+                    />
+                    <AppointmentList
+                        status={2}
+                    />
+                    <AppointmentList
+                        status={3}
+                    />
+                    <AppointmentList
+                        status={4}
+                    />
+                    <AppointmentList
+                        status={5}
+                    />
+                    <AppointmentList
+                        status={6}
+                    />
+                  
+                </Wrap>
 
                 <Wrap>
 
