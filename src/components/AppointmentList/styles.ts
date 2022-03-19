@@ -33,15 +33,17 @@ export const WrapInfos = styled.View`
 
 export const WrapHours = styled.View`
     justify-content: flex-start;
-    align-items: flex-start;
+    align-items: center;
     flex-direction: row;
+    margin-top: ${RFValue(-8)}px;
 `;
 
 export const HourIcon = styled(FontAwesome5)<Props>`
     color: ${({theme}) => theme.colors.secondary};
+    justify-content: flex-start;
     align-items: center;
-    justify-content: center;
     padding-right: ${RFValue(5)}px;
+    font-size: ${RFValue(12)}px;
 
     ${({ status }) => status == 1 && css ` color: ${({theme}) => theme.colors.status_default}; `};
     ${({ status }) => status == 2 && css ` color: ${({theme}) => theme.colors.status_atendido}; `};
@@ -52,9 +54,12 @@ export const HourIcon = styled(FontAwesome5)<Props>`
 `;
 
 export const Hour = styled.Text<Props>`
-    font-family: ${({ theme }) => theme.fonts.regular};
-    font-size: ${RFValue(14)}px;
+    justify-content: flex-start;
+    align-items: center;
+    font-family: ${({ theme }) => theme.fonts.bold};
+    font-size: ${RFValue(12)}px;
     color: ${({theme})=> theme.colors.text};
+    padding-top: ${RFValue(5)}px;
 
     /* ${({ horaPassou }) => horaPassou == 0 && css ` color: ${({theme}) => theme.colors.secondary}; `}; */
     /* ${({ horaPassou }) => horaPassou == 1 && css ` color: ${({theme}) => theme.colors.status_default}; `}; */
@@ -68,17 +73,17 @@ export const WrapDate = styled.View`
 `;
 
 export const WeekDay = styled.Text`
-    font-family: ${({theme}) => theme.fonts.regular};
+    font-family: ${({theme}) => theme.fonts.bold};
     font-size: ${RFValue(16)}px;
 `;
 
 export const Day = styled.Text`
-    font-family: ${({theme}) => theme.fonts.regular};
+    font-family: ${({theme}) => theme.fonts.bold};
     font-size: ${RFValue(16)}px;
 `;
 
-export const Date = styled.Text`
-    font-family: ${({theme}) => theme.fonts.regular};
+export const DateStr = styled.Text`
+    font-family: ${({theme}) => theme.fonts.bold};
     font-size: ${RFValue(16)}px;
 `;
 
@@ -86,5 +91,7 @@ export const WrapButton = styled.TouchableOpacity`
     padding: ${RFValue(8)}px;
 `;
 
-export const EditButton = styled(FontAwesome5)``;
+export const EditButton = styled(FontAwesome5)`
+    font-size: ${RFValue(14)}px;
+`;
 

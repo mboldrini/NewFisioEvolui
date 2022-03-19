@@ -215,31 +215,55 @@ export function CadastrarPaciente(){
                     
                 </Fields>
 
-                <Wrap>
+                {/* <Wrap>
                     <AppointmentList
                         status={1}
+                        hour={8}
+                        date={ new Date(2022,7,18) }
                     />
                     <AppointmentList
                         status={2}
+                        hour={13}
+                        date={ new Date(2022,7,18) }
                     />
                     <AppointmentList
                         status={3}
+                        hour={17}
+                        date={ new Date(2022,7,18)}
                     />
                     <AppointmentList
                         status={4}
+                        hour={14}
+                        date={ new Date(2022,4,15)}
                     />
                     <AppointmentList
                         status={5}
+                        hour={11}
+                        date={ new Date(2022,7,1)}
                     />
                     <AppointmentList
                         status={6}
-                    />
-                  
+                        hour={10}
+                        date={ new Date(2022,5,2)}
+                    />         */}
+                {/* </Wrap> */}
+
+                <Wrap>
+                    { appointmentList && appointmentList.length > 0 && appointmentList.map( (item, key) => {
+                        return(
+                            <AppointmentList
+                                key={key}
+                                status={item.status}
+                                hour={item.hora}
+                                date={item.data}
+                            />   
+                        )
+                    }) } 
                 </Wrap>
 
                 <Wrap>
 
-                    { appointmentList && appointmentList.length > 0 && appointmentList.map( (item, key) => {
+                    {/* { appointmentList && appointmentList.length > 0 && appointmentList.map( (item, key) => {
                         return(
                             <AppointmentSimple
                                 key={key}
@@ -249,7 +273,7 @@ export function CadastrarPaciente(){
                                 onPress={()=>{console.log("AA")}}
                             />
                         )
-                    }) } 
+                    }) }  */}
 
                     <WrapBtn>
                         <ButtonSimple

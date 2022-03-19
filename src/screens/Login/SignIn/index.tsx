@@ -96,7 +96,7 @@ export function SignIn(){
     }
 
     async function GetApiToken(data: IgData){
-        console.group("GetApiToken");
+     //   console.group("GetApiToken");
 
         if(data.email){
 
@@ -105,7 +105,7 @@ export function SignIn(){
                 id: data.id
             }).then(res =>{
 
-                console.log("SUCESSO AO PEGAR TOKEN VIA API");
+             //   console.log("SUCESSO AO PEGAR TOKEN VIA API");
                 const token = res.data.token;
                 setAppApiToken(token);
 
@@ -128,7 +128,7 @@ export function SignIn(){
 
         }
 
-         console.groupEnd();
+      //   console.groupEnd();
     }
 
     async function GetUserInfos(token: string){
@@ -186,9 +186,9 @@ export function SignIn(){
             let storageGoogleString = await AsyncStorage.getItem(StorageKeys.googleUserInfos);
             let googleInfos = JSON.parse(storageGoogleString) as IgData;
 
-                console.group("Loading - Get Google Infos Storage");
-                console.log(googleInfos);
-                console.groupEnd();
+            //    console.group("Loading - Get Google Infos Storage");
+              //  console.log(googleInfos);
+                //console.groupEnd();
             
             if(googleInfos){
                 GetApiToken(googleInfos);
