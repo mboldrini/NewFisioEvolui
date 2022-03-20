@@ -144,6 +144,7 @@ export function CadastrarPaciente(){
     return(
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <Container>
+
             <Header>
                 <Titulo>Cadastrar Paciente</Titulo>
             </Header>
@@ -169,7 +170,7 @@ export function CadastrarPaciente(){
                         type="cpf"
                     />
 
-                    {/* <InputMasked
+                    <InputMasked
                         name="dataNascimento"
                         control={control}
                         placeholder="Data de Nascimento"
@@ -232,11 +233,8 @@ export function CadastrarPaciente(){
                         autoCapitalize="words"
                         autoCorrect={false}
                         error={errors.endereco && errors.endereco.message}
-                    /> */}
+                    />
 
-                  
-                 
-                    
                 </Fields>
 
                 <Wrap>
@@ -252,21 +250,6 @@ export function CadastrarPaciente(){
                             />   
                         )
                     }) } 
-                </Wrap>
-
-                <Wrap>
-
-                    {/* { appointmentList && appointmentList.length > 0 && appointmentList.map( (item, key) => {
-                        return(
-                            <AppointmentSimple
-                                key={key}
-                                dataAgendamento={item.data}
-                                horario={item.hora}
-                                tipoAgendamento={item.tipo}
-                                onPress={()=>{console.log("AA")}}
-                            />
-                        )
-                    }) }  */}
 
                     <WrapBtn>
                         <ButtonSimple
@@ -280,6 +263,7 @@ export function CadastrarPaciente(){
 
             </Form>
 
+
             <WrapFooterCadastro>
                 <Button 
                     title="Cadastrar Paciente" 
@@ -287,7 +271,6 @@ export function CadastrarPaciente(){
                 />
             </WrapFooterCadastro>
                 
-
             <Modal visible={categoryModalOpen}>
                { wichModalIsOpened == 1 &&
                     <ModalSelect 

@@ -29,14 +29,17 @@ export const Fields = styled.View`
 `;
 
 export const Wrap = styled.View`
-    background-color: ${({theme}) => theme.colors.secondary};
-    border-radius: ${({theme}) => theme.bordas.padrao}px;
-    margin: 0 ${({theme}) => theme.margin.lateral}px;
+    background-color: ${({theme}) => theme.colors.secondary_light};
+    /* border-radius: ${({theme}) => theme.bordas.padrao}px; */
+    /* margin: 0 ${({theme}) => theme.margin.lateral}px; */
+    padding: 0 ${({theme}) => theme.margin.lateral}px;
+    padding-top: ${RFValue(10)}px;
 `;
 
 
 export const WrapBtn = styled.View`
-    margin: ${({theme}) => theme.margin.lateral_third}px;
+    /* margin: ${({theme}) => theme.margin.lateral_third}px; */
+    margin-bottom: ${({theme}) => theme.margin.lateral_third}px;
 `;
 
 export const WrapFooterCadastro = styled.View`
