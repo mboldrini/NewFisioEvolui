@@ -268,6 +268,7 @@ export function CadastrarPaciente(){
                 <Button 
                     title="Cadastrar Paciente" 
                     onPress={handleSubmit((d) => handleRegister(d))}
+                    type="ok"
                 />
             </WrapFooterCadastro>
                 
