@@ -1,6 +1,7 @@
 import styled, {css} from 'styled-components/native';
 import { RFValue } from 'react-native-responsive-fontsize';
 import { FontAwesome5 } from "@expo/vector-icons";
+import { RectButton } from "react-native-gesture-handler";
 
 interface Props{
     status?: number;
@@ -87,7 +88,7 @@ export const DateStr = styled.Text`
     font-size: ${RFValue(16)}px;
 `;
 
-export const WrapButton = styled.TouchableOpacity`
+export const WrapButton = styled(RectButton)`
     padding: ${RFValue(8)}px;
 `;
 

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Modal, TouchableWithoutFeedback, Keyboard } from 'react-native';
+import { Modal, TouchableWithoutFeedback, Keyboard, Alert } from 'react-native';
 import { InputMasked } from '../../components/Forms/InputMasked';
 import { useForm } from 'react-hook-form';
 import { InputForm } from '../../components/Forms/InputForm';
@@ -104,6 +104,30 @@ export function CadastrarPaciente(){
         console.log(data);
         alert(JSON.stringify(data));
      
+    }
+
+    function AlertExcludeAppointment(item: IApointment, key: number){
+        let [year, month, day] = item.data.split("-");
+        let date = day +"/"+ month +"/"+ year;
+        Alert.alert(
+            "Atenção!",
+            `Deseja excluir o agendamento do dia: ${date} as ${item.hora} Horas`,
+            [
+                {
+                    text: "Excluir",
+                    onPress: () => ExcludeAppointment(item)
+                },
+                { 
+                    text: "Cancelar", 
+                    onPress: () => console.log("OK Pressed") 
+                }
+            ]
+        );
+    }
+
+    function ExcludeAppointment(item: IApointment){
+        let newAppintmentList = appointmentList.filter( appoint => { return appoint != item });
+        setAppointmentList(newAppintmentList);
     }
 
     useEffect(()=>{
@@ -215,47 +239,16 @@ export function CadastrarPaciente(){
                     
                 </Fields>
 
-                {/* <Wrap>
-                    <AppointmentList
-                        status={1}
-                        hour={8}
-                        date={ new Date(2022,7,18) }
-                    />
-                    <AppointmentList
-                        status={2}
-                        hour={13}
-                        date={ new Date(2022,7,18) }
-                    />
-                    <AppointmentList
-                        status={3}
-                        hour={17}
-                        date={ new Date(2022,7,18)}
-                    />
-                    <AppointmentList
-                        status={4}
-                        hour={14}
-                        date={ new Date(2022,4,15)}
-                    />
-                    <AppointmentList
-                        status={5}
-                        hour={11}
-                        date={ new Date(2022,7,1)}
-                    />
-                    <AppointmentList
-                        status={6}
-                        hour={10}
-                        date={ new Date(2022,5,2)}
-                    />         */}
-                {/* </Wrap> */}
-
                 <Wrap>
                     { appointmentList && appointmentList.length > 0 && appointmentList.map( (item, key) => {
+                        console.log(key);
                         return(
                             <AppointmentList
                                 key={key}
                                 status={item.status}
                                 hour={item.hora}
                                 date={item.data}
+                                onPress={()=>{ AlertExcludeAppointment(item, key) }}
                             />   
                         )
                     }) } 

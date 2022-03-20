@@ -20,9 +20,10 @@ interface Props{
     status: number;
     hour: number;
     date: any;
+    onPress: () => void;
 }
 
-export function AppointmentList({status, hour, date}: Props){
+export function AppointmentList({status, hour, date, onPress}: Props){
 
     function FormatStartHour(startHour: number){
         let today = new Date();
@@ -40,7 +41,6 @@ export function AppointmentList({status, hour, date}: Props){
     }
 
     function FormatDate(dateCalendar: string){
-        console.log(dateCalendar);
         let [year,month, day] = dateCalendar.split("-");
         return day +"/"+ months[parseInt(month)-1] +"/"+ year;
     }
@@ -59,8 +59,8 @@ export function AppointmentList({status, hour, date}: Props){
                      <Hour>{FormatStartHour(hour)} as {FormatEndHour()}</Hour>
                  </WrapHours>
              </WrapInfos>
-             <WrapButton>
-                 <EditButton name="ellipsis-v" />
+             <WrapButton onPress={onPress}>
+                 <EditButton name="ellipsis-v"/>
              </WrapButton>
         </Container>
     )
