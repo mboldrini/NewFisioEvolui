@@ -29,7 +29,6 @@ import { categories } from '../../global/devVariaveis';
 //import { ModalAgendamento } from '../ModalAgendamento';
 import { ModalAgendamento } from '../../components/Modal/ModalAgendamento';
 import { ButtonSimple } from '../../components/Forms/ButtonSimple/Index';
-import { AppointmentSimple } from '../../components/AppointmentSimple';
 import { AppointmentList } from '../../components/AppointmentList';
 
 interface FormData{
@@ -235,6 +234,7 @@ export function CadastrarPaciente(){
                         error={errors.endereco && errors.endereco.message}
                     />
 
+                    
                 </Fields>
 
                 <Wrap>
