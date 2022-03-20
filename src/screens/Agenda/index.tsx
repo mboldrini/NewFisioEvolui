@@ -2,7 +2,7 @@ import React, {useEffect, useState}from 'react';
 import { FlatList } from 'react-native';
 import {RefreshControl} from 'react-native';
 import {useNavigation } from '@react-navigation/native';
-import { months, days, daysLong} from '../../global/variaveis/globais';
+import { months, days, daysLong} from '../../global/variaveis/Dates';
 import { ITipoAgendamento } from '../../global/interfaces';
 import { 
     Container,
@@ -158,22 +158,20 @@ export function Agenda(){
                             <DateItemWeekNumber style={{ color: item.number === selectedDay ? '#FFFFFF' : '#000000'}}>{item.number}</DateItemWeekNumber>
                         </DateItem>                        
                     ))}
-                </DateList>
+                </DateList> 
 
             </DateWrapper>
                     
-                { selectedDate && agendamentos.map((item, key) =>{
-                    return(
-                        <AgendaItem 
-                            key={key}
-                            status={item.status} 
-                            dataHora={item.dataHora}
-                            tipo={item.tipo}
-                        />
-                    )
-                }) }
-
-              
+            { selectedDate && agendamentos.map((item, key) =>{
+                return(
+                    <AgendaItem 
+                        key={key}
+                        status={item.status} 
+                        dataHora={item.dataHora}
+                        tipo={item.tipo}
+                    />
+                )
+            }) }
 
         </Container>
     )
