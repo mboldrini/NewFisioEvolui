@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Modal, TouchableWithoutFeedback, Keyboard } from 'react-native';
+import { Modal, TouchableWithoutFeedback, Keyboard, Alert } from 'react-native';
 import { InputMasked } from '../../components/Forms/InputMasked';
 import { useForm } from 'react-hook-form';
 import { InputForm } from '../../components/Forms/InputForm';
@@ -29,7 +29,7 @@ import { categories } from '../../global/devVariaveis';
 //import { ModalAgendamento } from '../ModalAgendamento';
 import { ModalAgendamento } from '../../components/Modal/ModalAgendamento';
 import { ButtonSimple } from '../../components/Forms/ButtonSimple/Index';
-import { AppointmentSimple } from '../../components/AppointmentSimple';
+import { AppointmentList } from '../../components/AppointmentList';
 
 interface FormData{
     nome: string,
@@ -105,6 +105,30 @@ export function CadastrarPaciente(){
      
     }
 
+    function AlertExcludeAppointment(item: IApointment, key: number){
+        let [year, month, day] = item.data.split("-");
+        let date = day +"/"+ month +"/"+ year;
+        Alert.alert(
+            "Atenção!",
+            `Deseja excluir o agendamento do dia: ${date} as ${item.hora} Horas`,
+            [
+                {
+                    text: "Excluir",
+                    onPress: () => ExcludeAppointment(item)
+                },
+                { 
+                    text: "Cancelar", 
+                    onPress: () => console.log("OK Pressed") 
+                }
+            ]
+        );
+    }
+
+    function ExcludeAppointment(item: IApointment){
+        let newAppintmentList = appointmentList.filter( appoint => { return appoint != item });
+        setAppointmentList(newAppintmentList);
+    }
+
     useEffect(()=>{
         if(appointment && appointment.data){
             const newArray = [...appointmentList, appointment];
@@ -119,6 +143,7 @@ export function CadastrarPaciente(){
     return(
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <Container>
+
             <Header>
                 <Titulo>Cadastrar Paciente</Titulo>
             </Header>
@@ -144,7 +169,7 @@ export function CadastrarPaciente(){
                         type="cpf"
                     />
 
-                    {/* <InputMasked
+                    <InputMasked
                         name="dataNascimento"
                         control={control}
                         placeholder="Data de Nascimento"
@@ -207,24 +232,22 @@ export function CadastrarPaciente(){
                         autoCapitalize="words"
                         autoCorrect={false}
                         error={errors.endereco && errors.endereco.message}
-                    /> */}
+                    />
 
-                  
-                 
                     
                 </Fields>
 
                 <Wrap>
-
                     { appointmentList && appointmentList.length > 0 && appointmentList.map( (item, key) => {
+                        console.log(key);
                         return(
-                            <AppointmentSimple
+                            <AppointmentList
                                 key={key}
-                                dataAgendamento={item.data}
-                                horario={item.hora}
-                                tipoAgendamento={item.tipo}
-                                onPress={()=>{console.log("AA")}}
-                            />
+                                status={item.status}
+                                hour={item.hora}
+                                date={item.data}
+                                onPress={()=>{ AlertExcludeAppointment(item, key) }}
+                            />   
                         )
                     }) } 
 
@@ -240,6 +263,7 @@ export function CadastrarPaciente(){
 
             </Form>
 
+
             <WrapFooterCadastro>
                 <Button 
                     title="Cadastrar Paciente" 
@@ -247,7 +271,6 @@ export function CadastrarPaciente(){
                 />
             </WrapFooterCadastro>
                 
-
             <Modal visible={categoryModalOpen}>
                { wichModalIsOpened == 1 &&
                     <ModalSelect 

@@ -44,7 +44,7 @@ import IApointment from '../../../global/DTO/Apointment';
 // Received Props on This Modal
 interface Props{
     closeSelectCategory: () => void;
-    setSelectedApointment: ({data, hora, status, tipo}: IApointment) => void;
+    setSelectedApointment: ({data, hora, status}: IApointment) => void;
 }
 
 //Configs Locale - Calendar
@@ -94,7 +94,7 @@ export function ModalAgendamento({ closeSelectCategory, setSelectedApointment }:
 
         if(selectedDate){
 
-        //    console.log("API - obtendo lista de horas");
+            console.log("API - obtendo lista de horas");
             setAvailableTimesList([]);
             setSelectedHour(null);
  
@@ -124,7 +124,7 @@ export function ModalAgendamento({ closeSelectCategory, setSelectedApointment }:
 
                 }).catch(err =>{
                     console.log("Nenhum horario agendado p/ esse dia!");
-                    console.log(err.response.data)
+                    console.log(err.response);
                 });
         
 
@@ -164,8 +164,7 @@ export function ModalAgendamento({ closeSelectCategory, setSelectedApointment }:
         const apointment = {
             data: Object.keys(selectedDate)[0],
             hora: selectedHour,
-            status: 0,
-            tipo:  isAnEvaluation == true ? 1 : 0 
+            status: isAnEvaluation == true ? 6 : 1,
         }
 
         setSelectedApointment(apointment);
