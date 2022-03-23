@@ -129,9 +129,16 @@ export function CadastrarPaciente(){
         setAppointmentList(newAppintmentList);
     }
 
+    function onlyUnique(value, index, self) {
+        return self.indexOf(value) === index;
+    }
+
     useEffect(()=>{
         if(appointment && appointment.data){
-            const newArray = [...appointmentList, appointment];
+            let newArray = [...appointmentList, appointment];
+           
+            newArray = Array.from(new Set(newArray.map(JSON.stringify))).map(JSON.parse);
+
             setAppointmentList(newArray);
             setAppointment(null);
         }
@@ -239,7 +246,6 @@ export function CadastrarPaciente(){
 
                 <Wrap>
                     { appointmentList && appointmentList.length > 0 && appointmentList.map( (item, key) => {
-                        console.log(key);
                         return(
                             <AppointmentList
                                 key={key}
