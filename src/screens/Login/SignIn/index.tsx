@@ -85,6 +85,7 @@ export function SignIn(){
                 await AsyncStorage.setItem(StorageKeys.googleUserInfos, JSON.stringify(userInfo));
                 console.log(`Setou no Storage o GoogleUserInfos`);
                 setGoogleUserInfos(userInfo);
+                
             }   
 
         }catch(err){

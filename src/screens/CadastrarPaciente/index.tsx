@@ -19,8 +19,11 @@ import {
 
 import { Select } from '../../components/Forms/Select';
 
+// API
+import { api } from '../../global/api';
+
 // Interface's
-import IApointment from '../../global/DTO/Apointment';
+import IApointment, { INewPatient } from '../../global/DTO/Apointment';
 
 // import da tela que vai virar modal
 import { ModalSelect } from '../ModalSelect';
@@ -33,22 +36,24 @@ import { AppointmentList } from '../../components/AppointmentList';
 
 interface FormData{
     nome: string,
-    dataNascimento: number,
     cpf: number,
+    dataNascimento: number,
     celular: number,
     email: string,
     endereco: string,
-  //  tipoComorbidade: string;
+    temComorbidade: boolean,
 }
+
+
 
 const schema = Yup.object().shape({
     nome: Yup.string().required("Nome é obrigatório"),
-    dataNascimento: Yup.string().required("Data de Nascimento é obrigatório").length(10, "Formato de data: 00/00/0000"),
     cpf: Yup.string().required("CPF é obrigatório").length(14, "CPF deve ter 11 dígitos"),
+    dataNascimento: Yup.string().required("Data de Nascimento é obrigatório").length(10, "Formato de data: 00/00/0000"),
     celular: Yup.string().required("Telefone de contato é obrigatório"),
     email: Yup.string().required("Email é obrigatório"),
     endereco: Yup.string().required("Endereço é obrigatório"),
-    // tipoComorbidade: Yup.string().optional()
+    tipoComorbidade: Yup.string().optional()
 })
 
 export function CadastrarPaciente(){
@@ -58,8 +63,9 @@ export function CadastrarPaciente(){
     const [wichModalIsOpened, setWichModalIsOpened] = useState(0);
 
 
-    const [category, setCategory] = useState({key: -1,name: 'Tipo de Atendimento'});
+    const [appointmentType, setAppointmentType] = useState({key: -1,name: 'Tipo de Atendimento'});
     const [categoriesList, setCategoriesList] = useState(categories);
+
     const [temComorbidade, setTemComorbidade] = useState({key: -1,name: ''});
     const [temComorbidadeList, setTemComorbidadeList] = useState([{key: 1, name: "Sim"}, {key: 0,name: "Não"}]);
 
@@ -88,21 +94,46 @@ export function CadastrarPaciente(){
 
     function handleRegister(form: FormData){
 
-        // if(temComorbidade.key == 0){
-        //     form.tipoComorbidade = null
-        // }
-
-        const data = {
+        const data: INewPatient = {
             nome: form.nome,
-            dataNascimento: form.dataNascimento,
             cpf: form.cpf,
+            dataNascimento: form.dataNascimento,
             celular: form.celular,
+            telefoneRecado: form.celular,
             email: form.email,
-            endereco: form.endereco,
+            tipoAtendimento: appointmentType.key,
+            temComorbidade: temComorbidade.key == 0 ? false : true,
+            logradouro: form.endereco,
+            uf: 0,
+            bairro: "bairroOo",
+            numero: "789",
+            referencia: "referencia da localizacao",
+            queixamotivo: "queixa ou motivo do atendimento",
+            diagnosticos: "quais os diagnosticos",
+            comorbidades: "descricao das comorbidades",
+            agendamentos: appointmentList
         }
+
         console.log(data);
-        alert(JSON.stringify(data));
-     
+        console.log(JSON.stringify(data));
+
+        CreateNewPatient(data);
+
+    }
+
+    async function CreateNewPatient(data: INewPatient){
+
+        await api.post('/paciente/', data ).then(res =>{
+
+            console.log("Cadastrou?");;
+            console.log(res);
+
+        }).catch(err =>{
+            console.error("Erro ao cadastrar paciente");
+            console.log(err.response);
+            console.log(err.response.data);
+        });
+
     }
 
     function AlertExcludeAppointment(item: IApointment, key: number){
@@ -129,10 +160,6 @@ export function CadastrarPaciente(){
         setAppointmentList(newAppintmentList);
     }
 
-    function onlyUnique(value, index, self) {
-        return self.indexOf(value) === index;
-    }
-
     useEffect(()=>{
         if(appointment && appointment.data){
             let newArray = [...appointmentList, appointment];
@@ -143,9 +170,6 @@ export function CadastrarPaciente(){
             setAppointment(null);
         }
     },[appointment]);
-
-
-  
 
     return(
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
@@ -210,8 +234,8 @@ export function CadastrarPaciente(){
                     />
 
                     <Select 
-                        title={category.name}
-                        isActive={category.key}
+                        title={appointmentType.name}
+                        isActive={appointmentType.key}
                         onPress={()=>{HandleSelectCategoryModal(1)}}
                     />
 
@@ -269,7 +293,6 @@ export function CadastrarPaciente(){
 
             </Form>
 
-
             <WrapFooterCadastro>
                 <Button 
                     title="Cadastrar Paciente" 
@@ -282,8 +305,8 @@ export function CadastrarPaciente(){
                { wichModalIsOpened == 1 &&
                     <ModalSelect 
                         titulo="Tipo de Paciente"
-                        category={category}
-                        setCategory={setCategory}
+                        category={appointmentType}
+                        setCategory={setAppointmentType}
                         closeSelectCategory={()=>HandleSelectCategoryModal(0)}
                         optionsList={categoriesList}
                     />
