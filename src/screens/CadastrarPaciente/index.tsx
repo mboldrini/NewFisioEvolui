@@ -23,7 +23,8 @@ import { Select } from '../../components/Forms/Select';
 import { api } from '../../global/api';
 
 // Interface's
-import IApointment, { INewPatient } from '../../global/DTO/Apointment';
+import IApointment from '../../global/DTO/Apointment';
+import { INewPatient } from '../../global/DTO/Pacient';
 
 // import da tela que vai virar modal
 import { ModalSelect } from '../ModalSelect';
