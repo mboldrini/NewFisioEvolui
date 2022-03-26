@@ -18,12 +18,13 @@ import {
 
 interface Props{
     status: number;
+    type: number;
     hour: number;
     date: any;
     onPress: () => void;
 }
 
-export function AppointmentList({status, hour, date, onPress}: Props){
+export function AppointmentList({status, hour, date, type, onPress}: Props){
 
     function FormatStartHour(startHour: number){
         let today = new Date();
@@ -46,7 +47,7 @@ export function AppointmentList({status, hour, date, onPress}: Props){
     }
 
     return(
-        <Container status={status}>
+        <Container status={type}>
              <WrapInfos>
                 <WrapDate>
                      <WeekDay>{ daysLong[getDay( parseISO(date))] }</WeekDay>
@@ -55,7 +56,7 @@ export function AppointmentList({status, hour, date, onPress}: Props){
                  </WrapDate>
 
                  <WrapHours>
-                     <HourIcon name={ AppointmentIcons[status] } status={status}/>
+                     <HourIcon name={ AppointmentIcons[type] } status={type}/>
                      <Hour>{FormatStartHour(hour)} as {FormatEndHour()}</Hour>
                  </WrapHours>
              </WrapInfos>

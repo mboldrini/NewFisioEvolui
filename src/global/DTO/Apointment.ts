@@ -17,7 +17,7 @@ export interface INewPatient{
     logradouro: string,
     uf: number,
     bairro: string,
-    numero: number,
+    numero: string,
     referencia: string,
     queixamotivo: string,
     diagnosticos: string,

@@ -97,7 +97,7 @@ export function CadastrarPaciente(){
         const data: INewPatient = {
             nome: form.nome,
             cpf: form.cpf,
-            dataNascimento: form.dataNascimento,
+            dataNascimento: "06/06/1956", //form.dataNascimento,
             celular: form.celular,
             telefoneRecado: form.celular,
             email: form.email,
@@ -114,9 +114,6 @@ export function CadastrarPaciente(){
             agendamentos: appointmentList
         }
 
-        console.log(data);
-        console.log(JSON.stringify(data));
-
         CreateNewPatient(data);
 
     }
@@ -127,6 +124,8 @@ export function CadastrarPaciente(){
 
             console.log("Cadastrou?");;
             console.log(res);
+
+            alert("Paciente cadastrado com sucesso!");
 
         }).catch(err =>{
             console.error("Erro ao cadastrar paciente");
@@ -276,6 +275,7 @@ export function CadastrarPaciente(){
                                 status={item.status}
                                 hour={item.hora}
                                 date={item.data}
+                                type={item.tipo}
                                 onPress={()=>{ AlertExcludeAppointment(item, key) }}
                             />   
                         )
