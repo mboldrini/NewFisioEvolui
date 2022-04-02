@@ -164,7 +164,8 @@ export function ModalAgendamento({ closeSelectCategory, setSelectedApointment }:
         const apointment = {
             data: Object.keys(selectedDate)[0],
             hora: selectedHour,
-            status: isAnEvaluation == true ? 6 : 1,
+            tipo: isAnEvaluation == true ? 6 : 1,
+            status: 0
         }
 
         setSelectedApointment(apointment);

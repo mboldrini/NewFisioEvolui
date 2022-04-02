@@ -19,8 +19,13 @@ import {
 
 import { Select } from '../../components/Forms/Select';
 
+// API
+import { api } from '../../global/api';
+
 // Interface's
 import IApointment from '../../global/DTO/Apointment';
+import { INewPatient } from '../../global/DTO/Pacient';
+import { FormData } from '../../global/DTO/PatientFormData';
 
 // import da tela que vai virar modal
 import { ModalSelect } from '../ModalSelect';
@@ -31,24 +36,18 @@ import { ModalAgendamento } from '../../components/Modal/ModalAgendamento';
 import { ButtonSimple } from '../../components/Forms/ButtonSimple/Index';
 import { AppointmentList } from '../../components/AppointmentList';
 
-interface FormData{
-    nome: string,
-    dataNascimento: number,
-    cpf: number,
-    celular: number,
-    email: string,
-    endereco: string,
-  //  tipoComorbidade: string;
-}
-
 const schema = Yup.object().shape({
     nome: Yup.string().required("Nome é obrigatório"),
-    dataNascimento: Yup.string().required("Data de Nascimento é obrigatório").length(10, "Formato de data: 00/00/0000"),
     cpf: Yup.string().required("CPF é obrigatório").length(14, "CPF deve ter 11 dígitos"),
+    dataNascimento: Yup.string().optional().length(10, "Formato de data: 00/00/0000"),
     celular: Yup.string().required("Telefone de contato é obrigatório"),
     email: Yup.string().required("Email é obrigatório"),
     endereco: Yup.string().required("Endereço é obrigatório"),
-    // tipoComorbidade: Yup.string().optional()
+    tipoComorbidade: Yup.string().optional(),
+    comorbidades: Yup.string().optional(),
+    referencia: Yup.string().optional().min(5, "Tamanho mínimo de 5 letras").max(254, "O tamanho não deve ser maior que 254 letras"),
+    queixa: Yup.string().optional().min(15, "Tamanho mínimo de 15 letras").max(254, "O tamanho não deve ser maior que 254 letras"),
+    diagnostico: Yup.string().optional().min(20, "Tamanho mínimo de 20 letras").max(254, "O tamanho não deve ser maior que 254 letras"),
 })
 
 export function CadastrarPaciente(){
@@ -58,8 +57,9 @@ export function CadastrarPaciente(){
     const [wichModalIsOpened, setWichModalIsOpened] = useState(0);
 
 
-    const [category, setCategory] = useState({key: -1,name: 'Tipo de Atendimento'});
+    const [appointmentType, setAppointmentType] = useState({key: -1,name: 'Tipo de Atendimento'});
     const [categoriesList, setCategoriesList] = useState(categories);
+
     const [temComorbidade, setTemComorbidade] = useState({key: -1,name: ''});
     const [temComorbidadeList, setTemComorbidadeList] = useState([{key: 1, name: "Sim"}, {key: 0,name: "Não"}]);
 
@@ -88,21 +88,62 @@ export function CadastrarPaciente(){
 
     function handleRegister(form: FormData){
 
-        // if(temComorbidade.key == 0){
-        //     form.tipoComorbidade = null
-        // }
-
-        const data = {
-            nome: form.nome,
-            dataNascimento: form.dataNascimento,
-            cpf: form.cpf,
-            celular: form.celular,
-            email: form.email,
-            endereco: form.endereco,
+        if(temComorbidade.key == 1 && (form.comorbidades?.length < 20 || !form.comorbidades) ){
+            Alert.alert(
+                "Ops!",
+                "Você precisa informar a(s) comorbidade(s) do paciente",
+                [
+                    { text: "OK" }
+                ]
+            );
+            return;
         }
+
+        const data: INewPatient = {
+            nome: form.nome,
+            cpf: form.cpf,
+            dataNascimento: form.dataNascimento, //form.dataNascimento,
+            celular: form.celular,
+            telefoneRecado: form.celular,
+            email: form.email,
+            tipoAtendimento: appointmentType.key,
+            temComorbidade: temComorbidade.key == 0 ? false : true,
+            logradouro: form.endereco,
+            uf: 0,
+            bairro: "bairroOo",
+            referencia: form.referencia,
+            queixamotivo: form.queixa,
+            diagnosticos: form.diagnostico,
+            comorbidades: form.comorbidades,
+            agendamentos: appointmentList
+        }
+
+        console.warn("Ativar a funcao de api após as alterações");
         console.log(data);
-        alert(JSON.stringify(data));
-     
+
+        console.log("APRENDER SOBRE REDUX p/ botar o token");
+        console.log("APRENDER SOBRE REDUX p/ botar o token");
+        console.log("criacao desativada");
+
+     //   CreateNewPatient(data);
+
+    }
+
+    async function CreateNewPatient(data: INewPatient){
+
+        await api("aa").post('/paciente/', data ).then(res =>{
+
+            console.log("Cadastrou?");;
+            console.log(res);
+
+            alert("Paciente cadastrado com sucesso!");
+
+        }).catch(err =>{
+            console.error("Erro ao cadastrar paciente");
+            console.log(err.response);
+            console.log(err.response.data);
+        });
+
     }
 
     function AlertExcludeAppointment(item: IApointment, key: number){
@@ -129,10 +170,6 @@ export function CadastrarPaciente(){
         setAppointmentList(newAppintmentList);
     }
 
-    function onlyUnique(value, index, self) {
-        return self.indexOf(value) === index;
-    }
-
     useEffect(()=>{
         if(appointment && appointment.data){
             let newArray = [...appointmentList, appointment];
@@ -143,9 +180,6 @@ export function CadastrarPaciente(){
             setAppointment(null);
         }
     },[appointment]);
-
-
-  
 
     return(
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
@@ -210,8 +244,8 @@ export function CadastrarPaciente(){
                     />
 
                     <Select 
-                        title={category.name}
-                        isActive={category.key}
+                        title={appointmentType.name}
+                        isActive={appointmentType.key}
                         onPress={()=>{HandleSelectCategoryModal(1)}}
                     />
 
@@ -222,14 +256,19 @@ export function CadastrarPaciente(){
                     /> 
 
                     { temComorbidade.key == 1 && 
-                        <InputForm 
-                            name="tipoComorbidade"
-                            control={control}
-                            placeholder="Tipo(s) de comorbidade(s)"
-                            autoCorrect={false}
-                            error={errors.tipoComorbidade && errors.tipoComorbidade.message}
-                        />
+                           <InputForm 
+                           name="comorbidades"
+                           control={control}
+                           placeholder="Comorbidade(s) do paciente"
+                           autoCapitalize="words"
+                           autoCorrect={false}
+                           multiline={true}
+                           numberOfLines={4}
+                           error={errors.comorbidades && errors.comorbidades.message}
+                       />
+   
                     }  
+
 
                     
                     <InputForm 
@@ -239,6 +278,37 @@ export function CadastrarPaciente(){
                         autoCapitalize="words"
                         autoCorrect={false}
                         error={errors.endereco && errors.endereco.message}
+                    />
+
+                    <InputForm 
+                        name="referencia"
+                        control={control}
+                        placeholder="Referência"
+                        autoCapitalize="words"
+                        autoCorrect={false}
+                        error={errors.referencia && errors.referencia.message}
+                    />
+
+                    <InputForm 
+                        name="queixa"
+                        control={control}
+                        placeholder="Queixa e/ou motivo do Atendimento"
+                        autoCapitalize="words"
+                        autoCorrect={false}
+                        multiline={true}
+                        numberOfLines={4}
+                        error={errors.queixa && errors.queixa.message}
+                    />
+
+                    <InputForm 
+                        name="diagnostico"
+                        control={control}
+                        placeholder="Diagnóstico Inícial"
+                        autoCapitalize="words"
+                        autoCorrect={false}
+                        multiline={true}
+                        numberOfLines={4}
+                        error={errors.diagnostico && errors.diagnostico.message}
                     />
 
                     
@@ -252,6 +322,7 @@ export function CadastrarPaciente(){
                                 status={item.status}
                                 hour={item.hora}
                                 date={item.data}
+                                type={item.tipo}
                                 onPress={()=>{ AlertExcludeAppointment(item, key) }}
                             />   
                         )
@@ -269,7 +340,6 @@ export function CadastrarPaciente(){
 
             </Form>
 
-
             <WrapFooterCadastro>
                 <Button 
                     title="Cadastrar Paciente" 
@@ -282,8 +352,8 @@ export function CadastrarPaciente(){
                { wichModalIsOpened == 1 &&
                     <ModalSelect 
                         titulo="Tipo de Paciente"
-                        category={category}
-                        setCategory={setCategory}
+                        category={appointmentType}
+                        setCategory={setAppointmentType}
                         closeSelectCategory={()=>HandleSelectCategoryModal(0)}
                         optionsList={categoriesList}
                     />
