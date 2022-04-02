@@ -3,7 +3,7 @@ import IApointment from "./Apointment"
 export interface INewPatient{
     nome: string,
     cpf: number,
-    dataNascimento: number,
+    dataNascimento: string,
     celular: number,
     telefoneRecado: number,
     email: string,

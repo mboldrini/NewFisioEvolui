@@ -25,6 +25,7 @@ import { api } from '../../global/api';
 // Interface's
 import IApointment from '../../global/DTO/Apointment';
 import { INewPatient } from '../../global/DTO/Pacient';
+import { FormData } from '../../global/DTO/PatientFormData';
 
 // import da tela que vai virar modal
 import { ModalSelect } from '../ModalSelect';
@@ -35,26 +36,18 @@ import { ModalAgendamento } from '../../components/Modal/ModalAgendamento';
 import { ButtonSimple } from '../../components/Forms/ButtonSimple/Index';
 import { AppointmentList } from '../../components/AppointmentList';
 
-interface FormData{
-    nome: string,
-    cpf: number,
-    dataNascimento: number,
-    celular: number,
-    email: string,
-    endereco: string,
-    temComorbidade: boolean,
-}
-
-
-
 const schema = Yup.object().shape({
     nome: Yup.string().required("Nome é obrigatório"),
     cpf: Yup.string().required("CPF é obrigatório").length(14, "CPF deve ter 11 dígitos"),
-    dataNascimento: Yup.string().required("Data de Nascimento é obrigatório").length(10, "Formato de data: 00/00/0000"),
+    dataNascimento: Yup.string().optional().length(10, "Formato de data: 00/00/0000"),
     celular: Yup.string().required("Telefone de contato é obrigatório"),
     email: Yup.string().required("Email é obrigatório"),
     endereco: Yup.string().required("Endereço é obrigatório"),
-    tipoComorbidade: Yup.string().optional()
+    tipoComorbidade: Yup.string().optional(),
+    descricaoComorbidade: Yup.string().optional(),
+    referencia: Yup.string().optional().min(5, "Tamanho mínimo de 5 letras").max(254, "O tamanho não deve ser maior que 254 letras"),
+    queixa: Yup.string().optional().min(15, "Tamanho mínimo de 15 letras").max(254, "O tamanho não deve ser maior que 254 letras"),
+    diagnostico: Yup.string().optional().min(20, "Tamanho mínimo de 20 letras").max(254, "O tamanho não deve ser maior que 254 letras"),
 })
 
 export function CadastrarPaciente(){
@@ -95,10 +88,21 @@ export function CadastrarPaciente(){
 
     function handleRegister(form: FormData){
 
+        if(temComorbidade.key == 1 && (form.descricaoComorbidade?.length < 20 || !form.descricaoComorbidade) ){
+            Alert.alert(
+                "Ops!",
+                "Você precisa informar a(s) comorbidade(s) do paciente",
+                [
+                    { text: "OK" }
+                ]
+            );
+            return;
+        }
+
         const data: INewPatient = {
             nome: form.nome,
             cpf: form.cpf,
-            dataNascimento: "06/06/1956", //form.dataNascimento,
+            dataNascimento: form.dataNascimento, //form.dataNascimento,
             celular: form.celular,
             telefoneRecado: form.celular,
             email: form.email,
@@ -108,14 +112,17 @@ export function CadastrarPaciente(){
             uf: 0,
             bairro: "bairroOo",
             numero: "789",
-            referencia: "referencia da localizacao",
-            queixamotivo: "queixa ou motivo do atendimento",
-            diagnosticos: "quais os diagnosticos",
-            comorbidades: "descricao das comorbidades",
+            referencia: form.referencia,
+            queixamotivo: form.queixa,
+            diagnosticos: form.diagnostico,
+            comorbidades: form.descricaoComorbidade,
             agendamentos: appointmentList
         }
 
-        CreateNewPatient(data);
+        console.warn("Ativar a funcao de api após as alterações");
+        console.log(data);
+
+     //   CreateNewPatient(data);
 
     }
 
@@ -246,14 +253,19 @@ export function CadastrarPaciente(){
                     /> 
 
                     { temComorbidade.key == 1 && 
-                        <InputForm 
-                            name="tipoComorbidade"
-                            control={control}
-                            placeholder="Tipo(s) de comorbidade(s)"
-                            autoCorrect={false}
-                            error={errors.tipoComorbidade && errors.tipoComorbidade.message}
-                        />
+                           <InputForm 
+                           name="comorbidade"
+                           control={control}
+                           placeholder="Comorbidade(s) do paciente"
+                           autoCapitalize="words"
+                           autoCorrect={false}
+                           multiline={true}
+                           numberOfLines={4}
+                           error={errors.comorbidade && errors.comorbidade.message}
+                       />
+   
                     }  
+
 
                     
                     <InputForm 
@@ -263,6 +275,37 @@ export function CadastrarPaciente(){
                         autoCapitalize="words"
                         autoCorrect={false}
                         error={errors.endereco && errors.endereco.message}
+                    />
+
+                    <InputForm 
+                        name="referencia"
+                        control={control}
+                        placeholder="Referência"
+                        autoCapitalize="words"
+                        autoCorrect={false}
+                        error={errors.referencia && errors.referencia.message}
+                    />
+
+                    <InputForm 
+                        name="queixa"
+                        control={control}
+                        placeholder="Queixa e/ou motivo do Atendimento"
+                        autoCapitalize="words"
+                        autoCorrect={false}
+                        multiline={true}
+                        numberOfLines={4}
+                        error={errors.queixa && errors.queixa.message}
+                    />
+
+                    <InputForm 
+                        name="diagnostico"
+                        control={control}
+                        placeholder="Diagnóstico Inícial"
+                        autoCapitalize="words"
+                        autoCorrect={false}
+                        multiline={true}
+                        numberOfLines={4}
+                        error={errors.diagnostico && errors.diagnostico.message}
                     />
 
                     
