@@ -114,20 +114,24 @@ export function CadastrarPaciente(){
             referencia: form.referencia,
             queixamotivo: form.queixa,
             diagnosticos: form.diagnostico,
-            comorbidades: form.descricaoComorbidade,
+            comorbidades: form.comorbidades,
             agendamentos: appointmentList
         }
 
         console.warn("Ativar a funcao de api após as alterações");
         console.log(data);
 
-        CreateNewPatient(data);
+        console.log("APRENDER SOBRE REDUX p/ botar o token");
+        console.log("APRENDER SOBRE REDUX p/ botar o token");
+        console.log("criacao desativada");
+
+     //   CreateNewPatient(data);
 
     }
 
     async function CreateNewPatient(data: INewPatient){
 
-        await api.post('/paciente/', data ).then(res =>{
+        await api("aa").post('/paciente/', data ).then(res =>{
 
             console.log("Cadastrou?");;
             console.log(res);
