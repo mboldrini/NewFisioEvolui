@@ -6,7 +6,7 @@ export interface FormData{
     email: string,
     endereco: string,
     temComorbidade: boolean,
-    descricaoComorbidade?: string;
+    comorbidades?: string;
     referencia?: string,
     queixa?: string,
     diagnostico?: string;

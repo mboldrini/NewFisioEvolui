@@ -44,7 +44,7 @@ const schema = Yup.object().shape({
     email: Yup.string().required("Email é obrigatório"),
     endereco: Yup.string().required("Endereço é obrigatório"),
     tipoComorbidade: Yup.string().optional(),
-    descricaoComorbidade: Yup.string().optional(),
+    comorbidades: Yup.string().optional(),
     referencia: Yup.string().optional().min(5, "Tamanho mínimo de 5 letras").max(254, "O tamanho não deve ser maior que 254 letras"),
     queixa: Yup.string().optional().min(15, "Tamanho mínimo de 15 letras").max(254, "O tamanho não deve ser maior que 254 letras"),
     diagnostico: Yup.string().optional().min(20, "Tamanho mínimo de 20 letras").max(254, "O tamanho não deve ser maior que 254 letras"),
@@ -88,7 +88,7 @@ export function CadastrarPaciente(){
 
     function handleRegister(form: FormData){
 
-        if(temComorbidade.key == 1 && (form.descricaoComorbidade?.length < 20 || !form.descricaoComorbidade) ){
+        if(temComorbidade.key == 1 && (form.comorbidades?.length < 20 || !form.comorbidades) ){
             Alert.alert(
                 "Ops!",
                 "Você precisa informar a(s) comorbidade(s) do paciente",
@@ -111,7 +111,6 @@ export function CadastrarPaciente(){
             logradouro: form.endereco,
             uf: 0,
             bairro: "bairroOo",
-            numero: "789",
             referencia: form.referencia,
             queixamotivo: form.queixa,
             diagnosticos: form.diagnostico,
@@ -122,7 +121,7 @@ export function CadastrarPaciente(){
         console.warn("Ativar a funcao de api após as alterações");
         console.log(data);
 
-     //   CreateNewPatient(data);
+        CreateNewPatient(data);
 
     }
 
@@ -254,14 +253,14 @@ export function CadastrarPaciente(){
 
                     { temComorbidade.key == 1 && 
                            <InputForm 
-                           name="comorbidade"
+                           name="comorbidades"
                            control={control}
                            placeholder="Comorbidade(s) do paciente"
                            autoCapitalize="words"
                            autoCorrect={false}
                            multiline={true}
                            numberOfLines={4}
-                           error={errors.comorbidade && errors.comorbidade.message}
+                           error={errors.comorbidades && errors.comorbidades.message}
                        />
    
                     }  
