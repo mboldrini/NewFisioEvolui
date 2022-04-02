@@ -14,6 +14,7 @@ import {
 
 /// API
 import { api } from '../../../global/api';
+import { IGoogleData } from '../../../global/DTO/IGoogleData';
 
 /// REDUX
 import { useDispatch, useSelector } from 'react-redux';
@@ -28,16 +29,7 @@ type AuthResponse = {
     }
 }
 
-interface IgData{
-    email: string;
-    family_name: string;
-    given_name: string;
-    id: string,
-    locale: string;
-    name: string;
-    picture: string;
-    verified_email: boolean;
-}
+
 
 export function SignIn(){
 
@@ -50,11 +42,12 @@ export function SignIn(){
     const usrState = useSelector((state: State) => state.user);
 
     // Padrão do Login + Usuário
-    const [loading, setLoading] = useState(true);
-    const [googleUserInfos, setGoogleUserInfos] = useState<IgData>({} as IgData);
+    const [loading, setLoading] = useState(false);
+
+    const [googleUserInfos, setGoogleUserInfos] = useState<IGoogleData>({} as IGoogleData);
     const [appApiToken, setAppApiToken] = useState(null);
 
-    async function handleSignInWithGoogle(){
+    async function HandleSignInWithGoogle(){
 
         setLoading(true);
 
@@ -69,6 +62,7 @@ export function SignIn(){
         if(type === 'success'){
             GetGoogleToken(params.access_token);
         }else{
+            console.error("Login Cancelado!");
             alert("Login Cancelado");
             setLoading(false);
         }
@@ -95,8 +89,8 @@ export function SignIn(){
 
     }
 
-    async function GetApiToken(data: IgData){
-     //   console.group("GetApiToken");
+    async function GetApiToken(data: IGoogleData){
+        // console.group("GetApiToken");
 
         if(data.email){
 
@@ -105,9 +99,10 @@ export function SignIn(){
                 id: data.id
             }).then(res =>{
 
-             //   console.log("SUCESSO AO PEGAR TOKEN VIA API");
+              //  console.log("Token da api FisioEvolui Obtido");
                 const token = res.data.token;
                 setAppApiToken(token);
+                GetUserInfos(token);
 
             }).catch(err =>{
 
@@ -115,7 +110,7 @@ export function SignIn(){
 
                 if(err.response.data.message === "Usuário não encontrado"){
 
-                    console.log("REDIRECIONA p/ CRIAR User");
+                   // console.log("REDIRECIONA p/ CRIAR User");
                     navigation.navigate('SignUp',{ userInfo });
 
                 }else{
@@ -128,11 +123,11 @@ export function SignIn(){
 
         }
 
-      //   console.groupEnd();
+        //  console.groupEnd();
     }
 
     async function GetUserInfos(token: string){
-        // console.group("GetUserInfos");
+    //    console.group("GetUserInfos");
 
         const config = {
             headers: { Authorization: `Bearer ${token}` }
@@ -145,7 +140,7 @@ export function SignIn(){
         await api.get('/users', config)
         .then(res =>{
 
-            // console.log( res.data.user );
+            console.log( res.data.user );
 
             let userInfos = res.data.user;
             userInfos = {
@@ -156,27 +151,30 @@ export function SignIn(){
             if(userInfos.id){
                 setUserInfos( userInfos );
             }
+
+            navigation.navigate("MainTab");
           
 
         }).catch(err =>{
 
             console.log(err.response.data);
+            setLoading(false);
 
         });
 
         // console.groupEnd();
     }
 
-    useEffect(()=>{
-        async function SalvaApiTokenEPegaUserInfos(){
-            await AsyncStorage.setItem(StorageKeys.appToken, appApiToken);
-            // console.log("Salvou novo token no storage...");
-            GetUserInfos(appApiToken);
-        }
-        if(appApiToken){
-            SalvaApiTokenEPegaUserInfos();
-        }
-    }, [appApiToken]); 
+    // useEffect(()=>{
+    //     async function SalvaApiTokenEPegaUserInfos(){
+    //         await AsyncStorage.setItem(StorageKeys.appToken, appApiToken);
+    //         // console.log("Salvou novo token no storage...");
+    //         GetUserInfos(appApiToken);
+    //     }
+    //     if(appApiToken){
+    //         SalvaApiTokenEPegaUserInfos();
+    //     }
+    // }, [appApiToken]); 
 
     useEffect(()=>{
 
@@ -184,7 +182,7 @@ export function SignIn(){
             setLoading(true);
 
             let storageGoogleString = await AsyncStorage.getItem(StorageKeys.googleUserInfos);
-            let googleInfos = JSON.parse(storageGoogleString) as IgData;
+            let googleInfos = JSON.parse(storageGoogleString) as IGoogleData;
 
             //    console.group("Loading - Get Google Infos Storage");
               //  console.log(googleInfos);
@@ -201,19 +199,19 @@ export function SignIn(){
 
     }, []);
 
-    useEffect(()=>{
-        if(googleUserInfos){
-            setLoading(true);
-            GetApiToken(googleUserInfos);
-        }
-    },[googleUserInfos]);
+    // useEffect(()=>{
+    //     if(googleUserInfos){
+    //         setLoading(true);
+    //         GetApiToken(googleUserInfos);
+    //     }
+    // },[googleUserInfos]);
 
 
-    useEffect(()=>{
-        if(usrState.id){
-            navigation.navigate("MainTab");
-        }
-    }, [usrState]);
+    // useEffect(()=>{
+    //     if(usrState.id){
+    //         navigation.navigate("MainTab");
+    //     }
+    // }, [usrState]);
 
 
 
@@ -226,7 +224,7 @@ export function SignIn(){
             { !loading &&
                 <WrapInput>
                     <ButtonGoogle
-                        onPress={handleSignInWithGoogle}
+                        onPress={HandleSignInWithGoogle}
                     />
                 </WrapInput>
             }
