@@ -159,9 +159,9 @@ export function SignIn(){
                 });
             }
 
-            navigation.navigate("MainTab");
+            //navigation.navigate("MainTab");
 
-            //console.warn("REDUX PARA AQUI!");
+            console.warn("REDUX PARA AQUI!");
             setLoading(false);
           
 
@@ -188,34 +188,34 @@ export function SignIn(){
 
     useEffect(()=>{
 
-        async function GetGoogleInfosStorage(){
-            setLoading(true);
+        console.group("PEERESISTEENTE?");
+        console.log(usrState);
+        console.groupEnd();
 
-            let storageGoogleString = await AsyncStorage.getItem(StorageKeys.googleUserInfos);
-            let googleInfos = JSON.parse(storageGoogleString) as IGoogleData;
+        // async function GetGoogleInfosStorage(){
+        //     setLoading(true);
 
-            console.group("Loading - Get Google Infos Storage");
-            console.log(googleInfos);
-            console.groupEnd();
+        //     let storageGoogleString = await AsyncStorage.getItem(StorageKeys.googleUserInfos);
+        //     let googleInfos = JSON.parse(storageGoogleString) as IGoogleData;
+
+        //     console.group("Loading - Get Google Infos Storage");
+        //     console.log(googleInfos);
+        //     console.groupEnd();
             
-            if(googleInfos){
-                GetApiToken(googleInfos);
-            }else{
-                setLoading(false);
-            }
+        //     if(googleInfos){
+        //         GetApiToken(googleInfos);
+        //     }else{
+        //         setLoading(false);
+        //     }
 
-        }
-        GetGoogleInfosStorage();
+        // }
+        // GetGoogleInfosStorage();
 
     }, []);
 
 
 
-    useEffect(()=>{
-        console.group("userState");
-            console.log(usrState);
-        console.groupEnd();
-    },[usrState]);
+
 
 
     return(

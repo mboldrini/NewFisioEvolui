@@ -15,7 +15,8 @@ import theme from './src/global/styles/theme';
 import MainStack from './src/stacks/Mainstack';
 
 import { Provider } from 'react-redux';
-import {store} from './src/state';
+import {store, persistor} from './src/state';
+import { PersistGate } from 'redux-persist/integration/react';
 
 export default () => {
   const [fontsLoaded] = useFonts({
@@ -33,7 +34,9 @@ export default () => {
     <ThemeProvider theme={theme}>
       <NavigationContainer>
         <Provider store={store}>
-          <MainStack/>
+          <PersistGate loading={null} persistor={persistor}>
+            <MainStack/>
+          </PersistGate>
         </Provider>
       </NavigationContainer>
     </ThemeProvider>
