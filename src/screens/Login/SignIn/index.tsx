@@ -17,10 +17,9 @@ import { api } from '../../../global/api';
 import { IGoogleData } from '../../../global/DTO/IGoogleData';
 
 // /// REDUX
-// import { useDispatch, useSelector } from 'react-redux';
-// import { bindActionCreators } from 'redux';
-// import { actionCreators, State } from '../../../state_OLD_REDUX';
-
+import { useDispatch, useSelector } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { actionCreators, State } from '../../../state';
 
 type AuthResponse = {
     type: string;
@@ -37,9 +36,9 @@ export function SignIn(){
     const navigation = useNavigation();
 
     // // Redux de Usuários
-    // const dispatch = useDispatch();
-    // const { setUserInfos } = bindActionCreators(actionCreators, dispatch);
-    // const usrState = useSelector((state: State) => state.user);
+    const dispatch = useDispatch();
+    const { setUserInfos, setApiInfos } = bindActionCreators(actionCreators, dispatch);
+    const usrState = useSelector((state: State) => state.user);// o .user é o nome usado no .index da pasta reducers
 
     // Padrão do Login + Usuário
     const [loading, setLoading] = useState(false);
@@ -66,6 +65,7 @@ export function SignIn(){
             alert("Login Cancelado");
             setLoading(false);
         }
+
     }
 
     async function GetGoogleToken(googleToken: string){
@@ -148,13 +148,20 @@ export function SignIn(){
                 token: token
             }
 
+
+            let dtNow = new Date().toString();
+
             if(userInfos.id){
-                // setUserInfos( userInfos );
+                setUserInfos( userInfos );
+                setApiInfos({
+                    token: token,
+                    date: dtNow
+                });
             }
 
-            // navigation.navigate("MainTab");
+            navigation.navigate("MainTab");
 
-            console.warn("REDUX PARA AQUI!");
+            //console.warn("REDUX PARA AQUI!");
             setLoading(false);
           
 
@@ -202,20 +209,13 @@ export function SignIn(){
 
     }, []);
 
-    // useEffect(()=>{
-    //     if(googleUserInfos){
-    //         setLoading(true);
-    //         GetApiToken(googleUserInfos);
-    //     }
-    // },[googleUserInfos]);
 
 
-    // useEffect(()=>{
-    //     if(usrState.id){
-    //         navigation.navigate("MainTab");
-    //     }
-    // }, [usrState]);
-
+    useEffect(()=>{
+        console.group("userState");
+            console.log(usrState);
+        console.groupEnd();
+    },[usrState]);
 
 
     return(

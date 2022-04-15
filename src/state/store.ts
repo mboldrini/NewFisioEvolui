@@ -1,10 +1,10 @@
 import { createStore, applyMiddleware } from 'redux';
-import reducers from './reducers/index';
 import thunk from 'redux-thunk';
+// importa todos os reducers q foram centralizados no index
+import rootReducer from './reducers/index';
 
 export const store = createStore(
-    reducers,
-    {},
+    rootReducer,
+    {}, // initialState,
     applyMiddleware(thunk)
 );
-

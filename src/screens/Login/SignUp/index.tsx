@@ -23,7 +23,7 @@ import { api } from '../../../global/api';
 /// REDUX
 import { useDispatch, useSelector } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { actionCreators, State } from '../../../state_OLD_REDUX';
+import { actionCreators, State } from '../../../state';
 import { StorageKeys } from '../../../global/variaveis/globais';
 
 interface FormData{

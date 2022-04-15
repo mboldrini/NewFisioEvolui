@@ -21,6 +21,10 @@ import { Select } from '../../components/Forms/Select';
 
 // API
 import { api } from '../../global/api';
+// REDUX
+import { useDispatch, useSelector } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { actionCreators, State } from '../../state';
 
 // Interface's
 import IApointment from '../../global/DTO/Apointment';
@@ -51,6 +55,11 @@ const schema = Yup.object().shape({
 })
 
 export function CadastrarPaciente(){
+
+    // // Redux de Usuários
+    const dispatch = useDispatch();
+    const { setUserInfos, setApiInfos } = bindActionCreators(actionCreators, dispatch);
+    const usrState = useSelector((state: State) => state.user);// o .user é o nome usado no .index da pasta reducers
 
     // Modal's
     const [categoryModalOpen, setCategoryModalOpen] = useState(false);
@@ -180,6 +189,12 @@ export function CadastrarPaciente(){
             setAppointment(null);
         }
     },[appointment]);
+
+
+    useEffect(()=>{
+        console.log("USRSTATE:");
+        console.log(usrState.api);
+    },[]);
 
     return(
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
