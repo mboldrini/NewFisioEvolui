@@ -16,10 +16,10 @@ import {
 import { api } from '../../../global/api';
 import { IGoogleData } from '../../../global/DTO/IGoogleData';
 
-/// REDUX
-import { useDispatch, useSelector } from 'react-redux';
-import { bindActionCreators } from 'redux';
-import { actionCreators, State } from '../../../state';
+// /// REDUX
+// import { useDispatch, useSelector } from 'react-redux';
+// import { bindActionCreators } from 'redux';
+// import { actionCreators, State } from '../../../state_OLD_REDUX';
 
 
 type AuthResponse = {
@@ -36,10 +36,10 @@ export function SignIn(){
     // Navegação
     const navigation = useNavigation();
 
-    // Redux de Usuários
-    const dispatch = useDispatch();
-    const { setUserInfos } = bindActionCreators(actionCreators, dispatch);
-    const usrState = useSelector((state: State) => state.user);
+    // // Redux de Usuários
+    // const dispatch = useDispatch();
+    // const { setUserInfos } = bindActionCreators(actionCreators, dispatch);
+    // const usrState = useSelector((state: State) => state.user);
 
     // Padrão do Login + Usuário
     const [loading, setLoading] = useState(false);
@@ -90,7 +90,7 @@ export function SignIn(){
     }
 
     async function GetApiToken(data: IGoogleData){
-        // console.group("GetApiToken");
+        console.group("GetApiToken");
 
         if(data.email){
 
@@ -99,7 +99,7 @@ export function SignIn(){
                 id: data.id
             }).then(res =>{
 
-              //  console.log("Token da api FisioEvolui Obtido");
+                console.log("Token da api FisioEvolui Obtido");
                 const token = res.data.token;
                 setAppApiToken(token);
                 GetUserInfos(token);
@@ -110,7 +110,7 @@ export function SignIn(){
 
                 if(err.response.data.message === "Usuário não encontrado"){
 
-                   // console.log("REDIRECIONA p/ CRIAR User");
+                    console.log("REDIRECIONA p/ CRIAR User");
                     navigation.navigate('SignUp',{ userInfo });
 
                 }else{
@@ -123,7 +123,7 @@ export function SignIn(){
 
         }
 
-        //  console.groupEnd();
+        console.groupEnd();
     }
 
     async function GetUserInfos(token: string){
@@ -149,10 +149,13 @@ export function SignIn(){
             }
 
             if(userInfos.id){
-                setUserInfos( userInfos );
+                // setUserInfos( userInfos );
             }
 
-            navigation.navigate("MainTab");
+            // navigation.navigate("MainTab");
+
+            console.warn("REDUX PARA AQUI!");
+            setLoading(false);
           
 
         }).catch(err =>{
@@ -184,9 +187,9 @@ export function SignIn(){
             let storageGoogleString = await AsyncStorage.getItem(StorageKeys.googleUserInfos);
             let googleInfos = JSON.parse(storageGoogleString) as IGoogleData;
 
-            //    console.group("Loading - Get Google Infos Storage");
-              //  console.log(googleInfos);
-                //console.groupEnd();
+            console.group("Loading - Get Google Infos Storage");
+            console.log(googleInfos);
+            console.groupEnd();
             
             if(googleInfos){
                 GetApiToken(googleInfos);

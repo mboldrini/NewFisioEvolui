@@ -14,8 +14,8 @@ import {
 import theme from './src/global/styles/theme';
 import MainStack from './src/stacks/Mainstack';
 
-import { Provider } from 'react-redux';
-import { store } from './src/state/';
+// import { Provider } from 'react-redux';
+// import { store } from './src/state_OLD_REDUX';
 
 export default () => {
   const [fontsLoaded] = useFonts({
@@ -32,9 +32,9 @@ export default () => {
   return (
     <ThemeProvider theme={theme}>
       <NavigationContainer>
-        <Provider store={store}>
+        {/* <Provider store={store}> */}
           <MainStack/>
-        </Provider>
+        {/* </Provider> */}
       </NavigationContainer>
     </ThemeProvider>
   );

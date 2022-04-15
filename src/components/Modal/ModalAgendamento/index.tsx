@@ -6,7 +6,7 @@ import Checkbox from 'expo-checkbox';
 // REDUX
 import { useDispatch, useSelector } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { actionCreators, State } from '../../../state';
+import { actionCreators, State } from '../../../state_OLD_REDUX';
 import {
     Container,
     Body,
@@ -196,152 +196,151 @@ export function ModalAgendamento({ closeSelectCategory, setSelectedApointment }:
 
     return(
         <Container>
-        <Body>
+            <Body>
 
-            <Header isActive={true} /*isActive={ temDtPrevia() }*/>
-                <WrapIcone>
-                    <Icone name="chevron-down" onPress={closeSelectCategory}/>
-                </WrapIcone>
-                <WrapTitulo>
-                    <Titulo>Agendar Atendimento</Titulo>
-                </WrapTitulo>
-                {/* {   dataEscolhida &&
+                <Header isActive={true} /*isActive={ temDtPrevia() }*/>
                     <WrapIcone>
-                        <Icone name="trash-alt" onPress={()=>{ excluiAgendamento(dataEscolhida.id) } }/>
+                        <Icone name="chevron-down" onPress={closeSelectCategory}/>
                     </WrapIcone>
-                } */}
-            </Header>
+                    <WrapTitulo>
+                        <Titulo>Agendar Atendimento</Titulo>
+                    </WrapTitulo>
+                    {/* {   dataEscolhida &&
+                        <WrapIcone>
+                            <Icone name="trash-alt" onPress={()=>{ excluiAgendamento(dataEscolhida.id) } }/>
+                        </WrapIcone>
+                    } */}
+                </Header>
 
-            <WrapCalendar>
-                <CustomCalendar
-                    renderArrow={
-                        (direction) =>
-                        <FontAwesome5
-                            name={direction == 'left' ? 'chevron-left' : 'chevron-right'}
-                            size={24}
-                            color={theme.colors.primary}
-                        />
-                    }
+                <WrapCalendar>
+                    <CustomCalendar
+                        renderArrow={
+                            (direction) =>
+                            <FontAwesome5
+                                name={direction == 'left' ? 'chevron-left' : 'chevron-right'}
+                                size={24}
+                                color={theme.colors.primary}
+                            />
+                        }
 
-                    headerStyle={{
-                        borderBottomWidth: 0.5,
-                        borderBottomColor: "#cfcfcf",
-                        paddingBottom: 2,
-                        marginBottom: 2,
-                    }}
+                        headerStyle={{
+                            borderBottomWidth: 0.5,
+                            borderBottomColor: "#cfcfcf",
+                            paddingBottom: 2,
+                            marginBottom: 2,
+                        }}
 
-                    style={{
-                        marginRight: theme.margin.lateral,
-                        marginLeft: theme.margin.lateral,
-                        borderRadius: theme.bordas.padrao,
-                    }}
+                        style={{
+                            marginRight: theme.margin.lateral,
+                            marginLeft: theme.margin.lateral,
+                            borderRadius: theme.bordas.padrao,
+                        }}
 
-                    theme={{
-                        textDayFontFamily: theme.fonts.regular,
-                        textDayHeaderFontFamily: theme.fonts.bold,
-                        textMonthFontSize: 14,
-                        textDayFontSize: 15,
-                        textSectionTitleColor: '#000000',
-                        textMonthFontFamily: theme.fonts.bold,
+                        theme={{
+                            textDayFontFamily: theme.fonts.regular,
+                            textDayHeaderFontFamily: theme.fonts.bold,
+                            textMonthFontSize: 14,
+                            textDayFontSize: 15,
+                            textSectionTitleColor: '#000000',
+                            textMonthFontFamily: theme.fonts.bold,
 
-                        todayTextColor: '#00adf5',
-                        selectedDayBackgroundColor: '#4EADBE',
-                        dotColor: '#4EADBE',
-                    }}
+                            todayTextColor: '#00adf5',
+                            selectedDayBackgroundColor: '#4EADBE',
+                            dotColor: '#4EADBE',
+                        }}
 
-                    minDate={retroactive}
-                    hideExtraDays={true}
-                    markingType="dot"
+                        minDate={retroactive}
+                        hideExtraDays={true}
+                        markingType="dot"
 
-                    markedDates={selectedDate}
+                        markedDates={selectedDate}
 
-                   disabledDaysIndexes={[0,6]}
+                    disabledDaysIndexes={[0,6]}
 
-                    // Handler which gets executed on day long press. Default = undefined
-                    onDayLongPress={day => {
-                        const diaSelecionado: ISelectedDay = {};
-                        diaSelecionado[day.dateString] = {
-                            marked: true,
-                            textColor: 'white',
-                            selected: true
-                        };
-                        setSelectedDate(diaSelecionado);
-                    }}
+                        // Handler which gets executed on day long press. Default = undefined
+                        onDayLongPress={day => {
+                            const diaSelecionado: ISelectedDay = {};
+                            diaSelecionado[day.dateString] = {
+                                marked: true,
+                                textColor: 'white',
+                                selected: true
+                            };
+                            setSelectedDate(diaSelecionado);
+                        }}
 
-                    onDayPress={day=>{
-                        const diaSelecionado: ISelectedDay = {};
-                        diaSelecionado[day.dateString] = {
-                            marked: true,
-                            textColor: 'white',
-                            selected: true
-                        };
-                        setSelectedDate(diaSelecionado);
-                    }}
+                        onDayPress={day=>{
+                            const diaSelecionado: ISelectedDay = {};
+                            diaSelecionado[day.dateString] = {
+                                marked: true,
+                                textColor: 'white',
+                                selected: true
+                            };
+                            setSelectedDate(diaSelecionado);
+                        }}
 
-                    // onMonthChange={month => {
-                    //     console.log('month changed', month);
-                    // }}
-                />
-            </WrapCalendar>
-
-
-            {  availableTimesList.length <= 0 && selectedDate != null &&
-                <Wrap>
-                    <TextCarregandoHoras>Procurando Horarios Disponíveis...</TextCarregandoHoras>
-                </Wrap>
-            } 
-            { availableTimesList.length > 0 &&
-                <Wrap>
-                   <TimeList>
-                       {availableTimesList.map((item, key)=>(
-                           <TimeItem
-                               escolhido={item.hora == selectedHour}
-                               ativo={!item.indisponivel}
-                               key={key}
-                               onPress={()=>{
-                                   if(item.indisponivel == false){
-                                       setSelectedHour(item.hora)
-                                   }
-                               }}
-                           >
-                               <TimeItemText
-                                   escolhido={item.hora == selectedHour}
-                                   ativo={!item.indisponivel}
-                               >
-                                   {item.hora}
-                               </TimeItemText>
-                           </TimeItem>
-                       ))}
-                   </TimeList>
-                </Wrap>
-            }
-
-            { selectedHour != null && 
-                <WrapIsEvaluation>
-                    <TextEvaluation>Avaliação: </TextEvaluation>
-                    <Checkbox
-                        //style={styles.checkbox}
-                        value={isAnEvaluation}
-                        onValueChange={setIsAnEvaluation}
-                        color={isAnEvaluation ? '#8338ec' : undefined}
+                        // onMonthChange={month => {
+                        //     console.log('month changed', month);
+                        // }}
                     />
-                </WrapIsEvaluation>
-            }
-          
-            <WrapButtons>
+                </WrapCalendar>
 
-                <Button type="ok" onPress={()=> HandleApointment() } >
-                    <Title>Agendar</Title>
-                </Button>
 
-                <Button type="cancel" onPress={()=> closeSelectCategory() } >
-                    <Title>Cancelar</Title>
-                </Button>
+                {  availableTimesList.length <= 0 && selectedDate != null &&
+                    <Wrap>
+                        <TextCarregandoHoras>Procurando Horarios Disponíveis...</TextCarregandoHoras>
+                    </Wrap>
+                } 
+                { availableTimesList.length > 0 &&
+                    <Wrap>
+                    <TimeList>
+                        {availableTimesList.map((item, key)=>(
+                            <TimeItem
+                                escolhido={item.hora == selectedHour}
+                                ativo={!item.indisponivel}
+                                key={key}
+                                onPress={()=>{
+                                    if(item.indisponivel == false){
+                                        setSelectedHour(item.hora)
+                                    }
+                                }}
+                            >
+                                <TimeItemText
+                                    escolhido={item.hora == selectedHour}
+                                    ativo={!item.indisponivel}
+                                >
+                                    {item.hora}
+                                </TimeItemText>
+                            </TimeItem>
+                        ))}
+                    </TimeList>
+                    </Wrap>
+                }
 
-            </WrapButtons>
+                { selectedHour != null && 
+                    <WrapIsEvaluation>
+                        <TextEvaluation>Avaliação: </TextEvaluation>
+                        <Checkbox
+                            //style={styles.checkbox}
+                            value={isAnEvaluation}
+                            onValueChange={setIsAnEvaluation}
+                            color={isAnEvaluation ? '#8338ec' : undefined}
+                        />
+                    </WrapIsEvaluation>
+                }
+            
+                <WrapButtons>
 
-        </Body>
+                    <Button type="ok" onPress={()=> HandleApointment() } >
+                        <Title>Agendar</Title>
+                    </Button>
 
+                    <Button type="cancel" onPress={()=> closeSelectCategory() } >
+                        <Title>Cancelar</Title>
+                    </Button>
+
+                </WrapButtons>
+
+            </Body>
         </Container>
     )
 }

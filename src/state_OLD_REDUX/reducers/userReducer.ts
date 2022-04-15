@@ -1,4 +1,4 @@
-import { ActionType, IUserType } from './../action-types/index';
+import { ActionType, IUserType } from '../action-types/index';
 import { Action } from "../actions";
 
 const initialState = {

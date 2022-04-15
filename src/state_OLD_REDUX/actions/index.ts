@@ -1,4 +1,4 @@
-import { ActionType } from './../action-types/index';
+import { ActionType } from '../action-types/index';
 
 type SetInfos = {
     type: ActionType.SETINFOS,

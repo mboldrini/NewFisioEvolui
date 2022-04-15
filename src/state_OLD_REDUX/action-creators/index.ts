@@ -1,4 +1,4 @@
-import { IUserType } from './../action-types/index';
+import { IUserType } from '../action-types/index';
 import { ActionType } from "../action-types";
 import { Dispatch } from "react";
 import { Action } from '../actions/index';
