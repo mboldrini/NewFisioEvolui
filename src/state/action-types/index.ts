@@ -13,10 +13,6 @@ export interface IUserType{
     name: string,
     picture: string;
     token: string;
-    api:{
-        token: string,
-        date: string,
-    }
 }
 
 export interface IApiInfos{

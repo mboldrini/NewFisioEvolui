@@ -39,6 +39,7 @@ export function SignIn(){
     const dispatch = useDispatch();
     const { setUserInfos, setApiInfos } = bindActionCreators(actionCreators, dispatch);
     const usrState = useSelector((state: State) => state.user);// o .user é o nome usado no .index da pasta reducers
+    const apiState = useSelector((state: State) => state.apiReducer);// o .user é o nome usado no .index da pasta reducers
 
     // Padrão do Login + Usuário
     const [loading, setLoading] = useState(false);
@@ -48,23 +49,38 @@ export function SignIn(){
 
     async function HandleSignInWithGoogle(){
 
-        setLoading(true);
+        setApiInfos({
+            token: "queijo",
+            date: "DT"
+        });
 
-        const CLIENT_ID = '19918590573-m2k3b72f7jq816hvu3rcucov4itvjvji.apps.googleusercontent.com';
-        const REDIRECT_URL = 'https://auth.expo.io/@mboldrini/fisioevolui';
-        const RESPONSE_TYPE = 'token';
-        const SCOPE = encodeURI('profile email');
+        setUserInfos({
+            email: "mascarade",
+            family_name: "family",
+            given_name: "GIVEN",
+            id: "999",
+            name: "NOME",
+            picture: "picture",
+            token:"aaa"
+        });
 
-        const authUrl = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URL}&response_type=${RESPONSE_TYPE}&scope=${SCOPE}`;
-        const { type, params } = await AuthSession.startAsync({ authUrl }) as AuthResponse;
+        // setLoading(true);
 
-        if(type === 'success'){
-            GetGoogleToken(params.access_token);
-        }else{
-            console.error("Login Cancelado!");
-            alert("Login Cancelado");
-            setLoading(false);
-        }
+        // const CLIENT_ID = '19918590573-m2k3b72f7jq816hvu3rcucov4itvjvji.apps.googleusercontent.com';
+        // const REDIRECT_URL = 'https://auth.expo.io/@mboldrini/fisioevolui';
+        // const RESPONSE_TYPE = 'token';
+        // const SCOPE = encodeURI('profile email');
+
+        // const authUrl = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URL}&response_type=${RESPONSE_TYPE}&scope=${SCOPE}`;
+        // const { type, params } = await AuthSession.startAsync({ authUrl }) as AuthResponse;
+
+        // if(type === 'success'){
+        //     GetGoogleToken(params.access_token);
+        // }else{
+        //     console.error("Login Cancelado!");
+        //     alert("Login Cancelado");
+        //     setLoading(false);
+        // }
 
     }
 
@@ -149,14 +165,14 @@ export function SignIn(){
             }
 
 
-            let dtNow = new Date().toString();
+            // let dtNow = new Date().toString();
 
             if(userInfos.id){
                 setUserInfos( userInfos );
-                setApiInfos({
-                    token: token,
-                    date: dtNow
-                });
+                // setApiInfos({
+                //     token: token,
+                //     date: dtNow
+                // });
             }
 
             //navigation.navigate("MainTab");
@@ -188,8 +204,10 @@ export function SignIn(){
 
     useEffect(()=>{
 
-        console.group("PEERESISTEENTE?");
+        console.group("LOADING?");
         console.log(usrState);
+
+        console.log(apiState);
         console.groupEnd();
 
         // async function GetGoogleInfosStorage(){
@@ -214,7 +232,12 @@ export function SignIn(){
     }, []);
 
 
-
+    useEffect(()=>{
+        console.group("API STATE MUDOU");
+        console.log(apiState);
+        console.log(usrState);
+        console.groupEnd();
+    },[ usrState]);
 
 
 
