@@ -11,10 +11,11 @@ const OAuthGoogleInfos = {
     RESPONSE_TYPE: 'token'
 }
 
-function api(token: string){
+function api(token?: string){
     return axios.create({
         baseURL: 'http://192.168.15.108:3333',
-        headers: {'Authorization': 'Bearer '+ token }
+        headers: {'Authorization': 'Bearer '+ token },
+        timeout: 2 * 60 * 5000
     });  
 }
 

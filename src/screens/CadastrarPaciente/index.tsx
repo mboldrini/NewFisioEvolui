@@ -109,7 +109,7 @@ export function CadastrarPaciente(){
 
         const data: INewPatient = {
             nome: form.nome,
-            cpf: form.cpf,
+            cpf: null,//form.cpf,
             dataNascimento: form.dataNascimento, //form.dataNascimento,
             celular: form.celular,
             telefoneRecado: form.celular,
@@ -145,7 +145,9 @@ export function CadastrarPaciente(){
 
         }).catch(err =>{
             console.error("Erro ao cadastrar paciente");
-            console.error(err.response.data.message, err.response.data.statusCode);
+            if(err.response.data){
+                console.error(err.response.data.message, err.response.data.statusCode);
+            }
         });
 
     }

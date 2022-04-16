@@ -88,7 +88,7 @@ export function SignIn(){
 
     async function GetApiToken(data: IGoogleData){
         if(data.email){
-            await api.post('/sessions', {
+            await api().post('/sessions', {
                 email: data.email,
                 id: data.id
             }).then(res =>{
