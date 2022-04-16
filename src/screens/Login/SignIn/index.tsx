@@ -39,6 +39,7 @@ export function SignIn(){
     const dispatch = useDispatch();
     const { setUserInfos, setApiInfos } = bindActionCreators(actionCreators, dispatch);
     const usrState = useSelector((state: State) => state.user);// o .user é o nome usado no .index da pasta reducers
+    const apiState = useSelector((state: State) => state.apiReducer);// o .user é o nome usado no .index da pasta reducers
 
     // Padrão do Login + Usuário
     const [loading, setLoading] = useState(false);
@@ -149,14 +150,14 @@ export function SignIn(){
             }
 
 
-            let dtNow = new Date().toString();
+            // let dtNow = new Date().toString();
 
             if(userInfos.id){
                 setUserInfos( userInfos );
-                setApiInfos({
-                    token: token,
-                    date: dtNow
-                });
+                // setApiInfos({
+                //     token: token,
+                //     date: dtNow
+                // });
             }
 
             //navigation.navigate("MainTab");
@@ -188,34 +189,26 @@ export function SignIn(){
 
     useEffect(()=>{
 
-        console.group("PEERESISTEENTE?");
-        console.log(usrState);
-        console.groupEnd();
+        async function GetGoogleInfosStorage(){
+            setLoading(true);
 
-        // async function GetGoogleInfosStorage(){
-        //     setLoading(true);
+            let storageGoogleString = await AsyncStorage.getItem(StorageKeys.googleUserInfos);
+            let googleInfos = JSON.parse(storageGoogleString) as IGoogleData;
 
-        //     let storageGoogleString = await AsyncStorage.getItem(StorageKeys.googleUserInfos);
-        //     let googleInfos = JSON.parse(storageGoogleString) as IGoogleData;
-
-        //     console.group("Loading - Get Google Infos Storage");
-        //     console.log(googleInfos);
-        //     console.groupEnd();
+            console.group("Loading - Get Google Infos Storage");
+            console.log(googleInfos);
+            console.groupEnd();
             
-        //     if(googleInfos){
-        //         GetApiToken(googleInfos);
-        //     }else{
-        //         setLoading(false);
-        //     }
+            if(googleInfos){
+                GetApiToken(googleInfos);
+            }else{
+                setLoading(false);
+            }
 
-        // }
-        // GetGoogleInfosStorage();
+        }
+        GetGoogleInfosStorage();
 
     }, []);
-
-
-
-
 
 
     return(

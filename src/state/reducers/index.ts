@@ -1,10 +1,12 @@
 import { combineReducers } from "redux";
 import userReducer from './userReducer';
+import apiReducer from "./apiReducer";
 
 // user: userReducer (user = o nome q vai ser usado)
 //  se quiser pode deixar sem o "nome:"
 const rootReducer = combineReducers({
-    user: userReducer
+    user: userReducer,
+    apiReducer
 });
 export default rootReducer;
 

@@ -12,10 +12,6 @@ const initialState = {
     name: '',
     picture: '',
     token: '',
-    api:{
-        token: '',
-        date: '',
-    }
 } as IUserType
 
 // InitialState = as infos iniciais ou os novos valores
@@ -32,19 +28,6 @@ const reducer = (state = initialState, action: Action) => {
                 name: action.payload.infos.name,
                 picture: action.payload.infos.picture,
                 token: action.payload.infos.token
-            }
-        case ActionType.SETAPITOKEN:
-            return {
-                ...state,
-                api:{
-                    token: action.payload.token,
-                    date: action.payload.date
-                }
-            }
-        case ActionType.SETID:
-            return {
-                ...state,
-                id: action.payload.id
             }
         default: 
             return state;
