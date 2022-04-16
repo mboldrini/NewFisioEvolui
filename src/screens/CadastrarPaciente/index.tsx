@@ -38,6 +38,9 @@ import { ModalAgendamento } from '../../components/Modal/ModalAgendamento';
 import { ButtonSimple } from '../../components/Forms/ButtonSimple/Index';
 import { AppointmentList } from '../../components/AppointmentList';
 
+import { ModalLoading } from '../../components/Modal/ModalLoading';
+
+
 const schema = Yup.object().shape({
     nome: Yup.string().required("Nome é obrigatório"),
     cpf: Yup.string().required("CPF é obrigatório").length(14, "CPF deve ter 11 dígitos"),
@@ -375,14 +378,19 @@ export function CadastrarPaciente(){
                     />
                 } 
                 {wichModalIsOpened == 3 &&
-                    <ModalAgendamento
-                        closeSelectCategory={()=>HandleSelectCategoryModal(3)}
-                        setSelectedApointment={setAppointment}
-                        //dataEscolhida={agendamentoLoading}
-                        //setAgendamentoExcluir={setAgendamentoExcluir}
+                    // <ModalAgendamento
+                    //     closeSelectCategory={()=>HandleSelectCategoryModal(3)}
+                    //     setSelectedApointment={setAppointment}
+                    //     //dataEscolhida={agendamentoLoading}
+                    //     //setAgendamentoExcluir={setAgendamentoExcluir}
+                    // />
+                    <ModalLoading
+                        isOpen={true}
                     />
                 }
             </Modal>
+
+
 
         </Container>
         </TouchableWithoutFeedback>
