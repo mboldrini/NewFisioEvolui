@@ -17,5 +17,5 @@ export interface IUserType{
 
 export interface IApiInfos{
     token: string;
-    date: string;
+    date: Date;
 }
