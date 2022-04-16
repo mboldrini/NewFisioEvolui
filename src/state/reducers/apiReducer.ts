@@ -20,7 +20,6 @@ const apiReducer = (state = initialState, action: Action) => {
                 date: action.payload.date
             }
         default: 
-            console.warn("apiReducer DEFAULT");
             return state;
     }
 }

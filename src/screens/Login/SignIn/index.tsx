@@ -49,38 +49,23 @@ export function SignIn(){
 
     async function HandleSignInWithGoogle(){
 
-        setApiInfos({
-            token: "queijo",
-            date: "DT"
-        });
+        setLoading(true);
 
-        setUserInfos({
-            email: "mascarade",
-            family_name: "family",
-            given_name: "GIVEN",
-            id: "999",
-            name: "NOME",
-            picture: "picture",
-            token:"aaa"
-        });
+        const CLIENT_ID = '19918590573-m2k3b72f7jq816hvu3rcucov4itvjvji.apps.googleusercontent.com';
+        const REDIRECT_URL = 'https://auth.expo.io/@mboldrini/fisioevolui';
+        const RESPONSE_TYPE = 'token';
+        const SCOPE = encodeURI('profile email');
 
-        // setLoading(true);
+        const authUrl = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URL}&response_type=${RESPONSE_TYPE}&scope=${SCOPE}`;
+        const { type, params } = await AuthSession.startAsync({ authUrl }) as AuthResponse;
 
-        // const CLIENT_ID = '19918590573-m2k3b72f7jq816hvu3rcucov4itvjvji.apps.googleusercontent.com';
-        // const REDIRECT_URL = 'https://auth.expo.io/@mboldrini/fisioevolui';
-        // const RESPONSE_TYPE = 'token';
-        // const SCOPE = encodeURI('profile email');
-
-        // const authUrl = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URL}&response_type=${RESPONSE_TYPE}&scope=${SCOPE}`;
-        // const { type, params } = await AuthSession.startAsync({ authUrl }) as AuthResponse;
-
-        // if(type === 'success'){
-        //     GetGoogleToken(params.access_token);
-        // }else{
-        //     console.error("Login Cancelado!");
-        //     alert("Login Cancelado");
-        //     setLoading(false);
-        // }
+        if(type === 'success'){
+            GetGoogleToken(params.access_token);
+        }else{
+            console.error("Login Cancelado!");
+            alert("Login Cancelado");
+            setLoading(false);
+        }
 
     }
 
@@ -204,41 +189,26 @@ export function SignIn(){
 
     useEffect(()=>{
 
-        console.group("LOADING?");
-        console.log(usrState);
+        async function GetGoogleInfosStorage(){
+            setLoading(true);
 
-        console.log(apiState);
-        console.groupEnd();
+            let storageGoogleString = await AsyncStorage.getItem(StorageKeys.googleUserInfos);
+            let googleInfos = JSON.parse(storageGoogleString) as IGoogleData;
 
-        // async function GetGoogleInfosStorage(){
-        //     setLoading(true);
-
-        //     let storageGoogleString = await AsyncStorage.getItem(StorageKeys.googleUserInfos);
-        //     let googleInfos = JSON.parse(storageGoogleString) as IGoogleData;
-
-        //     console.group("Loading - Get Google Infos Storage");
-        //     console.log(googleInfos);
-        //     console.groupEnd();
+            console.group("Loading - Get Google Infos Storage");
+            console.log(googleInfos);
+            console.groupEnd();
             
-        //     if(googleInfos){
-        //         GetApiToken(googleInfos);
-        //     }else{
-        //         setLoading(false);
-        //     }
+            if(googleInfos){
+                GetApiToken(googleInfos);
+            }else{
+                setLoading(false);
+            }
 
-        // }
-        // GetGoogleInfosStorage();
+        }
+        GetGoogleInfosStorage();
 
     }, []);
-
-
-    useEffect(()=>{
-        console.group("API STATE MUDOU");
-        console.log(apiState);
-        console.log(usrState);
-        console.groupEnd();
-    },[ usrState]);
-
 
 
     return(

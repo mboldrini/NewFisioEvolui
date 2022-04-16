@@ -30,7 +30,6 @@ const reducer = (state = initialState, action: Action) => {
                 token: action.payload.infos.token
             }
         default: 
-            console.warn("userReducer DEFAULT");
             return state;
     }
 }
