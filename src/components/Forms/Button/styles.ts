@@ -16,7 +16,7 @@ export const Container = styled(TouchableOpacity)<Props>`
 
     ${({ type }) => type === "ok" && css `
         background-color: ${({theme}) => theme.colors.success};
-        height: ${RFValue(55)}px;
+        height: ${RFValue(45)}px;
     `};
 
     ${({ type }) => type === "cancel" && css `
