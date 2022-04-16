@@ -6,7 +6,7 @@ import { Action } from "../actions";
 //Constante com as informações iniciais
 const initialState = {
     token: '',
-    date: '',
+    date: null,
 } as IApiInfos
 
 // InitialState = as infos iniciais ou os novos valores
