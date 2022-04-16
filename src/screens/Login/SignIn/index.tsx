@@ -124,7 +124,7 @@ export function SignIn(){
 
         const config = { headers: { Authorization: `Bearer ${token}` } };
         
-        await api.get('/users', config)
+        await api(token).get('/users', config)
         .then(res =>{
 
             let userInfos = res.data.user;

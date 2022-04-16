@@ -18,14 +18,12 @@ import {
 } from './styles';
 
 import { Select } from '../../components/Forms/Select';
-
 // API
 import { api } from '../../global/api';
 // REDUX
 import { useDispatch, useSelector } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { actionCreators, State } from '../../state';
-
 // Interface's
 import IApointment from '../../global/DTO/Apointment';
 import { INewPatient } from '../../global/DTO/Pacient';
@@ -58,8 +56,9 @@ export function CadastrarPaciente(){
 
     // // Redux de Usuários
     const dispatch = useDispatch();
-    const { setUserInfos, setApiInfos } = bindActionCreators(actionCreators, dispatch);
-    const usrState = useSelector((state: State) => state.user);// o .user é o nome usado no .index da pasta reducers
+    //const { setUserInfos, setApiInfos } = bindActionCreators(actionCreators, dispatch);
+    //const usrState = useSelector((state: State) => state.user);// o .user é o nome usado no .index da pasta reducers
+    const apiState = useSelector((state: State) => state.apiReducer);
 
     // Modal's
     const [categoryModalOpen, setCategoryModalOpen] = useState(false);
@@ -127,30 +126,26 @@ export function CadastrarPaciente(){
             agendamentos: appointmentList
         }
 
-        console.warn("Ativar a funcao de api após as alterações");
-        console.log(data);
-
-        console.log("APRENDER SOBRE REDUX p/ botar o token");
-        console.log("APRENDER SOBRE REDUX p/ botar o token");
-        console.log("criacao desativada");
-
-     //   CreateNewPatient(data);
+        CreateNewPatient(data);
 
     }
 
     async function CreateNewPatient(data: INewPatient){
 
-        await api("aa").post('/paciente/', data ).then(res =>{
+        console.clear();
+        console.log("CreateNewPatient...");
 
-            console.log("Cadastrou?");;
-            console.log(res);
+        await api(apiState.token).post('/paciente/', data ).then(res =>{
+
+            console.log("Cadastrou?");
+            console.log(res.status);
+            console.log(res.data);
 
             alert("Paciente cadastrado com sucesso!");
 
         }).catch(err =>{
             console.error("Erro ao cadastrar paciente");
-            console.log(err.response);
-            console.log(err.response.data);
+            console.error(err.response.data.message, err.response.data.statusCode);
         });
 
     }
@@ -190,11 +185,6 @@ export function CadastrarPaciente(){
         }
     },[appointment]);
 
-
-    useEffect(()=>{
-        console.log("USRSTATE:");
-        console.log(usrState.api);
-    },[]);
 
     return(
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
