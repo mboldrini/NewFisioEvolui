@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { ButtonGoogle } from '../../../components/Forms/ButtonGoogle/Index';
 import { useNavigation } from '@react-navigation/native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as AuthSession from 'expo-auth-session';
-import { StorageKeys } from '../../../global/variaveis/globais';
+import { addHours, isBefore, parseISO } from 'date-fns';
 import { 
     Container,
     WrapLogo,
@@ -13,7 +12,7 @@ import {
 } from './styles';
 
 /// API
-import { api } from '../../../global/api';
+import { api, OAuthGoogleInfos } from '../../../global/api'; 
 import { IGoogleData } from '../../../global/DTO/IGoogleData';
 
 // /// REDUX
@@ -47,23 +46,22 @@ export function SignIn(){
     const [googleUserInfos, setGoogleUserInfos] = useState<IGoogleData>({} as IGoogleData);
     const [appApiToken, setAppApiToken] = useState(null);
 
-    async function HandleSignInWithGoogle(){
+    function GetGoogleUrlLogin(){
+        const SCOPE = encodeURI('profile email');
+        const authUrl = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${OAuthGoogleInfos.CLIENT_ID}&redirect_uri=${OAuthGoogleInfos.REDIRECT_URL}&response_type=${OAuthGoogleInfos.RESPONSE_TYPE}&scope=${SCOPE}`;
+        return authUrl;
+    }
 
+    async function HandleSignInWithGoogle(){
         setLoading(true);
 
-        const CLIENT_ID = '19918590573-m2k3b72f7jq816hvu3rcucov4itvjvji.apps.googleusercontent.com';
-        const REDIRECT_URL = 'https://auth.expo.io/@mboldrini/fisioevolui';
-        const RESPONSE_TYPE = 'token';
-        const SCOPE = encodeURI('profile email');
-
-        const authUrl = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URL}&response_type=${RESPONSE_TYPE}&scope=${SCOPE}`;
+        const authUrl = await GetGoogleUrlLogin();
         const { type, params } = await AuthSession.startAsync({ authUrl }) as AuthResponse;
 
         if(type === 'success'){
             GetGoogleToken(params.access_token);
         }else{
             console.error("Login Cancelado!");
-            alert("Login Cancelado");
             setLoading(false);
         }
 
@@ -75,15 +73,13 @@ export function SignIn(){
             const response = await fetch(`https://www.googleapis.com/oauth2/v2/userinfo?alt=json&access_token=${googleToken}`);
             const userInfo = await response.json();
 
-            console.log(userInfo);
             if(userInfo.email){
-                await AsyncStorage.setItem(StorageKeys.googleUserInfos, JSON.stringify(userInfo));
-                console.log(`Setou no Storage o GoogleUserInfos`);
-                setGoogleUserInfos(userInfo);
+                setUserInfos(userInfo);
+                GetApiToken(userInfo);
             }   
 
         }catch(err){
-            alert(err);
+            console.error(err);
         }finally{
             setLoading(false);
         }
@@ -91,23 +87,23 @@ export function SignIn(){
     }
 
     async function GetApiToken(data: IGoogleData){
-        console.group("GetApiToken");
-
         if(data.email){
-
             await api.post('/sessions', {
                 email: data.email,
                 id: data.id
             }).then(res =>{
 
-                console.log("Token da api FisioEvolui Obtido");
-                const token = res.data.token;
-                setAppApiToken(token);
-                GetUserInfos(token);
+                let dtAgora = new Date();
+
+                setApiInfos({
+                    token: res.data.token,
+                    date: dtAgora
+                });
+                GetUserInfos(res.data.token);
 
             }).catch(err =>{
 
-                console.log(err.response.data);
+                console.error(err.response.data);
 
                 if(err.response.data.message === "Usuário não encontrado"){
 
@@ -116,32 +112,20 @@ export function SignIn(){
 
                 }else{
                     console.log("ERRO ao fazer GET p/ a api /sessions");
-                    alert(JSON.stringify(err.response.data));
+                    console.error(JSON.stringify(err.response.data));
                     setLoading(false);
                 }
 
             });
-
         }
-
-        console.groupEnd();
     }
 
     async function GetUserInfos(token: string){
-    //    console.group("GetUserInfos");
 
-        const config = {
-            headers: { Authorization: `Bearer ${token}` }
-        };
-        
-        const bodyParameters = {
-           key: "value"
-        };
+        const config = { headers: { Authorization: `Bearer ${token}` } };
         
         await api.get('/users', config)
         .then(res =>{
-
-            console.log( res.data.user );
 
             let userInfos = res.data.user;
             userInfos = {
@@ -149,66 +133,51 @@ export function SignIn(){
                 token: token
             }
 
-
-            // let dtNow = new Date().toString();
-
             if(userInfos.id){
                 setUserInfos( userInfos );
-                // setApiInfos({
-                //     token: token,
-                //     date: dtNow
-                // });
             }
 
-            //navigation.navigate("MainTab");
+            navigation.navigate("MainTab");
 
-            console.warn("REDUX PARA AQUI!");
             setLoading(false);
-          
 
         }).catch(err =>{
 
-            console.log(err.response.data);
+            console.error(err.response.data);
             setLoading(false);
 
         });
 
-        // console.groupEnd();
     }
 
-    // useEffect(()=>{
-    //     async function SalvaApiTokenEPegaUserInfos(){
-    //         await AsyncStorage.setItem(StorageKeys.appToken, appApiToken);
-    //         // console.log("Salvou novo token no storage...");
-    //         GetUserInfos(appApiToken);
-    //     }
-    //     if(appApiToken){
-    //         SalvaApiTokenEPegaUserInfos();
-    //     }
-    // }, [appApiToken]); 
 
     useEffect(()=>{
 
-        async function GetGoogleInfosStorage(){
-            setLoading(true);
+        async function ValidaSessionInfos(){
+            setLoading(true); 
 
-            let storageGoogleString = await AsyncStorage.getItem(StorageKeys.googleUserInfos);
-            let googleInfos = JSON.parse(storageGoogleString) as IGoogleData;
-
-            console.group("Loading - Get Google Infos Storage");
-            console.log(googleInfos);
-            console.groupEnd();
-            
-            if(googleInfos){
-                GetApiToken(googleInfos);
-            }else{
+            if(!usrState.email){
                 setLoading(false);
+                console.warn("Não foi encontrado infos prévias do usuario salvas no dispositivo");
             }
-
+            if(!apiState.token){
+                setLoading(false);
+                console.warn("Não foi encontrado um token de api salvo previamente");
+            }
+    
+            if( isBefore( addHours( parseISO(apiState.date), 20) , new Date() ) ){
+                // console.info("É depois! pega o token novo!");
+                setLoading(false);
+            }else{
+                // console.info("pega user infos e faz login!");
+                GetUserInfos(apiState.token);
+            }
+    
         }
-        GetGoogleInfosStorage();
+        ValidaSessionInfos();
 
     }, []);
+
 
 
     return(
