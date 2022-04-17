@@ -42,6 +42,7 @@ import { AppointmentList } from '../../components/AppointmentList';
 
 import { ModalLoading } from '../../components/Modal/ModalLoading';
 import { ModalTemComorbidade } from '../../components/Modal/ModalTemComorbidade';
+import { ModalTipoAtendimento } from '../../components/Modal/ModalTipoAtendimento';
 
 
 
@@ -73,7 +74,7 @@ export function CadastrarPaciente(){
 
 
     const [appointmentType, setAppointmentType] = useState({key: -1,name: 'Tipo de Atendimento'});
-    const [categoriesList, setCategoriesList] = useState(categories);
+    //const [categoriesList, setCategoriesList] = useState(categories);
 
     const [temComorbidade, setTemComorbidade] = useState({key: -1, name: 'Paciente tem comorbidade'});
     //const [temComorbidadeList, setTemComorbidadeList] = useState([{key: 1, name: "Sim"}, {key: 0,name: "Não"}]);
@@ -213,7 +214,7 @@ export function CadastrarPaciente(){
             <Form >
                 <Fields>
 
-                    <InputForm 
+                    {/* <InputForm 
                         name="nome"
                         control={control}
                         placeholder="Nome"
@@ -262,7 +263,7 @@ export function CadastrarPaciente(){
                         placeholder="E-mail"
                         autoCorrect={false}
                         error={errors.email && errors.email.message}
-                    />
+                    /> */}
 
                     <Select 
                         title={appointmentType.name}
@@ -270,7 +271,7 @@ export function CadastrarPaciente(){
                         onPress={()=>{HandleSelectCategoryModal(1)}}
                     />
 
-                    <Select 
+                    {/* <Select 
                         title={  temComorbidade.name }
                         isActive={ temComorbidade.key }
                         onPress={()=>{HandleSelectCategoryModal(2)}}
@@ -287,11 +288,9 @@ export function CadastrarPaciente(){
                            numberOfLines={4}
                            error={errors.comorbidades && errors.comorbidades.message}
                         />
-                    }  
+                    }   */}
 
-
-                    
-                    <InputForm 
+                    {/* <InputForm 
                         name="endereco"
                         control={control}
                         placeholder="Endereço"
@@ -329,7 +328,7 @@ export function CadastrarPaciente(){
                         multiline={true}
                         numberOfLines={4}
                         error={errors.diagnostico && errors.diagnostico.message}
-                    />
+                    /> */}
 
                     
                 </Fields>
@@ -370,12 +369,16 @@ export function CadastrarPaciente(){
                 
             <Modal visible={categoryModalOpen}>
                { wichModalIsOpened == 1 &&
-                    <ModalSelect 
-                        titulo="Tipo de Paciente"
-                        category={appointmentType}
+                    // <ModalSelect 
+                    //     titulo="Tipo de Paciente"
+                    //     category={appointmentType}
+                    //     setCategory={setAppointmentType}
+                    //     closeSelectCategory={()=>HandleSelectCategoryModal(0)}
+                    //     optionsList={categoriesList}
+                    // />
+                    <ModalTipoAtendimento
                         setCategory={setAppointmentType}
                         closeSelectCategory={()=>HandleSelectCategoryModal(0)}
-                        optionsList={categoriesList}
                     />
                 }
                 {wichModalIsOpened == 2 &&
