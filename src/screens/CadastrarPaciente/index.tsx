@@ -22,19 +22,12 @@ import { Select } from '../../components/Forms/Select';
 import { api } from '../../global/api';
 // REDUX
 import { useDispatch, useSelector } from 'react-redux';
-import { bindActionCreators } from 'redux';
-import { actionCreators, State } from '../../state';
+import { State } from '../../state';
 // Interface's
 import IApointment from '../../global/DTO/Apointment';
 import { INewPatient } from '../../global/DTO/Pacient';
 import { FormData } from '../../global/DTO/PatientFormData';
-
-// import da tela que vai virar modal
-import { ModalSelect } from '../ModalSelect';
-import { categories } from '../../global/devVariaveis';
-
 // Modal's
-//import { ModalAgendamento } from '../ModalAgendamento';
 import { ModalAgendamento } from '../../components/Modal/ModalAgendamento';
 
 import { ButtonSimple } from '../../components/Forms/ButtonSimple/Index';
@@ -71,14 +64,11 @@ export function CadastrarPaciente(){
     // Modal's
     const [categoryModalOpen, setCategoryModalOpen] = useState(false);
     const [wichModalIsOpened, setWichModalIsOpened] = useState(0);
-
+    
+    const [loading, setLoading] = useState(false);
 
     const [appointmentType, setAppointmentType] = useState({key: -1,name: 'Tipo de Atendimento'});
-    //const [categoriesList, setCategoriesList] = useState(categories);
-
     const [temComorbidade, setTemComorbidade] = useState({key: -1, name: 'Paciente tem comorbidade'});
-    //const [temComorbidadeList, setTemComorbidadeList] = useState([{key: 1, name: "Sim"}, {key: 0,name: "Não"}]);
-
 
     // APPOINTMENT'S
     // Appointment received from Modal
@@ -89,9 +79,6 @@ export function CadastrarPaciente(){
     function HandleSelectCategoryModal(tipoModal: number){
         setWichModalIsOpened(tipoModal);
         setCategoryModalOpen(!categoryModalOpen);
-        if(!categoryModalOpen == false){
-          //  setAgendamentoLoading(null);
-        }
     }
 
     const {
@@ -105,9 +92,7 @@ export function CadastrarPaciente(){
 
     function handleRegister(form: FormData){
 
-       // reset(handleSubmit);
-
-        if(temComorbidade.key != -1){
+        if(temComorbidade.key == -1){
             Alert.alert( "Ops!", "Você precisa informar se o paciente tem comorbidade(s)", [ { text: "OK" } ] );
             return;
         }
@@ -122,7 +107,7 @@ export function CadastrarPaciente(){
 
         const data: INewPatient = {
             nome: form.nome,
-            cpf: null,//form.cpf,
+            cpf: form.cpf,
             dataNascimento: form.dataNascimento, //form.dataNascimento,
             celular: form.celular,
             telefoneRecado: form.celular,
@@ -139,22 +124,35 @@ export function CadastrarPaciente(){
             agendamentos: appointmentList
         }
 
-        console.log(data);
-
-       // CreateNewPatient(data);
+       CreateNewPatient(data);
 
     }
 
     async function CreateNewPatient(data: INewPatient){
 
-        console.clear();
-        console.log("CreateNewPatient...");
+        setLoading(true);
 
         await api(apiState.token).post('/paciente/', data ).then(res =>{
 
             console.log("Cadastrou?");
             console.log(res.status);
             console.log(res.data);
+
+            reset({
+                nome: '',
+                cpf: '',
+                dataNascimento: '',
+                celular: '',
+                email: '',
+                endereco: '',
+                tipoComorbidade: '',
+                comorbidades: '',
+                referencia: '',
+                queixa: '',
+                diagnostico: '',
+            });
+            setAppointmentType({key: -1,name: 'Tipo de Atendimento'});
+            setTemComorbidade({key: -1, name: 'Paciente tem comorbidade'});
 
             alert("Paciente cadastrado com sucesso!");
 
@@ -164,6 +162,8 @@ export function CadastrarPaciente(){
                 console.error(err.response.data.message, err.response.data.statusCode);
             }
         });
+
+        setLoading(false);
 
     }
 
@@ -214,7 +214,7 @@ export function CadastrarPaciente(){
             <Form >
                 <Fields>
 
-                    {/* <InputForm 
+                    <InputForm 
                         name="nome"
                         control={control}
                         placeholder="Nome"
@@ -263,7 +263,7 @@ export function CadastrarPaciente(){
                         placeholder="E-mail"
                         autoCorrect={false}
                         error={errors.email && errors.email.message}
-                    /> */}
+                    />
 
                     <Select 
                         title={appointmentType.name}
@@ -271,7 +271,7 @@ export function CadastrarPaciente(){
                         onPress={()=>{HandleSelectCategoryModal(1)}}
                     />
 
-                    {/* <Select 
+                    <Select 
                         title={  temComorbidade.name }
                         isActive={ temComorbidade.key }
                         onPress={()=>{HandleSelectCategoryModal(2)}}
@@ -288,9 +288,9 @@ export function CadastrarPaciente(){
                            numberOfLines={4}
                            error={errors.comorbidades && errors.comorbidades.message}
                         />
-                    }   */}
+                    }
 
-                    {/* <InputForm 
+                    <InputForm 
                         name="endereco"
                         control={control}
                         placeholder="Endereço"
@@ -328,7 +328,7 @@ export function CadastrarPaciente(){
                         multiline={true}
                         numberOfLines={4}
                         error={errors.diagnostico && errors.diagnostico.message}
-                    /> */}
+                    />
 
                     
                 </Fields>
@@ -354,53 +354,42 @@ export function CadastrarPaciente(){
                             onPress={()=>HandleSelectCategoryModal(3)}
                         />
                     </WrapBtn>
-
                 </Wrap>
-
             </Form>
 
             <WrapFooterCadastro>
                 <Button 
                     title="Cadastrar Paciente" 
-                    onPress={handleSubmit(d => handleRegister(d))}
+                    onPress={handleSubmit((d) => handleRegister(d))}
                     type="ok"
                 />
             </WrapFooterCadastro>
                 
             <Modal visible={categoryModalOpen}>
                { wichModalIsOpened == 1 &&
-                    // <ModalSelect 
-                    //     titulo="Tipo de Paciente"
-                    //     category={appointmentType}
-                    //     setCategory={setAppointmentType}
-                    //     closeSelectCategory={()=>HandleSelectCategoryModal(0)}
-                    //     optionsList={categoriesList}
-                    // />
                     <ModalTipoAtendimento
                         setCategory={setAppointmentType}
-                        closeSelectCategory={()=>HandleSelectCategoryModal(0)}
+                        closeSelectCategory={()=>HandleSelectCategoryModal(1)}
+                        statusAtual={appointmentType}
                     />
                 }
                 {wichModalIsOpened == 2 &&
                     <ModalTemComorbidade 
                         setCategory={setTemComorbidade}
-                        closeSelectCategory={()=>HandleSelectCategoryModal(1)}
+                        closeSelectCategory={()=>HandleSelectCategoryModal(2)}
                         statusAtual={temComorbidade}
                     />
                 }  
                 {wichModalIsOpened == 3 &&
-                    // <ModalAgendamento
-                    //     closeSelectCategory={()=>HandleSelectCategoryModal(3)}
-                    //     setSelectedApointment={setAppointment}
-                    //     //dataEscolhida={agendamentoLoading}
-                    //     //setAgendamentoExcluir={setAgendamentoExcluir}
-                    // />
-                    <ModalLoading
-                        isOpen={true}
+                    <ModalAgendamento
+                        closeSelectCategory={()=>HandleSelectCategoryModal(3)}
+                        setSelectedApointment={setAppointment}
                     />
                 }
+             
             </Modal>
 
+            <ModalLoading visible={loading} />
 
 
         </Container>

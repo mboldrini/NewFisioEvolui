@@ -48,11 +48,14 @@ export const Name = styled.Text`
 `;
 
 export const Wrap = styled.View`
+    flex: 1;
+    align-items: center;
+    justify-content: center;
     margin:  ${RFValue(10)}px 0;
 `;
 
 export const AvisoLoading = styled.Text`
-    font-size: ${RFValue(20)}px;
+    font-size: ${RFValue(24)}px;
     color: #ffffff;
     text-align: center;
 `;

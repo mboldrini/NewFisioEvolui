@@ -1,14 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { FlatList } from 'react-native-gesture-handler';
 import { Button } from '../../Forms/Button/Index';
-
 // REDUX
 import { useSelector } from 'react-redux';
 import { State } from '../../../state';
-
 // API
 import { api } from '../../../global/api';
 
+import LottieView from 'lottie-react-native';
 import { 
     Container,
     Header,
@@ -37,13 +36,13 @@ interface ITipoSimples{
 interface Props{
     setCategory: ( ativo: ITipoSimples )=> void;
     closeSelectCategory: () => void;
- /*   statusAtual: ICategory*/
+    statusAtual: ITipoSimples
 }
 
 export function ModalTipoAtendimento({
     setCategory,
     closeSelectCategory,
-    /*statusAtual*/
+    statusAtual
 }: Props ){
 
     const apiState = useSelector((state: State) => state.apiReducer);
@@ -58,7 +57,8 @@ export function ModalTipoAtendimento({
             setListaTipo(res.data);
         }).catch(err => {
             console.log("ERRO");
-            console.log(err);;
+            console.log(err);
+            alert("ERRO! "+ err);
         });
     }
 
@@ -70,7 +70,6 @@ export function ModalTipoAtendimento({
     }
 
     useEffect(()=>{
-        console.log("Modal Abriu");
         GetTypeList();
     },[]);
 
@@ -82,6 +81,13 @@ export function ModalTipoAtendimento({
 
             { listaTipo.length < 1 &&
                 <Wrap>
+                    <LottieView
+                        source={require('../../../assets/loadingAnimado250.json')}
+                        autoSize
+                        autoPlay
+                        loop
+                        resizeMode='contain'
+                    />
                     <AvisoLoading>Carregando lista...</AvisoLoading>
                 </Wrap>
             }
@@ -93,7 +99,7 @@ export function ModalTipoAtendimento({
                     renderItem={({item}) =>(
                         <Category
                             onPress={() => HandleCategorySelect(item) }
-                            isActive={ false }
+                            isActive={ statusAtual.key == item.id }
                         >
                             <Name>{item.tipo}</Name>
                         </Category>
