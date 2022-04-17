@@ -1,5 +1,5 @@
 import { FontAwesome5 } from '@expo/vector-icons';
-import { Text } from 'react-native';
+import { Text, Modal } from 'react-native';
 import React, { useEffect, useState } from 'react';
 
 import LottieView from 'lottie-react-native';
@@ -12,13 +12,14 @@ import {
 
 // Received Props on This Modal
 interface Props{
-    isOpen: boolean;
+    visible: boolean;
     mensagem?: string;
 }
 
 
-export function ModalLoading({ isOpen, mensagem = "Carregando Informações..." }: Props){
+export function ModalLoading({ visible, mensagem = "Carregando Informações..." }: Props){
     return(
+        <Modal visible={visible} style={{marginTop: 150, backgroundColor: '#00ff'}}>
         <Container>
             <LottieView
                 source={require('../../../assets/loadingAnimado250.json')}
@@ -29,5 +30,6 @@ export function ModalLoading({ isOpen, mensagem = "Carregando Informações..." 
             />
             <Mensagem>{ mensagem }</Mensagem>
         </Container>
+        </Modal>
     )
 }
