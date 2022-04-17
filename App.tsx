@@ -18,6 +18,7 @@ import { Provider } from 'react-redux';
 import {store, persistor} from './src/state';
 import { PersistGate } from 'redux-persist/integration/react';
 
+
 export default () => {
   const [fontsLoaded] = useFonts({
     Poppins_300Light,
@@ -35,7 +36,7 @@ export default () => {
       <NavigationContainer>
         <Provider store={store}>
           <PersistGate loading={null} persistor={persistor}>
-            <MainStack/>
+              <MainStack/>
           </PersistGate>
         </Provider>
       </NavigationContainer>

@@ -11,7 +11,6 @@ import { Agenda } from '../screens/Agenda';
 import { CadastrarPaciente } from '../screens/CadastrarPaciente';
 import { Profile } from '../screens/Profile';
 
-
 export default () => (
     <Navigator
         screenOptions={{
@@ -28,7 +27,7 @@ export default () => (
         <Screen name="Home" component={Home} />
         <Screen name="Search" component={Search} />
         <Screen name="Profile" component={Profile} />
-
-
     </Navigator>
+
+
 );

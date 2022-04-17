@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Modal, TouchableWithoutFeedback, Keyboard, Alert } from 'react-native';
+import { Modal, TouchableWithoutFeedback, Keyboard, Alert, View } from 'react-native';
 import { InputMasked } from '../../components/Forms/InputMasked';
 import { useForm } from 'react-hook-form';
 import { InputForm } from '../../components/Forms/InputForm';
@@ -28,16 +28,13 @@ import IApointment from '../../global/DTO/Apointment';
 import { INewPatient } from '../../global/DTO/Pacient';
 import { FormData } from '../../global/DTO/PatientFormData';
 // Modal's
-import { ModalAgendamento } from '../../components/Modal/ModalAgendamento';
-
-import { ButtonSimple } from '../../components/Forms/ButtonSimple/Index';
-import { AppointmentList } from '../../components/AppointmentList';
-
 import { ModalLoading } from '../../components/Modal/ModalLoading';
+import { ModalAgendamento } from '../../components/Modal/ModalAgendamento';
 import { ModalTemComorbidade } from '../../components/Modal/ModalTemComorbidade';
 import { ModalTipoAtendimento } from '../../components/Modal/ModalTipoAtendimento';
 
-
+import { ButtonSimple } from '../../components/Forms/ButtonSimple/Index';
+import { AppointmentList } from '../../components/AppointmentList';
 
 const schema = Yup.object().shape({
     nome: Yup.string().required("Nome é obrigatório"),
@@ -207,7 +204,7 @@ export function CadastrarPaciente(){
     return(
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <Container>
-
+            
             <Header>
                 <Titulo>Cadastrar Paciente</Titulo>
             </Header>
@@ -390,7 +387,6 @@ export function CadastrarPaciente(){
             </Modal>
 
             <ModalLoading visible={loading} />
-
 
         </Container>
         </TouchableWithoutFeedback>
