@@ -40,7 +40,6 @@ import { format } from 'date-fns';
 import { api } from '../../../global/api';
 // Interfaces
 import IApointment from '../../../global/DTO/Apointment';
-
 // Received Props on This Modal
 interface Props{
     closeSelectCategory: () => void;
@@ -74,7 +73,7 @@ export function ModalAgendamento({ closeSelectCategory, setSelectedApointment }:
     /* User Redux */
     const dispatch = useDispatch();
     const { setUserInfos } = bindActionCreators(actionCreators, dispatch);
-    const usrState = useSelector((state: State) => state.user);
+    const apiState = useSelector((state: State) => state.apiReducer);
 
     // Permit to choose a retroactive date
     const [retroactive, setRetroactive] = useState(null);
@@ -97,25 +96,13 @@ export function ModalAgendamento({ closeSelectCategory, setSelectedApointment }:
             console.log("API - obtendo lista de horas");
             setAvailableTimesList([]);
             setSelectedHour(null);
- 
-            const token = usrState.token;
 
             try{
-
-                api.interceptors.request.use(
-                    config => {
-                        config.headers.authorization = `Bearer ${token}`;
-                        return config;
-                    },
-                    error => {
-                        return Promise.reject(error);
-                    }
-                );
 
                 const dtInicio = Object.keys(selectedDate)[0] + "T00:01";
                 const dtFim = Object.keys(selectedDate)[0] + "T23:59";
 
-                await api.post('/agendamento/allday', {
+                await api(apiState.token).post('/agendamento/allday', {
                     dataInicio: dtInicio,
                     dataFim: dtFim,
                 }).then(res =>{
@@ -131,6 +118,7 @@ export function ModalAgendamento({ closeSelectCategory, setSelectedApointment }:
             }catch(err){
                 console.log("ERR");
                 console.log(err);
+                alert(err);
             }
 
         }
