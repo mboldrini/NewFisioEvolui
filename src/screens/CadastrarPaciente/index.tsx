@@ -71,7 +71,7 @@ export function CadastrarPaciente(){
     const [appointmentType, setAppointmentType] = useState({key: -1,name: 'Tipo de Atendimento'});
     const [categoriesList, setCategoriesList] = useState(categories);
 
-    const [temComorbidade, setTemComorbidade] = useState({key: -1,name: ''});
+    const [temComorbidade, setTemComorbidade] = useState(null);
     const [temComorbidadeList, setTemComorbidadeList] = useState([{key: 1, name: "Sim"}, {key: 0,name: "Não"}]);
 
 
@@ -92,21 +92,28 @@ export function CadastrarPaciente(){
     const {
         control,
         handleSubmit,
-        formState: { errors }
+        formState: { errors },
+        reset
     } = useForm({
         resolver: yupResolver(schema)
     });
 
     function handleRegister(form: FormData){
 
+       // reset(handleSubmit);
+
+
+        if(temComorbidade.key != -1){
+            Alert.alert( "Ops!", "Você precisa informar se o paciente tem comorbidade(s)", [ { text: "OK" } ] );
+            return;
+        }
         if(temComorbidade.key == 1 && (form.comorbidades?.length < 20 || !form.comorbidades) ){
-            Alert.alert(
-                "Ops!",
-                "Você precisa informar a(s) comorbidade(s) do paciente",
-                [
-                    { text: "OK" }
-                ]
-            );
+            Alert.alert( "Ops!", "Você precisa informar a(s) comorbidade(s) do paciente", [ { text: "OK" } ] );
+            return;
+        }
+
+        if(appointmentType.key == -1){
+            Alert.alert( "Ops!", "Você precisa informar o tipo de atendimento", [ { text: "OK" } ] );
             return;
         }
 
@@ -129,7 +136,9 @@ export function CadastrarPaciente(){
             agendamentos: appointmentList
         }
 
-        CreateNewPatient(data);
+        console.log(data);
+
+       // CreateNewPatient(data);
 
     }
 
@@ -177,6 +186,16 @@ export function CadastrarPaciente(){
     function ExcludeAppointment(item: IApointment){
         let newAppintmentList = appointmentList.filter( appoint => { return appoint != item });
         setAppointmentList(newAppintmentList);
+    }
+
+    function PacienteTemComorbidade(statusComorb: number){
+        if( statusComorb == -1 ){
+            return "Paciente com comorbidade: ---";
+        }else if(statusComorb == 1){
+            return "Paciente com comorbidade: SIM";
+        }else{
+            return "Paciente SEM comorbidade";;
+        }
     }
 
     useEffect(()=>{
@@ -260,12 +279,12 @@ export function CadastrarPaciente(){
                     />
 
                     <Select 
-                        title={"Paciente com comorbidade: "+ temComorbidade.name}
-                        isActive={temComorbidade.key}
+                        title={ PacienteTemComorbidade(temComorbidade) }
+                        isActive={ 0 }
                         onPress={()=>{HandleSelectCategoryModal(2)}}
                     /> 
 
-                    { temComorbidade.key == 1 && 
+                    { temComorbidade != null && 
                            <InputForm 
                            name="comorbidades"
                            control={control}
@@ -353,7 +372,7 @@ export function CadastrarPaciente(){
             <WrapFooterCadastro>
                 <Button 
                     title="Cadastrar Paciente" 
-                    onPress={handleSubmit((d) => handleRegister(d))}
+                    onPress={handleSubmit(d => handleRegister(d))}
                     type="ok"
                 />
             </WrapFooterCadastro>
