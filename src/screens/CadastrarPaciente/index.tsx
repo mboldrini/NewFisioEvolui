@@ -62,10 +62,10 @@ export function CadastrarPaciente(){
     const apiState = useSelector((state: State) => state.apiReducer);
 
     // Modal's
+    const [loading, setLoading] = useState(false);
     const [categoryModalOpen, setCategoryModalOpen] = useState(false);
     const [wichModalIsOpened, setWichModalIsOpened] = useState(0);
     
-    const [loading, setLoading] = useState(false);
 
     const [appointmentType, setAppointmentType] = useState({key: -1,name: 'Tipo de Atendimento'});
     const [temComorbidade, setTemComorbidade] = useState({key: -1, name: 'Paciente tem comorbidade'});
@@ -158,6 +158,7 @@ export function CadastrarPaciente(){
 
         }).catch(err =>{
             console.error("Erro ao cadastrar paciente");
+            alert("Erro ao cadastrar pacientee!");
             if(err.response.data){
                 console.error(err.response.data.message, err.response.data.statusCode);
             }
@@ -329,7 +330,6 @@ export function CadastrarPaciente(){
                         numberOfLines={4}
                         error={errors.diagnostico && errors.diagnostico.message}
                     />
-
                     
                 </Fields>
 
