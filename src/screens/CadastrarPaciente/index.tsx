@@ -33,12 +33,16 @@ import { FormData } from '../../global/DTO/PatientFormData';
 import { ModalSelect } from '../ModalSelect';
 import { categories } from '../../global/devVariaveis';
 
+// Modal's
 //import { ModalAgendamento } from '../ModalAgendamento';
 import { ModalAgendamento } from '../../components/Modal/ModalAgendamento';
+
 import { ButtonSimple } from '../../components/Forms/ButtonSimple/Index';
 import { AppointmentList } from '../../components/AppointmentList';
 
 import { ModalLoading } from '../../components/Modal/ModalLoading';
+import { ModalTemComorbidade } from '../../components/Modal/ModalTemComorbidade';
+
 
 
 const schema = Yup.object().shape({
@@ -71,8 +75,8 @@ export function CadastrarPaciente(){
     const [appointmentType, setAppointmentType] = useState({key: -1,name: 'Tipo de Atendimento'});
     const [categoriesList, setCategoriesList] = useState(categories);
 
-    const [temComorbidade, setTemComorbidade] = useState(null);
-    const [temComorbidadeList, setTemComorbidadeList] = useState([{key: 1, name: "Sim"}, {key: 0,name: "Não"}]);
+    const [temComorbidade, setTemComorbidade] = useState({key: -1, name: 'Paciente tem comorbidade'});
+    //const [temComorbidadeList, setTemComorbidadeList] = useState([{key: 1, name: "Sim"}, {key: 0,name: "Não"}]);
 
 
     // APPOINTMENT'S
@@ -102,7 +106,6 @@ export function CadastrarPaciente(){
 
        // reset(handleSubmit);
 
-
         if(temComorbidade.key != -1){
             Alert.alert( "Ops!", "Você precisa informar se o paciente tem comorbidade(s)", [ { text: "OK" } ] );
             return;
@@ -111,7 +114,6 @@ export function CadastrarPaciente(){
             Alert.alert( "Ops!", "Você precisa informar a(s) comorbidade(s) do paciente", [ { text: "OK" } ] );
             return;
         }
-
         if(appointmentType.key == -1){
             Alert.alert( "Ops!", "Você precisa informar o tipo de atendimento", [ { text: "OK" } ] );
             return;
@@ -186,16 +188,6 @@ export function CadastrarPaciente(){
     function ExcludeAppointment(item: IApointment){
         let newAppintmentList = appointmentList.filter( appoint => { return appoint != item });
         setAppointmentList(newAppintmentList);
-    }
-
-    function PacienteTemComorbidade(statusComorb: number){
-        if( statusComorb == -1 ){
-            return "Paciente com comorbidade: ---";
-        }else if(statusComorb == 1){
-            return "Paciente com comorbidade: SIM";
-        }else{
-            return "Paciente SEM comorbidade";;
-        }
     }
 
     useEffect(()=>{
@@ -279,13 +271,13 @@ export function CadastrarPaciente(){
                     />
 
                     <Select 
-                        title={ PacienteTemComorbidade(temComorbidade) }
-                        isActive={ 0 }
+                        title={  temComorbidade.name }
+                        isActive={ temComorbidade.key }
                         onPress={()=>{HandleSelectCategoryModal(2)}}
                     /> 
 
                     { temComorbidade != null && 
-                           <InputForm 
+                        <InputForm 
                            name="comorbidades"
                            control={control}
                            placeholder="Comorbidade(s) do paciente"
@@ -294,8 +286,7 @@ export function CadastrarPaciente(){
                            multiline={true}
                            numberOfLines={4}
                            error={errors.comorbidades && errors.comorbidades.message}
-                       />
-   
+                        />
                     }  
 
 
@@ -388,14 +379,12 @@ export function CadastrarPaciente(){
                     />
                 }
                 {wichModalIsOpened == 2 &&
-                    <ModalSelect 
-                        titulo="Paciente tem comorbidade"
-                        category={temComorbidade}
+                    <ModalTemComorbidade 
                         setCategory={setTemComorbidade}
                         closeSelectCategory={()=>HandleSelectCategoryModal(1)}
-                        optionsList={temComorbidadeList}
+                        statusAtual={temComorbidade}
                     />
-                } 
+                }  
                 {wichModalIsOpened == 3 &&
                     // <ModalAgendamento
                     //     closeSelectCategory={()=>HandleSelectCategoryModal(3)}
