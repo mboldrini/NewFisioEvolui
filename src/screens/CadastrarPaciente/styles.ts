@@ -22,6 +22,7 @@ export const Titulo = styled.Text`
 
 export const Form = styled.View`
     margin-bottom: ${RFValue(30)}px;
+    z-index: -2;
 `;
 
 export const Fields = styled.View`
@@ -47,5 +48,3 @@ export const WrapFooterCadastro = styled.View`
     margin-bottom: ${RFValue(20)}px;
     margin-top: ${RFValue(20)}px;
 `;
-
-

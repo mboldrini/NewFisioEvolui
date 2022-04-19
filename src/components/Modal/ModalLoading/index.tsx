@@ -14,6 +14,7 @@ import {
 interface Props{
     visible: boolean;
     mensagem?: string;
+    tipo: "erro" | "loading" | "info";
 }
 
 

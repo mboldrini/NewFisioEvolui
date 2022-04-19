@@ -50,6 +50,9 @@ const schema = Yup.object().shape({
     diagnostico: Yup.string().optional().min(20, "Tamanho mínimo de 20 letras").max(254, "O tamanho não deve ser maior que 254 letras"),
 })
 
+import Toast from 'react-native-toast-message';
+
+
 export function CadastrarPaciente(){
 
     // // Redux de Usuários
@@ -201,10 +204,20 @@ export function CadastrarPaciente(){
     },[appointment]);
 
 
+    useEffect(()=>{
+      
+        Toast.show({
+            type: 'success',
+            text1: 'Novo paciente cadastrado!',
+            position: 'top'
+          });
+
+    },[]);
+
     return(
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <Container>
-            
+
             <Header>
                 <Titulo>Cadastrar Paciente</Titulo>
             </Header>
@@ -357,7 +370,7 @@ export function CadastrarPaciente(){
             <WrapFooterCadastro>
                 <Button 
                     title="Cadastrar Paciente" 
-                    onPress={handleSubmit((d) => handleRegister(d))}
+                    onPress={handleSubmit((d) =>  handleRegister(d) )}
                     type="ok"
                 />
             </WrapFooterCadastro>
