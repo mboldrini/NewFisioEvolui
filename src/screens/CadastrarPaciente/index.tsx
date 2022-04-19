@@ -206,11 +206,13 @@ export function CadastrarPaciente(){
 
     useEffect(()=>{
       
-        Toast.show({
-            type: 'success',
-            text1: 'Novo paciente cadastrado!',
-            position: 'top'
-          });
+        // Toast.show({
+        //     type: 'success',
+        //     text1: 'Novo paciente cadastrado!',
+        //     position: 'top'
+        //   });
+
+        setLoading(true);
 
     },[]);
 
@@ -399,7 +401,7 @@ export function CadastrarPaciente(){
              
             </Modal>
 
-            <ModalLoading visible={loading} />
+            <ModalLoading visible={loading} infos={{mensagem:"Carregando informaões do paciente...", tipo: 'loading'}}/>
 
         </Container>
         </TouchableWithoutFeedback>
