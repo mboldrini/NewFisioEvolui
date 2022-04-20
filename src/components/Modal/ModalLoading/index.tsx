@@ -1,6 +1,5 @@
-import { FontAwesome5 } from '@expo/vector-icons';
-import { Text, Modal } from 'react-native';
-import React, { useEffect, useState } from 'react';
+import { Modal } from 'react-native';
+import React from 'react';
 
 import LottieView from 'lottie-react-native';
 

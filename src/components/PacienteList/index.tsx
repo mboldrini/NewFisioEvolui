@@ -17,7 +17,7 @@ import {
 interface Props extends RectButtonProps{
     companyIcon: string;
     companyName: string;
-    lastConsult: string;
+    lastConsult?: string;
     personName: string;
     address: string;
     onPress: () => void;
@@ -35,14 +35,14 @@ export function PacienteList({
     return(
         <Container onPress={onPress} {...rest}>
             <Header>
-                <Company><Icone name={companyIcon}/> {companyName}</Company>
-                <LastDate><Icone name="calendar"/> {lastConsult}</LastDate>
+                <Company numberOfLines={1} ellipsizeMode="tail" ><Icone name={companyIcon}/> {companyName}</Company>
+                {lastConsult && <LastDate><Icone name="calendar"/> {lastConsult}</LastDate> }
             </Header>
             <PersonWrap>
-                <PersonName>{personName}</PersonName>
+                <PersonName numberOfLines={1} ellipsizeMode="tail" >{personName}</PersonName>
             </PersonWrap>
             <AddressWrap>
-                <Address><Icone name="map-pin"/> {address}</Address>
+                <Address numberOfLines={1} ellipsizeMode="tail" ><Icone name="map-pin"/> {address}</Address>
             </AddressWrap>
         </Container>
     )
