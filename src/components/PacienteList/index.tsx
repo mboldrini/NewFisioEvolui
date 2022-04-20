@@ -35,11 +35,11 @@ export function PacienteList({
     return(
         <Container onPress={onPress} {...rest}>
             <Header>
-                <Company><Icone name={companyIcon}/> {companyName}</Company>
+                <Company numberOfLines={1} ellipsizeMode="tail" ><Icone name={companyIcon}/> {companyName}</Company>
                 {lastConsult && <LastDate><Icone name="calendar"/> {lastConsult}</LastDate> }
             </Header>
             <PersonWrap>
-                <PersonName>{personName}</PersonName>
+                <PersonName numberOfLines={1} ellipsizeMode="tail" >{personName}</PersonName>
             </PersonWrap>
             <AddressWrap>
                 <Address numberOfLines={1} ellipsizeMode="tail" ><Icone name="map-pin"/> {address}</Address>
