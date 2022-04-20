@@ -137,9 +137,11 @@ export function CadastrarPaciente(){
 
         await api(apiState.token).post('/paciente/', data ).then(res =>{
 
-            console.log("Cadastrou?");
-            console.log(res.status);
-            console.log(res.data);
+            Toast.show({
+                type: 'success',
+                text1: 'Paciente cadastrado!',
+                text2: `${data.nome} foi cadastrado(a) na lista de pacientes` // 'This is some something 👋'
+              });
 
             reset({
                 nome: '',
@@ -157,14 +159,18 @@ export function CadastrarPaciente(){
             setAppointmentType({key: -1,name: 'Tipo de Atendimento'});
             setTemComorbidade({key: -1, name: 'Paciente tem comorbidade'});
 
-            alert("Paciente cadastrado com sucesso!");
 
         }).catch(err =>{
             console.error("Erro ao cadastrar paciente");
-            alert("Erro ao cadastrar pacientee!");
+            //alert("Erro ao cadastrar pacientee!");
             if(err.response.data){
                 console.error(err.response.data.message, err.response.data.statusCode);
             }
+            Toast.show({
+                type: 'error',
+                text1: 'Erro ao cadastrar -'+ err.response.data.statusCode,
+                text2: err.response.data.message
+            });
         });
 
         setLoading(false);
@@ -206,7 +212,6 @@ export function CadastrarPaciente(){
         }
     },[appointment]);
 
-    const [exibe, setExibe] = useState(true);
 
 
     useEffect(()=>{
@@ -224,7 +229,7 @@ export function CadastrarPaciente(){
     return(
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <Container>
-            <Toast position={'top'}  autoHide={false} />
+            <Toast position={'top'}  autoHide={true} visibilityTime={6000} onPress={()=>Toast.hide()}/>
         <Iscrol>
 
             <Header>
@@ -297,7 +302,7 @@ export function CadastrarPaciente(){
                         onPress={()=>{HandleSelectCategoryModal(2)}}
                     /> 
 
-                    { temComorbidade != null && 
+                    { temComorbidade.key == 1 && 
                         <InputForm 
                            name="comorbidades"
                            control={control}
