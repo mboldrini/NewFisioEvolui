@@ -21,6 +21,7 @@ import {
     WrapScroll
 
 } from './styles';
+import { ModalLoading } from '../../components/Modal/ModalLoading';
 
 interface IPatient{
     id: number
@@ -49,23 +50,22 @@ export function Home(){
 
         console.log(apiState);
 
-        // navigation.navigate("SignIn");
+        await api(apiState.token).post('/paciente/all', '').then(res=>{
 
-        // await api(apiState.token).post('/paciente/all', '').then(res=>{
+            setPatientList(res.data);
+            console.log("ok?");
+            console.log(res.data);
 
-        //     setPatientList(res.data);
-        //     console.log("ok?");
-        //     console.log(res.data);
-
-        // }).catch(err=>{
-        //     console.error(err);
-        // })
+        }).catch(err=>{
+            console.error(err);
+        })
 
         console.groupEnd();
     }
 
     useEffect(()=>{
         GetPatientList();
+
     },[]);
 
     return(

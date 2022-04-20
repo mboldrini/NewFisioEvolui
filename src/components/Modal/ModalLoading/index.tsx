@@ -1,6 +1,5 @@
-import { Modal } from 'react-native';
 import React from 'react';
-
+import Modal from 'react-native-modal';
 import LottieView from 'lottie-react-native';
 
 import {
@@ -20,9 +19,16 @@ interface Props{
 }
 
 
+
 export function ModalLoading({ visible, infos }: Props){
     return(
-        <Modal visible={visible} style={{marginTop: 150, backgroundColor: '#00ff'}}>
+        <Modal 
+            isVisible={visible} 
+            animationIn='slideInUp' 
+            animationOut='slideOutDown' 
+            animationInTiming={700} 
+            style={{width: '100%', margin: 0}}
+        >
         <Container>
             { infos.tipo == 'loading' &&
                 <Bloco tipo={infos.tipo}>

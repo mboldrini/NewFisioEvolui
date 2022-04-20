@@ -11,6 +11,7 @@ export const Container = styled(GestureHandlerRootView)`
     background-color: ${({theme}) => theme.colors.primary}; 
     align-items: center;
     justify-content: center;
+    margin-top: ${RFValue(40)}px;
 `;
 
 export const Mensagem = styled.Text<Props>`

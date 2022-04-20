@@ -137,7 +137,7 @@ export function SignIn(){
                 setUserInfos( userInfos );
             }
 
-            navigation.navigate("MainTab");
+            navigation.navigate("MainTab" as never);
 
             setLoading(false);
 
