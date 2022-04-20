@@ -14,6 +14,8 @@ import {
 import theme from './src/global/styles/theme';
 import MainStack from './src/stacks/Mainstack';
 
+import Rotas from './src/stacks/Rotas';
+
 import { Provider } from 'react-redux';
 import {store, persistor} from './src/state';
 import { PersistGate } from 'redux-persist/integration/react';
@@ -36,7 +38,8 @@ export default () => {
       <NavigationContainer>
         <Provider store={store}>
           <PersistGate loading={null} persistor={persistor}>
-              <MainStack/>
+              {/* <MainStack/> */}
+              <Rotas/>
           </PersistGate>
         </Provider>
       </NavigationContainer>

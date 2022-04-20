@@ -204,18 +204,6 @@ export function CadastrarPaciente(){
     },[appointment]);
 
 
-    useEffect(()=>{
-      
-        // Toast.show({
-        //     type: 'success',
-        //     text1: 'Novo paciente cadastrado!',
-        //     position: 'top'
-        //   });
-
-        setLoading(true);
-
-    },[]);
-
     return(
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <Container>

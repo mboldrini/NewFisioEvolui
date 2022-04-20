@@ -14,10 +14,11 @@ import { Profile } from '../screens/Profile';
 export default () => (
     <Navigator
         screenOptions={{
-            headerShown: false
+            headerShown: false,
+        
         }}
         tabBar={
-            props=><CustomTabBar {...props} /> 
+            props=><CustomTabBar {...props}/> 
         }
     >
 

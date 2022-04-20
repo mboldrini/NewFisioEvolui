@@ -17,7 +17,7 @@ export default ({state, navigation}) => {
     }
 
     return(
-        <TabArea >
+        <TabArea>
 
             <TabItem onPress={()=>goTo('Home')}>
                 <Icon name="home" style={{opacity: state.index===1 ? 1 : 0.5}}/>
