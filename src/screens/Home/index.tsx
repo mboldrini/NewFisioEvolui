@@ -61,7 +61,7 @@ export function Home(){
     }
 
     useEffect(()=>{
-       GetPatientList();
+        GetPatientList();
     },[]);
 
     return(
