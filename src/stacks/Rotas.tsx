@@ -10,8 +10,6 @@ import { CadastrarPaciente } from '../screens/CadastrarPaciente';
 import { Profile } from '../screens/Profile';
 
 import { Ionicons } from '@expo/vector-icons';
-import { RFValue } from 'react-native-responsive-fontsize';
-
 
 const {Navigator, Screen} = createBottomTabNavigator();
 
@@ -44,9 +42,6 @@ export default function Rotas(){
                             color={color}
                         />                      
                     ))
-
-                    
-                   
                 }}
             />
             
@@ -129,5 +124,6 @@ export default function Rotas(){
                 }}
             />
         </Navigator>
+
     );
 }

@@ -14,7 +14,9 @@ import {
     Fields,
     Wrap,
     WrapBtn,
-    WrapFooterCadastro
+    WrapFooterCadastro,
+
+    Iscrol
 } from './styles';
 
 import { Select } from '../../components/Forms/Select';
@@ -49,6 +51,7 @@ const schema = Yup.object().shape({
     queixa: Yup.string().optional().min(15, "Tamanho mínimo de 15 letras").max(254, "O tamanho não deve ser maior que 254 letras"),
     diagnostico: Yup.string().optional().min(20, "Tamanho mínimo de 20 letras").max(254, "O tamanho não deve ser maior que 254 letras"),
 })
+
 
 import Toast from 'react-native-toast-message';
 
@@ -203,10 +206,26 @@ export function CadastrarPaciente(){
         }
     },[appointment]);
 
+    const [exibe, setExibe] = useState(true);
+
+
+    useEffect(()=>{
+        console.log("carregou!");
+
+        Toast.show({
+            type: 'error',
+            text1: 'Hello',
+            text2: 'This is some something 👋'
+          });
+
+    },[]);
+
 
     return(
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <Container>
+            <Toast position={'top'}  autoHide={false} />
+        <Iscrol>
 
             <Header>
                 <Titulo>Cadastrar Paciente</Titulo>
@@ -391,6 +410,7 @@ export function CadastrarPaciente(){
 
             <ModalLoading visible={loading} infos={{mensagem:"Carregando informaões do paciente...", tipo: 'loading'}}/>
 
+        </Iscrol>
         </Container>
         </TouchableWithoutFeedback>
     )

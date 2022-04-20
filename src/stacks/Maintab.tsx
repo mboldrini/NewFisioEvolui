@@ -11,6 +11,8 @@ import { Agenda } from '../screens/Agenda';
 import { CadastrarPaciente } from '../screens/CadastrarPaciente';
 import { Profile } from '../screens/Profile';
 
+
+
 export default () => (
     <Navigator
         screenOptions={{
@@ -21,7 +23,6 @@ export default () => (
             props=><CustomTabBar {...props}/> 
         }
     >
-
         <Screen name="CadastrarPaciente" component={CadastrarPaciente} />
 
         <Screen name="Agenda" component={Agenda} />
