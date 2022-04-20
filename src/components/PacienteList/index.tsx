@@ -17,7 +17,7 @@ import {
 interface Props extends RectButtonProps{
     companyIcon: string;
     companyName: string;
-    lastConsult: string;
+    lastConsult?: string;
     personName: string;
     address: string;
     onPress: () => void;
@@ -36,7 +36,7 @@ export function PacienteList({
         <Container onPress={onPress} {...rest}>
             <Header>
                 <Company><Icone name={companyIcon}/> {companyName}</Company>
-                <LastDate><Icone name="calendar"/> {lastConsult}</LastDate>
+                {lastConsult && <LastDate><Icone name="calendar"/> {lastConsult}</LastDate> }
             </Header>
             <PersonWrap>
                 <PersonName>{personName}</PersonName>
