@@ -38,24 +38,28 @@ export function Home(){
 
     const [patientList, setPatientList] = useState<IPatient[]>([]);
 
-    function handleNavigate(numero: number){
-        navigation.navigate('PacientePerfil' as number,{
-            id: 1
-        });
+    function HandleNavigate(id: number){
+        navigation.navigate('PacientePerfil' as never,{
+            id: id
+        } as never);
     }
 
     async function GetPatientList(){
         console.group("GetPatientList()");
 
-        await api(apiState.token).post('/paciente/all', '').then(res=>{
+        console.log(apiState);
 
-            setPatientList(res.data);
-            console.log("ok?");
-            console.log(res.data);
+        // navigation.navigate("SignIn");
 
-        }).catch(err=>{
-            console.error(err);
-        })
+        // await api(apiState.token).post('/paciente/all', '').then(res=>{
+
+        //     setPatientList(res.data);
+        //     console.log("ok?");
+        //     console.log(res.data);
+
+        // }).catch(err=>{
+        //     console.error(err);
+        // })
 
         console.groupEnd();
     }
@@ -84,7 +88,7 @@ export function Home(){
                             // lastConsult={"01/01/2001"}
                             personName={ item.nome }
                             address={ item.logradouro }
-                            onPress={()=>{console.log("aa")}}
+                            onPress={()=>{ HandleNavigate(item.id) }}
                         />
                     )}
                     
@@ -104,9 +108,6 @@ export function Home(){
                     <TextoLoading>Carregando lista de pacientes...</TextoLoading>
                 </Wrap>
             }
-
-
-
 
         </Container>
     )

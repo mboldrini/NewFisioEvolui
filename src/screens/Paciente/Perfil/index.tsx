@@ -24,8 +24,7 @@ export function PacientePerfil(){
     const route = useRoute();
     const [refreshing, setRefresh] = useState(false);
 
-    const [data, setData] = useState(route.params);
-
+    const [routeId, setRouteId] = useState(route.params);
     
     function handleNavigate(){
         navigation.navigate('Home' as never);

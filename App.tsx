@@ -38,8 +38,8 @@ export default () => {
       <NavigationContainer>
         <Provider store={store}>
           <PersistGate loading={null} persistor={persistor}>
-              {/* <MainStack/> */}
-              <Rotas/>
+              <MainStack/>
+              {/* <Rotas/> */}
           </PersistGate>
         </Provider>
       </NavigationContainer>

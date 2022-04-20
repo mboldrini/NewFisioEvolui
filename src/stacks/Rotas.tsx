@@ -26,8 +26,6 @@ export default function Rotas(){
                     backgroundColor: '#4EADBE',
                     height: 60,
                 }
-               
-                
             }}
         >
 

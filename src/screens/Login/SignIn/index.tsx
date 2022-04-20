@@ -144,6 +144,12 @@ export function SignIn(){
         }).catch(err =>{
 
             console.error(err.response.data);
+
+            if(err.response.data.message == "Invalid JWT token"){
+                console.log("Pega o token");
+            }
+
+
             setLoading(false);
 
         });
