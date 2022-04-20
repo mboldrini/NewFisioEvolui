@@ -42,7 +42,7 @@ export function PacienteList({
                 <PersonName>{personName}</PersonName>
             </PersonWrap>
             <AddressWrap>
-                <Address><Icone name="map-pin"/> {address}</Address>
+                <Address numberOfLines={1} ellipsizeMode="tail" ><Icone name="map-pin"/> {address}</Address>
             </AddressWrap>
         </Container>
     )
