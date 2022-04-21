@@ -8,8 +8,6 @@ import { PacientePerfil } from '../screens/Paciente/Perfil';
 import { SignIn } from '../screens/Login/SignIn';
 import { SignUp } from '../screens/Login/SignUp';
 
-import { ModalLoading } from '../components/Modal/ModalLoading';
-
 const Stack = createStackNavigator();
 
 export default () => (
@@ -26,11 +24,6 @@ export default () => (
                 <Stack.Screen name="SignIn" component={SignIn} />
                 <Stack.Screen name="SignUp" component={SignUp} />
             </Stack.Group>
-
-            {/* <Stack.Group screenOptions={{ presentation: 'modal', animationEnabled: true, }}>
-                <Stack.Screen name="ModalLoading" component={ModalLoading} />
-            </Stack.Group> */}
-
         </Stack.Navigator>
 
 );

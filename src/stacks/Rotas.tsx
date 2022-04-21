@@ -11,6 +11,8 @@ import { Profile } from '../screens/Profile';
 
 import { Ionicons } from '@expo/vector-icons';
 
+import HomeStack from './HomeStack';
+
 const {Navigator, Screen} = createBottomTabNavigator();
 
 export default function Rotas(){
@@ -31,7 +33,7 @@ export default function Rotas(){
 
             <Screen 
                 name="Home" 
-                component={Home} 
+                component={HomeStack} 
                 options={{
                     tabBarIcon: (({size, color}) => (
                         <Ionicons 
