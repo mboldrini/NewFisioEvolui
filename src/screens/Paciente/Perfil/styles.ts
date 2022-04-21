@@ -22,6 +22,7 @@ export const Title = styled.Text`
 `;
 
 export const WrapInfo = styled.View`
+    flex: 1;
     flex-direction: row;
     align-items: center;
     justify-content: flex-start;
@@ -52,10 +53,20 @@ export const Description = styled.Text`
 `;
 
 export const Info = styled.Text`
+    flex: 1;
     color: ${({theme}) => theme.colors.shape};
     font-family: ${({theme}) => theme.fonts.bold};
     font-size: ${RFValue(13)}px;
     padding-right: ${RFValue(15)}px;
+`;
+
+
+export const InfoTexto = styled.Text`
+    color: ${({theme}) => theme.colors.shape};
+    font-family: ${({theme}) => theme.fonts.bold};
+    font-size: ${RFValue(13)}px;
+    padding-right: ${RFValue(15)}px;
+    max-width: 97%;
 `;
 
 
