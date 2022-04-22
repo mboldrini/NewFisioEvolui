@@ -13,9 +13,6 @@ import {
     Info,
     InfoTexto,
     WrapLoadingPctInfos,
-    WrapAnimation,
-    TextLoadingPctInfos,
-    TextoLoading,
     DateWrapper,
     SelectDateWrapper,
     IconeChangeMonth,
@@ -23,7 +20,9 @@ import {
     ChangeMonthRight,
     Month,
     WrapAgendamentos,
-    WrapToast
+    WrapToast,
+    LoadingIcon,
+    TextSemAgendamentos
 } from './styles';
 import Toast from 'react-native-toast-message';
 
@@ -66,32 +65,44 @@ interface IAgendamentos{
     status: number
 }
 
+interface IAgendamentosApi{
+    id: number,
+    dataHora: string,
+    data: string,
+    tipo: number,
+    status: number
+}
+
+interface IRoute{
+    id: number
+}
+
 export function PacientePerfil(){
 
     const navigation = useNavigation();
     const [refreshing, setRefresh] = useState(false);
 
     const route = useRoute();
-    const [routeId, setRouteId] = useState(route.params);
+    const { id } = route.params as IRoute;
 
     const apiState = useSelector((state: State) => state.apiReducer);
 
     const [loading, setLoading] = useState(true);
     const [pctInfos, setPctInfos] = useState<IPctInfos>(null);
+    // Agendamentos do paciente
+    const [loadingAgendamentos, setLoadingAgendamentos] = useState(true);
     const [pctAgendamentos, setPctAgendamentos] = useState<IAgendamentos[]>([]);
-
     
     const [selectedYear, setSelectedYear] = useState(0);
     const [selectedMonth, setSelectedMonth] = useState(0);
     
     function handleNavigate(){ navigation.goBack(); }
 
-
     async function GetPacienteInfos(){
 
         setLoading(true);
 
-        await api(apiState.token).get('/paciente/'+ routeId.id).then(res => {
+        await api(apiState.token).get('/paciente/'+ id ).then(res => {
 
             setPctInfos(res.data);
 
@@ -139,46 +150,50 @@ export function PacientePerfil(){
         return agendaSelecionada
     }
 
-    function FormatHoraAgendamento(dtHora: string){
-        let [ data, horario] = dtHora.split("T");
-        return parseInt( horario.split(":")[0] );
-    }
+    function MontaListaAgendamentos(listaAgendamentos: IAgendamentosApi[]){
 
-    function FormatDataAgendamento(dtHora: string){
-        let [ data, horario] = dtHora.split("T");
-        return data;
+        function FormatHoraAgendamento(dtHora: string){
+            let [ data, horario] = dtHora.split("T");
+            return parseInt( horario.split(":")[0] );
+        }
+    
+        function FormatDataAgendamento(dtHora: string){
+            let [ data, horario] = dtHora.split("T");
+            return data;
+        }
+
+        if(listaAgendamentos?.length < 1){
+            Toast.show({
+                type: 'info',
+                text1: 'Sem agendamentos para o mês escolhido',
+            });    
+
+            setLoadingAgendamentos(false);
+
+        }else{
+
+            let agendamentoFormatado = listaAgendamentos.map( agendamento => ({
+                id: agendamento.id,
+                status: agendamento.status,
+                tipo: agendamento.tipo,
+                hora: FormatHoraAgendamento(agendamento.dataHora),
+                data: FormatDataAgendamento(agendamento.dataHora)
+            }));
+
+            setPctAgendamentos(agendamentoFormatado);
+            setLoadingAgendamentos(false);
+
+        }
     }
 
     async function GetAgendamentos(){
 
         setPctAgendamentos([]);
+        setLoadingAgendamentos(true);
         
-        await api(apiState.token).post('/agendamento/all', GetDateRange(routeId.id) ).then(res =>{
+        await api(apiState.token).post('/agendamento/all', GetDateRange(id) ).then(res =>{
             
-            let listaAgendamento = res.data;
-
-            if(listaAgendamento?.length < 1){
-                console.log("SEM AGENDAMENTOS");
-
-                Toast.show({
-                    type: 'info',
-                    text1: 'Sem agendamentos para o mês escolhido',
-                    text2: `${err}`
-                });    
-
-            }else{
-
-                let agendamentoFormatado = listaAgendamento.map( agendamento => ({
-                    id: agendamento.id,
-                    status: agendamento.status,
-                    tipo: agendamento.tipo,
-                    hora: FormatHoraAgendamento(agendamento.dataHora),
-                    data: FormatDataAgendamento(agendamento.dataHora)
-                }));
-    
-                setPctAgendamentos(agendamentoFormatado);
-
-            }
+            MontaListaAgendamentos(res.data);
 
         }).catch(err => {
 
@@ -191,28 +206,31 @@ export function PacientePerfil(){
                 text2: `${err}`
             });    
 
+            setLoadingAgendamentos(false);
+
         });
 
     }
 
     useEffect(()=>{
-        if(!routeId.id){
-            console.log("Sem route ID");
-        }else{
-            GetPacienteInfos();
-        }
 
         function DefineDataHoje(){
             let d = new Date();
             setSelectedMonth(getMonth(d));
             setSelectedYear(getYear(d));
         }
-        DefineDataHoje();
+
+        if(!id){
+            console.log("Sem route ID");
+        }else{
+            GetPacienteInfos();
+            DefineDataHoje();
+        }   
 
     }, []);
 
     useEffect(()=>{
-        if(pctInfos?.nome.length > 2 && routeId.id){
+        if(pctInfos?.nome.length > 2 && id){
             GetAgendamentos();
         }
     }, [selectedMonth]);
@@ -362,9 +380,15 @@ export function PacientePerfil(){
                         </SelectDateWrapper>
                     </DateWrapper>
 
-                    { pctAgendamentos.length < 1 &&
+                    { (pctAgendamentos.length < 1 && loadingAgendamentos == true) &&
                         <WrapAgendamentos>
-                            <TextoLoading>Carregando Agendamentos...</TextoLoading>                        
+                            <LoadingIcon size="large" color="#FFFFFF"/>                    
+                        </WrapAgendamentos>
+                    }
+
+                    { (pctAgendamentos.length < 1 && loadingAgendamentos === false) &&
+                        <WrapAgendamentos>
+                            <TextSemAgendamentos>Nenhum agendamento encontrado</TextSemAgendamentos>
                         </WrapAgendamentos>
                     }
 
@@ -389,15 +413,7 @@ export function PacientePerfil(){
 
             { loading == true && 
             <WrapLoadingPctInfos>
-                <WrapAnimation>
-                <LottieView
-                    source={require('../../../assets/loadingAnimado250.json')}
-                    autoSize={false}
-                    autoPlay
-                    loop
-                />
-                </WrapAnimation>
-                <TextLoadingPctInfos>Carregando informações do paciente...</TextLoadingPctInfos>
+                <LoadingIcon size="large" color="#FFFFFF"/>  
             </WrapLoadingPctInfos>
             }
 

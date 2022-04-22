@@ -48,7 +48,7 @@ export const InfoArea = styled.View`
 
 export const Description = styled.Text`
     color: ${({theme}) => theme.colors.shape};
-    font-family: ${({theme}) => theme.fonts.thin};
+    font-family: ${({theme}) => theme.fonts.bold};
     font-size: ${RFValue(13)}px;
 `;
 
@@ -62,7 +62,7 @@ export const Info = styled.Text`
 
 export const InfoTexto = styled.Text`
     color: ${({theme}) => theme.colors.shape};
-    font-family: ${({theme}) => theme.fonts.bold};
+    font-family: ${({theme}) => theme.fonts.regular};
     font-size: ${RFValue(13)}px;
     padding-right: ${RFValue(15)}px;
     max-width: 97%;
@@ -73,12 +73,6 @@ export const WrapLoadingPctInfos = styled.View`
     margin-top: ${RFValue(50)}px;
     align-items: center;
     justify-content: center;
-`;
-
-export const WrapAnimation = styled.View`
-    flex: 1;
-    width: 100%;
-    height: ${RFValue(200)}px;
 `;
 
 export const TextLoadingPctInfos = styled.Text`
@@ -136,15 +130,17 @@ export const WrapAgendamentos = styled.View`
     margin-top: ${RFValue(10)}px;
 `;
 
-export const TextoLoading = styled.Text`
-    color: #fff;
-    font-size: ${RFValue(20)}px;
-    font-family: ${({theme}) => theme.fonts.regular};
-    padding-top: ${RFValue(15)}px;
+export const LoadingIcon = styled.ActivityIndicator`
+    margin: ${RFValue(20)}px 0;
 `;
 
 export const WrapToast = styled.View`
     z-index: 1;
 `;
 
-
+export const TextSemAgendamentos = styled.Text`
+    font-size: ${RFValue(14)}px;
+    font-family: ${({theme}) => theme.fonts.regular};
+    color: #FFFFFF;
+    padding-top: ${RFValue(5)}px;
+`;
