@@ -27,8 +27,9 @@ export default function Rotas(){
                 tabBarStyle:{
                     backgroundColor: '#4EADBE',
                     height: 60,
-                }
-            }}
+                }                
+            }}    
+            initialRouteName="Agenda"       
         >
 
             <Screen 
@@ -64,11 +65,6 @@ export default function Rotas(){
                 component={Agenda} 
                 options={{
                     tabBarIcon: (({size, color}) => (
-                        // <Ionicons 
-                        //     name="calendar-sharp"
-                        //     size={size+10}
-                        //     color={color}
-                        // />
                         <View style={{
                             height: 65,
                             width: 65,
@@ -79,11 +75,6 @@ export default function Rotas(){
                             borderWidth: 3,
                             borderColor: '#4EADBE',
                             marginTop: -18
-
-                            // border-radius: 50px;
-                            // border: 3px solid ${({theme}) => theme.colors.secondary};
-                            // margin-top: ${RFValue(-18)}px;
-
                         }}>
                           <Ionicons 
                             name="calendar-sharp"

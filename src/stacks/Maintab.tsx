@@ -17,7 +17,6 @@ export default () => (
     <Navigator
         screenOptions={{
             headerShown: false,
-        
         }}
         tabBar={
             props=><CustomTabBar {...props}/> 
