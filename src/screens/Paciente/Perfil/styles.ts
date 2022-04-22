@@ -2,7 +2,7 @@ import styled, {css} from "styled-components/native";
 import { RFValue } from "react-native-responsive-fontsize";
 import { FontAwesome5 } from "@expo/vector-icons";
 
-export const Container = styled.ScrollView`
+export const Container = styled.View`
     flex: 1;
     background-color: ${({theme}) => theme.colors.primary};
 `;
@@ -84,35 +84,16 @@ export const WrapAnimation = styled.View`
 export const TextLoadingPctInfos = styled.Text`
     font-size: ${RFValue(20)}px;
     font-family: ${({theme}) => theme.fonts.bold};
-    color: ${({theme}) => theme.colors.text_dark}
+    color: ${({theme}) => theme.colors.text_dark};
 `;
 
 export const DateWrapper = styled.View`
     background-color: ${({theme}) => theme.colors.background };
-    /* margin: 0px ${({theme }) => theme.margin.lateral}px; */
     border-radius: ${({theme}) => theme.bordas.padrao}px;
     padding: ${({theme}) => theme.padding.superior}px 0px;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    margin-bottom: ${({theme}) => theme.margin.bottom}px;
-    border-width: 1px;
-    border-color: #f5f5f5;
-    border-bottom-width: 1px;
-    shadow-color: #000;
-    shadow-offset: {width: 0px};
-    shadow-offset: {height: 2px};
-    shadow-opacity: 0.8;
-    shadow-radius: 1px;
-    elevation: 1;
-`;
-
-export const Today = styled.Text`
-    font-family: ${({theme}) => theme.fonts.regular};
-    font-size: ${RFValue(14)}px;
-    /* padding: ${({theme}) => theme.padding.superior}px ${RFValue(10)}px; */
-    border-color: #f5f5f5;
-    border-bottom-width: 1px;
 `;
 
 export const SelectDateWrapper = styled.View`
@@ -148,4 +129,22 @@ export const Month = styled.Text`
     align-items: center;
     justify-content: center;
 `;
+
+export const WrapAgendamentos = styled.View`
+    align-items: center;
+    justify-content: center;
+    margin-top: ${RFValue(10)}px;
+`;
+
+export const TextoLoading = styled.Text`
+    color: #fff;
+    font-size: ${RFValue(20)}px;
+    font-family: ${({theme}) => theme.fonts.regular};
+    padding-top: ${RFValue(15)}px;
+`;
+
+export const WrapToast = styled.View`
+    z-index: 1;
+`;
+
 

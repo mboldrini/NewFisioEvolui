@@ -15,15 +15,15 @@ import {
     WrapLoadingPctInfos,
     WrapAnimation,
     TextLoadingPctInfos,
-    
+    TextoLoading,
     DateWrapper,
-    Today,
     SelectDateWrapper,
     IconeChangeMonth,
     ChangeMonthLeft,
     ChangeMonthRight,
     Month,
-
+    WrapAgendamentos,
+    WrapToast
 } from './styles';
 import Toast from 'react-native-toast-message';
 
@@ -37,10 +37,10 @@ import { useSelector } from 'react-redux';
 import { State } from '../../../state';
 // Imports
 import LottieView from 'lottie-react-native';
-import { months, days, daysLong} from '../../../global/variaveis/Dates';
-import { getDayOfYear, getDay, getMonth, getYear, addMonths, getDaysInMonth, getDate } from 'date-fns';
-
-//import { AppointmentSimple } from '../../../components/AppointmentSimple'; 
+import { months} from '../../../global/variaveis/Dates';
+import { getMonth, getYear, lastDayOfMonth, format } from 'date-fns';
+import { AppointmentList } from '../../../components/AppointmentList';
+import { Iscrol } from '../../CadastrarPaciente/styles';
 
 
 interface IPctInfos{
@@ -58,6 +58,14 @@ interface IPctInfos{
     comorbidades: string
 }
 
+interface IAgendamentos{
+    id: number,
+    hora: number,
+    data: string,
+    tipo: number,
+    status: number
+}
+
 export function PacientePerfil(){
 
     const navigation = useNavigation();
@@ -70,15 +78,14 @@ export function PacientePerfil(){
 
     const [loading, setLoading] = useState(true);
     const [pctInfos, setPctInfos] = useState<IPctInfos>(null);
-    const [pctAgendamentos, setPctAgendamentos] = useState(null);
+    const [pctAgendamentos, setPctAgendamentos] = useState<IAgendamentos[]>([]);
 
     
-    const [atualDate, setAtualDate] = useState(null);
-    const [dtHojeExtenso, setDtHojeExtenso] = useState(null);
     const [selectedYear, setSelectedYear] = useState(0);
     const [selectedMonth, setSelectedMonth] = useState(0);
     
     function handleNavigate(){ navigation.goBack(); }
+
 
     async function GetPacienteInfos(){
 
@@ -96,8 +103,13 @@ export function PacientePerfil(){
             Toast.show({
                 type: 'error',
                 text1: 'OPS! erro ao obter informações do paciente.',
-               // text2: `${err}` // 'This is some something 👋'
+                text2: `${err}`
             });
+
+            setTimeout(() => {
+                navigation.goBack();
+            }, 3000);
+
         });
     }
 
@@ -114,6 +126,75 @@ export function PacientePerfil(){
         setSelectedMonth( getMonth(mountDate) );
     }
 
+    function GetDateRange(id: number){
+        let data = new Date(selectedYear, selectedMonth);
+        let startDate = format(data, 'yyyy/MM/dd');
+        let endDate = format(lastDayOfMonth( data ), 'yyyy/MM/dd');
+
+        let agendaSelecionada = {
+            "paciente_id": id,
+            "dataInicio": startDate,
+            "dataFim": endDate
+        }
+        return agendaSelecionada
+    }
+
+    function FormatHoraAgendamento(dtHora: string){
+        let [ data, horario] = dtHora.split("T");
+        return parseInt( horario.split(":")[0] );
+    }
+
+    function FormatDataAgendamento(dtHora: string){
+        let [ data, horario] = dtHora.split("T");
+        return data;
+    }
+
+    async function GetAgendamentos(){
+
+        setPctAgendamentos([]);
+        
+        await api(apiState.token).post('/agendamento/all', GetDateRange(routeId.id) ).then(res =>{
+            
+            let listaAgendamento = res.data;
+
+            if(listaAgendamento?.length < 1){
+                console.log("SEM AGENDAMENTOS");
+
+                Toast.show({
+                    type: 'info',
+                    text1: 'Sem agendamentos para o mês escolhido',
+                    text2: `${err}`
+                });    
+
+            }else{
+
+                let agendamentoFormatado = listaAgendamento.map( agendamento => ({
+                    id: agendamento.id,
+                    status: agendamento.status,
+                    tipo: agendamento.tipo,
+                    hora: FormatHoraAgendamento(agendamento.dataHora),
+                    data: FormatDataAgendamento(agendamento.dataHora)
+                }));
+    
+                setPctAgendamentos(agendamentoFormatado);
+
+            }
+
+        }).catch(err => {
+
+            console.log("erro?");
+            console.log(err);     
+            
+            Toast.show({
+                type: 'error',
+                text1: 'OPS! erro ao obter agendamentos do paciente.',
+                text2: `${err}`
+            });    
+
+        });
+
+    }
+
     useEffect(()=>{
         if(!routeId.id){
             console.log("Sem route ID");
@@ -123,23 +204,32 @@ export function PacientePerfil(){
 
         function DefineDataHoje(){
             let d = new Date();
-            setDtHojeExtenso(`${daysLong[d.getDay()]} - ${d.getDate()}/${months[d.getMonth()]}/${d.getFullYear()}`);
-            setAtualDate(d);
             setSelectedMonth(getMonth(d));
+            setSelectedYear(getYear(d));
         }
         DefineDataHoje();
+
     }, []);
+
+    useEffect(()=>{
+        if(pctInfos?.nome.length > 2 && routeId.id){
+            GetAgendamentos();
+        }
+    }, [selectedMonth]);
 
 
 
     return(
-        <Container refreshControl={<RefreshControl refreshing={refreshing} onRefresh={()=>{ GetPacienteInfos() }}/>}>
-            
+        <Container >
+            <WrapToast>
+                <Toast position={'top'}  autoHide={true} visibilityTime={6000} onPress={()=>Toast.hide()}/>
+            </WrapToast>
+        <Iscrol refreshControl={<RefreshControl refreshing={refreshing} onRefresh={()=>{ GetPacienteInfos() }}/>}>
+
             <Cabecalho 
                 titulo="Perfil do Paciente"
                 onPress={handleNavigate}
             />
-            <Toast position={'top'}  autoHide={true} visibilityTime={6000} onPress={()=>Toast.hide()}/>
         
             { pctInfos && loading == false &&
             <>
@@ -261,32 +351,38 @@ export function PacientePerfil(){
                     <Title>Agendamentos do Paciente</Title>
 
                     <DateWrapper>
-                        <Today>Hoje é {dtHojeExtenso}</Today>
                         <SelectDateWrapper>
                             <ChangeMonthLeft onPress={ ()=> {handleDateClick("left")} }>
                                 <IconeChangeMonth name="chevron-left"/>
                             </ChangeMonthLeft>
-                            <Month>{ months[selectedMonth] }</Month>
+                            <Month>{ months[selectedMonth] } - { selectedYear }</Month>
                             <ChangeMonthRight onPress={ ()=> {handleDateClick("right")} }>
                                 <IconeChangeMonth name="chevron-right"/>
                             </ChangeMonthRight>
                         </SelectDateWrapper>
                     </DateWrapper>
 
-                    
+                    { pctAgendamentos.length < 1 &&
+                        <WrapAgendamentos>
+                            <TextoLoading>Carregando Agendamentos...</TextoLoading>                        
+                        </WrapAgendamentos>
+                    }
 
-                    {/* { listaAgenda.length > 0 && listaAgenda.map((item, key) =>{
-                        return(
-                            <AppointmentSimple 
-                                diaSemana={item.diaSemana}
-                                dataAgendamento={item.dataAgendamento}
-                                horario={item.horario}
-                                tipoAgendamento={item.tipoAgendamento}
-                                dataLimite={item.DataLimite}
-                                onPress={()=>{console.log(key)}}
-                            />
-                        )
-                    }) } */}
+                    <WrapAgendamentos>
+                    { pctAgendamentos.length >= 1 && pctAgendamentos.map( (item, key) => {
+                            return(
+                                <AppointmentList
+                                    key={key}
+                                    status={item.status}
+                                    hour={item.hora}
+                                    date={item.data}
+                                    type={item.tipo}
+                                    onPress={()=>{ alert(item.id) }}
+                                />   
+                            )
+                        })
+                    }
+                    </WrapAgendamentos>
                 </WrapGroup>
             </>
             }
@@ -308,6 +404,7 @@ export function PacientePerfil(){
             <BottomSpacer/>
               
 
+        </Iscrol>
         </Container>
     )
 }

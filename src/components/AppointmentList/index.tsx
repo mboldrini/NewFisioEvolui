@@ -47,7 +47,7 @@ export function AppointmentList({status, hour, date, type, onPress}: Props){
     }
 
     return(
-        <Container status={type}>
+        <Container status={status}>
              <WrapInfos>
                 <WrapDate>
                      <WeekDay>{ daysLong[getDay( parseISO(date))] }</WeekDay>
