@@ -6,6 +6,7 @@ import { months, days, daysLong} from '../../global/variaveis/Dates';
 import { ITipoAgendamento } from '../../global/interfaces';
 import { 
     Container,
+    Iscroll,
     Header,
     Titulo,
     DateWrapper,
@@ -18,36 +19,41 @@ import {
     DateList,
     DateItem,
     DateItemWeekDay,
-    DateItemWeekNumber
-
+    DateItemWeekNumber,
+    Wrap,
+    LoadingIcon,
+    TextoSemAgendamentos
 } from './styles';
-import { AgendaItem } from '../../components/AgendaItem';
-import { getDayOfYear, getDay, getMonth, getYear, addMonths, getDaysInMonth, getDate } from 'date-fns';
 
-import { devAgenda } from '../../global/devVariaveis';
+// API
+import { api } from '../../global/api';
+// REDUX
+import { useDispatch, useSelector } from 'react-redux';
+import { State } from '../../state';
+
+import { AgendaItem } from '../../components/AgendaItem';
+import { getDayOfYear, getDay, getMonth, getYear, getDaysInMonth, getDate, format } from 'date-fns';
 
 export function Agenda(){
 
     const navigation = useNavigation();
 
     const [refreshing, setRefresh] = useState(false);
+    const [loading, setLoading] = useState(false);
 
-    const meses = months;
-    const dias = days;
-    const diasLong = daysLong;
+    const apiState = useSelector((state: State) => state.apiReducer);
 
-    const [atualDate, setAtualDate] = useState(null);
     const [dataHoje, setDataHoje] = useState(null);
     const [diaHoje, setDiaHoje] = useState(null);
 
-    const [selectedYear, setSelectedYear] = useState(0);
-    const [selectedMonth, setSelectedMonth] = useState(0);
+    const [selectedYear, setSelectedYear] = useState(null);
+    const [selectedMonth, setSelectedMonth] = useState(null);
     const [selectedDay, setSelectedDay] = useState(null);
-    const [selectedDayWeek, setSelectedDayWeek] = useState(null);
     const [selectedDate, setSelectedDate] = useState(null);
 
+    // Dias disponiveis no mes escolhido
     const [listdias, setListdias] = useState([]);
-
+    // Agendamentos marcados para o dia escolhido
     const [agendamentos, setAgendamentos] = useState<ITipoAgendamento[]>([]);
 
 
@@ -56,9 +62,11 @@ export function Agenda(){
 
         setSelectedYear( getYear(today) );
         setSelectedMonth( getMonth(today) );
-        setSelectedDay( getDayOfYear(today) ); 
-        setSelectedDayWeek( getDay(today) );
+        setSelectedDay( today.getDate() ); 
         setSelectedDate(today);
+
+        setDataHoje(`${daysLong[today.getDay()]} - ${today.getDate()}/${months[today.getMonth()]}/${today.getFullYear()}`);
+
     }
 
     const handleDateClick = (side: String) => {
@@ -76,18 +84,7 @@ export function Agenda(){
         setSelectedDate(mountDate);
     }
 
-    useEffect(() => {
-        getAtualDay();
-
-        let d = new Date();
-        setDataHoje(`${diasLong[d.getDay()]} - ${d.getDate()}/${meses[d.getMonth()]}/${d.getFullYear()}`);
-        setAtualDate(d);
-
-        setAgendamentos(devAgenda);
-
-    },[]);
-
-    useEffect(()=>{
+    const ListaDiasMes = () => {
         setListdias([]);
 
         let diasInMonth = getDaysInMonth(new Date(selectedYear, selectedMonth)); //new Date(selectedYear, selectedMonth+1, 0).getDate();
@@ -98,7 +95,7 @@ export function Agenda(){
             let d = new Date(selectedYear, selectedMonth, i);
 
             newListdias.push({
-                weekday: dias[ getDay(d) ],
+                weekday: days[ getDay(d) ],
                 number: i,
                 status: true
             });
@@ -111,29 +108,58 @@ export function Agenda(){
             let dtEscolhida = new Date(selectedDate);
             console.log(`DtEscolhida: ${dtEscolhida}`);
             setSelectedDay(1);
-            setSelectedDayWeek(getDay(dtEscolhida));
 
         }else{
             setSelectedDay(getDate(d));
-            setSelectedDayWeek(getDay(d));
+        }
+    }
+
+    async function GetAgendaDia(dtEscolhida: Date){
+        console.log( format(dtEscolhida, 'yyyy-MM-dd') );
+
+        let rangeData = {
+            dataInicio: format(dtEscolhida, 'yyyy-MM-dd') + "T00:01",
+            dataFim: format(dtEscolhida, 'yyyy-MM-dd') +"T23:59"
         }
 
+        setLoading(true);
+        
+        await api(apiState.token).post('/agendamento/allappointments', rangeData).then(res => {
 
+            setAgendamentos(res.data);
 
+        }).catch(err =>{
+            console.log("ERRO!");
+            console.error(err);
+        });
+
+        setLoading(false);
+
+    }
+
+    useEffect(() => {
+        getAtualDay();
+    },[]);
+   
+    useEffect(()=>{
+        if(selectedMonth && selectedYear){
+            ListaDiasMes();
+        }
     }, [selectedMonth, selectedYear]);
 
     useEffect(()=>{
-        let d = new Date(selectedYear, selectedMonth, selectedDay);
-        setSelectedDayWeek(d.getDay());
-        setSelectedDate(d);
-        
-        let hoje = new Date();
-        setDiaHoje(hoje.getDay());
+        if(selectedDay > 0){
+            let d = new Date(selectedYear, selectedMonth, selectedDay);
+            setSelectedDate(d);
 
-    }, [selectedDay, selectedDayWeek]);
+            GetAgendaDia(d);
+        }
+    }, [selectedDay]);
 
     return(
-        <Container refreshControl={<RefreshControl refreshing={refreshing} onRefresh={getAtualDay}/>}>
+        <Container >
+
+        <Iscroll refreshControl={<RefreshControl refreshing={refreshing} onRefresh={getAtualDay}/>}>
 
             <Header>
                 <Titulo>Agenda do Dia</Titulo>
@@ -145,34 +171,59 @@ export function Agenda(){
                     <ChangeMonthLeft onPress={ ()=> handleDateClick("left") }>
                         <IconeChangeMonth name="chevron-left"/>
                     </ChangeMonthLeft>
-                    <Month>{meses[selectedMonth]} - {selectedYear}</Month>
+                    <Month>{months[selectedMonth]} - {selectedYear}</Month>
                     <ChangeMonthRight onPress={ ()=> handleDateClick("right") }>
                         <IconeChangeMonth name="chevron-right"/>
                     </ChangeMonthRight>
                 </SelectDateWrapper>
 
-                <DateList >
-                    {listdias.map((item,key)=>(
-                        <DateItem key={key} diaEscolhido={selectedDay} diaHoje={diaHoje}  onPress={()=>{ item.status ? setSelectedDay(item.number) : null}} style={{backgroundColor: item.number === selectedDay ? '#4EADBE' : '#FFFFFF' }}>
-                            <DateItemWeekDay style={{color: item.number === selectedDay ? '#FFFFFF' : '#000000'}}>{item.weekday}</DateItemWeekDay>
-                            <DateItemWeekNumber style={{ color: item.number === selectedDay ? '#FFFFFF' : '#000000'}}>{item.number}</DateItemWeekNumber>
-                        </DateItem>                        
-                    ))}
-                </DateList> 
-
-            </DateWrapper>
-                    
-            { selectedDate && agendamentos.map((item, key) =>{
-                return(
-                    <AgendaItem 
-                        key={key}
-                        status={item.status} 
-                        dataHora={item.dataHora}
-                        tipo={item.tipo}
+                <DateList>
+                    <FlatList
+                        data={listdias}
+                        keyExtractor={(item) => item.name}
+                        horizontal={true}
+                        renderItem={({item}) =>{
+                        return (
+                            <DateItem key={item.key} diaEscolhido={selectedDay} diaHoje={diaHoje}  onPress={()=>{ item.status ? setSelectedDay(item.number) : null}} style={{backgroundColor: item.number === selectedDay ? '#4EADBE' : '#FFFFFF' }}>
+                                <DateItemWeekDay style={{color: item.number === selectedDay ? '#FFFFFF' : '#000000'}}>{item.weekday}</DateItemWeekDay>
+                                <DateItemWeekNumber style={{ color: item.number === selectedDay ? '#FFFFFF' : '#000000'}}>{item.number}</DateItemWeekNumber>
+                            </DateItem>   
+                        )} }
                     />
-                )
-            }) }
+                </DateList>
+            </DateWrapper>
 
+            { loading &&
+                <Wrap>
+                    <LoadingIcon size="large" color="#FFFFFF"/>   
+                </Wrap>
+            }
+
+            { loading == false && agendamentos.length >= 1 &&
+                <FlatList
+                    data={agendamentos}
+                    keyExtractor={(item) => item.dataHora}
+                    renderItem={({item}) =>{
+                        return (
+                            <AgendaItem 
+                                key={item.dataHora}
+                                status={item.status}
+                                tipo={item.tipo}
+                                paciente_nome={item.paciente_nome}
+                                dataHora={item.dataHora}
+                            />
+                        )} 
+                    }
+                /> 
+            }
+
+            { !loading && agendamentos.length <= 0 &&
+                <Wrap>
+                    <TextoSemAgendamentos>Nenhum agendamento encontrado</TextoSemAgendamentos>
+                </Wrap>
+            }
+                    
+        </Iscroll>
         </Container>
     )
 }

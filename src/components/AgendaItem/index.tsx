@@ -1,6 +1,6 @@
 import React from 'react';
 import { statusAtendimento } from '../../global/variaveis/globais';
-import { parseISO, format, isBefore, isSameHour } from 'date-fns';
+import { parseISO, format, isBefore, isSameHour, differenceInHours } from 'date-fns';
 
 import {
     Container,
@@ -17,23 +17,22 @@ import {
 } from './styles';
 
 interface Props{
-    status: number;
-    dataHora: string;
-    tipo: string;
-}
-
-const icones = {
-    Particular: 'money-bill-wave',
-    plano: 'hospital'
+    dataHora: string,
+    tipo: string,
+    status: number,
+    paciente_nome: string
 }
 
 
-export function AgendaItem({status, dataHora, tipo}: Props){
-    
+export function AgendaItem( {  dataHora, tipo, status, paciente_nome}: Props ){
+
     function horarioPassou(dataHora: string){
 
+        const [data, hora] = dataHora.split("T");
+        const [ano, mes, dia] = data.split("-");
+
         let today = new Date();
-        let receivedDate = parseISO(dataHora);
+        let receivedDate = new Date(parseInt(ano), parseInt(mes)-1, parseInt(dia), parseInt(hora) );
 
         if( isSameHour(receivedDate, today) == true){
             return 2;// Mesma mora = Amarelo
@@ -60,17 +59,22 @@ export function AgendaItem({status, dataHora, tipo}: Props){
     }
 
     function horaAgendada(dataHora: string){
-        return format(parseISO(dataHora), 'HH:mm'); 
+
+        const [data, hora] = dataHora.split("T");
+        const [ano, mes, dia] = data.split("-");
+        let receivedDate = new Date(parseInt(ano), parseInt(mes), parseInt(dia), parseInt(hora) );
+
+        return format(receivedDate, "HH:mm");
     }
 
     return(
         <Container status={status}>
            <Header>
-               <IconeTipo name={ icones[tipo] }/>
+               <IconeTipo name="hospital"/>
                <Tipo>{tipo}</Tipo>
            </Header>
-           <Nome>Aroldo Arão</Nome>
-           <Footer>
+           <Nome>{ paciente_nome }</Nome>
+          <Footer>
                 <HoraWrapper horaPassou={ horarioPassou(dataHora) }>
                     <Icone name={ iconeHorario(dataHora) }/>
                     <Horario horaPassou={ horarioPassou(dataHora) }>{horaAgendada(dataHora)}</Horario>
@@ -79,8 +83,8 @@ export function AgendaItem({status, dataHora, tipo}: Props){
                     { status !== 0 && 
                         <Status status={status}>{ statusAtendimento[status] }</Status> 
                     }
-                </StatusWrapper>
-           </Footer>
+                </StatusWrapper> 
+            </Footer>
         </Container>
     )
 }

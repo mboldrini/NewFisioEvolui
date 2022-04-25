@@ -7,7 +7,7 @@ interface Props{
     horaPassou?: number;
 }
 
-export const Container = styled.View<Props>`
+export const Container = styled.TouchableOpacity<Props>`
     flex: 1;
     margin: 0 ${({theme}) => theme.margin.lateral}px;
     background-color: ${({theme}) => theme.colors.shape};

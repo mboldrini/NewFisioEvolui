@@ -8,10 +8,12 @@ interface PropsDiaEscolhido{
     diaHoje: string;
 }
 
-export const Container = styled.ScrollView`
+export const Container = styled.View`
     flex: 1;
     background-color: ${({theme}) => theme.colors.primary};
 `;
+
+export const Iscroll = styled.ScrollView``;
 
 export const Header = styled.View`
     align-items: center;
@@ -48,8 +50,8 @@ export const DateWrapper = styled.View`
 `;
 
 export const Today = styled.Text`
-    font-family: ${({theme}) => theme.fonts.regular};
-    font-size: ${RFValue(14)}px;
+    font-family: ${({theme}) => theme.fonts.thin};
+    font-size: ${RFValue(12)}px;
     padding: ${({theme}) => theme.padding.superior}px ${RFValue(10)}px;
     border-color: #f5f5f5;
     border-bottom-width: 1px;
@@ -115,3 +117,16 @@ export const DateItemWeekNumber = styled.Text`
     font-size: ${RFValue(16)}px;
 `;
 
+export const Wrap = styled.View`
+    margin-top: ${RFValue(15)}px;
+    align-items: center;
+    justify-content: center;
+`;
+
+export const LoadingIcon = styled.ActivityIndicator``;
+
+export const TextoSemAgendamentos = styled.Text`
+    color: #ffffff;
+    font-size: ${RFValue(16)}px;
+    font-family: ${({theme}) => theme.fonts.regular};
+`;
