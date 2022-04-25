@@ -7,6 +7,7 @@ import { ITipoAgendamento } from '../../global/interfaces';
 import { 
     Container,
     Iscroll,
+    WrapToast,
     Header,
     Titulo,
     DateWrapper,
@@ -24,14 +25,16 @@ import {
     LoadingIcon,
     TextoSemAgendamentos
 } from './styles';
-
+// Toast
+import Toast from 'react-native-toast-message';
 // API
 import { api } from '../../global/api';
 // REDUX
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { State } from '../../state';
-
+// Item de agenda
 import { AgendaItem } from '../../components/AgendaItem';
+// Date-fns
 import { getDayOfYear, getDay, getMonth, getYear, getDaysInMonth, getDate, format } from 'date-fns';
 
 export function Agenda(){
@@ -131,6 +134,10 @@ export function Agenda(){
         }).catch(err =>{
             console.log("ERRO!");
             console.error(err);
+            Toast.show({
+                type: 'error',
+                text1: 'OPS! erro ao obter agenda do dia.',
+            });
         });
 
         setLoading(false);
@@ -158,6 +165,10 @@ export function Agenda(){
 
     return(
         <Container >
+            
+        <WrapToast>
+            <Toast position={'top'}  autoHide={true} visibilityTime={6000} onPress={()=>Toast.hide()}/>
+        </WrapToast>
 
         <Iscroll refreshControl={<RefreshControl refreshing={refreshing} onRefresh={getAtualDay}/>}>
 
