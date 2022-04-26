@@ -21,6 +21,7 @@ import { useForm } from 'react-hook-form';
 // Yup do Formulário
 import * as Yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { ModalStatusAtendimento } from '../../../components/Modal/ModalStatusAtendimento';
 
 const schema = Yup.object().shape({
     nome: Yup.string().required("Nome é obrigatório"),
@@ -35,6 +36,9 @@ export function PacienteAtendimento(){
 
     const [refreshing, setRefresh] = useState(false);
 
+    const [visible, setVisible] = useState(false);
+    const [status, setStatus] = useState({key: -1,name: 'Status do Atendimento'});
+
     const {
         control,
         handleSubmit,
@@ -43,6 +47,10 @@ export function PacienteAtendimento(){
     } = useForm({
         resolver: yupResolver(schema)
     });
+
+    useEffect(()=>{
+        console.log(status);
+    }, [status]);
 
 
     return(
@@ -68,15 +76,15 @@ export function PacienteAtendimento(){
             <WrapContent>
             
                 <Select 
-                    title={"Status do Atendimento"}
-                    isActive={-1}
-                    onPress={()=>{ console.log("FF") }}
+                    title={ status.name }
+                    isActive={ status.key}
+                    onPress={()=>{ setVisible(true) }}
                 />
 
                 <InputForm 
                     name="evolucao"
                     control={control}
-                    placeholder="Evolução"
+                    placeholder="Descrição do Atendimento/Evolução"
                     autoCapitalize="words"
                     autoCorrect={false}
                     multiline={true}
@@ -96,6 +104,14 @@ export function PacienteAtendimento(){
                 />
 
             </WrapContent>
+
+
+            <ModalStatusAtendimento 
+                setCategory={setStatus}
+                visible={ visible }
+                statusAtual={status}
+                closeModal={()=> setVisible(false) }
+            />
 
         </Container>
     )
