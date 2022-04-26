@@ -22,13 +22,11 @@ import { useForm } from 'react-hook-form';
 import * as Yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { ModalStatusAtendimento } from '../../../components/Modal/ModalStatusAtendimento';
+import { ModalTipoEvolucao } from '../../../components/Modal/ModalTipoEvolucao';
 
 const schema = Yup.object().shape({
     nome: Yup.string().required("Nome é obrigatório"),
 })
-
-
-
 
 export function PacienteAtendimento(){
 
@@ -36,8 +34,11 @@ export function PacienteAtendimento(){
 
     const [refreshing, setRefresh] = useState(false);
 
-    const [visible, setVisible] = useState(false);
+    const [statusVisible, setStatusVisible] = useState(false);
+    const [evolucaoVisible, setEvolucaoVisible] = useState(false);
+
     const [status, setStatus] = useState({key: -1,name: 'Status do Atendimento'});
+    const [tipoEvolucao, setTipoEvolucao] = useState({key: -1,name: 'Tipo de Evolução'});
 
     const {
         control,
@@ -76,9 +77,15 @@ export function PacienteAtendimento(){
             <WrapContent>
             
                 <Select 
+                    title={ tipoEvolucao.name }
+                    isActive={ tipoEvolucao.key }
+                    onPress={()=>{ setEvolucaoVisible(true) }}
+                />
+
+                <Select 
                     title={ status.name }
                     isActive={ status.key}
-                    onPress={()=>{ setVisible(true) }}
+                    onPress={()=>{ setStatusVisible(true) }}
                 />
 
                 <InputForm 
@@ -108,9 +115,16 @@ export function PacienteAtendimento(){
 
             <ModalStatusAtendimento 
                 setCategory={setStatus}
-                visible={ visible }
+                visible={ statusVisible }
                 statusAtual={status}
-                closeModal={()=> setVisible(false) }
+                closeModal={()=> setStatusVisible(false) }
+            />
+
+            <ModalTipoEvolucao 
+                setCategory={setTipoEvolucao}
+                visible={ evolucaoVisible }
+                statusAtual={ tipoEvolucao }
+                closeModal={()=> setEvolucaoVisible(false) }
             />
 
         </Container>
