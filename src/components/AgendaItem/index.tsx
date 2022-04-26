@@ -1,7 +1,7 @@
 import React from 'react';
 import { statusAtendimento } from '../../global/variaveis/globais';
 import { parseISO, format, isBefore, isSameHour, differenceInHours } from 'date-fns';
-
+import {useNavigation } from '@react-navigation/native';
 import {
     Container,
     Header,
@@ -25,6 +25,8 @@ interface Props{
 
 
 export function AgendaItem( {  dataHora, tipo, status, paciente_nome}: Props ){
+
+    const navigation = useNavigation();
 
     function horarioPassou(dataHora: string){
 

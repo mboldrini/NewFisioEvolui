@@ -39,7 +39,7 @@ export function Profile(){
     const usrState = useSelector((state: State) => state.user);
 
     async function handleLogoff(){
-        navigation.navigate('SignIn');
+        navigation.navigate('SignIn' as never);
     }
 
     useEffect(()=>{
