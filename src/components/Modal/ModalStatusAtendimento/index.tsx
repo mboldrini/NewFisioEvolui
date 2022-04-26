@@ -74,10 +74,10 @@ export function ModalStatusAtendimento({
         >
         <Container>
             <Header>
-                <WrapIcon onPress={()=> setVisible(false)}>
+                <WrapIcon onPress={closeModal}>
                     <Icone name="chevron-down"/>
                 </WrapIcon>
-                <Titulo>Paciente tem Comorbidade</Titulo>
+                <Titulo>Status do Atendimento</Titulo>
             </Header>
 
 
