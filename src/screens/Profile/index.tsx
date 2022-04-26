@@ -1,8 +1,6 @@
 import React, { useEffect } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { BotoesPerfil } from '../../components/BotoesPerfil';
-import { StorageKeys, StorageUserKey } from '../../global/variaveis/globais';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { 
     Container,
     Header,
@@ -29,8 +27,7 @@ import {
 } from './styles';
 
 import { useDispatch, useSelector } from 'react-redux';
-import { bindActionCreators } from 'redux';
-import { actionCreators, State } from '../../state';
+import { State } from '../../state';
 
 
 export function Profile(){
@@ -38,13 +35,10 @@ export function Profile(){
     const navigation = useNavigation();
 
     const dispatch = useDispatch();
-    const { setUserInfos, setUserToken } = bindActionCreators(actionCreators, dispatch);
+ //   const { setUserInfos, setUserToken } = bindActionCreators(actionCreators, dispatch);
     const usrState = useSelector((state: State) => state.user);
 
     async function handleLogoff(){
-        await AsyncStorage.removeItem(StorageKeys.appToken);
-        await AsyncStorage.removeItem(StorageKeys.googleUserInfos);
-        await AsyncStorage.removeItem(StorageKeys.user);
         navigation.navigate('SignIn');
     }
 
@@ -61,7 +55,7 @@ export function Profile(){
                         <Photo source={{ uri: usrState.picture }}/> 
                         <User>
                             <UserGreeting>Olá</UserGreeting>
-                            <UserName>{ usrState.given_name }</UserName>
+                            <UserName>{ usrState.name }</UserName>
                         </User>
                     </UserInfo>
                     <AreaLogout onPress={()=>{handleLogoff()}}>
@@ -110,8 +104,6 @@ export function Profile(){
                         <TituloList>Sobre</TituloList>
                     </BtnList>
                 </WrapList>
-
-
             </Body>
 
         </Container>

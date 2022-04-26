@@ -71,8 +71,8 @@ export const InfosWrap = styled.View`
     justify-content: space-around;
     flex-direction: row;
     padding: 0 ${({theme}) => theme.margin.lateral}px;
-    padding-bottom: ${RFValue(15)}px;
-    padding-top: ${RFValue(25)}px;
+    padding-bottom: ${RFValue(5)}px;
+    padding-top: ${RFValue(20)}px;
     margin-bottom: ${RFValue(15)}px;
     margin-top: ${RFValue(-15)}px;
     border-bottom-left-radius: ${RFValue(20)}px;
@@ -88,13 +88,13 @@ export const Infos = styled.View`
 export const QtdInfos = styled.Text`
     font-family: ${({theme}) => theme.fonts.bold};
     color: ${({theme}) => theme.colors.shape};
-    font-size: ${RFValue(20)}px;
+    font-size: ${RFValue(16)}px;
 `;
 
 export const InfoDesc = styled.Text`
     font-family: ${({theme}) => theme.fonts.regular};
     color: ${({theme}) => theme.colors.shape};
-    font-size: ${RFValue(18)}px;
+    font-size: ${RFValue(14)}px;
 `;
 
 export const Body = styled.ScrollView.attrs({
@@ -114,11 +114,11 @@ export const WrapList = styled.View`
     flex-direction: column;
     align-items: center;
     padding: ${RFValue(10)}px ${({theme}) => theme.padding.lateral_half}px;
-    margin-bottom: 50px;
+    margin-bottom:  ${RFValue(10)}px; //50px;
 `;
 
 export const BtnList = styled(RectButton)`
-    margin: ${RFValue(5)}px;
+    margin-bottom: ${RFValue(5)}px;
     width: 100%;
     background-color: ${({theme}) => theme.colors.shape};
     border-radius: ${({theme}) => theme.bordas.padrao}px;
@@ -126,17 +126,18 @@ export const BtnList = styled(RectButton)`
     flex-direction: row;
     align-items: center;
     justify-content: flex-start;
+    margin-bottom: ${({theme}) => theme.margin.bottom};
 `;
 
 export const IconeList = styled.Image`
-    width: ${RFValue(40)}px;
-    height: ${RFValue(40)}px;
+    width: ${RFValue(25)}px;
+    height: ${RFValue(25)}px;
     margin-left: ${RFValue(10)}px;
 `;
 
 export const TituloList = styled.Text`
     font-family: ${({theme}) => theme.fonts.regular};
-    font-size: ${RFValue(18)}px;
+    font-size: ${RFValue(16)}px;
     color: #000000;
     align-items: center;
     justify-content: center;
