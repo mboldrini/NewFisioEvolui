@@ -2,13 +2,18 @@ import styled, {css} from "styled-components/native";
 import { RFValue } from "react-native-responsive-fontsize";
 import { FontAwesome5 } from "@expo/vector-icons";
 
-export const Container = styled.ScrollView`
+export const Container = styled.View`
     flex: 1;
     background-color: ${({theme}) => theme.colors.primary};
 `;
 
+export const IsCroll = styled.ScrollView``;
+
+export const WrapToast = styled.View`
+    z-index: 1;
+`;
+
 export const WrapDiaAtendimento = styled.View`
-    /* border: 1px solid red; */
     align-items: center;
     justify-content: center;
 `;
@@ -30,5 +35,9 @@ export const DiaAtendimento = styled.Text`
 
 export const WrapContent = styled.View`
     margin-top: ${RFValue(15)}px;
+`;
+
+export const WrapBtn = styled.View`
+    margin: ${({theme}) => theme.margin.lateral}px;
 `;
 

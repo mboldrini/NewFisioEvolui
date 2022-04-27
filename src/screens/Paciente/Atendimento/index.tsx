@@ -3,19 +3,22 @@ import {RefreshControl} from 'react-native';
 import {useNavigation } from '@react-navigation/native';
 import { 
     Container,
+    IsCroll,
+    WrapToast,
     WrapDiaAtendimento,
     WrapBorder,
     Dia,
     DiaAtendimento,
-
+    WrapBtn,
     WrapContent
 } from './styles';
-
+// Cabeçalho, parte estetica
 import { Cabecalho } from '../../../components/Cabecalho';
 import { PacienteHeader } from '../../../components/PacienteHeader';
-
+//Campos dos forms e botão
 import { Select } from '../../../components/Forms/Select';
 import { InputForm } from '../../../components/Forms/InputForm';
+import { ButtonSimple } from '../../../components/Forms/ButtonSimple/Index';
 // Formulario
 import { useForm } from 'react-hook-form';
 // Yup do Formulário
@@ -23,10 +26,18 @@ import * as Yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { ModalStatusAtendimento } from '../../../components/Modal/ModalStatusAtendimento';
 import { ModalTipoEvolucao } from '../../../components/Modal/ModalTipoEvolucao';
+// ToastMessage para avisos ao usuário
+import Toast from 'react-native-toast-message';
 
 const schema = Yup.object().shape({
-    nome: Yup.string().required("Nome é obrigatório"),
-})
+    evolucao: Yup.string().optional(),
+    observacao: Yup.string().optional()
+});
+
+interface IFormData{
+    evolucao?: string;
+    descricao?: string;
+}
 
 export function PacienteAtendimento(){
 
@@ -49,24 +60,68 @@ export function PacienteAtendimento(){
         resolver: yupResolver(schema)
     });
 
+    function HandleRegister(form: IFormData){
+        console.log(form);
+
+        if( tipoEvolucao.key == -1 ){
+            Toast.show({
+                type: 'error',
+                text1: '⚠️ É necessário informar o tipo da evolução.',
+                text2: 'Ex.: Atendimento comum, avaliação...'
+            });
+            return;
+        }
+
+        if( status.key == -1){
+            Toast.show({
+                type: 'error',
+                text1: '⚠️ É necessário informar o status do atendimento.',
+                text2: 'Ex.: Atendido, Cancelado, Remarcado...'
+            });
+            return;
+        }
+
+        if( !form?.evolucao && !form?.descricao ){
+            Toast.show({
+                type: 'error',
+                text1: '⚠️ É necessário preencher a descrição',
+                text2: 'Ou informar alguma observação.'
+            });
+            return;
+        }
+
+
+    }
+
     useEffect(()=>{
         console.log(status);
     }, [status]);
 
 
-    return(
-        <Container refreshControl={<RefreshControl refreshing={refreshing} onRefresh={()=>{}}/>}>
-            
-            <Cabecalho 
-                titulo="Atendimento do Paciente"
-                onPress={()=>{}}
-            />
+    useEffect(()=>{
+        console.log("carregou!");
 
-            <PacienteHeader 
-                iconeTipo="hospital"
-                tipo="Plano Unimed SP"
-                nome="Paulo Muzzy"
-            />
+        // Toast.show({
+        //     type: 'error',
+        //     text1: 'Hello',
+        //     text2: 'This is some something 👋'
+        //   });
+
+    },[]);
+
+
+    return(
+        <Container>
+
+        <WrapToast>
+            <Toast position={'top'}  autoHide={true} visibilityTime={6000} onPress={()=>Toast.hide()}/>
+        </WrapToast>
+
+        <IsCroll refreshControl={<RefreshControl refreshing={refreshing} onRefresh={()=>{}}/>}>
+            
+            <Cabecalho titulo="Atendimento do Paciente" onPress={()=>{}} />
+
+            <PacienteHeader iconeTipo="hospital" tipo="Plano Unimed SP" nome="Paulo Muzzy" />
               
             <WrapDiaAtendimento>
                 <WrapBorder>
@@ -110,6 +165,14 @@ export function PacienteAtendimento(){
                     error={errors.observacao && errors.observacao.message}
                 />
 
+                <WrapBtn>
+                    <ButtonSimple
+                        type="default"
+                        title="Salvar Informações" 
+                        onPress={handleSubmit((d) =>  HandleRegister(d as any) )}
+                    />
+                </WrapBtn>
+
             </WrapContent>
 
 
@@ -127,6 +190,7 @@ export function PacienteAtendimento(){
                 closeModal={()=> setEvolucaoVisible(false) }
             />
 
+        </IsCroll>
         </Container>
     )
 }
