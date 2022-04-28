@@ -1,6 +1,6 @@
 import React, {useEffect, useState}from 'react';
 import {RefreshControl} from 'react-native';
-import {useNavigation } from '@react-navigation/native';
+import {useNavigation, useRoute } from '@react-navigation/native';
 import { 
     Container,
     IsCroll,
@@ -29,6 +29,13 @@ import { ModalTipoEvolucao } from '../../../components/Modal/ModalTipoEvolucao';
 // ToastMessage para avisos ao usuário
 import Toast from 'react-native-toast-message';
 
+import { api } from '../../../global/api';
+
+import { useSelector } from 'react-redux';
+import { State } from '../../../state';
+
+import { statusAtendimento, tiposAtendimentos } from '../../../global/variaveis/globais';
+
 const schema = Yup.object().shape({
     evolucao: Yup.string().optional(),
     observacao: Yup.string().optional()
@@ -39,11 +46,29 @@ interface IFormData{
     descricao?: string;
 }
 
+interface IAtendInfos{
+    id: number,
+    evolucao: string
+    observacoes: string,
+    status: number,
+    tipo: number,
+    agendamento_id: number,
+    paciente_id: number,
+    paciente_nome: string,
+    nome_tipoAtendimento: string
+}
+
 export function PacienteAtendimento(){
 
     const navigation = useNavigation();
-
+    const route = useRoute();
     const [refreshing, setRefresh] = useState(false);
+    
+    const apiState = useSelector((state: State) => state.apiReducer);
+
+    const [idEvolucao, setIdEvolucao] = useState(null);
+
+    const [atendimentoInfos, setAtendimentoInfos] = useState<IAtendInfos>(null);
 
     const [statusVisible, setStatusVisible] = useState(false);
     const [evolucaoVisible, setEvolucaoVisible] = useState(false);
@@ -93,21 +118,51 @@ export function PacienteAtendimento(){
 
     }
 
+    async function GetAtendimentoInfos(id: number){
+        await api(apiState.token).get('/evolucao/'+ id).then(res=>{
+
+            console.log("ok?");
+            console.log(res.data);
+
+            setAtendimentoInfos(res.data);
+
+        }).catch(err=>{
+            console.error(err);
+        });
+    }
+
     useEffect(()=>{
-        console.log(status);
-    }, [status]);
-
-
-    useEffect(()=>{
-        console.log("carregou!");
-
-        // Toast.show({
-        //     type: 'error',
-        //     text1: 'Hello',
-        //     text2: 'This is some something 👋'
-        //   });
-
+        if(route.params?.id){
+            setIdEvolucao(route.params.id);
+        }
     },[]);
+
+    useEffect(()=>{
+        if(idEvolucao){
+            console.log(`ID evolução: ${idEvolucao}`);
+            GetAtendimentoInfos(idEvolucao);
+        }
+    },[idEvolucao]);
+
+    useEffect(()=>{
+        if(atendimentoInfos){
+            
+            let stats = {
+                key: atendimentoInfos.status,
+                name: statusAtendimento[atendimentoInfos.status]
+            }
+
+            let tipos = {
+                key: atendimentoInfos.tipo,
+                name: tiposAtendimentos[atendimentoInfos.tipo]
+            }
+
+            console.log("STATUS");
+            console.log(stats);
+            setStatus(stats);
+            setTipoEvolucao(tipos);
+        }
+    },[atendimentoInfos]);
 
 
     return(
@@ -121,7 +176,9 @@ export function PacienteAtendimento(){
             
             <Cabecalho titulo="Atendimento do Paciente" onPress={()=>{}} />
 
-            <PacienteHeader iconeTipo="hospital" tipo="Plano Unimed SP" nome="Paulo Muzzy" />
+            { atendimentoInfos &&
+                <PacienteHeader iconeTipo="hospital" tipo={atendimentoInfos.tipo_atendimento} nome={atendimentoInfos.paciente_nome} />
+            }
               
             <WrapDiaAtendimento>
                 <WrapBorder>

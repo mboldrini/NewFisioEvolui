@@ -66,7 +66,7 @@ export function Home(){
     useEffect(()=>{
         GetPatientList();
 
-        navigation.navigate('PacienteAtendimento' as never)
+        navigation.navigate('PacienteAtendimento' as never, { id: 13} as never)
 
     },[]);
 

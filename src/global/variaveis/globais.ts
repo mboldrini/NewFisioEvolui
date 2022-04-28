@@ -10,6 +10,11 @@ export const statusAtendimento = [
     'Avaliação'/// JAMAIS ALTERAR ESSA SEQUÊNCIA
 ];
 
+export const tiposAtendimentos = [
+    "Atendimento Comum",
+    "Avaliação",
+]
+
 
 export const StorageKeys = {
     appToken: 'fisioevolui:appToken',
