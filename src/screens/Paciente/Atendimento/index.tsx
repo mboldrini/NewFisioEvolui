@@ -45,7 +45,7 @@ const schema = Yup.object().shape({
 
 interface IFormData{
     evolucao?: string;
-    descricao?: string;
+    observacao?: string;
 }
 
 interface IAtendInfos{
@@ -58,6 +58,14 @@ interface IAtendInfos{
     paciente_id: number,
     paciente_nome: string,
     nome_tipoAtendimento: string
+}
+
+interface IAtendInfosUpdate{
+    id: number,
+    evolucao: string,
+    observacoes: string,
+    status: number,
+    tipo: number,
 }
 
 export function PacienteAtendimento(){
@@ -88,7 +96,6 @@ export function PacienteAtendimento(){
     });
 
     function HandleRegister(form: IFormData){
-        console.log(form);
 
         if( tipoEvolucao.key == -1 ){
             Toast.show({
@@ -108,7 +115,7 @@ export function PacienteAtendimento(){
             return;
         }
 
-        if( !form?.evolucao && !form?.descricao ){
+        if( !form?.evolucao && !form?.observacao ){
             Toast.show({
                 type: 'error',
                 text1: '⚠️ É necessário preencher a descrição',
@@ -117,19 +124,59 @@ export function PacienteAtendimento(){
             return;
         }
 
+        let infos = {
+            id: idEvolucao,
+            evolucao: form.evolucao,
+            observacoes: form.observacao,
+            status: status.key,
+            tipo: tipoEvolucao.key,
+        }
+        UpdateAtendimentoInfos(infos);
 
+    }
+
+    async function UpdateAtendimentoInfos(infos: IAtendInfosUpdate){
+        await api(apiState.token).put('/evolucao/', infos).then(res=>{
+
+            console.log("OK?");
+            
+            Toast.show({
+                type: 'success',
+                text1: 'Atendimento salvo! 💾',
+            });
+
+            setTimeout(()=>{
+                navigation.goBack();
+            }, 1000);
+
+        }).catch(err=>{
+            console.error(err);
+            Toast.show({
+                type: 'error',
+                text1: 'OPS! erro ao salvar informações do atendimento.',
+            });
+
+            setTimeout(()=>{
+                navigation.goBack();
+            }, 1500);
+        });
     }
 
     async function GetAtendimentoInfos(id: number){
         await api(apiState.token).get('/evolucao/'+ id).then(res=>{
 
-            console.log("ok?");
-            console.log(res.data);
-
             setAtendimentoInfos(res.data);
 
         }).catch(err=>{
             console.error(err);
+            Toast.show({
+                type: 'error',
+                text1: 'OPS! erro ao obter informações do atendimento.',
+            });
+
+            setTimeout(()=>{
+                navigation.goBack();
+            }, 1500);
         });
     }
 
@@ -141,7 +188,6 @@ export function PacienteAtendimento(){
 
     useEffect(()=>{
         if(idEvolucao){
-            console.log(`ID evolução: ${idEvolucao}`);
             GetAtendimentoInfos(idEvolucao);
         }
     },[idEvolucao]);
