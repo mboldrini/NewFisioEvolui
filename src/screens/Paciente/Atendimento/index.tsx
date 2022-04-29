@@ -10,7 +10,9 @@ import {
     Dia,
     DiaAtendimento,
     WrapBtn,
-    WrapContent
+    WrapContent,
+    LoadingIcon,
+    WrapLoading
 } from './styles';
 // Cabeçalho, parte estetica
 import { Cabecalho } from '../../../components/Cabecalho';
@@ -133,7 +135,7 @@ export function PacienteAtendimento(){
 
     useEffect(()=>{
         if(route.params?.id){
-            setIdEvolucao(route.params.id);
+           setIdEvolucao(route.params.id);
         }
     },[]);
 
@@ -157,8 +159,6 @@ export function PacienteAtendimento(){
                 name: tiposAtendimentos[atendimentoInfos.tipo]
             }
 
-            console.log("STATUS");
-            console.log(stats);
             setStatus(stats);
             setTipoEvolucao(tipos);
         }
@@ -172,20 +172,23 @@ export function PacienteAtendimento(){
             <Toast position={'top'}  autoHide={true} visibilityTime={6000} onPress={()=>Toast.hide()}/>
         </WrapToast>
 
-        <IsCroll refreshControl={<RefreshControl refreshing={refreshing} onRefresh={()=>{}}/>}>
+        <IsCroll refreshControl={<RefreshControl refreshing={refreshing} onRefresh={()=>{ navigation.goBack() }}/>}>
             
             <Cabecalho titulo="Atendimento do Paciente" onPress={()=>{}} />
 
             { atendimentoInfos &&
-                <PacienteHeader iconeTipo="hospital" tipo={atendimentoInfos.tipo_atendimento} nome={atendimentoInfos.paciente_nome} />
+                <PacienteHeader iconeTipo="hospital" tipo={atendimentoInfos.nome_tipoAtendimento} nome={atendimentoInfos.paciente_nome} />
             }
               
+            { atendimentoInfos && 
             <WrapDiaAtendimento>
                 <WrapBorder>
                     <DiaAtendimento>Atendimento do dia <Dia>26/04/2022</Dia></DiaAtendimento>
                 </WrapBorder>
             </WrapDiaAtendimento>
+            }
 
+            { atendimentoInfos && 
             <WrapContent>
             
                 <Select 
@@ -231,6 +234,13 @@ export function PacienteAtendimento(){
                 </WrapBtn>
 
             </WrapContent>
+            }
+
+            { !atendimentoInfos &&
+                <WrapLoading>
+                    <LoadingIcon size="large" color="#FFFFFF"/>   
+                </WrapLoading>
+            }
 
 
             <ModalStatusAtendimento 

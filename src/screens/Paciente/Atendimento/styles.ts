@@ -41,3 +41,11 @@ export const WrapBtn = styled.View`
     margin: ${({theme}) => theme.margin.lateral}px;
 `;
 
+export const WrapLoading = styled.View`
+    align-items: center;
+    justify-content: center;
+    margin-top: ${RFValue(75)}px;
+`;
+
+export const LoadingIcon = styled.ActivityIndicator``;
+
