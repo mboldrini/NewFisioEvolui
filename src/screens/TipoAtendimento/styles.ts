@@ -15,3 +15,10 @@ export const ScrollView = styled.ScrollView``;
 export const WrapToast = styled.View`
     z-index: 1;
 `;
+
+export const WrapItens = styled.View`
+    margin: 0 ${({theme}) => theme.margin.lateral}px;
+    margin-top: ${RFValue(15)}px;
+`;
+
+export const LoadingIcon = styled.ActivityIndicator``;
