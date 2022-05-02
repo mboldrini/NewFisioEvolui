@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useNavigation } from '@react-navigation/native';
-import { BotoesPerfil } from '../../components/BotoesPerfil';
+import { BotoesPerfil } from '../../../components/BotoesPerfil';
 import { 
     Container,
     Header,
@@ -27,7 +27,7 @@ import {
 } from './styles';
 
 import { useDispatch, useSelector } from 'react-redux';
-import { State } from '../../state';
+import { State } from '../../../state';
 
 
 export function Profile(){

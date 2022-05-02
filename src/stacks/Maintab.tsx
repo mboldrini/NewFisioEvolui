@@ -9,7 +9,7 @@ import { Home } from '../screens/Home';
 import { Search } from '../screens/Search';
 import { Agenda } from '../screens/Agenda';
 import { CadastrarPaciente } from '../screens/CadastrarPaciente';
-import { Profile } from '../screens/Profile';
+import { Profile } from '../screens/Configs/Profile';
 
 
 

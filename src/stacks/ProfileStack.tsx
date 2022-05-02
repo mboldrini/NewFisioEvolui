@@ -1,8 +1,8 @@
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 
-import { Profile } from '../screens/Profile';
-import { TipoAtendimento } from '../screens/TipoAtendimento';
+import { Profile } from '../screens/Configs/Profile';
+import { TipoAtendimento } from '../screens/Configs/TipoAtendimento';
 
 const Stack = createStackNavigator();
 

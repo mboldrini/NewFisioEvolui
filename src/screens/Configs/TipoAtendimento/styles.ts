@@ -1,7 +1,7 @@
 import { RFPercentage, RFValue } from 'react-native-responsive-fontsize';
 import styled from "styled-components/native";
 import { FontAwesome5 } from '@expo/vector-icons';
-import theme from '../../global/styles/theme';
+import theme from '../../../global/styles/theme';
 import { RectButton } from "react-native-gesture-handler";
 
 
