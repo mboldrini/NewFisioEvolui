@@ -3,15 +3,14 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 import { View } from 'react-native';
 
-import { Home } from '../screens/Home';
 import { Search } from '../screens/Search';
 import { Agenda } from '../screens/Agenda';
 import { CadastrarPaciente } from '../screens/CadastrarPaciente';
-import { Profile } from '../screens/Profile';
 
 import { Ionicons } from '@expo/vector-icons';
 
 import HomeStack from './HomeStack';
+import ProfileStack from './ProfileStack';
 
 const {Navigator, Screen} = createBottomTabNavigator();
 
@@ -103,7 +102,7 @@ export default function Rotas(){
 
             <Screen 
                 name="Profile" 
-                component={Profile} 
+                component={ProfileStack} 
                 options={{
                     tabBarIcon: (({size, color}) => (
                         <Ionicons 
