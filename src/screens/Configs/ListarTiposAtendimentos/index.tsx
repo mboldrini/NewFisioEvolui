@@ -28,7 +28,7 @@ interface IListaTipos{
     descricao: string
 }
 
-export function TipoAtendimento(){
+export function ListarTiposAtendimentos(){
     
     const navigation = useNavigation();
     const [refreshing, setRefresh] = useState(false);

@@ -84,7 +84,7 @@ export function Profile(){
                         <TituloList>Meu Perfil</TituloList>
                     </BtnList>
 
-                    <BtnList onPress={()=> navigation.navigate('TipoAtendimento' as never)}>
+                    <BtnList onPress={()=> navigation.navigate('ListarTiposAtendimentos' as never)}>
                         <IconeList source={require('../../../../src/assets/icons/check_list.png')}/>
                         <TituloList>Tipo de Atendimento</TituloList>
                     </BtnList>
