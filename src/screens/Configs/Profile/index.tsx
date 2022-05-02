@@ -59,7 +59,7 @@ export function Profile(){
                         </User>
                     </UserInfo>
                     <AreaLogout onPress={()=>{handleLogoff()}}>
-                        <Logout source={require('../../../src/assets/icons/logout.png')}/>
+                        <Logout source={require('../../../assets/icons/logout.png')}/>
                     </AreaLogout>
                 </UserWrapper>
             </Header>
@@ -80,27 +80,27 @@ export function Profile(){
             <Body>
                 <WrapList>
                     <BtnList>
-                        <IconeList source={require('../../../src/assets/icons/profile.png')}/>
+                        <IconeList source={require('../../../../src/assets/icons/profile.png')}/>
                         <TituloList>Meu Perfil</TituloList>
                     </BtnList>
 
                     <BtnList onPress={()=> navigation.navigate('TipoAtendimento' as never)}>
-                        <IconeList source={require('../../../src/assets/icons/check_list.png')}/>
+                        <IconeList source={require('../../../../src/assets/icons/check_list.png')}/>
                         <TituloList>Tipo de Atendimento</TituloList>
                     </BtnList>
 
                     <BtnList>
-                        <IconeList source={require('../../../src/assets/icons/graph.png')}/>
+                        <IconeList source={require('../../../../src/assets/icons/graph.png')}/>
                         <TituloList>Estatísticas</TituloList>
                     </BtnList>
 
                     <BtnList>
-                        <IconeList source={require('../../../src/assets/icons/config.png')}/>
+                        <IconeList source={require('../../../../src/assets/icons/config.png')}/>
                         <TituloList>Configurações</TituloList>
                     </BtnList>
 
                     <BtnList>
-                        <IconeList source={require('../../../src/assets/icons/question.png')}/>
+                        <IconeList source={require('../../../../src/assets/icons/question.png')}/>
                         <TituloList>Sobre</TituloList>
                     </BtnList>
                 </WrapList>
