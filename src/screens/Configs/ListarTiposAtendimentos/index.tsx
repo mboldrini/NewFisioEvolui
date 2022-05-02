@@ -91,7 +91,7 @@ export function ListarTiposAtendimentos(){
                             <TipoAtendimentoList 
                                 valor={item.valor} 
                                 nome={item.nome} 
-                                onPress={()=> console.log(item.nome)}  
+                                onPress={()=> navigation.navigate('TipoAtendimento' as never, { id: item.id } as never) }  
                             />
                         )}
                     />

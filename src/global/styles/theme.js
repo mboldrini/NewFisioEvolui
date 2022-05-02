@@ -55,7 +55,8 @@ export default{
         lateral: 24,
         lateral_half: 12,
         bottom: 10,
-        lateral_third: 8 
+        lateral_third: 8,
+        top: 10
     }
 }
 //    secondary: '#268596',
