@@ -1,20 +1,25 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
-import {FlatList, RefreshControl} from 'react-native';
+import {FlatList, RefreshControl, ScrollView} from 'react-native';
 import Toast from 'react-native-toast-message';
 import { useSelector } from 'react-redux';
 import { State } from '../../../state';
 import { 
     Container,
     WrapToast,
-    ScrollView,
+    // ScrollView,
+    WrapCentral,
     WrapItens,
-    LoadingIcon
+    LoadingIcon,
+    WrapSemAtendimentos,
+    AvisoSemAtendimentos,
+    WrapBtnCadastro
 } from './styles';
 import { Cabecalho } from '../../../components/Cabecalho';
 
 import { api } from '../../../global/api';
 import { TipoAtendimentoList } from '../../../components/TipoAtendimentoList';
+import { Button } from '../../../components/Forms/Button/Index';
 
 interface IListaTipos{
     id: number,
@@ -36,10 +41,12 @@ export function TipoAtendimento(){
 
 
     async function GetListaAtendimentos(){
+
+        setListaTipos([]);
+        setLoading(true);
+       
         await api(usrState.token).get('tipoAtendimento/all').then(res =>{
 
-            setLoading(true);
-           
             console.log("Ok?");
             console.log(res.data);
 
@@ -48,13 +55,17 @@ export function TipoAtendimento(){
         }).catch(err => {
             console.log("ERRO");
             console.log(err);
+            Toast.show({
+                type: 'error',
+                text1: '⚠️ Erro ao obter lista de atendimentos',
+            });
         });
 
         setLoading(false);
     }
 
     useEffect(()=>{
-        GetListaAtendimentos();
+       GetListaAtendimentos();
     },[]);
 
     return(
@@ -62,9 +73,13 @@ export function TipoAtendimento(){
         <WrapToast>
             <Toast position={'top'}  autoHide={true} visibilityTime={6000} onPress={()=>Toast.hide()}/>
         </WrapToast>
-        <ScrollView refreshControl={<RefreshControl refreshing={refreshing} onRefresh={()=>{ GetListaAtendimentos() }}/>}>
+
+        <ScrollView refreshControl={<RefreshControl refreshing={refreshing} onRefresh={()=>{ GetListaAtendimentos() }}/> } 
+         contentContainerStyle={{flexGrow: 1}}>
 
             <Cabecalho titulo="Tipos de Atendimentos" onPress={()=> navigation.goBack() } />
+
+            <WrapCentral>
 
             <WrapItens>
 
@@ -85,9 +100,24 @@ export function TipoAtendimento(){
                 { loading &&
                     <LoadingIcon size="large" color="#FFFFFF"/>            
                 }
-             
-            </WrapItens>
 
+                { !loading && listaTipos.length < 1 &&
+                    <WrapSemAtendimentos>
+                        <AvisoSemAtendimentos>Nenhum atendimento cadastrado</AvisoSemAtendimentos>
+                    </WrapSemAtendimentos>
+                }
+
+            </WrapItens>
+            
+            <WrapBtnCadastro>
+                <Button 
+                    title="Cadastrar Atendimento" 
+                    onPress={()=> console.log("FF")}
+                    type="ok"
+                />
+            </WrapBtnCadastro>
+
+            </WrapCentral>
         </ScrollView>
         </Container>
     )
