@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigation, useRoute } from '@react-navigation/native';
-import {FlatList, RefreshControl, ScrollView} from 'react-native';
+import { RefreshControl, ScrollView, Alert} from 'react-native';
 import Toast from 'react-native-toast-message';
 import { useSelector } from 'react-redux';
 import { State } from '../../../state';
@@ -39,7 +39,9 @@ import * as Yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { InputMasked } from '../../../components/Forms/InputMasked';
 import { Button } from '../../../components/Forms/Button/Index';
-import { format, parse } from 'date-fns';
+// Datas
+import { format } from 'date-fns';
+// Loading
 import { ModalLoading } from '../../../components/Modal/ModalLoading';
 const schema = Yup.object().shape({
     nome: Yup.string().required("Nome é obrigatório"),
@@ -220,6 +222,56 @@ export function TipoAtendimento(){
         });      
     }
 
+    function HandleAvisoExcluir(id: number){
+
+        if(infos.qtdPacientes > 0 ){
+            Toast.show({
+                type: 'error',
+                text1: '⚠️Não é possível excluir esse atendimento.',
+                text2: 'Existem pacientes cadastrados vinculados.'
+            });
+            return;
+        }
+
+        Alert.alert(
+            "Atenção!",
+            "Deseja excluir esse tipo de atendimento?",
+            [
+                {
+                    text: "Sim, Excluir",
+                    onPress: () => ExcluirTipoAtendimento(id),
+                    style: "default",
+                  },
+              {
+                text: "Cancelar",
+                style: "cancel",
+              },
+            ],
+            {
+              cancelable: true,
+            }
+        )
+    }
+
+    async function ExcluirTipoAtendimento(id: number){
+        setLoading(true);
+        await api(usrState.token).delete('tipoAtendimento/'+ id).then(res =>{
+            console.log("EXCLUIDO!");
+            navigation.goBack();
+        }).catch(err => {
+            console.log("erro ao excluir");
+            console.log(err);
+
+            setLoading(false);
+            Toast.show({
+                type: 'error',
+                text1: '❌ Erro ao excluir atendimento.',
+            });
+            setTimeout(()=>{ navigation.goBack(); },2500);
+
+        })
+    }
+
 
     function SetaFormInfos(){
         reset({
@@ -247,7 +299,7 @@ export function TipoAtendimento(){
         </WrapToast>
         <ScrollView refreshControl={<RefreshControl refreshing={refreshing} onRefresh={()=>{ console.log("ff") }}/> } contentContainerStyle={{flexGrow: 1}}>
 
-            <Cabecalho titulo="Tipo de Atendimento" onPress={()=> navigation.goBack() } />
+            <Cabecalho titulo="Tipo de Atendimento" onPress={()=> navigation.goBack() } onPressDel={() => HandleAvisoExcluir(id) } />
 
             <WrapCentral>
 
