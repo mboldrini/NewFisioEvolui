@@ -23,7 +23,7 @@ import {
 
 interface ITipoList{
     id: number,
-    tipo: string,
+    nome: string,
     valor_atendimento: number,
     descricao: string
 }
@@ -65,7 +65,7 @@ export function ModalTipoAtendimento({
     function HandleCategorySelect(item: ITipoList){
         setCategory({
             key: item.id,
-            name: item.tipo
+            name: item.nome
         });
     }
 
@@ -95,13 +95,13 @@ export function ModalTipoAtendimento({
             { listaTipo.length > 0 &&
                 <FlatList 
                     data={listaTipo}
-                    keyExtractor={(item) => item.tipo}
+                    keyExtractor={(item) => item.nome}
                     renderItem={({item}) =>(
                         <Category
                             onPress={() => HandleCategorySelect(item) }
                             isActive={ statusAtual.key == item.id }
                         >
-                            <Name>{item.tipo}</Name>
+                            <Name>{item.nome}</Name>
                         </Category>
                     )}
                     ItemSeparatorComponent={() => <Separator />}
