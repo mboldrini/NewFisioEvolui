@@ -112,7 +112,7 @@ export function ListarTiposAtendimentos(){
             <WrapBtnCadastro>
                 <Button 
                     title="Cadastrar Atendimento" 
-                    onPress={()=> console.log("FF")}
+                    onPress={()=> navigation.navigate('TipoAtendimento' as never, { id: null } as never ) }
                     type="ok"
                 />
             </WrapBtnCadastro>

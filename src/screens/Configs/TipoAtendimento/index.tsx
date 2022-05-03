@@ -40,6 +40,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { InputMasked } from '../../../components/Forms/InputMasked';
 import { Button } from '../../../components/Forms/Button/Index';
 import { format, parse } from 'date-fns';
+import { ModalLoading } from '../../../components/Modal/ModalLoading';
 const schema = Yup.object().shape({
     nome: Yup.string().required("Nome é obrigatório"),
     valor: Yup.string().required("Valor do atendimento é obrigatório"),
@@ -49,6 +50,20 @@ const schema = Yup.object().shape({
 interface IRoute{
     id: number
 }
+
+interface IFormData{
+    descricao: string,
+    nome: string,
+    valor: string
+}
+
+interface IUpdateData{
+    id_tipo: number,
+    tipo: string,
+    valor_atendimento: number,
+    descricao: string,
+}
+
 
 interface IAtendimentoInfos{
     id: number,
@@ -91,24 +106,120 @@ export function TipoAtendimento(){
     const [infos, setInfos] = useState<IAtendimentoInfos>(DefaultPctInfos);
 
     async function GetAtendimentoInfos(id: number){
+        setLoading(true);
         await api(usrState.token).get('tipoAtendimento/id/'+ id).then(res => {
             
-            console.log("Ok?");
-            console.log(res.data);
-
             setInfos(res.data);
+            setLoading(false);
 
         }).catch(err =>{
             console.log("ERRO");
             console.log(err);
-        })
+            setLoading(false);
+            Toast.show({
+                type: 'error',
+                text1: '⚠️ Erro ao obter informações.',
+            });
+            setTimeout(()=>{
+                navigation.goBack();
+            },1500);
+        });
     }
 
-    function HandleRegister(form: FormData){
-        console.log(form);
+    function HandleRegister(form: IFormData){''
 
-        console.log( parseInt(form.valor) );
+        if( parseInt(form.valor) <= 0 ){
+            Toast.show({
+                type: 'error',
+                text1: '💸 É necessário informar um valor.',
+            });
+            return;
+        }
+
+        let newInfos = {
+            id_tipo: id,
+            tipo: form.nome,
+            valor_atendimento: parseInt(form.valor),
+            descricao: form.descricao
+        }
+
+        if( id && infos.id > 0 ){
+            UpdateAtendimento(newInfos);
+        }else{
+            CriaAtendimento(newInfos);
+        }
+
     }
+
+    async function UpdateAtendimento(form: IUpdateData){
+
+        setLoading(true);
+
+        await api(usrState.token).put('tipoAtendimento/', form).then(res =>{
+            // console.log("OK! atualizou");
+            // console.log(res.data);
+
+            setLoading(false);
+            Toast.show({
+                type: 'success',
+                text1: '😄 Tipo de Atendimento atualizado!',
+            });
+
+            setTimeout(()=>{ navigation.goBack(); },2500);
+
+        }).catch(err => {
+            // console.log("erro ao atualizar");
+            // console.log(err);
+
+            setLoading(false);
+            Toast.show({
+                type: 'error',
+                text1: '⚠️ Erro ao salvar informações.',
+            });
+
+            setTimeout(()=>{ navigation.goBack(); },2500);
+
+        });       
+
+    }
+
+    async function CriaAtendimento(form: IUpdateData){
+
+        setLoading(true);
+
+        let newInfo = {
+            tipo: form.tipo,
+            valor_atendimento: form.valor_atendimento,
+            descricao: form.descricao
+        }
+
+        await api(usrState.token).post('tipoAtendimento/', newInfo).then(res =>{
+
+            // console.log("OK! atualizou");
+            // console.log(res.data);
+
+            setLoading(false);
+            Toast.show({
+                type: 'success',
+                text1: '😄 Tipo de Atendimento criado!',
+            });
+            setTimeout(()=>{ navigation.goBack(); },2500);
+
+        }).catch(err => {
+
+            console.log("erro ao atualizar");
+            console.log(err);
+
+            setLoading(false);
+            Toast.show({
+                type: 'error',
+                text1: '⚠️ Erro ao salvar informações.',
+            });
+            setTimeout(()=>{ navigation.goBack(); },2500);
+
+        });      
+    }
+
 
     function SetaFormInfos(){
         reset({
@@ -220,6 +331,8 @@ export function TipoAtendimento(){
             </>
         
             </WrapCentral>
+
+            <ModalLoading visible={loading} infos={{mensagem:"Salvando informações...", tipo: 'loading'}}/>
 
         </ScrollView>
         </Container>
