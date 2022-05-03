@@ -6,24 +6,38 @@ import { RectButton } from "react-native-gesture-handler";
 export const Container = styled.View`
     flex-direction: row;
     align-items: center;
-    justify-content: flex-start;
+    justify-content: space-between;
     margin: 0 ${({theme}) => theme.margin.lateral}px;
     margin-top: ${RFValue(35)}px ;
 `;
 
+export const WrapLeft = styled.View`
+    flex: 1;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: flex-start;
+    /* border: 1px solid red; */
+`;
+
 export const WrapIcon = styled(RectButton)``;
 
-export const Icone = styled(FontAwesome5)`
+export const IconeLeft = styled(FontAwesome5)`
     color: ${({theme}) => theme.colors.shape};
     font-size: ${RFValue(30)}px;
+    margin-right: ${RFValue(15)}px;
+`;
+
+export const IconeRight = styled(FontAwesome5)`
+    color: ${({theme}) => theme.colors.shape};
+    font-size: ${RFValue(28)}px;
 `;
 
 export const Titulo = styled.Text`
     font-size: ${RFValue(22)}px;
     color: ${({theme}) => theme.colors.shape};
     font-family: ${({theme}) => theme.fonts.regular};
-    margin-right: ${RFValue(50)}px;
-    padding-left: ${RFValue(20)}px;
+    /* margin-right: ${RFValue(50)}px; */
+    /* padding-left: ${RFValue(20)}px; */
 `;
 
 
