@@ -24,8 +24,6 @@ import {
     DtHistory,
 
     WrapBtnCadastro,
-    WrapBtnCancelar
-
 
 } from './styles';
 
@@ -93,7 +91,7 @@ export function TipoAtendimento(){
     
     const navigation = useNavigation();
     const [refreshing, setRefresh] = useState(false);
-    const [loading, setLoading] = useState(true);
+    const [loading, setLoading] = useState(false);
 
     // Route.url params
     const route = useRoute();
@@ -282,7 +280,7 @@ export function TipoAtendimento(){
     }
 
     useEffect(()=>{
-        if(id){
+        if(id > 0){
             GetAtendimentoInfos(id);
             setStatus(1);
         }
@@ -364,23 +362,18 @@ export function TipoAtendimento(){
 
             </WrapItens>
 
-            <>
-                <WrapBtnCadastro>
+            <WrapBtnCadastro>
+                <Button 
+                    title={statusTitulo[status]} 
+                    onPress={handleSubmit((d) =>  HandleRegister(d as  any) )}
+                    type="ok"
+                />
                     <Button 
-                        title={statusTitulo[status]} 
-                        onPress={handleSubmit((d) =>  HandleRegister(d as  any) )}
-                        type="ok"
-                    />
-                </WrapBtnCadastro>
-
-                <WrapBtnCancelar>
-                    <Button 
-                        title="Cancelar" 
-                        onPress={()=> navigation.goBack() }
-                        type="cancel"
-                    />
-                </WrapBtnCancelar>
-            </>
+                    title="Cancelar" 
+                    onPress={()=> navigation.goBack() }
+                    type="cancel"
+                />
+            </WrapBtnCadastro>
         
             </WrapCentral>
 

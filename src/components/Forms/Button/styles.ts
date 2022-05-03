@@ -22,6 +22,7 @@ export const Container = styled(TouchableOpacity)<Props>`
     ${({ type }) => type === "cancel" && css `
         background-color: ${({theme}) => theme.colors.status_cancelado};
         height: ${RFValue(55)}px;
+        margin-top: ${RFValue(10)}px;
     `};
 
 `;

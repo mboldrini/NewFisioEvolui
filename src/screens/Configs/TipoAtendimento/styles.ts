@@ -84,13 +84,10 @@ export const DtHistory = styled.Text`
 
 export const WrapBtnCadastro = styled.View`
     margin: 0 ${({theme}) => theme.margin.lateral}px;
-    margin-bottom: ${RFValue(10)}px;
+    /* margin-bottom: ${RFValue(10)}px; */
     margin-top: ${RFValue(20)}px;
-`;
-
-export const WrapBtnCancelar = styled.View`
-    margin: 0 ${({theme}) => theme.margin.lateral}px;
     margin-bottom: ${RFValue(20)}px;
 `;
+
 
 
