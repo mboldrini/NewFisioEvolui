@@ -68,7 +68,9 @@ export function CadastrarPaciente(){
     const [loading, setLoading] = useState(false);
     const [categoryModalOpen, setCategoryModalOpen] = useState(false);
     const [wichModalIsOpened, setWichModalIsOpened] = useState(0);
-    
+    // New Modal's Way
+    const [ isAgendarVisible, setIsAgendarVisible ] = useState(false);
+
 
     const [appointmentType, setAppointmentType] = useState({key: -1,name: 'Tipo de Atendimento'});
     const [temComorbidade, setTemComorbidade] = useState({key: -1, name: 'Paciente tem comorbidade'});
@@ -375,7 +377,7 @@ export function CadastrarPaciente(){
                         <ButtonSimple
                             type="default"
                             title="Agendar Horario" 
-                            onPress={()=>HandleSelectCategoryModal(3)}
+                            onPress={()=>setIsAgendarVisible(true)}
                         />
                     </WrapBtn>
                 </Wrap>
@@ -384,7 +386,7 @@ export function CadastrarPaciente(){
             <WrapFooterCadastro>
                 <Button 
                     title="Cadastrar Paciente" 
-                    onPress={handleSubmit((d) =>  handleRegister(d) )}
+                    onPress={handleSubmit((d) =>  handleRegister(d as any) )}
                     type="ok"
                 />
             </WrapFooterCadastro>
@@ -404,16 +406,17 @@ export function CadastrarPaciente(){
                         statusAtual={temComorbidade}
                     />
                 }  
-                {wichModalIsOpened == 3 &&
-                    <ModalAgendamento
-                        closeSelectCategory={()=>HandleSelectCategoryModal(3)}
-                        setSelectedApointment={setAppointment}
-                    />
-                }
+            
              
             </Modal>
 
             <ModalLoading visible={loading} infos={{mensagem:"Carregando informaões do paciente...", tipo: 'loading'}}/>
+
+            <ModalAgendamento 
+                isVisible={isAgendarVisible} 
+                setIsVisible={()=> setIsAgendarVisible(false) }
+                setSelectedApointment={setAppointment}
+            />
 
         </Iscrol>
         </Container>

@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { Alert } from 'react-native';
 import { useTheme } from 'styled-components';
 import Checkbox from 'expo-checkbox';
+import Modal from 'react-native-modal';
 // REDUX
 import { useDispatch, useSelector } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -42,7 +43,8 @@ import { api } from '../../../global/api';
 import IApointment from '../../../global/DTO/Apointment';
 // Received Props on This Modal
 interface Props{
-    closeSelectCategory: () => void;
+    isVisible: boolean;
+    setIsVisible: () => void;
     setSelectedApointment: ({data, hora, status}: IApointment) => void;
 }
 
@@ -65,7 +67,7 @@ interface IHorariosApi{
     indisponivel: boolean
 }
 
-export function ModalAgendamento({ closeSelectCategory, setSelectedApointment }: Props){
+export function ModalAgendamento({ isVisible, setIsVisible, setSelectedApointment }: Props){
 
     /* CSS Theme */
     const theme = useTheme();
@@ -102,7 +104,7 @@ export function ModalAgendamento({ closeSelectCategory, setSelectedApointment }:
                 const dtInicio = Object.keys(selectedDate)[0] + "T00:01";
                 const dtFim = Object.keys(selectedDate)[0] + "T23:59";
 
-                await api(apiState.token).post('/agendamento/allday', {
+                await api(apiState.token).post('/agendamento/allhoursday', {
                     dataInicio: dtInicio,
                     dataFim: dtFim,
                 }).then(res =>{
@@ -134,8 +136,6 @@ export function ModalAgendamento({ closeSelectCategory, setSelectedApointment }:
         });
         
         setAvailableTimesList(horas);
-
-      //  console.log( horas );
 
     }
 
@@ -174,30 +174,32 @@ export function ModalAgendamento({ closeSelectCategory, setSelectedApointment }:
 
     useEffect(()=>{
         GetScheduledHours();
-
     },[selectedDate]);
-
-    // useEffect(()=>{
-    //     console.log(`Selected Hour: ${selectedHour}`);
-    // }, [selectedHour]);
     
 
     return(
+        <Modal 
+            isVisible={isVisible} 
+            animationIn='slideInUp' 
+            animationOut='slideOutDown' 
+            animationInTiming={700} 
+            style={{width: '100%', margin: 0}}
+        >
         <Container>
             <Body>
 
                 <Header isActive={true} /*isActive={ temDtPrevia() }*/>
                     <WrapIcone>
-                        <Icone name="chevron-down" onPress={closeSelectCategory}/>
+                        <Icone name="chevron-down" onPress={()=> setIsVisible() }/>
                     </WrapIcone>
                     <WrapTitulo>
                         <Titulo>Agendar Atendimento</Titulo>
                     </WrapTitulo>
-                    {/* {   dataEscolhida &&
-                        <WrapIcone>
-                            <Icone name="trash-alt" onPress={()=>{ excluiAgendamento(dataEscolhida.id) } }/>
-                        </WrapIcone>
-                    } */}
+                    {/* {   dataEscolhida && */}
+                        {/* <WrapIcone>
+                            <Icone name="trash-alt" onPress={()=>{ console.log("FF") } }/>
+                        </WrapIcone> */}
+                    {/* } */}
                 </Header>
 
                 <WrapCalendar>
@@ -322,7 +324,7 @@ export function ModalAgendamento({ closeSelectCategory, setSelectedApointment }:
                         <Title>Agendar</Title>
                     </Button>
 
-                    <Button type="cancel" onPress={()=> closeSelectCategory() } >
+                    <Button type="cancel" onPress={()=> setIsVisible() } >
                         <Title>Cancelar</Title>
                     </Button>
 
@@ -330,5 +332,6 @@ export function ModalAgendamento({ closeSelectCategory, setSelectedApointment }:
 
             </Body>
         </Container>
+        </Modal>
     )
 }

@@ -22,6 +22,7 @@ interface PropsHoraEscolhida{
 export const Container = styled.ScrollView`
     flex: 1;
     background-color: ${({theme}) => theme.colors.primary};
+    margin-top: ${RFValue(40)}px;
 `;
 
 export const Body = styled.View``;
