@@ -35,11 +35,13 @@ import { api } from '../../../global/api';
 import { useSelector } from 'react-redux';
 import { State } from '../../../state';
 // Imports
-import LottieView from 'lottie-react-native';
 import { months} from '../../../global/variaveis/Dates';
 import { getMonth, getYear, lastDayOfMonth, format } from 'date-fns';
 import { AppointmentList } from '../../../components/AppointmentList';
 import { Iscrol } from '../../CadastrarPaciente/styles';
+import { ModalAgendamento } from '../../../components/Modal/ModalAgendamento';
+import IApointment from '../../../global/DTO/Apointment';
+import { ButtonSimple } from '../../../components/Forms/ButtonSimple/Index';
 
 
 interface IPctInfos{
@@ -84,7 +86,7 @@ export function PacientePerfil(){
 
     const route = useRoute();
     const { id } = route.params as IRoute;
-
+    /// Redux
     const apiState = useSelector((state: State) => state.apiReducer);
 
     const [loading, setLoading] = useState(true);
@@ -95,6 +97,12 @@ export function PacientePerfil(){
     
     const [selectedYear, setSelectedYear] = useState(0);
     const [selectedMonth, setSelectedMonth] = useState(0);
+
+
+    const [ isAgendamentoVisible, setIsAgendamentoVisible] = useState(false);
+    // Appointment received from Modal
+    const [appointment, setAppointment] = useState({} as IApointment | null);
+
     
     function handleNavigate(){ navigation.goBack(); }
 
@@ -212,6 +220,40 @@ export function PacientePerfil(){
 
     }
 
+    async function CadastraAgendamento(){
+        console.log("Cadastra novo agendamento p/ o pct");
+
+        let infos = {
+            "paciente_id": id,
+            "agendamentos":[ appointment ]
+        }
+        await api(apiState.token).post('agendamento/', infos).then(res =>{
+
+            console.log("cadastrou");
+            console.log(res);
+
+            Toast.show({
+                type: 'success',
+                text1: '😄 Agendamento cadastrado com sucesso',
+                text2: 'É só atualizar a lista novamente'
+            });
+
+        }).catch(err =>{
+
+            console.log("erro ao cadastrar");
+            console.log(err);
+
+            Toast.show({
+                type: 'error',
+                text1: '❌ Erro ao cadastrar atendimento',
+            });
+
+            setAppointment(null);
+
+        });
+    }
+
+
     useEffect(()=>{
 
         function DefineDataHoje(){
@@ -234,6 +276,13 @@ export function PacientePerfil(){
             GetAgendamentos();
         }
     }, [selectedMonth]);
+
+
+    useEffect(()=>{
+        if(appointment?.data){
+            CadastraAgendamento();
+        }
+    },[appointment]);
 
 
 
@@ -401,13 +450,23 @@ export function PacientePerfil(){
                                     hour={item.hora}
                                     date={item.data}
                                     type={item.tipo}
-                                    onPress={()=>{ alert(item.id) }}
+                                    onPress={()=>{ navigation.navigate('PacienteAtendimento' as never, { id: item.id} as never) }}
                                 />   
                             )
                         })
                     }
                     </WrapAgendamentos>
                 </WrapGroup>
+
+                <WrapGroup>
+                    <ButtonSimple
+                        type="default"
+                        title="Agendar Atendimento" 
+                        onPress={()=> setIsAgendamentoVisible(true) }
+                    />
+                </WrapGroup>
+
+
             </>
             }
 
@@ -419,6 +478,11 @@ export function PacientePerfil(){
 
             <BottomSpacer/>
               
+            <ModalAgendamento 
+                isVisible={isAgendamentoVisible} 
+                setIsVisible={()=> setIsAgendamentoVisible(false) }
+                setSelectedApointment={setAppointment}
+            />
 
         </Iscrol>
         </Container>

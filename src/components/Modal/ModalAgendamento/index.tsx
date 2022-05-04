@@ -45,7 +45,7 @@ import IApointment from '../../../global/DTO/Apointment';
 interface Props{
     isVisible: boolean;
     setIsVisible: () => void;
-    setSelectedApointment: ({data, hora, status}: IApointment) => void;
+    setSelectedApointment: ({data, hora, status, tipo}: IApointment) => void;
 }
 
 //Configs Locale - Calendar
@@ -157,8 +157,7 @@ export function ModalAgendamento({ isVisible, setIsVisible, setSelectedApointmen
         }
 
         setSelectedApointment(apointment);
-        closeSelectCategory();
-
+        setIsVisible();
 
     }
   
@@ -169,7 +168,6 @@ export function ModalAgendamento({ isVisible, setIsVisible, setSelectedApointmen
             }
         }
         //EnableRetroactiveDate();     
-        
     }, []);
 
     useEffect(()=>{

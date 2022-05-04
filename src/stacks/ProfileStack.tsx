@@ -5,6 +5,8 @@ import { Profile } from '../screens/Configs/Profile';
 import { ListarTiposAtendimentos } from '../screens/Configs/ListarTiposAtendimentos';
 import { TipoAtendimento } from '../screens/Configs/TipoAtendimento';
 
+import { ModalAgendamento } from '../screens/ModalAgendamento';
+
 const Stack = createStackNavigator();
 
 export default function ProfileStack(){

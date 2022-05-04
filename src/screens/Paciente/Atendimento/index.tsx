@@ -163,7 +163,7 @@ export function PacienteAtendimento(){
     }
 
     async function GetAtendimentoInfos(id: number){
-        await api(apiState.token).get('/evolucao/'+ id).then(res=>{
+        await api(apiState.token).get('/evolucao/agendamentoId/'+ id).then(res=>{
 
             setAtendimentoInfos(res.data);
 
@@ -176,7 +176,7 @@ export function PacienteAtendimento(){
 
             setTimeout(()=>{
                 navigation.goBack();
-            }, 1500);
+            }, 2500);
         });
     }
 
