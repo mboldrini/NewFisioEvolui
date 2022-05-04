@@ -1,7 +1,7 @@
    
 /// TRANSFORMAR EM ENUM
 export const statusAtendimento = [
-    'Default',/// JAMAIS ALTERAR ESSA SEQUÊNCIA
+    'Não Atendido',/// JAMAIS ALTERAR ESSA SEQUÊNCIA
     'Não Atendido',/// JAMAIS ALTERAR ESSA SEQUÊNCIA
     'Atendido',/// JAMAIS ALTERAR ESSA SEQUÊNCIA
     'Remarcado',/// JAMAIS ALTERAR ESSA SEQUÊNCIA

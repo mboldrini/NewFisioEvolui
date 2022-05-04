@@ -167,6 +167,8 @@ export function PacienteAtendimento(){
 
             setAtendimentoInfos(res.data);
 
+            console.log(res.data);
+
         }).catch(err=>{
             console.error(err);
             Toast.show({
@@ -200,6 +202,10 @@ export function PacienteAtendimento(){
                 name: statusAtendimento[atendimentoInfos.status]
             }
 
+            if(atendimentoInfos.tipo == 6){
+                atendimentoInfos.tipo = 1;
+            }
+
             let tipos = {
                 key: atendimentoInfos.tipo,
                 name: tiposAtendimentos[atendimentoInfos.tipo]
@@ -211,6 +217,11 @@ export function PacienteAtendimento(){
     },[atendimentoInfos]);
 
 
+    useEffect(()=>{
+        console.log(tipoEvolucao);
+    }, [tipoEvolucao]);
+
+
     return(
         <Container>
 
@@ -220,7 +231,7 @@ export function PacienteAtendimento(){
 
         <IsCroll refreshControl={<RefreshControl refreshing={refreshing} onRefresh={()=>{ navigation.goBack() }}/>}>
             
-            <Cabecalho titulo="Atendimento do Paciente" onPress={()=>{}} />
+            <Cabecalho titulo="Atendimento do Paciente" onPress={()=>{ navigation.goBack() }} />
 
             { atendimentoInfos &&
                 <PacienteHeader iconeTipo="hospital" tipo={atendimentoInfos.nome_tipoAtendimento} nome={atendimentoInfos.paciente_nome} />

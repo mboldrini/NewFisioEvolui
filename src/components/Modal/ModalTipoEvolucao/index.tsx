@@ -57,7 +57,7 @@ export function ModalTipoEvolucao({
 
     let optionsList = [
         {key: 0, name: "Atendimento Comum"},
-        {key: 1, name: "Avaliação"},
+        {key: 6, name: "Avaliação"},
     ]
 
     return(
