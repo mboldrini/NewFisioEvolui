@@ -152,7 +152,7 @@ export function ModalAgendamento({ isVisible, setIsVisible, setSelectedApointmen
         const apointment = {
             data: Object.keys(selectedDate)[0],
             hora: selectedHour,
-            tipo: isAnEvaluation == true ? 6 : 1,
+            tipo: isAnEvaluation == true ? 1 : 0,
             status: 1
         }
 

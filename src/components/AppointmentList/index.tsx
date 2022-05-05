@@ -14,6 +14,9 @@ import {
     DateStr,
     WrapButton,
     EditButton,
+    EvaluationIcon,
+    Traco,
+    Type
 } from './styles';
 
 interface Props{
@@ -29,7 +32,7 @@ export function AppointmentList({status, hour, date, type, onPress}: Props){
     function FormatStartHour(startHour: number){
         let today = new Date();
         today = setMinutes(today, 0);
-        today = setHours(today, hour);
+        today = setHours(today, startHour);
         return format(today, 'HH:mm'); 
     }
 
@@ -46,6 +49,8 @@ export function AppointmentList({status, hour, date, type, onPress}: Props){
         return day +"/"+ months[parseInt(month)-1] +"/"+ year;
     }
 
+    console.log(`Type: ${type}`);
+
     return(
         <Container status={status}>
              <WrapInfos>
@@ -58,6 +63,13 @@ export function AppointmentList({status, hour, date, type, onPress}: Props){
                  <WrapHours>
                      <HourIcon name={ AppointmentIcons[type] } status={type}/>
                      <Hour>{FormatStartHour(hour)} as {FormatEndHour()}</Hour>
+                     { type == 1 &&
+                        <>
+                            <Traco> - </Traco>
+                            <EvaluationIcon name="notes-medical" />
+                            <Type>Avaliação</Type>
+                        </>
+                     }
                  </WrapHours>
              </WrapInfos>
              <WrapButton onPress={onPress}>

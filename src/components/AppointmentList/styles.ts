@@ -96,3 +96,19 @@ export const EditButton = styled(FontAwesome5)`
     font-size: ${RFValue(14)}px;
 `;
 
+export const Traco = styled.Text``;
+
+export const EvaluationIcon = styled(FontAwesome5)`
+    font-size: ${RFValue(12)}px;
+    color: ${({theme}) => theme.colors.status_avaliacao};
+    padding-right: ${RFValue(3)}px;
+`;
+
+export const Type = styled.Text`
+    font-family: ${({ theme }) => theme.fonts.bold};
+    font-size: ${RFValue(12)}px;
+    color: ${({theme}) => theme.colors.status_avaliacao};
+    padding-top: ${RFValue(5)}px;
+    /* background-color: ${({theme}) => theme.colors.status_avaliacao}; */
+`;
+

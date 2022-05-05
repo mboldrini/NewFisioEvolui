@@ -125,12 +125,13 @@ export function PacienteAtendimento(){
         }
 
         let infos = {
-            id: idEvolucao,
+            id: atendimentoInfos.id,
             evolucao: form.evolucao,
             observacoes: form.observacao,
             status: status.key,
             tipo: tipoEvolucao.key,
         }
+
         UpdateAtendimentoInfos(infos);
 
     }
@@ -138,8 +139,6 @@ export function PacienteAtendimento(){
     async function UpdateAtendimentoInfos(infos: IAtendInfosUpdate){
         await api(apiState.token).put('/evolucao/', infos).then(res=>{
 
-            console.log("OK?");
-            
             Toast.show({
                 type: 'success',
                 text1: 'Atendimento salvo! 💾',
@@ -166,8 +165,6 @@ export function PacienteAtendimento(){
         await api(apiState.token).get('/evolucao/agendamentoId/'+ id).then(res=>{
 
             setAtendimentoInfos(res.data);
-
-            console.log(res.data);
 
         }).catch(err=>{
             console.error(err);
@@ -217,9 +214,9 @@ export function PacienteAtendimento(){
     },[atendimentoInfos]);
 
 
-    useEffect(()=>{
-        console.log(tipoEvolucao);
-    }, [tipoEvolucao]);
+    // useEffect(()=>{
+    //     console.log(tipoEvolucao);
+    // }, [tipoEvolucao]);
 
 
     return(
