@@ -70,6 +70,7 @@ export function CadastrarPaciente(){
     const [wichModalIsOpened, setWichModalIsOpened] = useState(0);
     // New Modal's Way
     const [ isAgendarVisible, setIsAgendarVisible ] = useState(false);
+    const [ isTipoAtendimentoVisible, setTipoAtendimentoVisible] = useState(false);
 
 
     const [appointmentType, setAppointmentType] = useState({key: -1,name: 'Tipo de Atendimento'});
@@ -295,7 +296,7 @@ export function CadastrarPaciente(){
                     <Select 
                         title={appointmentType.name}
                         isActive={appointmentType.key}
-                        onPress={()=>{HandleSelectCategoryModal(1)}}
+                        onPress={()=>{ setTipoAtendimentoVisible(true) }}
                     />
 
                     <Select 
@@ -392,13 +393,6 @@ export function CadastrarPaciente(){
             </WrapFooterCadastro>
                 
             <Modal visible={categoryModalOpen}>
-               { wichModalIsOpened == 1 &&
-                    <ModalTipoAtendimento
-                        setCategory={setAppointmentType}
-                        closeSelectCategory={()=>HandleSelectCategoryModal(1)}
-                        statusAtual={appointmentType}
-                    />
-                }
                 {wichModalIsOpened == 2 &&
                     <ModalTemComorbidade 
                         setCategory={setTemComorbidade}
@@ -416,6 +410,13 @@ export function CadastrarPaciente(){
                 isVisible={isAgendarVisible} 
                 setIsVisible={()=> setIsAgendarVisible(false) }
                 setSelectedApointment={setAppointment}
+            />
+
+            <ModalTipoAtendimento
+                isVisible={isTipoAtendimentoVisible} 
+                setIsVisible={()=> setTipoAtendimentoVisible(false) }
+                setCategory={setAppointmentType}
+                statusAtual={appointmentType}
             />
 
         </Iscrol>

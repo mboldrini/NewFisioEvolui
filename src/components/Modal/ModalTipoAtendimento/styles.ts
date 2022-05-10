@@ -11,6 +11,7 @@ interface Props{
 export const Container = styled(GestureHandlerRootView)`
     flex: 1;
     background-color: ${({theme}) => theme.colors.primary};
+    margin-top: ${RFValue(40)}px;
 `;
 
 export const Header = styled.View`
@@ -54,15 +55,30 @@ export const Wrap = styled.View`
     margin:  ${RFValue(10)}px 0;
 `;
 
+export const WrapListaItens = styled.View`
+    margin-top: ${RFValue(20)}px;
+`;
+
+export const WrapContent = styled.View`
+    flex: 1;
+    flex-direction: column;
+    justify-content: space-between;
+`;
+
 export const AvisoLoading = styled.Text`
     font-size: ${RFValue(24)}px;
     color: #ffffff;
     text-align: center;
 `;
 
-export const Separator = styled.View`
-
+export const AvisoSemTipoAtendimento = styled.Text`
+    font-size: ${RFValue(24)}px;
+    color: #ffffff;
+    text-align: center;
+    margin-top: ${RFValue(45)}px;
 `;
+
+export const Separator = styled.View``;
 
 export const Footer = styled.View`
     width: 100%;

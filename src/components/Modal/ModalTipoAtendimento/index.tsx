@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { FlatList } from 'react-native-gesture-handler';
 import { Button } from '../../Forms/Button/Index';
+import Modal from 'react-native-modal';
 // REDUX
 import { useSelector } from 'react-redux';
 import { State } from '../../../state';
@@ -16,9 +17,13 @@ import {
     Name,
     Separator,
     Wrap,
+    WrapListaItens,
     AvisoLoading,
+    AvisoSemTipoAtendimento,
     Footer,
+    WrapContent
 } from './styles';
+import { Cabecalho } from '../../Cabecalho';
 
 
 interface ITipoList{
@@ -35,22 +40,27 @@ interface ITipoSimples{
 
 interface Props{
     setCategory: ( ativo: ITipoSimples )=> void;
-    closeSelectCategory: () => void;
+    isVisible: boolean;
+    setIsVisible: () => void;
     statusAtual: ITipoSimples
 }
 
 export function ModalTipoAtendimento({
     setCategory,
-    closeSelectCategory,
+    isVisible,
+    setIsVisible,
     statusAtual
 }: Props ){
 
     const apiState = useSelector((state: State) => state.apiReducer);
 
+    const [loading, setLoading] = useState(true);
+
     const [listaTipo, setListaTipo] = useState<ITipoList[]>([]);
 
     async function GetTypeList(){
-        console.log("Pegando via api?");
+        
+        setLoading(true);
 
         await api(apiState.token).get('/tipoAtendimento/all').then(res =>{
             console.log(res.data);
@@ -60,6 +70,8 @@ export function ModalTipoAtendimento({
             console.log(err);
             alert("ERRO! "+ err);
         });
+
+        setLoading(false);
     }
 
     function HandleCategorySelect(item: ITipoList){
@@ -74,12 +86,17 @@ export function ModalTipoAtendimento({
     },[]);
 
     return(
+        <Modal 
+            isVisible={isVisible} 
+            animationIn='slideInUp' 
+            animationOut='slideOutDown' 
+            animationInTiming={700} 
+            style={{width: '100%', margin: 0}}
+        >
         <Container>
-            <Header>
-                <Titulo>Tipo de Atenedimento</Titulo>
-            </Header>
+            <Cabecalho titulo="Tipos de Atendimentos" onPress={()=> setIsVisible() } arrowSide="chevron-down" />
 
-            { listaTipo.length < 1 &&
+            { loading &&
                 <Wrap>
                     <LottieView
                         source={require('../../../assets/loadingAnimado250.json')}
@@ -92,7 +109,14 @@ export function ModalTipoAtendimento({
                 </Wrap>
             }
 
-            { listaTipo.length > 0 &&
+            { !loading  && listaTipo.length < 1 &&
+                <AvisoSemTipoAtendimento>Nenhum tipo de atendimento cadastrado</AvisoSemTipoAtendimento>
+            }
+
+            <WrapContent>
+
+            { !loading && listaTipo.length > 0 &&
+                <WrapListaItens>
                 <FlatList 
                     data={listaTipo}
                     keyExtractor={(item) => item.nome}
@@ -106,18 +130,18 @@ export function ModalTipoAtendimento({
                     )}
                     ItemSeparatorComponent={() => <Separator />}
                 /> 
+                </WrapListaItens>
+            }
+        
+            { !loading && listaTipo.length > 0 &&
+                <Footer>
+                    <Button title="Selecionar"  onPress={()=> setIsVisible() } />
+                </Footer>
             }
 
-        
-
-            <Footer>
-                <Button 
-                    title="Selecionar" 
-                    onPress={closeSelectCategory}
-                />
-            </Footer>
-            
+            </WrapContent>
 
         </Container>
+        </Modal>
     )
 }
