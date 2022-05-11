@@ -27,8 +27,6 @@ type AuthResponse = {
     }
 }
 
-
-
 export function SignIn(){
 
     // Navegação
@@ -165,17 +163,22 @@ export function SignIn(){
             if(!usrState.email){
                 setLoading(false);
                 console.warn("Não foi encontrado infos prévias do usuario salvas no dispositivo");
+                return;
             }
             if(!apiState.token){
                 setLoading(false);
                 console.warn("Não foi encontrado um token de api salvo previamente");
+                return;
             }
+
+            console.log(usrState);
     
             if( isBefore( addHours( parseISO(apiState.date), 20) , new Date() ) ){
-                // console.info("É depois! pega o token novo!");
+                console.info("É depois! pega o token novo!");
                 setLoading(false);
+                return;
             }else{
-                // console.info("pega user infos e faz login!");
+                console.info("pega user infos e faz login!");
                 GetUserInfos(apiState.token);
             }
     

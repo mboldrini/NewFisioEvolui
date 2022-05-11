@@ -25,20 +25,31 @@ import {
     TituloList,
 
 } from './styles';
-
+// /// REDUX
+import { bindActionCreators } from 'redux';
 import { useDispatch, useSelector } from 'react-redux';
-import { State } from '../../../state';
-
+import { actionCreators, State } from '../../../state';
 
 export function Profile(){
 
     const navigation = useNavigation();
 
     const dispatch = useDispatch();
- //   const { setUserInfos, setUserToken } = bindActionCreators(actionCreators, dispatch);
+    const { setUserInfos, setApiInfos } = bindActionCreators(actionCreators, dispatch);
     const usrState = useSelector((state: State) => state.user);
 
     async function handleLogoff(){
+
+        setUserInfos({
+            id: null,
+            name: '',
+            email: null,
+            family_name: '',
+            given_name: '',
+            picture: '',
+            token: '',
+        });
+
         navigation.navigate('SignIn' as never);
     }
 
