@@ -11,20 +11,14 @@ interface Props{
 export const Container = styled(GestureHandlerRootView)`
     flex: 1;
     background-color: ${({theme}) => theme.colors.primary};
+    margin-top: ${RFValue(40)}px;
 `;
 
-export const Header = styled.View`
-    align-items: center;
-    justify-content: center;
-    margin-top: ${RFValue(35)}px ;
-    margin-bottom: ${RFValue(10)}px;
-    padding: 0 ${({theme}) => theme.padding.lateral}px;
-`;
-
-export const Titulo = styled.Text`
-    font-size: ${RFValue(22)}px;
-    color: #ffffff;
-    font-family: ${({theme}) => theme.fonts.regular};
+export const Wrap = styled.View`
+    margin-top: ${RFValue(20)}px;
+    flex: 1;
+    flex-direction: column;
+    justify-content: space-between;
 `;
 
 export const Category = styled.TouchableOpacity<Props>`

@@ -11,8 +11,6 @@ import { api } from '../../../global/api';
 import LottieView from 'lottie-react-native';
 import { 
     Container,
-    Header,
-    Titulo,
     Category,
     Name,
     Separator,

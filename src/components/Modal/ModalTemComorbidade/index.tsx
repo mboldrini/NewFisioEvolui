@@ -1,11 +1,12 @@
 import React from 'react';
 import { Text } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
+import { Cabecalho } from '../../Cabecalho';
 import { Button } from '../../Forms/Button/Index';
+import Modal from 'react-native-modal';
 import { 
     Container,
-    Header,
-    Titulo,
+    Wrap,
     Category,
     Name,
     Separator,
@@ -20,17 +21,14 @@ interface ICategory{
 
 interface Props{
     setCategory: ( ativo: ICategory )=> void;
-    closeSelectCategory: () => void;
-    statusAtual: ICategory
+    statusAtual: ICategory,
+    isVisible: boolean;
+    setIsVisible: () => void;
 }
 
-export function ModalTemComorbidade({
-    setCategory,
-    closeSelectCategory,
-    statusAtual
-}: Props ){
+export function ModalTemComorbidade({ setCategory, statusAtual, isVisible, setIsVisible }: Props ){
 
-     function handleCategorySelect(category: ICategory){
+    function handleCategorySelect(category: ICategory){
         let categ = category;
         if(category.key == 1){
             categ.name = "Paciente com comorbidade"
@@ -53,33 +51,30 @@ export function ModalTemComorbidade({
     ]
 
     return(
-        <Container>
-            <Header>
-                <Titulo>Paciente tem Comorbidade</Titulo>
-            </Header>
+        <Modal isVisible={isVisible} animationIn='slideInUp' animationOut='slideOutDown' animationInTiming={700}  style={{width: '100%', margin: 0}} >
+            <Container>
 
-            { <FlatList 
-                data={optionsList}
-                keyExtractor={(item) => item.name}
-                renderItem={({item}) =>(
-                    <Category
-                        onPress={() => handleCategorySelect(item) }
-                        isActive={ ItemIsActive( statusAtual.key, item.key) }
-                    >
-                        <Name>{item.name}</Name>
-                    </Category>
-                )}
-                ItemSeparatorComponent={() => <Separator />}
-            /> }
+                <Cabecalho titulo="Paciente tem Comorbidade" onPress={()=> setIsVisible() } arrowSide="chevron-down" />
 
-            <Footer>
-                <Button 
-                    title="Selecionar" 
-                    onPress={closeSelectCategory}
-                />
-            </Footer>
-            
+                <Wrap>
 
-        </Container>
+                    { <FlatList 
+                        data={optionsList}
+                        keyExtractor={(item) => item.name}
+                        renderItem={({item}) =>(
+                            <Category onPress={() => handleCategorySelect(item) } isActive={ ItemIsActive( statusAtual.key, item.key) } >
+                                <Name>{item.name}</Name>
+                            </Category>
+                        )}
+                        ItemSeparatorComponent={() => <Separator />}
+                    /> }
+
+                    <Footer>
+                        <Button title="Selecionar" onPress={ setIsVisible } />
+                    </Footer>
+
+                </Wrap>
+            </Container>
+        </Modal>
     )
 }

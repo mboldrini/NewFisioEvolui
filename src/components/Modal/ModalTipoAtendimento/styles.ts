@@ -14,20 +14,6 @@ export const Container = styled(GestureHandlerRootView)`
     margin-top: ${RFValue(40)}px;
 `;
 
-export const Header = styled.View`
-    align-items: center;
-    justify-content: center;
-    margin-top: ${RFValue(35)}px ;
-    margin-bottom: ${RFValue(10)}px;
-    padding: 0 ${({theme}) => theme.padding.lateral}px;
-`;
-
-export const Titulo = styled.Text`
-    font-size: ${RFValue(22)}px;
-    color: #ffffff;
-    font-family: ${({theme}) => theme.fonts.regular};
-`;
-
 export const Category = styled.TouchableOpacity<Props>`
     padding: ${RFValue(15)}px;
     flex-direction: row;

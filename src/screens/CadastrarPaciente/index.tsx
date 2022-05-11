@@ -66,11 +66,10 @@ export function CadastrarPaciente(){
 
     // Modal's
     const [loading, setLoading] = useState(false);
-    const [categoryModalOpen, setCategoryModalOpen] = useState(false);
-    const [wichModalIsOpened, setWichModalIsOpened] = useState(0);
     // New Modal's Way
     const [ isAgendarVisible, setIsAgendarVisible ] = useState(false);
     const [ isTipoAtendimentoVisible, setTipoAtendimentoVisible] = useState(false);
+    const [ isTemComorbidadeVisible, setTemComorbidadeVisible ] = useState(false);
 
 
     const [appointmentType, setAppointmentType] = useState({key: -1,name: 'Tipo de Atendimento'});
@@ -80,12 +79,6 @@ export function CadastrarPaciente(){
     // Appointment received from Modal
     const [appointment, setAppointment] = useState({} as IApointment | null);
     const [appointmentList, setAppointmentList] = useState([]);
-
-
-    function HandleSelectCategoryModal(tipoModal: number){
-        setWichModalIsOpened(tipoModal);
-        setCategoryModalOpen(!categoryModalOpen);
-    }
 
     const {
         control,
@@ -215,8 +208,6 @@ export function CadastrarPaciente(){
         }
     },[appointment]);
 
-
-
     useEffect(()=>{
         console.log("carregou!");
 
@@ -227,7 +218,6 @@ export function CadastrarPaciente(){
           });
 
     },[]);
-
 
     return(
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
@@ -302,7 +292,7 @@ export function CadastrarPaciente(){
                     <Select 
                         title={  temComorbidade.name }
                         isActive={ temComorbidade.key }
-                        onPress={()=>{HandleSelectCategoryModal(2)}}
+                        onPress={()=>{ setTemComorbidadeVisible(true) }}
                     /> 
 
                     { temComorbidade.key == 1 && 
@@ -391,18 +381,6 @@ export function CadastrarPaciente(){
                     type="ok"
                 />
             </WrapFooterCadastro>
-                
-            <Modal visible={categoryModalOpen}>
-                {wichModalIsOpened == 2 &&
-                    <ModalTemComorbidade 
-                        setCategory={setTemComorbidade}
-                        closeSelectCategory={()=>HandleSelectCategoryModal(2)}
-                        statusAtual={temComorbidade}
-                    />
-                }  
-            
-             
-            </Modal>
 
             <ModalLoading visible={loading} infos={{mensagem:"Carregando informaões do paciente...", tipo: 'loading'}}/>
 
@@ -417,6 +395,13 @@ export function CadastrarPaciente(){
                 setIsVisible={()=> setTipoAtendimentoVisible(false) }
                 setCategory={setAppointmentType}
                 statusAtual={appointmentType}
+            />
+
+            <ModalTemComorbidade 
+                setCategory={setTemComorbidade}
+                statusAtual={temComorbidade}
+                isVisible={ isTemComorbidadeVisible }
+                setIsVisible={()=> setTemComorbidadeVisible(false) }
             />
 
         </Iscrol>
