@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react';
 import { useNavigation } from '@react-navigation/native';
-import { BotoesPerfil } from '../../../components/BotoesPerfil';
 import { 
     Container,
     Header,
@@ -19,9 +18,9 @@ import {
     InfoDesc,
 
     Body,
-    WrapList,
+    WrapIcone,
+    Icone,
     BtnList,
-    IconeList,
     TituloList,
 
 } from './styles';
@@ -89,32 +88,30 @@ export function Profile(){
 
 
             <Body>
-                <WrapList>
-                    <BtnList>
-                        <IconeList source={require('../../../../src/assets/icons/profile.png')}/>
-                        <TituloList>Meu Perfil</TituloList>
-                    </BtnList>
+                <BtnList>
+                    <WrapIcone><Icone name="address-card"/></WrapIcone>
+                    <TituloList>Meu Perfil</TituloList>
+                </BtnList>
 
-                    <BtnList onPress={()=> navigation.navigate('ListarTiposAtendimentos' as never)}>
-                        <IconeList source={require('../../../../src/assets/icons/check_list.png')}/>
-                        <TituloList>Tipo de Atendimento</TituloList>
-                    </BtnList>
+                <BtnList onPress={()=> navigation.navigate('ListarTiposAtendimentos' as never)}>
+                    <WrapIcone><Icone name="address-book"/></WrapIcone>
+                    <TituloList>Tipo de Atendimento</TituloList>
+                </BtnList>
 
-                    <BtnList>
-                        <IconeList source={require('../../../../src/assets/icons/graph.png')}/>
-                        <TituloList>Estatísticas</TituloList>
-                    </BtnList>
+                <BtnList>
+                    <WrapIcone><Icone name="chart-bar"/></WrapIcone>
+                    <TituloList>Estatísticas</TituloList>
+                </BtnList>
 
-                    <BtnList>
-                        <IconeList source={require('../../../../src/assets/icons/config.png')}/>
-                        <TituloList>Configurações</TituloList>
-                    </BtnList>
+                <BtnList>
+                    <WrapIcone><Icone name="wrench"/></WrapIcone>
+                    <TituloList>Configurações</TituloList>
+                </BtnList>
 
-                    <BtnList>
-                        <IconeList source={require('../../../../src/assets/icons/question.png')}/>
-                        <TituloList>Sobre</TituloList>
-                    </BtnList>
-                </WrapList>
+                <BtnList>
+                    <WrapIcone><Icone name="question"/></WrapIcone>
+                    <TituloList>Sobre</TituloList>
+                </BtnList>
             </Body>
 
         </Container>

@@ -107,38 +107,36 @@ export const Body = styled.ScrollView.attrs({
     flex: 1;
 `;
 
-export const WrapList = styled.View`
-    background-color: ${({theme}) => theme.colors.secondary};
-    border-radius: ${({theme}) => theme.bordas.padrao}px;
-    padding-top: ${RFValue(10)}px;
-    flex-direction: column;
-    align-items: center;
-    padding: ${RFValue(10)}px ${({theme}) => theme.padding.lateral_half}px;
-    margin-bottom:  ${RFValue(10)}px; //50px;
-`;
-
 export const BtnList = styled(RectButton)`
     margin-bottom: ${RFValue(5)}px;
     width: 100%;
-    background-color: ${({theme}) => theme.colors.shape};
+    background-color: ${({theme}) => theme.colors.secondary};
     border-radius: ${({theme}) => theme.bordas.padrao}px;
-    padding: 5px;
+    padding: 10px;
     flex-direction: row;
     align-items: center;
     justify-content: flex-start;
     margin-bottom: ${({theme}) => theme.margin.bottom};
 `;
 
-export const IconeList = styled.Image`
-    width: ${RFValue(25)}px;
-    height: ${RFValue(25)}px;
-    margin-left: ${RFValue(10)}px;
+export const WrapIcone = styled.View`
+    min-width: ${RFValue(45)}px;
+    align-items: center;
+    justify-content: center;
+`;
+
+export const Icone = styled(FontAwesome5)`
+    color: #ffffff; //${({theme}) => theme.colors.secondary_light };
+    padding-right: ${RFValue(5)}px;
+    font-size: ${RFValue(30)}px;
+    align-items: center;
+    justify-content: center;
 `;
 
 export const TituloList = styled.Text`
     font-family: ${({theme}) => theme.fonts.regular};
-    font-size: ${RFValue(16)}px;
-    color: #000000;
+    font-size: ${RFValue(20)}px;
+    color: #ffffff;
     align-items: center;
     justify-content: center;
     padding-left: ${RFValue(15)}px;
