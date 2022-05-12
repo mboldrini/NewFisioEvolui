@@ -3,7 +3,7 @@ import { useNavigation } from '@react-navigation/native';
 import {FlatList, RefreshControl, ScrollView} from 'react-native';
 import Toast from 'react-native-toast-message';
 import { useSelector } from 'react-redux';
-import { State } from '../../../state';
+import { State } from '../../../../state';
 import { 
     Container,
     WrapToast,
@@ -15,11 +15,11 @@ import {
     AvisoSemAtendimentos,
     WrapBtnCadastro
 } from './styles';
-import { Cabecalho } from '../../../components/Cabecalho';
+import { Cabecalho } from '../../../../components/Cabecalho';
 
-import { api } from '../../../global/api';
-import { TipoAtendimentoList } from '../../../components/TipoAtendimentoList';
-import { Button } from '../../../components/Forms/Button/Index';
+import { api } from '../../../../global/api';
+import { TipoAtendimentoList } from '../../../../components/TipoAtendimentoList';
+import { Button } from '../../../../components/Forms/Button/Index';
 
 interface IListaTipos{
     id: number,

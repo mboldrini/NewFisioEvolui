@@ -123,7 +123,7 @@ export function Profile(){
                     <TituloList enabled={false}>Estatísticas</TituloList>
                 </BtnList>
 
-                <BtnList onPress={() => GetProfileStatistics() }>
+                <BtnList onPress={() => navigation.navigate('ConfiguracoesPessoais' as never) }>
                     <WrapIcone><Icone name="wrench"/></WrapIcone>
                     <TituloList>Configurações</TituloList>
                 </BtnList>
