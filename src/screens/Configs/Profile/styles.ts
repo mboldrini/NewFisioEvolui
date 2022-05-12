@@ -75,7 +75,6 @@ export const InfosWrap = styled.View`
     padding: 0 ${({theme}) => theme.margin.lateral}px;
     padding-bottom: ${RFValue(5)}px;
     padding-top: ${RFValue(20)}px;
-    margin-bottom: ${RFValue(15)}px;
     margin-top: ${RFValue(-15)}px;
     border-bottom-left-radius: ${RFValue(20)}px;
     border-bottom-right-radius: ${RFValue(20)}px;
@@ -107,6 +106,7 @@ export const Body = styled.ScrollView.attrs({
     }
 })`
     flex: 1;
+    margin-top: ${RFValue(15)}px;
 `;
 
 export const BtnList = styled(RectButton)<Props>`

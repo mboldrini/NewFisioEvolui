@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { 
     Container,
@@ -28,6 +28,12 @@ import {
 import { bindActionCreators } from 'redux';
 import { useDispatch, useSelector } from 'react-redux';
 import { actionCreators, State } from '../../../state';
+import { api } from '../../../global/api';
+
+interface IProfileStats{
+    qtdAtendimentos: number,
+    qtdPacientes: number
+}
 
 export function Profile(){
 
@@ -36,6 +42,8 @@ export function Profile(){
     const dispatch = useDispatch();
     const { setUserInfos, setApiInfos } = bindActionCreators(actionCreators, dispatch);
     const usrState = useSelector((state: State) => state.user);
+
+    const [profileStatistics, setProfileStatistics] = useState<IProfileStats>();
 
     async function handleLogoff(){
 
@@ -52,10 +60,19 @@ export function Profile(){
         navigation.navigate('SignIn' as never);
     }
 
-    useEffect(()=>{
-        console.log(usrState);
-    },[usrState]);
+    async function GetProfileStatistics(){
+        await api(usrState.token).get('/users/profileStatistics').then(res =>{
+            
+            setProfileStatistics(res.data);
 
+        }).catch(err => {
+            setProfileStatistics(null);
+        });
+    }
+
+    useEffect(()=>{
+        GetProfileStatistics();
+    },[]);
 
     return(
         <Container>
@@ -74,17 +91,20 @@ export function Profile(){
                 </UserWrapper>
             </Header>
 
-            <InfosWrap>
-                <Infos>
-                    <QtdInfos>150</QtdInfos>
-                    <InfoDesc>Pacientes</InfoDesc>
-                </Infos>
-               
-                <Infos>
-                    <QtdInfos>230</QtdInfos>
-                    <InfoDesc>Atendimentos</InfoDesc>
-                </Infos>
-            </InfosWrap>
+            { profileStatistics?.qtdAtendimentos &&
+                <InfosWrap>
+                    <Infos>
+                        <QtdInfos>{ profileStatistics.qtdPacientes }</QtdInfos>
+                        <InfoDesc>Pacientes</InfoDesc>
+                    </Infos>
+                    
+                    <Infos>
+                        <QtdInfos>{ profileStatistics.qtdAtendimentos }</QtdInfos>
+                        <InfoDesc>Atendimentos</InfoDesc>
+                    </Infos>
+                </InfosWrap>
+            }
+           
 
 
             <Body>
@@ -103,7 +123,7 @@ export function Profile(){
                     <TituloList enabled={false}>Estatísticas</TituloList>
                 </BtnList>
 
-                <BtnList>
+                <BtnList onPress={() => GetProfileStatistics() }>
                     <WrapIcone><Icone name="wrench"/></WrapIcone>
                     <TituloList>Configurações</TituloList>
                 </BtnList>
