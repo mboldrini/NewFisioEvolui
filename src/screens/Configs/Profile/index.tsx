@@ -88,9 +88,9 @@ export function Profile(){
 
 
             <Body>
-                <BtnList>
-                    <WrapIcone><Icone name="address-card"/></WrapIcone>
-                    <TituloList>Meu Perfil</TituloList>
+                <BtnList enabled={false}>
+                    <WrapIcone><Icone name="address-card" enabled={false}/></WrapIcone>
+                    <TituloList enabled={false}>Meu Perfil</TituloList>
                 </BtnList>
 
                 <BtnList onPress={()=> navigation.navigate('ListarTiposAtendimentos' as never)}>
@@ -98,9 +98,9 @@ export function Profile(){
                     <TituloList>Tipo de Atendimento</TituloList>
                 </BtnList>
 
-                <BtnList>
-                    <WrapIcone><Icone name="chart-bar"/></WrapIcone>
-                    <TituloList>Estatísticas</TituloList>
+                <BtnList enabled={false}>
+                    <WrapIcone><Icone name="chart-bar" enabled={false}/></WrapIcone>
+                    <TituloList enabled={false}>Estatísticas</TituloList>
                 </BtnList>
 
                 <BtnList>
@@ -108,9 +108,9 @@ export function Profile(){
                     <TituloList>Configurações</TituloList>
                 </BtnList>
 
-                <BtnList>
-                    <WrapIcone><Icone name="question"/></WrapIcone>
-                    <TituloList>Sobre</TituloList>
+                <BtnList enabled={false}>
+                    <WrapIcone><Icone name="question" enabled={false}/></WrapIcone>
+                    <TituloList enabled={false}>Sobre</TituloList>
                 </BtnList>
             </Body>
 

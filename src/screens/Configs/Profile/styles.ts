@@ -1,9 +1,11 @@
 import { RFPercentage, RFValue } from 'react-native-responsive-fontsize';
-import styled from "styled-components/native";
+import styled, {css} from 'styled-components/native';
 import { FontAwesome5 } from '@expo/vector-icons';
-import theme from '../../../global/styles/theme';
 import { RectButton } from "react-native-gesture-handler";
 
+interface Props{
+    enabled?: boolean;
+}
 
 export const Container = styled.View`
     flex: 1;
@@ -107,7 +109,7 @@ export const Body = styled.ScrollView.attrs({
     flex: 1;
 `;
 
-export const BtnList = styled(RectButton)`
+export const BtnList = styled(RectButton)<Props>`
     margin-bottom: ${RFValue(5)}px;
     width: 100%;
     background-color: ${({theme}) => theme.colors.secondary};
@@ -117,6 +119,11 @@ export const BtnList = styled(RectButton)`
     align-items: center;
     justify-content: flex-start;
     margin-bottom: ${({theme}) => theme.margin.bottom};
+
+    ${({ enabled }) => enabled == false && css `
+        background-color: ${({theme}) => theme.colors.secondary_light};
+    `};
+
 `;
 
 export const WrapIcone = styled.View`
@@ -125,20 +132,28 @@ export const WrapIcone = styled.View`
     justify-content: center;
 `;
 
-export const Icone = styled(FontAwesome5)`
-    color: #ffffff; //${({theme}) => theme.colors.secondary_light };
+export const Icone = styled(FontAwesome5)<Props>`
+    color: #ffffff;
     padding-right: ${RFValue(5)}px;
     font-size: ${RFValue(30)}px;
     align-items: center;
     justify-content: center;
+
+    ${({ enabled }) => enabled == false && css `
+        color: #c3c3c3;
+    `};
 `;
 
-export const TituloList = styled.Text`
+export const TituloList = styled.Text<Props>`
     font-family: ${({theme}) => theme.fonts.regular};
     font-size: ${RFValue(20)}px;
     color: #ffffff;
     align-items: center;
     justify-content: center;
     padding-left: ${RFValue(15)}px;
+
+    ${({ enabled }) => enabled == false && css `
+        color: #c3c3c3;
+    `};
 `;
 
