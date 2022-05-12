@@ -173,6 +173,11 @@ export function ModalAgendamento({ isVisible, setIsVisible, setSelectedApointmen
     useEffect(()=>{
         GetScheduledHours();
     },[selectedDate]);
+
+    useEffect(()=>{
+        setAvailableTimesList([]);
+        setSelectedDate(null);
+    },[isVisible]);
     
 
     return(
