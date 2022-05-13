@@ -36,7 +36,7 @@ import {
 // Calendar
 import { Calendar as CustomCalendar, LocaleConfig } from 'react-native-calendars';
 import { ILocalesPtBr } from './localeConfig';
-import { format } from 'date-fns';
+import { format, parseISO } from 'date-fns';
 // API
 import { api } from '../../../global/api';
 // Interfaces
@@ -149,15 +149,23 @@ export function ModalAgendamento({ isVisible, setIsVisible, setSelectedApointmen
             return;
         }
 
+        let [ano, mes, dia] = Object.keys(selectedDate)[0].split('-');
+        let dt = new Date( parseInt(ano), parseInt(mes), parseInt(dia));
+            dt.setHours(selectedHour, 0.20 );
+
+        console.log(dt);
+
         const apointment = {
-            data: Object.keys(selectedDate)[0],
-            hora: selectedHour,
+            timestamp: dt.getTime(),
             tipo: isAnEvaluation == true ? 1 : 0,
             status: 1
         }
 
-        setSelectedApointment(apointment);
-        setIsVisible();
+        console.log( apointment );
+
+
+        //setSelectedApointment(apointment);
+        //setIsVisible();
 
     }
   
