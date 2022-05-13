@@ -61,15 +61,14 @@ interface IPctInfos{
 
 interface IAgendamentos{
     id: number,
-    hora: number,
-    data: string,
     tipo: number,
-    status: number
+    status: number,
+    timestamp: number,
 }
 
 interface IAgendamentosApi{
     id: number,
-    dataHora: string,
+    timestamp: string,
     data: string,
     tipo: number,
     status: number
@@ -147,27 +146,30 @@ export function PacientePerfil(){
 
     function GetDateRange(id: number){
         let data = new Date(selectedYear, selectedMonth);
-        let startDate = format(data, 'yyyy/MM/dd');
-        let endDate = format(lastDayOfMonth( data ), 'yyyy/MM/dd');
+        let startDate = format(data, 'yyyy-MM-dd');
+        let endDate = format(lastDayOfMonth( data ), 'yyyy-MM-dd');
 
         let agendaSelecionada = {
             "paciente_id": id,
             "dataInicio": startDate,
             "dataFim": endDate
         }
+
+        console.log(agendaSelecionada   );
+
         return agendaSelecionada
     }
 
     function MontaListaAgendamentos(listaAgendamentos: IAgendamentosApi[]){
 
         function FormatHoraAgendamento(dtHora: string){
-            let [ data, horario] = dtHora.split("T");
-            return parseInt( horario.split(":")[0] );
+            let horario = new Date(parseInt(dtHora));
+            let horarioString = horario.getHours() +":"+ horario.getMinutes();
+            return horarioString;
         }
     
         function FormatDataAgendamento(dtHora: string){
-            let [ data, horario] = dtHora.split("T");
-            return data;
+            return format(new Date(parseInt(dtHora)), 'dd/M/yyyy');
         }
 
         if(listaAgendamentos?.length < 1){
@@ -184,8 +186,7 @@ export function PacientePerfil(){
                 id: agendamento.id,
                 status: agendamento.status,
                 tipo: agendamento.tipo,
-                hora: FormatHoraAgendamento(agendamento.dataHora),
-                data: FormatDataAgendamento(agendamento.dataHora)
+                timestamp: parseInt(agendamento.timestamp)
             }));
 
             setPctAgendamentos(agendamentoFormatado);
@@ -442,14 +443,14 @@ export function PacientePerfil(){
                     }
 
                     <WrapAgendamentos>
-                    { pctAgendamentos.length >= 1 && pctAgendamentos.map( (item, key) => {
+                    { pctAgendamentos.length >= 1 && 
+                        pctAgendamentos.map( (item, key) => {
                             return(
                                 <AppointmentList
                                     key={key}
                                     status={item.status}
-                                    hour={item.hora}
-                                    date={item.data}
                                     type={item.tipo}
+                                    timestamp={item.timestamp}
                                     onPress={()=>{ navigation.navigate('PacienteAtendimento' as never, { id: item.id} as never) }}
                                 />   
                             )

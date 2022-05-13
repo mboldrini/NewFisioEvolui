@@ -58,15 +58,12 @@ import Toast from 'react-native-toast-message';
 
 export function CadastrarPaciente(){
 
-    // // Redux de Usuários
-    const dispatch = useDispatch();
-    //const { setUserInfos, setApiInfos } = bindActionCreators(actionCreators, dispatch);
-    //const usrState = useSelector((state: State) => state.user);// o .user é o nome usado no .index da pasta reducers
+    /// Redux 
     const apiState = useSelector((state: State) => state.apiReducer);
 
-    // Modal's
+    /// Modal's
     const [loading, setLoading] = useState(false);
-    // New Modal's Way
+    /// New Modal's Way
     const [ isAgendarVisible, setIsAgendarVisible ] = useState(false);
     const [ isTipoAtendimentoVisible, setTipoAtendimentoVisible] = useState(false);
     const [ isTemComorbidadeVisible, setTemComorbidadeVisible ] = useState(false);
@@ -75,8 +72,8 @@ export function CadastrarPaciente(){
     const [appointmentType, setAppointmentType] = useState({key: -1,name: 'Tipo de Atendimento'});
     const [temComorbidade, setTemComorbidade] = useState({key: -1, name: 'Paciente tem comorbidade'});
 
-    // APPOINTMENT'S
-    // Appointment received from Modal
+    /// APPOINTMENT'S
+    /// Appointment received from Modal
     const [appointment, setAppointment] = useState({} as IApointment | null);
     const [appointmentList, setAppointmentList] = useState([]);
 
@@ -199,12 +196,16 @@ export function CadastrarPaciente(){
 
     useEffect(()=>{
         if(appointment && appointment.data){
-            let newArray = [...appointmentList, appointment];
-           
-            newArray = Array.from(new Set(newArray.map(JSON.stringify))).map(JSON.parse);
 
-            setAppointmentList(newArray);
-            setAppointment(null);
+            console.log("APPOINTMENT:");
+            console.log(appointment);
+
+            // let newArray = [...appointmentList, appointment];
+           
+            // newArray = Array.from(new Set(newArray.map(JSON.stringify))).map(JSON.parse);
+
+            // setAppointmentList(newArray);
+            // setAppointment(null);
         }
     },[appointment]);
 
@@ -356,9 +357,8 @@ export function CadastrarPaciente(){
                             <AppointmentList
                                 key={key}
                                 status={item.status}
-                                hour={item.hora}
-                                date={item.data}
                                 type={item.tipo}
+                                timestamp={item.timestamp}
                                 onPress={()=>{ AlertExcludeAppointment(item, key) }}
                             />   
                         )

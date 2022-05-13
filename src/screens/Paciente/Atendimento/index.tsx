@@ -1,5 +1,5 @@
 import React, {useEffect, useState}from 'react';
-import {RefreshControl} from 'react-native';
+import {RefreshControl, Alert} from 'react-native';
 import {useNavigation, useRoute } from '@react-navigation/native';
 import { 
     Container,
@@ -57,7 +57,9 @@ interface IAtendInfos{
     agendamento_id: number,
     paciente_id: number,
     paciente_nome: string,
-    nome_tipoAtendimento: string
+    nome_tipoAtendimento: string,
+    data: string,
+    hora: number,
 }
 
 interface IAtendInfosUpdate{
@@ -68,15 +70,22 @@ interface IAtendInfosUpdate{
     tipo: number,
 }
 
+interface ParamsProps{
+    id?: number;
+}
+
 export function PacienteAtendimento(){
 
     const navigation = useNavigation();
     const route = useRoute();
     const [refreshing, setRefresh] = useState(false);
+
+    const { id } = route.params as ParamsProps;
     
     const apiState = useSelector((state: State) => state.apiReducer);
 
     const [idEvolucao, setIdEvolucao] = useState(null);
+    const [loading, setLoading] = useState(false);
 
     const [atendimentoInfos, setAtendimentoInfos] = useState<IAtendInfos>(null);
 
@@ -94,6 +103,21 @@ export function PacienteAtendimento(){
     } = useForm({
         resolver: yupResolver(schema)
     });
+
+    function FormatDateHour(dt: string, horario: number){
+
+        const [data, horaIgnore] = dt.split('T');
+        const [ano, mes, dia] = data.split("-");
+
+        let hora = 8.33;
+        
+        console.log ( Math.floor(hora % 1) );
+
+        let dtt = new Date(parseInt(ano), parseInt(mes), parseInt(dia), 8, hora % 1 );
+        console.log(dtt);
+
+        return dia +"/"+ mes +"/"+ ano +" as ";
+    }
 
     function HandleRegister(form: IFormData){
 
@@ -139,6 +163,8 @@ export function PacienteAtendimento(){
     async function UpdateAtendimentoInfos(infos: IAtendInfosUpdate){
         await api(apiState.token).put('/evolucao/', infos).then(res=>{
 
+            setLoading(true);
+
             Toast.show({
                 type: 'success',
                 text1: 'Atendimento salvo! 💾',
@@ -146,7 +172,7 @@ export function PacienteAtendimento(){
 
             setTimeout(()=>{
                 navigation.goBack();
-            }, 1000);
+            }, 2500);
 
         }).catch(err=>{
             console.error(err);
@@ -157,8 +183,10 @@ export function PacienteAtendimento(){
 
             setTimeout(()=>{
                 navigation.goBack();
-            }, 1500);
+            }, 2500);
         });
+
+        setLoading(false);
     }
 
     async function GetAtendimentoInfos(id: number){
@@ -179,9 +207,50 @@ export function PacienteAtendimento(){
         });
     }
 
+    function AtualizaInfoCampos(){
+        setStatus({
+            key: atendimentoInfos.status,
+            name: statusAtendimento[atendimentoInfos.status]
+        });
+
+        setTipoEvolucao({
+            key: atendimentoInfos.tipo,
+            name: tiposAtendimentos[atendimentoInfos.tipo]
+        });
+
+        reset({
+            evolucao: atendimentoInfos.evolucao,
+            observacao: atendimentoInfos.observacoes
+        });
+
+    }
+
+    function HandleDeleteAppointment(id: number){
+
+            console.log(atendimentoInfos);
+
+        console.log(`Deleta o ID: ${id}`);
+
+        Alert.alert(
+            "Deseja excluir esse atendimento?",
+            atendimentoInfos.paciente_nome,
+            [
+              {
+                text: "Excluir",
+                onPress: () => Alert.alert("Cancel Pressed"),
+              },
+              {
+                text: "Cancelar",
+              },
+            ],
+            
+          );
+
+    }
+
     useEffect(()=>{
-        if(route.params?.id){
-           setIdEvolucao(route.params.id);
+        if(id){
+            setIdEvolucao(id);
         }
     },[]);
 
@@ -193,31 +262,9 @@ export function PacienteAtendimento(){
 
     useEffect(()=>{
         if(atendimentoInfos){
-            
-            let stats = {
-                key: atendimentoInfos.status,
-                name: statusAtendimento[atendimentoInfos.status]
-            }
-
-            if(atendimentoInfos.tipo == 6){
-                atendimentoInfos.tipo = 1;
-            }
-
-            let tipos = {
-                key: atendimentoInfos.tipo,
-                name: tiposAtendimentos[atendimentoInfos.tipo]
-            }
-
-            setStatus(stats);
-            setTipoEvolucao(tipos);
+            AtualizaInfoCampos();          
         }
     },[atendimentoInfos]);
-
-
-    // useEffect(()=>{
-    //     console.log(tipoEvolucao);
-    // }, [tipoEvolucao]);
-
 
     return(
         <Container>
@@ -228,21 +275,21 @@ export function PacienteAtendimento(){
 
         <IsCroll refreshControl={<RefreshControl refreshing={refreshing} onRefresh={()=>{ navigation.goBack() }}/>}>
             
-            <Cabecalho titulo="Atendimento do Paciente" onPress={()=>{ navigation.goBack() }} />
+            <Cabecalho titulo="Atendimento do Paciente" onPress={()=>{ navigation.goBack() }} onPressDel={()=> HandleDeleteAppointment(id) } />
 
-            { atendimentoInfos &&
+            { atendimentoInfos && !loading &&
                 <PacienteHeader iconeTipo="hospital" tipo={atendimentoInfos.nome_tipoAtendimento} nome={atendimentoInfos.paciente_nome} />
             }
               
-            { atendimentoInfos && 
+            { atendimentoInfos && !loading &&
             <WrapDiaAtendimento>
                 <WrapBorder>
-                    <DiaAtendimento>Atendimento do dia <Dia>26/04/2022</Dia></DiaAtendimento>
+                    <DiaAtendimento>Atendimento do dia <Dia>{ FormatDateHour(atendimentoInfos.data, atendimentoInfos.hora) }</Dia></DiaAtendimento>
                 </WrapBorder>
             </WrapDiaAtendimento>
             }
 
-            { atendimentoInfos && 
+            { atendimentoInfos && !loading &&
             <WrapContent>
             
                 <Select 
@@ -290,7 +337,7 @@ export function PacienteAtendimento(){
             </WrapContent>
             }
 
-            { !atendimentoInfos &&
+            { !atendimentoInfos && loading &&
                 <WrapLoading>
                     <LoadingIcon size="large" color="#FFFFFF"/>   
                 </WrapLoading>

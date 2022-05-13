@@ -20,33 +20,23 @@ import {
 } from './styles';
 
 interface Props{
-    status: number;
     type: number;
-    hour: number;
-    date: any;
+    status: number;
+    timestamp: number,
     onPress: () => void;
 }
 
-export function AppointmentList({status, hour, date, type, onPress}: Props){
+export function AppointmentList({status, timestamp, type, onPress}: Props){
 
-    function FormatStartHour(startHour: number){
-        let today = new Date();
-        today = setMinutes(today, 0);
-        today = setHours(today, startHour);
-        return format(today, 'HH:mm'); 
+    function GetStartHour(stamp: number){
+        let date = new Date(stamp);
+
+        return date.getHours() +":"+ date.getMinutes();
     }
 
-    function FormatEndHour(endHour: number = 50){
-        let today = new Date();
-        today = setMinutes(today, 0);
-        today = setHours(today, hour);
-        today = addMinutes(today, endHour);
-        return format(today, 'HH:mm'); 
-    }
-
-    function FormatDate(dateCalendar: string){
-        let [year,month, day] = dateCalendar.split("-");
-        return day +"/"+ months[parseInt(month)-1] +"/"+ year;
+    function GetEndHour(stamp: number){
+        // let date = new Date(stamp);
+        return "99:99";
     }
 
     console.log(`Type: ${type}`);
@@ -55,14 +45,14 @@ export function AppointmentList({status, hour, date, type, onPress}: Props){
         <Container status={status}>
              <WrapInfos>
                 <WrapDate>
-                     <WeekDay>{ daysLong[getDay( parseISO(date))] }</WeekDay>
+                     <WeekDay>{ daysLong[getDay( new Date(timestamp) )] }</WeekDay>
                      <Day> dia </Day>
-                     <DateStr>{ FormatDate(date) }</DateStr>
+                     <DateStr>{ format( new Date(timestamp), 'dd/M/yyyy') } </DateStr>
                  </WrapDate>
 
                  <WrapHours>
                      <HourIcon name={ AppointmentIcons[type] } status={type}/>
-                     <Hour>{FormatStartHour(hour)} as {FormatEndHour()}</Hour>
+                     <Hour>{ GetStartHour(timestamp) } as { GetEndHour(timestamp)}</Hour>
                      { type == 1 &&
                         <>
                             <Traco> - </Traco>
