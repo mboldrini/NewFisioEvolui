@@ -1,7 +1,7 @@
 import React from 'react';
 import { Text } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
-import { Button } from '../../components/Forms/Button/Index';
+import { Button } from '../../components/Buttons/Button/Index';
 import { 
     Container,
     Header,

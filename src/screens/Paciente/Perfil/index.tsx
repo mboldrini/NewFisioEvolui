@@ -41,7 +41,7 @@ import { AppointmentList } from '../../../components/AppointmentList';
 import { Iscrol } from '../../CadastrarPaciente/styles';
 import { ModalAgendamento } from '../../../components/Modal/ModalAgendamento';
 import IApointment from '../../../global/DTO/Apointment';
-import { ButtonSimple } from '../../../components/Forms/ButtonSimple/Index';
+import { ButtonSimple } from '../../../components/Buttons/ButtonSimple/Index';
 
 
 interface IPctInfos{

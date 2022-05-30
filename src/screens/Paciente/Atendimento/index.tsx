@@ -20,7 +20,7 @@ import { PacienteHeader } from '../../../components/PacienteHeader';
 //Campos dos forms e botão
 import { Select } from '../../../components/Forms/Select';
 import { InputForm } from '../../../components/Forms/InputForm';
-import { ButtonSimple } from '../../../components/Forms/ButtonSimple/Index';
+import { ButtonSimple } from '../../../components/Buttons/ButtonSimple/Index';
 // Formulario
 import { useForm } from 'react-hook-form';
 // Yup do Formulário

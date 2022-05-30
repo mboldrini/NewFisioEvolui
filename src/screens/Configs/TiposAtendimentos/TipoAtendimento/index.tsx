@@ -36,7 +36,7 @@ import { useForm } from 'react-hook-form';
 import * as Yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { InputMasked } from '../../../../components/Forms/InputMasked';
-import { Button } from '../../../../components/Forms/Button/Index';
+import { Button } from '../../../../components/Buttons/Button/Index';
 // Datas
 import { format } from 'date-fns';
 // Loading

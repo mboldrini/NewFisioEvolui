@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Text } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
-import { Button } from '../../Forms/Button/Index';
+import { Button } from '../../Buttons/Button/Index';
 import Modal from 'react-native-modal';
 import { 
     Container,

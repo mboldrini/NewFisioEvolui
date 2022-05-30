@@ -3,7 +3,7 @@ import { Modal, TouchableWithoutFeedback, Keyboard, Alert, View } from 'react-na
 import { InputMasked } from '../../components/Forms/InputMasked';
 import { useForm } from 'react-hook-form';
 import { InputForm } from '../../components/Forms/InputForm';
-import { Button } from '../../components/Forms/Button/Index';
+import { Button } from '../../components/Buttons/Button/Index';
 import * as Yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { 
@@ -35,7 +35,7 @@ import { ModalAgendamento } from '../../components/Modal/ModalAgendamento';
 import { ModalTemComorbidade } from '../../components/Modal/ModalTemComorbidade';
 import { ModalTipoAtendimento } from '../../components/Modal/ModalTipoAtendimento';
 
-import { ButtonSimple } from '../../components/Forms/ButtonSimple/Index';
+import { ButtonSimple } from '../../components/Buttons/ButtonSimple/Index';
 import { AppointmentList } from '../../components/AppointmentList';
 
 const schema = Yup.object().shape({

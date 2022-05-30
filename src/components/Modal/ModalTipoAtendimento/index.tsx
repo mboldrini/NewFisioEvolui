@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { FlatList } from 'react-native-gesture-handler';
-import { Button } from '../../Forms/Button/Index';
+import { Button } from '../../Buttons/Button/Index';
 import Modal from 'react-native-modal';
 // REDUX
 import { useSelector } from 'react-redux';

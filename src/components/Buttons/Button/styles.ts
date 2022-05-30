@@ -1,3 +1,4 @@
+import { FontAwesome5 } from '@expo/vector-icons';
 import { RFValue } from 'react-native-responsive-fontsize';
 import styled, {css} from 'styled-components/native';
 import { TouchableOpacity } from 'react-native';
@@ -5,6 +6,7 @@ import { RectButton } from "react-native-gesture-handler";
 
 interface Props{
     type?: string;
+    largura?: 'half' | 'full';
 }
 
 export const Container = styled(TouchableOpacity)<Props>`
@@ -13,6 +15,7 @@ export const Container = styled(TouchableOpacity)<Props>`
     align-items: center;
     justify-content: center;
     height: ${RFValue(45)}px;
+    flex-direction: row;
 
     ${({ type }) => type === "ok" && css `
         background-color: ${({theme}) => theme.colors.success};
@@ -25,12 +28,33 @@ export const Container = styled(TouchableOpacity)<Props>`
         margin-top: ${RFValue(10)}px;
     `};
 
+    ${({ largura }) => largura === "half" && css `
+        width: 50%;
+    `};
+    justify-content: space-between;
 `;
 
-export const Title = styled.Text`
+export const WrapTitle = styled.View`
+    flex: 1;
+    align-items: center;
+    justify-content: center;
+`;
+
+export const Title = styled.Text<Props>`
     font-family: ${({theme}) => theme.fonts.bold};
     color: ${({theme}) => theme.colors.shape};
     font-size: ${RFValue(18)}px;
 `;
 
+export const LeftIcon = styled(FontAwesome5)`
+    color: ${({theme}) => theme.colors.shape};
+    font-size: ${RFValue(18)}px;
+    margin-Left: ${RFValue(10)}px;
+`;
+
+export const RightIcon = styled(FontAwesome5)`
+    color: ${({theme}) => theme.colors.shape};
+    font-size: ${RFValue(18)}px;
+    margin-right: ${RFValue(10)}px;
+`;
 

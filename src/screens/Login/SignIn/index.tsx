@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { ButtonGoogle } from '../../../components/Forms/ButtonGoogle/Index';
+import { ButtonGoogle } from '../../../components/Buttons/ButtonGoogle/Index';
 import { useNavigation } from '@react-navigation/native';
 import * as AuthSession from 'expo-auth-session';
 import { addHours, isBefore, parseISO } from 'date-fns';
@@ -85,10 +85,13 @@ export function SignIn(){
     }
 
     async function GetApiToken(data: IGoogleData){
+        console.log(data);
+        console.log("DATAAAAAAAAAA");
         if(data.email){
             await api().post('/sessions', {
                 email: data.email,
-                id: data.id
+                user_code: data.id,
+                magic_code: 'b4t4t4'
             }).then(res =>{
 
                 let dtAgora = new Date();
@@ -106,7 +109,7 @@ export function SignIn(){
                 if(err.response.data.message === "Usuário não encontrado"){
 
                     console.log("REDIRECIONA p/ CRIAR User");
-                    navigation.navigate('SignUp',{ userInfo });
+                    navigation.navigate('SignUp' as never, data as never );
 
                 }else{
                     console.log("ERRO ao fazer GET p/ a api /sessions");
@@ -120,7 +123,14 @@ export function SignIn(){
 
     async function GetUserInfos(token: string){
 
-        const config = { headers: { Authorization: `Bearer ${token}` } };
+        // const config = { headers: { Authorization: `Bearer ${token}` } };
+
+
+        // const config = {
+        //     "magic_code": "b4t4t4",
+        //     "user_code": res,
+        //     "email": token
+        // }
         
         await api(token).get('/users', config)
         .then(res =>{
@@ -128,7 +138,8 @@ export function SignIn(){
             let userInfos = res.data.user;
             userInfos = {
                 ...userInfos,
-                token: token
+                token: token,
+                magic_code: 'b4t4t4'
             }
 
             if(userInfos.id){

@@ -19,7 +19,7 @@ import { Cabecalho } from '../../../../components/Cabecalho';
 
 import { api } from '../../../../global/api';
 import { TipoAtendimentoList } from '../../../../components/TipoAtendimentoList';
-import { Button } from '../../../../components/Forms/Button/Index';
+import { Button } from '../../../../components/Buttons/Button/Index';
 
 interface IListaTipos{
     id: number,

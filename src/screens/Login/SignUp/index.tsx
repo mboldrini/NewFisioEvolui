@@ -3,19 +3,22 @@ import { TouchableWithoutFeedback, Keyboard, AsyncStorage } from 'react-native';
 import { InputMasked } from '../../../components/Forms/InputMasked';
 import { useForm } from 'react-hook-form';
 import { InputForm } from '../../../components/Forms/InputForm';
-import { Button } from '../../../components/Forms/Button/Index';
+import { Button } from '../../../components/Buttons/Button/Index';
 import * as Yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { 
     Container,
+    Part1,
+    CenterSpaced,
     Header,
     Title,
     Greetings,
     Name,
+    MessageWrap,
     Message,
-    Form,
-    Fields,
-    WrapFooterCadastro
+    MessageDescription,
+   
+    WrapHalfButton,
 } from './styles';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { api } from '../../../global/api';
@@ -58,67 +61,84 @@ export function SignUp(){
     const usrState = useSelector((state: State) => state.user);
 
     
-    const {
-        control,
-        handleSubmit,
-        formState: { errors }
-    } = useForm({
-        resolver: yupResolver(schema)
-    });
+    // const {
+    //     control,
+    //     handleSubmit,
+    //     formState: { errors }
+    // } = useForm({
+    //     resolver: yupResolver(schema)
+    // });
 
 
-    async function handleRegister(form: FormData){
+    // async function handleRegister(form: FormData){
 
-        const data = {
-            id,
-            email,
-            family_name,
-            given_name,
-            name,
-            picture,
-            crefito: form.crefito,
-            celular: form.celular,
-        }
+    //     const data = {
+    //         id,
+    //         email,
+    //         family_name,
+    //         given_name,
+    //         name,
+    //         picture,
+    //         crefito: form.crefito,
+    //         celular: form.celular,
+    //     }
 
-        api.post('users/', 
-            data
-        ).then(res =>{
-            console.log("SUCESSO!");
-            console.log(res.data);
-        }).catch(err=>{
-            alert("ERRO ao conectar na api!");
-            navigation.navigate('SignIn');
-            console.log(err.response.data);
-        });
+    //     api.post('users/', 
+    //         data
+    //     ).then(res =>{
+    //         console.log("SUCESSO!");
+    //         console.log(res.data);
+    //     }).catch(err=>{
+    //         alert("ERRO ao conectar na api!");
+    //         navigation.navigate('SignIn');
+    //         console.log(err.response.data);
+    //     });
 
-        await AsyncStorage.setItem(StorageKeys.user, JSON.stringify(data) );
-        /// Seta o REDUX
-        setUserInfos( data );
+    //     await AsyncStorage.setItem(StorageKeys.user, JSON.stringify(data) );
+    //     /// Seta o REDUX
+    //     setUserInfos( data );
     
-    }
+    // }
 
-    useEffect(()=>{
-        if(usrState.name){
-            navigation.navigate('MainTab');
-        }
-    },[usrState]);
+    // useEffect(()=>{
+    //     if(usrState.name){
+    //         navigation.navigate('MainTab');
+    //     }
+    // },[usrState]);
     
-
 
     return(
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <Container>
+
+        <Part1>
+
             <Header>
                 <Title>
                     <Greetings>Olá, </Greetings>
-                    <Name>Matheus!</Name>
+                    <Name>{name}!</Name>
                 </Title>
-                <Message>Antes de criar sua conta, preciso que nos forneça algumas informações básicas sobre você!</Message>
             </Header>
 
-            <Form >
-                <Fields>
+            <CenterSpaced>
+                <MessageWrap>
+                    <Message>Antes de criar sua conta, precisamos que nos forneça algumas informações básicas.</Message>
+                    <MessageDescription>Não se preocupe, é coisa rápida!</MessageDescription>
+                </MessageWrap>
 
+                <WrapHalfButton>
+                    <Button 
+                        title="Vamos lá!" 
+                        type="ok"
+                        onPress={() => console.log("FF")}
+                        largura={'half'}
+                        rightIcon={'arrow-right'}
+                    />
+                </WrapHalfButton>
+            </CenterSpaced>
+
+            {/* <Form >
+                {/* <Fields>
                     <InputForm 
                         name="crefito"
                         control={control}
@@ -126,7 +146,6 @@ export function SignUp(){
                         autoCorrect={false}
                         error={errors.crefito && errors.crefito.message}
                     />
-
                     <InputMasked
                         name="celular"
                         control={control}
@@ -139,18 +158,9 @@ export function SignUp(){
                             dddMask: '(99) '
                         }}
                     /> 
-                    
-                </Fields>
-
-                <WrapFooterCadastro>
-                    <Button 
-                        title="Criar" 
-                        type="ok"
-                        onPress={handleSubmit((d) => handleRegister(d as any))}
-                    />
-                </WrapFooterCadastro>
-
-            </Form>
+                </Fields> 
+            </Form> */}
+        </Part1>
 
         </Container>
         </TouchableWithoutFeedback>

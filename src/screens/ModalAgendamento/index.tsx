@@ -16,7 +16,7 @@ import {
     Footer,
     WrapBtn
 } from './styles';
-import { ButtonSimple } from '../../components/Forms/ButtonSimple/Index';
+import { ButtonSimple } from '../../components/Buttons/ButtonSimple/Index';
 
 interface Props{
     closeSelectCategory: () => void;
