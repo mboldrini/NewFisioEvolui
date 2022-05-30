@@ -9,7 +9,7 @@ interface Props{
     largura?: 'half' | 'full';
 }
 
-export const Container = styled(TouchableOpacity)<Props>`
+export const Container = styled(RectButton)<Props>`
     background-color: ${({theme}) => theme.colors.button_ok};
     border-radius: ${({theme}) => theme.bordas.padrao}px;
     align-items: center;

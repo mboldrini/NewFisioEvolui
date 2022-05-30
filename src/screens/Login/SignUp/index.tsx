@@ -27,7 +27,8 @@ import { api } from '../../../global/api';
 import { useDispatch, useSelector } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { actionCreators, State } from '../../../state';
-import { StorageKeys } from '../../../global/variaveis/globais';
+
+import * as Animatable from 'react-native-animatable';
 
 interface FormData{
     crefito: string,
@@ -110,13 +111,13 @@ export function SignUp(){
     return(
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <Container>
+            
 
-        <Part1>
-
+        <Part1  animation="fadeIn" duration={1500}>
             <Header>
                 <Title>
-                    <Greetings>Olá, </Greetings>
-                    <Name>{name}!</Name>
+                    <Greetings>Olá,</Greetings>
+                    <Name>{name}</Name>
                 </Title>
             </Header>
 
@@ -130,37 +131,14 @@ export function SignUp(){
                     <Button 
                         title="Vamos lá!" 
                         type="ok"
-                        onPress={() => console.log("FF")}
+                        onPress={() =>{ console.log("FF") } }
                         largura={'half'}
                         rightIcon={'arrow-right'}
                     />
                 </WrapHalfButton>
             </CenterSpaced>
-
-            {/* <Form >
-                {/* <Fields>
-                    <InputForm 
-                        name="crefito"
-                        control={control}
-                        placeholder="CREFITO"
-                        autoCorrect={false}
-                        error={errors.crefito && errors.crefito.message}
-                    />
-                    <InputMasked
-                        name="celular"
-                        control={control}
-                        placeholder="Celular"
-                        error={errors.celular && errors.celular.message}
-                        type="cel-phone"
-                        options={{
-                            maskType: 'BRL',
-                            withDDD: true,
-                            dddMask: '(99) '
-                        }}
-                    /> 
-                </Fields> 
-            </Form> */}
         </Part1>
+
 
         </Container>
         </TouchableWithoutFeedback>
