@@ -1,15 +1,23 @@
 import * as Animatable from 'react-native-animatable';
 import { RFValue } from "react-native-responsive-fontsize";
-import styled from "styled-components/native";
+import styled, { css } from "styled-components/native";
 
-//export const Container = styled.ScrollView`
+interface IProps{
+    page: number;
+}
+
 export const Container = styled.View`
     flex: 1;
     background-color: ${({theme}) => theme.colors.primary};
 `;
 
-export const Part1 = styled(Animatable.View)`
+export const Part1 = styled(Animatable.View)<IProps>`
     flex: 1;
+
+    ${({ page }) => page !== 0 && css `
+        display: none;
+    `};
+
 `;
 
 export const Header = styled.View`
@@ -72,4 +80,13 @@ export const WrapHalfButton = styled.View`
     margin: ${({theme}) => theme.margin.lateral_half}px  ${({theme}) => theme.margin.lateral}px;
 `;
 
+
+export const Part2 = styled(Animatable.View)<IProps>`
+    flex: 1;
+
+    ${({ page }) => page !== 1 && css `
+        display: none;
+    `};
+
+`;
 

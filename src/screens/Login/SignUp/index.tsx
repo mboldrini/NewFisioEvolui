@@ -17,8 +17,8 @@ import {
     MessageWrap,
     Message,
     MessageDescription,
-   
     WrapHalfButton,
+    Part2,
 } from './styles';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { api } from '../../../global/api';
@@ -61,6 +61,33 @@ export function SignUp(){
     const { setUserInfos } = bindActionCreators(actionCreators, dispatch);
     const usrState = useSelector((state: State) => state.user);
 
+    /// Parts
+    const [page, setPage] = useState(null);
+    const [pageZeroEffect, setPageZeroEffect] = useState(null);
+    const [pageUmEffect, setPageUmEffect] = useState(null);
+
+    const [duration, setDuration] = useState(null);
+
+    function ChangePage(page: number){
+        if(page == 0){
+            setPage(0);
+            setPageZeroEffect('fadeIn');
+        }
+        if(page == 1){
+            setPageZeroEffect('fadeOut');
+            setTimeout(()=>{
+                setDuration(1500);
+                setPageUmEffect('fadeIn');
+                setPage(1);
+
+            }, 1000);
+        }
+      
+    }
+
+    useEffect(()=>{
+        ChangePage(1);
+    }, []);
     
     // const {
     //     control,
@@ -113,7 +140,7 @@ export function SignUp(){
         <Container>
             
 
-        <Part1  animation="fadeIn" duration={1500}>
+        <Part1 animation={pageZeroEffect} duration={1000} page={page}>
             <Header>
                 <Title>
                     <Greetings>Olá,</Greetings>
@@ -131,13 +158,39 @@ export function SignUp(){
                     <Button 
                         title="Vamos lá!" 
                         type="ok"
-                        onPress={() =>{ console.log("FF") } }
+                        onPress={() =>{ ChangePage(1) } }
                         largura={'half'}
                         rightIcon={'arrow-right'}
                     />
                 </WrapHalfButton>
             </CenterSpaced>
         </Part1>
+
+        <Part2 animation={pageUmEffect} duration={duration} page={page}>
+            <Header>
+                <Title>
+                    <Greetings>Olá,</Greetings>
+                    <Name>BATATISTA</Name>
+                </Title>
+            </Header>
+
+            <CenterSpaced>
+                <MessageWrap>
+                    <Message>LOREM IMPSUM DOLOR</Message>
+                    <MessageDescription>Não se preocupe, é coisa rápida!</MessageDescription>
+                </MessageWrap>
+
+                <WrapHalfButton>
+                    <Button 
+                        title="Vamos lá!" 
+                        type="ok"
+                        onPress={() =>{ ChangePage(0) } }
+                        largura={'half'}
+                        rightIcon={'arrow-right'}
+                    />
+                </WrapHalfButton>
+            </CenterSpaced>
+        </Part2>
 
 
         </Container>
