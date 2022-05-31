@@ -11,9 +11,14 @@ export const Container = styled.View`
     background-color: ${({theme}) => theme.colors.primary};
 `;
 
+export const WrapToast = styled.View`
+    z-index: 1;
+`;
+
 export const Part1 = styled(Animatable.View)<IProps>`
     flex: 1;
     ${({ page }) => page !== 1 && css ` display: none; `};
+    z-index: -1;
 `;
 
 export const Header = styled.View`
@@ -79,6 +84,7 @@ export const WrapHalfButton = styled.View`
 export const Part2 = styled(Animatable.View)<IProps>`
     flex: 1;
     ${({ page }) => page !== 2 && css ` display: none; `};
+    z-index: -1;
 `;
 
 export const Description = styled.Text`
@@ -101,4 +107,5 @@ export const Fields = styled.View`
 export const Part3 = styled(Animatable.View)<IProps>`
     flex: 1;
     ${({ page }) => page !== 3 && css ` display: none; `};
+    z-index: -1;
 `;

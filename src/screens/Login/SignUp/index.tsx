@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { TouchableWithoutFeedback, Keyboard, AsyncStorage, ScrollView } from 'react-native';
+import { TouchableWithoutFeedback, Keyboard, AsyncStorage, ScrollView, Alert } from 'react-native';
 import { InputMasked } from '../../../components/Forms/InputMasked';
 import { useForm } from 'react-hook-form';
 import { InputForm } from '../../../components/Forms/InputForm';
@@ -8,6 +8,7 @@ import * as Yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { 
     Container,
+    WrapToast,
     Part1,
     CenterSpaced,
     Header,
@@ -35,6 +36,9 @@ import { actionCreators, State } from '../../../state';
 import * as Animatable from 'react-native-animatable';
 import { Select } from '../../../components/Forms/Select';
 import { ModalUF } from '../../../components/Modal/ModalUF';
+import { IUserBasicInfos, IUserParamsInfos } from './interfaces';
+import Toast from 'react-native-toast-message';
+
 
 interface FormData{
     nome: string,
@@ -58,26 +62,39 @@ const schema = Yup.object().shape({
     twitter: Yup.string().optional(),
 });
 
-interface IUserInfos{
-    email: string,
-    family_name: string,
-    given_name: string,
-    id: string;
-    name: string;
-    picture: string;
+const schemaAddress = Yup.object().shape({
+    address: Yup.string().required("Endereço é obrigatório"),
+    number: Yup.number().optional(),
+    city: Yup.string().required("Cidade é obrigatório"),
+    district: Yup.string().required("Bairro é obrigatório")
+});
+
+interface FormDataAddress{
+    address: string;
+    number: number;
+    city: string;
+    district: string;
 }
+
 
 
 export function SignUp(){
 
     const navigation = useNavigation();
     const route = useRoute();
-    const { id, email, family_name, given_name, name, picture } = route.params as IUserInfos;
+    const { id, email, family_name, given_name, name, picture } = route.params as IUserParamsInfos;
 
     // Redux de Usuários
-    const dispatch = useDispatch();
-    const { setUserInfos } = bindActionCreators(actionCreators, dispatch);
-    const usrState = useSelector((state: State) => state.user);
+    // const dispatch = useDispatch();
+    // const { setUserInfos } = bindActionCreators(actionCreators, dispatch);
+    // const usrState = useSelector((state: State) => state.user);
+
+    /// YUP Resolver
+    const { control, handleSubmit, formState: { errors }, reset } = useForm({ resolver: yupResolver(schema) });
+    const {control: controlAddress, handleSubmit: HandleSubmitUserAddress, formState: {errors: errorsAddress}, reset: resetDois} = useForm({ resolver: yupResolver(schemaAddress), });
+
+    /// User infos que serão cadastradas
+    const [userInfos, setUserInfos] = useState<IUserBasicInfos>(null);
 
     /// Parts
     const [duration, setDuration] = useState(null);
@@ -86,7 +103,7 @@ export function SignUp(){
     const [pageDoisEffect, setPageDoisEffect] = useState(null);
     const [pageTresEffect, setPageTresEffect] = useState(null);
 
-
+    /// User Address
     const [estado, setEstado] = useState({key: -1,name: 'UF'});
     const [modalUfVisible, setModalUfVisible] = useState(false);
 
@@ -98,7 +115,7 @@ export function SignUp(){
         if(page == 2){
             setPageUmEffect('fadeOut');
             setTimeout(()=>{
-                setDuration(1500);
+                setDuration(1); //1500
                 setPageDoisEffect('fadeIn');
                 setPage(2);
 
@@ -107,11 +124,11 @@ export function SignUp(){
         if(page == 3){
             setPageDoisEffect('fadeOut');
             setTimeout(()=>{
-                setDuration(1500);
+                setDuration(1);// 1500
                 setPageTresEffect('fadeIn');
                 setPage(3);
 
-            }, 1000);
+            }, 1); // 1000
         }
     }
 
@@ -124,16 +141,90 @@ export function SignUp(){
             emailProfissional: email,
             celular: '99999999999'
         });
+
+        resetDois({
+            address: "Av. Raul de Oliveira Neves",
+            number: "295",
+            city: "Vitória",
+            district: "Jardim Camburi"
+        });
+        setEstado({key: 32,name: 'ES - Espírito Santo'});
+
     }, []);
     
-    const { control, handleSubmit, formState: { errors }, reset } = useForm({
-        resolver: yupResolver(schema)
-    });
-
+ 
     function HandlePersonalInfos(form: FormData){
         if(Object.keys(errors).length < 1){
+            let basicInfos = {
+                magic_code: 'b4t4t4',
+                user_code: id,
+                name: form.nome,
+                family_name: form.sobrenome,
+                given_name: '_',
+                picture: picture,
+                email: email,
+                address: {
+                    address: '',
+                    number: 0,
+                    city: '',
+                    district: '',
+                    state: '',
+                    country: 'Brasil'
+                },
+                infos: {
+                    description:'.',
+                    professional_mail: form.emailProfissional,
+                    celphone: form.celular,
+                    second_celphone: '00000000000',
+                    website: form.website ? form.website : '.',
+                    instagram: form.instagram ? form.instagram :'.',
+                    twitter: form.twitter ? form.twitter : '.',
+                    tiktok: form.tiktok ? form.tiktok : '.'
+                }
+            }
+            setUserInfos(basicInfos);
+
             ChangePage(3);
         }
+    }
+
+    function HandleUserAddress(form: FormDataAddress){
+        if(estado.key == -1){
+            Alert.alert(
+                "Ops!",
+                "É necessário escolher um Estatdo",
+                [ { text: "OK"} ]
+            );
+            return;
+        }
+
+        let infos = userInfos;
+
+        infos.address.address = form.address;
+        infos.address.number = form.number;
+        infos.address.city = form.city;
+        infos.address.district = form.district;
+        infos.address.state = estado.name.split("-")[0].replace(" ", "");
+
+        CreateUser(infos);
+    }
+    
+    async function CreateUser(infos: IUserBasicInfos){
+        console.log(JSON.stringify(infos));
+        await api().post('/users/', infos).then(res =>{
+            console.log("OK!");
+            console.log(res);
+        }).catch(err=>{
+            console.log("DEU RUIM!");
+            console.log(err.response.data.message);
+
+            Toast.show({
+                type: 'error',
+                text1: 'Erro ao criar usuário',
+                text2: err.response.data.message
+            });
+
+        });
     }
 
     // async function handleRegister(form: FormData){
@@ -176,8 +267,12 @@ export function SignUp(){
     return(
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <Container>
-            
-        <Part1 animation={pageUmEffect} duration={1000} page={page}>
+
+        <WrapToast>
+            <Toast position={'top'}  autoHide={true} visibilityTime={6000} onPress={()=>Toast.hide()}/>
+        </WrapToast>
+
+        <Part1 animation={pageUmEffect} duration={1} page={page}>
             <Header>
                 <Title>
                     <Greetings>Olá,</Greetings>
@@ -291,11 +386,6 @@ export function SignUp(){
                             autoCorrect={false}
                             error={errors.twitter && errors.twitter.message}
                         />
-
-
-
-                        
-
                     </Fields>
                 </Form>
 
@@ -325,38 +415,38 @@ export function SignUp(){
 
                         <InputForm 
                             name="address"
-                            control={control}
+                            control={controlAddress}
                             placeholder="Endereço"
                             autoCapitalize="words"
                             autoCorrect={false}
-                            error={errors.address && errors.address.message}
+                            error={errorsAddress.address && errorsAddress.address.message}
                         />
 
                         <InputForm 
                             name="number"
-                            control={control}
+                            control={controlAddress}
                             placeholder="Numero"
                             autoCapitalize="words"
                             autoCorrect={false}
                             keyboardType="numeric"
-                            error={errors.number && errors.number.message}
+                            error={errorsAddress.number && errorsAddress.number.message}
                         />
 
                         <InputForm 
                             name="city"
-                            control={control}
+                            control={controlAddress}
                             placeholder="Cidade"
                             autoCapitalize="words"
                             autoCorrect={false}
-                            error={errors.city && errors.city.message}
+                            error={errorsAddress.city && errorsAddress.city.message}
                         />
                         <InputForm 
                             name="district"
-                            control={control}
+                            control={controlAddress}
                             placeholder="Bairro"
                             autoCapitalize="words"
                             autoCorrect={false}
-                            error={errors.district && errors.district.message}
+                            error={errorsAddress.district && errorsAddress.district.message}
                         />
                         <Select 
                             title={  estado.name }
@@ -371,7 +461,7 @@ export function SignUp(){
                     <Button 
                         title="Próximo" 
                         type="ok"
-                        onPress={() =>{ ChangePage(2) } }
+                        onPress={HandleSubmitUserAddress((d) =>  HandleUserAddress(d as FormDataAddress) )}
                         largura={'half'}
                         rightIcon={'arrow-right'}
                     />

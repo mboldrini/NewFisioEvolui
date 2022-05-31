@@ -93,7 +93,6 @@ export function SignIn(){
                 user_code: data.id,
                 magic_code: 'b4t4t4'
             }).then(res =>{
-
                 let dtAgora = new Date();
 
                 setApiInfos({
@@ -132,21 +131,24 @@ export function SignIn(){
         //     "email": token
         // }
         
-        await api(token).get('/users', config)
+        await api(token).get('/users')
         .then(res =>{
 
-            let userInfos = res.data.user;
-            userInfos = {
-                ...userInfos,
-                token: token,
-                magic_code: 'b4t4t4'
-            }
+            console.log("USER INFOS:");
+            console.log(res.data);
 
-            if(userInfos.id){
-                setUserInfos( userInfos );
-            }
+            // let userInfos = res.data.user;
+            // userInfos = {
+            //     ...userInfos,
+            //     token: token,
+            //     magic_code: 'b4t4t4'
+            // }
 
-            navigation.navigate("MainTab" as never);
+            // if(userInfos.id){
+            //     setUserInfos( userInfos );
+            // }
+
+            // navigation.navigate("MainTab" as never);
 
             setLoading(false);
 
@@ -157,7 +159,6 @@ export function SignIn(){
             if(err.response.data.message == "Invalid JWT token"){
                 console.log("Pega o token");
             }
-
 
             setLoading(false);
 
