@@ -13,11 +13,7 @@ export const Container = styled.View`
 
 export const Part1 = styled(Animatable.View)<IProps>`
     flex: 1;
-
-    ${({ page }) => page !== 0 && css `
-        display: none;
-    `};
-
+    ${({ page }) => page !== 1 && css ` display: none; `};
 `;
 
 export const Header = styled.View`
@@ -42,7 +38,6 @@ export const Greetings = styled.Text`
     color: #ffffff;
     margin: 0px;
     padding: 0px;
-
 `;
 
 export const Name = styled.Text`
@@ -83,10 +78,27 @@ export const WrapHalfButton = styled.View`
 
 export const Part2 = styled(Animatable.View)<IProps>`
     flex: 1;
-
-    ${({ page }) => page !== 1 && css `
-        display: none;
-    `};
-
+    ${({ page }) => page !== 2 && css ` display: none; `};
 `;
 
+export const Description = styled.Text`
+    font-family: ${({theme}) => theme.fonts.regular};
+    font-size: ${RFValue(30)}px;
+    color: #ffffff;
+    margin: 0px;
+    padding: 0px;
+`;
+
+export const Form = styled.View`
+    margin-bottom: ${RFValue(30)}px;
+    z-index: -2;
+`;
+
+export const Fields = styled.View`
+    margin-bottom: ${({theme}) => theme.margin.bottom}px;
+`;
+
+export const Part3 = styled(Animatable.View)<IProps>`
+    flex: 1;
+    ${({ page }) => page !== 3 && css ` display: none; `};
+`;

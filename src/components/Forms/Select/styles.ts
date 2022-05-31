@@ -14,9 +14,9 @@ export const Container = styled.TouchableOpacity.attrs({
     background-color: ${({theme}) => theme.colors.input_background};
     border-radius: ${({theme}) => theme.bordas.padrao}px;
     height: ${RFValue(60)}px;
-    margin: 0 ${({theme}) => theme.padding.lateral}px;
+    margin: 0 ${({theme}) => theme.padding.lateral_half}px;
     margin-bottom: ${({theme}) => theme.margin.input_bottom}px;
-    padding: 0 20px;
+    padding: 0 ${RFValue(10)}px;
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
