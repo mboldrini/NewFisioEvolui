@@ -112,8 +112,10 @@ export const Body = styled.ScrollView.attrs({
 export const BtnList = styled.TouchableOpacity<Props>`
     margin-bottom: ${RFValue(5)}px;
     width: 100%;
-    background-color: ${({theme}) => theme.colors.shape};
-    border-radius: ${({theme}) => theme.bordas.padrao}px;
+    /* background-color: ${({theme}) => theme.colors.shape}; */
+    /* border-radius: ${({theme}) => theme.bordas.padrao}px; */
+    border-bottom-color: #4EADBE;
+    border-bottom-width: 1px;
     padding: ${RFValue(5)}px;
     flex-direction: row;
     align-items: center;
@@ -129,26 +131,26 @@ export const WrapIcone = styled.View`
 `;
 
 export const Icone = styled(FontAwesome5)<Props>`
-    color: ${({theme}) => theme.colors.secondary};
+    color: #ffffff;
     font-size: ${RFValue(16)}px;
     align-items: center;
     justify-content: center;
 
     ${({ enabled }) => enabled == false && css `
-        color: #c3c3c3;
+        color: #4EADBE;
     `};
 `;
 
 export const TituloList = styled.Text<Props>`
-    font-family: ${({theme}) => theme.fonts.regular};
+    font-family: ${({theme}) => theme.fonts.bold};
     font-size: ${RFValue(16)}px;
-    color: #000000;
+    color: #ffffff;
     align-items: center;
     justify-content: center;
     padding-left: ${RFValue(10)}px;
 
     ${({ enabled }) => enabled == false && css `
-        color: #c3c3c3;
+        color: #4EADBE;
     `};
 `;
 

@@ -13,20 +13,28 @@ import {
     LoadingIcon,
     WrapSemAtendimentos,
     AvisoSemAtendimentos,
-    WrapBtnCadastro
+    WrapBtnCadastro,
+
+    TipoPagamentoList,
+    WrapText,
+    NomeTipoPagamento,
+    Descricao,
+
+    WrapIcone,
+    Icone
 } from './styles';
 import { Cabecalho } from '../../../../components/Cabecalho';
 
 import { api } from '../../../../global/api';
-import { TipoAtendimentoList } from '../../../../components/TipoAtendimentoList';
-import { Button } from '../../../../components/Buttons/Button/Index';
 import { RoundButton } from '../../../../components/Buttons/RoundButton/Index';
 
 interface IListaTipos{
     id: number,
-    nome: string,
-    valor: number,
-    descricao: string
+    paymentMethod_name: string,
+    description: string,
+    paymentMethod_id: number,
+    created_at: string,
+    updated_at: string,    
 }
 
 export function ListarFormasPagamento(){
@@ -37,36 +45,37 @@ export function ListarFormasPagamento(){
     const [loading, setLoading] = useState(true);
     
     const usrState = useSelector((state: State) => state.user);
+    const apiState = useSelector((state: State) => state.apiReducer);
 
     const [listaTipos, setListaTipos] = useState<IListaTipos[]>([]);
 
 
-    // async function GetListaAtendimentos(){
+    async function GetListaAtendimentos(){
 
-    //     setListaTipos([]);
-    //     setLoading(true);
+        setListaTipos([]);
+        setLoading(true);
        
-    //     await api(usrState.token).get('tipoAtendimento/all').then(res =>{
+        await api(apiState.token).get('paymentmethod/user/all').then(res =>{
 
-    //         console.log("Ok?");
-    //         console.log(res.data);
+            console.log("Ok?");
+            console.log(res.data);
 
-    //         setListaTipos(res.data);
+            setListaTipos(res.data);
 
-    //     }).catch(err => {
-    //         console.log("ERRO");
-    //         console.log(err);
-    //         Toast.show({
-    //             type: 'error',
-    //             text1: '⚠️ Erro ao obter lista de atendimentos',
-    //         });
-    //     });
+        }).catch(err => {
+            console.log("ERRO");
+            console.log(err);
+            Toast.show({
+                type: 'error',
+                text1: '⚠️ Erro ao obter lista de formas de pagamento',
+            });
+        });
 
-    //     setLoading(false);
-    // }
+        setLoading(false);
+    }
 
     useEffect(()=>{
-    //    GetListaAtendimentos();
+        GetListaAtendimentos();
     },[]);
 
     return(
@@ -87,13 +96,17 @@ export function ListarFormasPagamento(){
                 { listaTipos &&
                     <FlatList 
                         data={listaTipos}
-                        keyExtractor={(item) => item.nome}
+                        keyExtractor={(item) => item.paymentMethod_name}
                         renderItem={({item}) =>(
-                            <TipoAtendimentoList 
-                                valor={item.valor} 
-                                nome={item.nome} 
-                                onPress={()=> navigation.navigate('TipoAtendimento' as never, { id: item.id } as never) }  
-                            />
+                            <TipoPagamentoList>
+                                <WrapText>
+                                    <NomeTipoPagamento numberOfLines={1} ellipsizeMode="tail">{ item.paymentMethod_name }</NomeTipoPagamento>
+                                    <Descricao numberOfLines={1} ellipsizeMode="tail" >{ item.description }</Descricao>
+                                </WrapText>
+                                <WrapIcone onPress={()=> console.log(item.paymentMethod_name)}>
+                                    <Icone name="ellipsis-v"/>
+                                </WrapIcone>
+                            </TipoPagamentoList>
                         )}
                     />
                 }
@@ -104,7 +117,7 @@ export function ListarFormasPagamento(){
 
                 { !loading && listaTipos.length < 1 &&
                     <WrapSemAtendimentos>
-                        <AvisoSemAtendimentos>Nenhum atendimento cadastrado</AvisoSemAtendimentos>
+                        <AvisoSemAtendimentos>Nenhuma forma de pagamento cadastrada </AvisoSemAtendimentos>
                     </WrapSemAtendimentos>
                 }
 
