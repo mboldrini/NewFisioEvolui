@@ -44,7 +44,6 @@ export function ListarFormasPagamento(){
 
     const [loading, setLoading] = useState(true);
     
-    const usrState = useSelector((state: State) => state.user);
     const apiState = useSelector((state: State) => state.apiReducer);
 
     const [listaTipos, setListaTipos] = useState<IListaTipos[]>([]);
@@ -84,10 +83,10 @@ export function ListarFormasPagamento(){
             <Toast position={'top'}  autoHide={true} visibilityTime={6000} onPress={()=>Toast.hide()}/>
         </WrapToast>
 
-        <ScrollView refreshControl={<RefreshControl refreshing={refreshing} onRefresh={()=>{ console.log("Deu refresh") /*GetListaAtendimentos()*/ }}/> } 
+        <ScrollView refreshControl={<RefreshControl refreshing={refreshing} onRefresh={()=>{ GetListaAtendimentos() }}/> } 
          contentContainerStyle={{flexGrow: 1}}>
 
-            <Cabecalho titulo="Formas de Pagamento" onPress={()=> navigation.goBack() } />
+            <Cabecalho titulo="Formas de Pagamento" onPress={()=> navigation.goBack() }  />
 
             <WrapCentral>
 
@@ -101,9 +100,14 @@ export function ListarFormasPagamento(){
                             <TipoPagamentoList>
                                 <WrapText>
                                     <NomeTipoPagamento numberOfLines={1} ellipsizeMode="tail">{ item.paymentMethod_name }</NomeTipoPagamento>
-                                    <Descricao numberOfLines={1} ellipsizeMode="tail" >{ item.description }</Descricao>
+                                    { item.description && 
+                                        <Descricao numberOfLines={1} ellipsizeMode="tail" >{ item.description }</Descricao> 
+                                    }
+                                    { !item.description && 
+                                        <Descricao numberOfLines={1} ellipsizeMode="tail" >item sem descrição cadastrada</Descricao> 
+                                    }
                                 </WrapText>
-                                <WrapIcone onPress={()=> console.log(item.paymentMethod_name)}>
+                                <WrapIcone onPress={()=> navigation.navigate('FormaPagamento' as never, { id: item.id } as never ) }>
                                     <Icone name="ellipsis-v"/>
                                 </WrapIcone>
                             </TipoPagamentoList>
@@ -125,7 +129,7 @@ export function ListarFormasPagamento(){
             
             <WrapBtnCadastro>
                 <RoundButton 
-                    onPress={()=> console.log("FF") /*navigation.navigate('TipoAtendimento' as never, { id: null } as never )*/ }
+                    onPress={()=> navigation.navigate('FormaPagamento' as never, { id: null } as never  ) }
                     type="ok"
                 />
             </WrapBtnCadastro>

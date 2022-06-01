@@ -3,6 +3,10 @@ import { RFValue } from "react-native-responsive-fontsize";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { RectButton } from "react-native-gesture-handler";
 
+interface IDelExist{
+    exist: boolean;
+}
+
 export const Container = styled.View`
     flex-direction: row;
     align-items: center;
@@ -16,7 +20,6 @@ export const WrapLeft = styled.View`
     flex-direction: row;
     align-items: center;
     justify-content: flex-start;
-    /* border: 1px solid red; */
 `;
 
 export const WrapIcon = styled(RectButton)`
@@ -31,7 +34,18 @@ export const IconeLeft = styled(FontAwesome5)`
 
 export const IconeRight = styled(FontAwesome5)`
     color: ${({theme}) => theme.colors.shape};
-    font-size: ${RFValue(20)}px;
+    font-size: ${RFValue(18)}px;
+`;
+
+export const WrapTitle = styled.View<IDelExist>`
+    flex: 1;
+    align-items: center;
+    justify-content: center;
+
+    ${({ exist }) => exist == false && css `
+        margin-right: ${RFValue(28)}px;
+    `};
+
 `;
 
 export const Titulo = styled.Text`

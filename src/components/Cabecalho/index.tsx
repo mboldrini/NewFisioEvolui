@@ -6,6 +6,7 @@ import {
     WrapIcon,
     IconeLeft,
     IconeRight,
+    WrapTitle,
     Titulo
 } from './styles';
 
@@ -23,7 +24,9 @@ export function Cabecalho({titulo, onPress, onPressDel, arrowSide, ...rest}: Pro
                 <WrapIcon onPress={onPress} {...rest}>
                     <IconeLeft name={ arrowSide ? arrowSide : 'chevron-left' }/>
                 </WrapIcon>
-                <Titulo>{titulo}</Titulo>
+                <WrapTitle exist={ !onPress ? true : false }>
+                    <Titulo>{titulo}</Titulo>
+                </WrapTitle>
             </WrapLeft>
             { onPressDel &&
                 <WrapIcon onPress={onPressDel} {...rest}>

@@ -118,9 +118,9 @@ export function Profile(){
                     <WrapIcone><Icone name="chevron-right" enabled={true}/></WrapIcone>
                 </BtnList>
 
-                <BtnList onPress={()=> navigation.navigate('ListarTiposAtendimentos' as never)}>
-                    <TituloList>Tipo de Atendimento</TituloList>
-                    <WrapIcone><Icone name="chevron-right" enabled={true}/></WrapIcone>
+                <BtnList enabled={false} onPress={()=> console.log("tipos") /*navigation.navigate('ListarTiposAtendimentos' as never)*/ }>
+                    <TituloList enabled={false}>Tipo de Atendimento</TituloList>
+                    <WrapIcone><Icone name="chevron-right" enabled={false}/></WrapIcone>
                 </BtnList>
 
                 <BtnList enabled={false}>
@@ -128,14 +128,14 @@ export function Profile(){
                     <WrapIcone><Icone name="chevron-right" enabled={false}/></WrapIcone>
                 </BtnList>
 
-                <BtnList onPress={() => navigation.navigate('ConfiguracoesPessoais' as never) }>
-                    <TituloList>Configurações</TituloList>
-                    <WrapIcone><Icone name="chevron-right" enabled={true}/></WrapIcone>
+                <BtnList  enabled={false} onPress={() =>  console.log("configs") /*navigation.navigate('ConfiguracoesPessoais' as never)*/ }>
+                    <TituloList enabled={false}>Configurações</TituloList>
+                    <WrapIcone><Icone name="chevron-right" enabled={false}/></WrapIcone>
                 </BtnList>
 
-                <BtnList enabled={true}>
-                    <TituloList enabled={true}>Sobre</TituloList>
-                    <WrapIcone><Icone name="chevron-right" enabled={true}/></WrapIcone>
+                <BtnList enabled={false}>
+                    <TituloList enabled={false}>Sobre</TituloList>
+                    <WrapIcone><Icone name="chevron-right" enabled={false}/></WrapIcone>
                 </BtnList>
             </Body>
 

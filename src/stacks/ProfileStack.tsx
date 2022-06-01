@@ -6,6 +6,7 @@ import { ListarTiposAtendimentos } from '../screens/Configs/TiposAtendimentos/Li
 import { TipoAtendimento } from '../screens/Configs/TiposAtendimentos/TipoAtendimento';
 import { ConfiguracoesPessoais } from '../screens/Configs/ConfiguracoesPessoais';
 import { ListarFormasPagamento } from '../screens/Configs/FormasPagamento/ListarFormasPagamento';
+import { FormaPagamento } from '../screens/Configs/FormasPagamento/FormaPagamento';
 
 
 const Stack = createStackNavigator();
@@ -25,6 +26,7 @@ export default function ProfileStack(){
                 <Stack.Screen name="ConfiguracoesPessoais" component={ConfiguracoesPessoais} options={{headerShown:false}} /> 
 
                 <Stack.Screen name="ListarFormasPagamento" component={ListarFormasPagamento} options={{headerShown:false}} /> 
+                <Stack.Screen name="FormaPagamento" component={FormaPagamento} options={{headerShown:false}} /> 
             </Stack.Group>
         </Stack.Navigator>
 
