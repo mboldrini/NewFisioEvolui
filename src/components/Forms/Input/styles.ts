@@ -6,9 +6,8 @@ export const Container = styled(TextInput)`
     background-color: ${({theme}) => theme.colors.input_background};
     border-radius: ${({theme}) => theme.bordas.padrao}px;
     height: ${RFValue(60)}px;
-    margin: 0 ${({theme}) => theme.padding.lateral}px;
+    margin: 0 ${({theme}) => theme.padding.lateral_half}px;
     margin-bottom: ${({theme}) => theme.margin.input_bottom}px;
-    padding: 0 20px;
     color: #000000;
     border-width: 1px;
     border-color: ${({theme}) => theme.colors.input_background};
@@ -18,6 +17,9 @@ export const Container = styled(TextInput)`
         height: ${RFValue(120)}px;
         flex-wrap: wrap;
     `};
+
+    padding-left: 10px;
+    font-size: ${RFValue(14)}px;
 
 `;
 export const Error = styled.Text`

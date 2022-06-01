@@ -6,14 +6,48 @@ export enum ActionType{
 }
 
 export interface IUserType{
-    email: string,
-    family_name: string,
-    given_name: string;
-    id: string,
+    user_code: string,
     name: string,
-    picture: string;
-    token: string;
+    family_name: string,
+    given_name?: string,
+    picture: string,
+    email: string,
+    enabled: boolean,
+    created_at: string,
+    address: IAddress,
+    configs: IConfigs,
+    personal_infos: IPersonalInfos
 }
+
+interface IAddress{
+    address: string,
+    number: number,
+    city: string,
+    district: string,
+    state: string,
+    country: string
+}
+interface IConfigs{
+    start_workHour: string,
+    end_workHour: string,
+    allow_retroactiveDate: boolean,
+    allow_notifications: boolean,
+    schedule_startDay: boolean,
+    user_premium: boolean,
+    premium_type: number,
+    premium_until: string
+}
+interface IPersonalInfos{
+    description?: string,
+    professional_mail: string,
+    celphone: string,
+    second_celphone?: string,
+    website?: string,
+    instagram?: string,
+    twitter?: string,
+    tiktok?: string
+}
+
 
 export interface IApiInfos{
     token: string;

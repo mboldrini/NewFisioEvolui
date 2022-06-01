@@ -8,10 +8,11 @@ export const Container = styled(TextInputMask)`
     background-color: ${({theme}) => theme.colors.input_background};
     border-radius: ${({theme}) => theme.bordas.padrao}px;
     height: ${RFValue(60)}px;
-    margin: 0 ${({theme}) => theme.padding.lateral}px;
+    margin: 0 ${({theme}) => theme.padding.lateral_half}px;
     margin-bottom: ${({theme}) => theme.margin.input_bottom}px;
-    padding: 0 20px;
+    padding-left: 10px;
     color: #000000;
+    font-size: ${RFValue(14)}px;
     border-width: 1px;
     border-color: ${({theme}) => theme.colors.input_background};
     border-bottom-width: 1px;

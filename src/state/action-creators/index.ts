@@ -5,20 +5,22 @@ import { Action } from '../actions/index';
 
 // o conteudo aqui são funções que disparam actions
 
-export const setUserInfos = ({email, family_name, given_name, id, name, picture, token}: IUserType) => {
+export const setUserInfos = ({user_code, name, family_name, given_name, picture, email, enabled, created_at, address, configs, personal_infos}: IUserType) => {
     return (dispatch: Dispatch<Action>) => {
         dispatch({
             type: ActionType.SETINFOS,
             payload: {
-                infos: {
-                    email, 
-                    family_name,
-                    given_name,
-                    id,
-                    name,
-                    picture,
-                    token
-                }
+                user_code,
+                name,
+                family_name,
+                given_name,
+                picture,
+                email,
+                enabled,
+                created_at,
+                address, 
+                configs, 
+                personal_infos
             }
         })
     }

@@ -93,7 +93,6 @@ export function SignIn(){
                 user_code: data.id,
                 magic_code: 'b4t4t4'
             }).then(res =>{
-
                 let dtAgora = new Date();
 
                 setApiInfos({
@@ -122,29 +121,28 @@ export function SignIn(){
     }
 
     async function GetUserInfos(token: string){
-
-        // const config = { headers: { Authorization: `Bearer ${token}` } };
-
-
-        // const config = {
-        //     "magic_code": "b4t4t4",
-        //     "user_code": res,
-        //     "email": token
-        // }
         
-        await api(token).get('/users', config)
+        await api(token).get('/users')
         .then(res =>{
 
-            let userInfos = res.data.user;
-            userInfos = {
-                ...userInfos,
-                token: token,
-                magic_code: 'b4t4t4'
-            }
+            console.log("USER INFOS:");
+            console.log(res.data);
 
-            if(userInfos.id){
-                setUserInfos( userInfos );
-            }
+            setUserInfos({
+                user_code: res.data.user_code,
+                name: res.data.name,
+                family_name: res.data.family_name,
+                given_name: res.data.given_name,
+                picture: res.data.picture,
+                email: res.data.email,
+                enabled: res.data.enabled,
+                created_at: res.data.created_at,
+                address: res.data.address, 
+                configs: res.data.configs, 
+                personal_infos: res.data.personal_infos
+            })
+
+            setUserInfos(res.data);
 
             navigation.navigate("MainTab" as never);
 
@@ -158,44 +156,39 @@ export function SignIn(){
                 console.log("Pega o token");
             }
 
-
             setLoading(false);
 
         });
 
     }
 
+    async function ValidaSessionInfos(){
+        setLoading(true); 
+
+        if(!usrState.email){
+            setLoading(false);
+            console.log("%cNão foi encontrado infos prévias do usuario salvas no dispositivo",'background: #222; color: #ffc400');
+            return;
+        }
+        if(!apiState.token){
+            setLoading(false);
+            console.log("%cNão foi encontrado um token de api salvo previamente",'background: #222; color: #ffc400');
+            return;
+        }
+
+        if( isBefore( addHours( parseISO(apiState.date), 20) , new Date() ) ){
+            console.log("É depois! pega o token novo!");
+            setLoading(false);
+            return;
+        }else{
+            console.log("pega user infos e faz login!");
+            GetUserInfos(apiState.token);
+        }
+
+    }
 
     useEffect(()=>{
-
-        async function ValidaSessionInfos(){
-            setLoading(true); 
-
-            if(!usrState.email){
-                setLoading(false);
-                console.warn("Não foi encontrado infos prévias do usuario salvas no dispositivo");
-                return;
-            }
-            if(!apiState.token){
-                setLoading(false);
-                console.warn("Não foi encontrado um token de api salvo previamente");
-                return;
-            }
-
-            console.log(usrState);
-    
-            if( isBefore( addHours( parseISO(apiState.date), 20) , new Date() ) ){
-                console.info("É depois! pega o token novo!");
-                setLoading(false);
-                return;
-            }else{
-                console.info("pega user infos e faz login!");
-                GetUserInfos(apiState.token);
-            }
-    
-        }
         ValidaSessionInfos();
-
     }, []);
 
 

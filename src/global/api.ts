@@ -12,9 +12,15 @@ const OAuthGoogleInfos = {
 }
 
 function api(token?: string){
+    if(token){
+        return axios.create({
+            baseURL: 'http://192.168.15.108:3333',
+            headers: {'Authorization': 'Bearer '+ token },
+            timeout: 2 * 60 * 5000
+        });  
+    }
     return axios.create({
         baseURL: 'http://192.168.15.108:3333',
-        headers: {'Authorization': 'Bearer '+ token },
         timeout: 2 * 60 * 5000
     });  
 }
