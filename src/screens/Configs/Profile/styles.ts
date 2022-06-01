@@ -102,27 +102,23 @@ export const Body = styled.ScrollView.attrs({
     vertical: true,
     showsHorizontalScrollIndicator:false,
     contentContainerStyle:{
-        paddingHorizontal: 24 ,
+        paddingHorizontal: 10,
     }
 })`
     flex: 1;
     margin-top: ${RFValue(15)}px;
 `;
 
-export const BtnList = styled(RectButton)<Props>`
+export const BtnList = styled.TouchableOpacity<Props>`
     margin-bottom: ${RFValue(5)}px;
     width: 100%;
-    background-color: ${({theme}) => theme.colors.secondary};
+    background-color: ${({theme}) => theme.colors.shape};
     border-radius: ${({theme}) => theme.bordas.padrao}px;
-    padding: 10px;
+    padding: ${RFValue(5)}px;
     flex-direction: row;
     align-items: center;
-    justify-content: flex-start;
-    margin-bottom: ${({theme}) => theme.margin.bottom};
-
-    ${({ enabled }) => enabled == false && css `
-        background-color: ${({theme}) => theme.colors.secondary_light};
-    `};
+    justify-content: space-between;
+    margin-bottom: ${RFValue(5)}px;
 
 `;
 
@@ -133,9 +129,8 @@ export const WrapIcone = styled.View`
 `;
 
 export const Icone = styled(FontAwesome5)<Props>`
-    color: #ffffff;
-    padding-right: ${RFValue(5)}px;
-    font-size: ${RFValue(30)}px;
+    color: ${({theme}) => theme.colors.secondary};
+    font-size: ${RFValue(16)}px;
     align-items: center;
     justify-content: center;
 
@@ -146,11 +141,11 @@ export const Icone = styled(FontAwesome5)<Props>`
 
 export const TituloList = styled.Text<Props>`
     font-family: ${({theme}) => theme.fonts.regular};
-    font-size: ${RFValue(20)}px;
-    color: #ffffff;
+    font-size: ${RFValue(16)}px;
+    color: #000000;
     align-items: center;
     justify-content: center;
-    padding-left: ${RFValue(15)}px;
+    padding-left: ${RFValue(10)}px;
 
     ${({ enabled }) => enabled == false && css `
         color: #c3c3c3;

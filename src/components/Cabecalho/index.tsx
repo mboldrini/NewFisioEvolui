@@ -20,15 +20,15 @@ export function Cabecalho({titulo, onPress, onPressDel, arrowSide, ...rest}: Pro
     return(
         <Container>
             <WrapLeft>
-            <WrapIcon onPress={onPress} {...rest}>
-                <IconeLeft name={ arrowSide ? arrowSide : 'chevron-left' }/>
-            </WrapIcon>
-            <Titulo>{titulo}</Titulo>
+                <WrapIcon onPress={onPress} {...rest}>
+                    <IconeLeft name={ arrowSide ? arrowSide : 'chevron-left' }/>
+                </WrapIcon>
+                <Titulo>{titulo}</Titulo>
             </WrapLeft>
             { onPressDel &&
-            <WrapIcon onPress={onPressDel} {...rest}>
-                <IconeRight name="trash"/>
-            </WrapIcon>
+                <WrapIcon onPress={onPressDel} {...rest}>
+                    <IconeRight name="trash"/>
+                </WrapIcon>
             }
             
         </Container>

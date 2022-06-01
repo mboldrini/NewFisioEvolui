@@ -16,7 +16,7 @@ export default function HomeStack(){
             }}
         >   
             <Stack.Group>
-                <Stack.Screen name="Home"                component={Home}                options={{headerShown:false}} /> 
+                <Stack.Screen name="Home2"               component={Home}                options={{headerShown:false}} /> 
                 <Stack.Screen name="PacientePerfil"      component={PacientePerfil}      options={{headerShown:false}}  />
                 <Stack.Screen name="PacienteAtendimento" component={PacienteAtendimento} options={{headerShown:false}}  />
             </Stack.Group>

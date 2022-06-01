@@ -108,29 +108,34 @@ export function Profile(){
 
 
             <Body>
-                <BtnList enabled={false}>
-                    <WrapIcone><Icone name="address-card" enabled={false}/></WrapIcone>
-                    <TituloList enabled={false}>Meu Perfil</TituloList>
+                <BtnList enabled={true}>
+                    <TituloList enabled={true}>Meu Perfil</TituloList>
+                    <WrapIcone><Icone name="chevron-right" enabled={true}/></WrapIcone>
+                </BtnList>
+
+                <BtnList onPress={()=> navigation.navigate('ListarFormasPagamento' as never)}>
+                    <TituloList>Formas de Pagamento</TituloList>
+                    <WrapIcone><Icone name="chevron-right" enabled={true}/></WrapIcone>
                 </BtnList>
 
                 <BtnList onPress={()=> navigation.navigate('ListarTiposAtendimentos' as never)}>
-                    <WrapIcone><Icone name="address-book"/></WrapIcone>
                     <TituloList>Tipo de Atendimento</TituloList>
+                    <WrapIcone><Icone name="chevron-right" enabled={true}/></WrapIcone>
                 </BtnList>
 
                 <BtnList enabled={false}>
-                    <WrapIcone><Icone name="chart-bar" enabled={false}/></WrapIcone>
                     <TituloList enabled={false}>Estatísticas</TituloList>
+                    <WrapIcone><Icone name="chevron-right" enabled={false}/></WrapIcone>
                 </BtnList>
 
                 <BtnList onPress={() => navigation.navigate('ConfiguracoesPessoais' as never) }>
-                    <WrapIcone><Icone name="wrench"/></WrapIcone>
                     <TituloList>Configurações</TituloList>
+                    <WrapIcone><Icone name="chevron-right" enabled={true}/></WrapIcone>
                 </BtnList>
 
-                <BtnList enabled={false}>
-                    <WrapIcone><Icone name="question" enabled={false}/></WrapIcone>
-                    <TituloList enabled={false}>Sobre</TituloList>
+                <BtnList enabled={true}>
+                    <TituloList enabled={true}>Sobre</TituloList>
+                    <WrapIcone><Icone name="chevron-right" enabled={true}/></WrapIcone>
                 </BtnList>
             </Body>
 

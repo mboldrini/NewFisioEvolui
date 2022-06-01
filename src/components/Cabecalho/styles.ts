@@ -14,30 +14,31 @@ export const Container = styled.View`
 export const WrapLeft = styled.View`
     flex: 1;
     flex-direction: row;
-    align-items: flex-start;
+    align-items: center;
     justify-content: flex-start;
     /* border: 1px solid red; */
 `;
 
-export const WrapIcon = styled(RectButton)``;
+export const WrapIcon = styled(RectButton)`
+    padding: ${RFValue(5)}px;
+`;
 
 export const IconeLeft = styled(FontAwesome5)`
     color: ${({theme}) => theme.colors.shape};
-    font-size: ${RFValue(30)}px;
+    font-size: ${RFValue(20)}px;
     margin-right: ${RFValue(15)}px;
 `;
 
 export const IconeRight = styled(FontAwesome5)`
     color: ${({theme}) => theme.colors.shape};
-    font-size: ${RFValue(28)}px;
+    font-size: ${RFValue(20)}px;
 `;
 
 export const Titulo = styled.Text`
-    font-size: ${RFValue(22)}px;
+    font-size: ${RFValue(20)}px;
     color: ${({theme}) => theme.colors.shape};
     font-family: ${({theme}) => theme.fonts.regular};
-    /* margin-right: ${RFValue(50)}px; */
-    /* padding-left: ${RFValue(20)}px; */
+    align-items: center;
 `;
 
 
