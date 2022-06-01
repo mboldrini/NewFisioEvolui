@@ -13,8 +13,8 @@ export const Container = styled.TouchableOpacity<Props>`
     border-radius: 50px;
     align-items: center;
     justify-content: center;
-    width: ${RFValue(60)}px;
-    height: ${RFValue(60)}px;
+    width: ${RFValue(50)}px;
+    height: ${RFValue(50)}px;
 
     ${({ type }) => type === "ok" && css `
         background-color: ${({theme}) => theme.colors.success};
@@ -28,6 +28,6 @@ export const Container = styled.TouchableOpacity<Props>`
 
 export const Icon = styled(FontAwesome5)`
     color: ${({theme}) => theme.colors.shape};
-    font-size: ${RFValue(30)}px;
+    font-size: ${RFValue(25)}px;
 `;
 
