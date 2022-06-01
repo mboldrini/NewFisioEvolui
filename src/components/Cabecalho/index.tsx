@@ -13,11 +13,13 @@ import {
 interface Props extends RectButtonProps{
     titulo: string,
     onPress: () => void;
-    onPressDel?: () => void;
+    onPressSecond?: () => void;
+    onPressSecondIcon?: string;
     arrowSide?: string;
 }
 
-export function Cabecalho({titulo, onPress, onPressDel, arrowSide, ...rest}: Props){
+export function Cabecalho({titulo, onPress, onPressSecond, onPressSecondIcon = 'trash', arrowSide, ...rest}: Props){
+
     return(
         <Container>
             <WrapLeft>
@@ -28,9 +30,9 @@ export function Cabecalho({titulo, onPress, onPressDel, arrowSide, ...rest}: Pro
                     <Titulo>{titulo}</Titulo>
                 </WrapTitle>
             </WrapLeft>
-            { onPressDel &&
-                <WrapIcon onPress={onPressDel} {...rest}>
-                    <IconeRight name="trash"/>
+            { onPressSecond &&
+                <WrapIcon onPress={onPressSecond} {...rest}>
+                    <IconeRight name={ onPressSecondIcon }/>
                 </WrapIcon>
             }
             

@@ -228,7 +228,7 @@ export function FormaPagamento(){
                 <Cabecalho 
                     titulo="Forma de Pagamento" 
                     onPress={()=> navigation.goBack() } 
-                    onPressDel={ ()=>  
+                    onPressSecond={ ()=>  
                         Alert.alert(
                             "Atenção", "Deseja excluir essa forma de pagamento",
                             [

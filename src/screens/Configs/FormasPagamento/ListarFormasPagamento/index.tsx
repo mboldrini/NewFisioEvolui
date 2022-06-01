@@ -56,9 +56,6 @@ export function ListarFormasPagamento(){
        
         await api(apiState.token).get('paymentmethod/user/all').then(res =>{
 
-            console.log("Ok?");
-            console.log(res.data);
-
             setListaTipos(res.data);
 
         }).catch(err => {
@@ -86,7 +83,12 @@ export function ListarFormasPagamento(){
         <ScrollView refreshControl={<RefreshControl refreshing={refreshing} onRefresh={()=>{ GetListaAtendimentos() }}/> } 
          contentContainerStyle={{flexGrow: 1}}>
 
-            <Cabecalho titulo="Formas de Pagamento" onPress={()=> navigation.goBack() }  />
+            <Cabecalho 
+                titulo="Formas de Pagamento" 
+                onPress={()=> navigation.goBack() } 
+                onPressSecond={()=> { navigation.navigate('FormaPagamento' as never, { id: null } as never  ) }} 
+                onPressSecondIcon="plus"
+            />
 
             <WrapCentral>
 
@@ -127,13 +129,6 @@ export function ListarFormasPagamento(){
 
             </WrapItens>
             
-            <WrapBtnCadastro>
-                <RoundButton 
-                    onPress={()=> navigation.navigate('FormaPagamento' as never, { id: null } as never  ) }
-                    type="ok"
-                />
-            </WrapBtnCadastro>
-
             </WrapCentral>
         </ScrollView>
         </Container>

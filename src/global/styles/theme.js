@@ -7,6 +7,7 @@ export default{
 
         success: '#12A454',
         success_light: 'rgba(18,164,84,0.5)',
+        success_super: '#3BFF29',
 
         attention: '#E83F5B',
         attention_light: 'rgba(232,63,91, 0.5)',
@@ -32,8 +33,8 @@ export default{
         \*******************************/
         status_recorrente: '#219ebc',
 
-
         button_ok: '#268596'
+
 
     },
     fonts:{

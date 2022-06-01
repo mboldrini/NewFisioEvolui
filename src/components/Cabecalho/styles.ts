@@ -7,6 +7,10 @@ interface IDelExist{
     exist: boolean;
 }
 
+interface IIconName{
+    name?: string;
+}
+
 export const Container = styled.View`
     flex-direction: row;
     align-items: center;
@@ -32,9 +36,17 @@ export const IconeLeft = styled(FontAwesome5)`
     margin-right: ${RFValue(15)}px;
 `;
 
-export const IconeRight = styled(FontAwesome5)`
+export const IconeRight = styled(FontAwesome5)<IIconName>`
     color: ${({theme}) => theme.colors.shape};
     font-size: ${RFValue(18)}px;
+
+    ${({ name }) => name === "trash" && css `
+        color: ${({theme}) => theme.colors.attention};
+    `};
+
+    ${({ name }) => name === "plus" && css `
+        color: ${({theme}) => theme.colors.success_super};
+    `};
 `;
 
 export const WrapTitle = styled.View<IDelExist>`
