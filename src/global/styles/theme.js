@@ -45,6 +45,7 @@ export default{
     },
     bordas:{
         padrao: 10,
+        modal_top: 20
     },
     padding:{
         lateral: 24,
@@ -61,9 +62,12 @@ export default{
     }
 }
 
-export const DefaultFontSize = {
-    title: 18,
-    description: 12
+export const DefaultAppValues = {
+    fontSize: {
+        title: 18,
+        description: 12
+    },
+    bordas: {
+        modal_top: 25
+    }
 }
-
-//    secondary: '#268596',

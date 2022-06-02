@@ -16,6 +16,7 @@ import { Cabecalho } from '../../../../components/Cabecalho';
 
 import { api } from '../../../../global/api';
 import { List_TipoAtendimento } from '../../../../components/List_Items/TiposDeAtendimentos';
+import { Modal_TipoAtendimento } from '../Modal_TipoAtendimento';
 
 interface IListaTipos{
     id: number,
@@ -38,6 +39,9 @@ export function ListarTiposAtendimento(){
 
     const [listaTipos, setListaTipos] = useState<IListaTipos[]>([]);
 
+    const [modalId, setModalId] = useState(null);
+    const [showModal, setShowModal] = useState(true);
+
 
     async function GetListaAtendimentos(){
 
@@ -58,6 +62,11 @@ export function ListarTiposAtendimento(){
         });
 
         setLoading(false);
+    }
+
+    function OpenModalTipoAtendimento(id: number){
+        setModalId(id);
+        setShowModal(true);
     }
 
     useEffect(()=>{
@@ -94,7 +103,7 @@ export function ListarTiposAtendimento(){
                                 preco={item.price} 
                                 duracao={item.duration} 
                                 id={item.id} 
-                                onPress={()=> {console.log(item.id)}}    
+                                onPress={()=> { OpenModalTipoAtendimento(item.id) }}    
                             />
                             
                         )}
@@ -114,7 +123,13 @@ export function ListarTiposAtendimento(){
             </WrapItens>
             
             </WrapCentral>
+
+            <Modal_TipoAtendimento 
+                visible={showModal} 
+                closeModal={() => setShowModal(false) } 
+            />
+
         </ScrollView>
-        </Container>
+    </Container>
     )
 }

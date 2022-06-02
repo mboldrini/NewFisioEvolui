@@ -33,7 +33,7 @@ import { FormData } from '../../global/DTO/PatientFormData';
 import { ModalLoading } from '../../components/Modal/ModalLoading';
 import { ModalAgendamento } from '../../components/Modal/ModalAgendamento';
 import { ModalTemComorbidade } from '../../components/Modal/ModalTemComorbidade';
-import { ModalTipoAtendimento } from '../../components/Modal/ModalTipoAtendimento';
+// import { ModalTipoAtendimento } from '../../components/Modal/ModalTipoAtendimento';
 
 import { ButtonSimple } from '../../components/Buttons/ButtonSimple/Index';
 import { AppointmentList } from '../../components/AppointmentList';
@@ -390,12 +390,12 @@ export function CadastrarPaciente(){
                 setSelectedApointment={setAppointment}
             />
 
-            <ModalTipoAtendimento
+            {/* <ModalTipoAtendimento
                 isVisible={isTipoAtendimentoVisible} 
                 setIsVisible={()=> setTipoAtendimentoVisible(false) }
                 setCategory={setAppointmentType}
                 statusAtual={appointmentType}
-            />
+            /> */}
 
             <ModalTemComorbidade 
                 setCategory={setTemComorbidade}

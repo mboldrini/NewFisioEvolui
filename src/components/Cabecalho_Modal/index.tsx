@@ -13,18 +13,17 @@ import {
 interface Props extends RectButtonProps{
     titulo: string,
     onPress: () => void;
-    onPressIcon?: 'chevron-up' | 'chevron-right' | 'chevron-down' | 'chevron-left';
     onPressSecond?: () => void;
     onPressSecondIcon?: string;
 }
 
-export function Cabecalho({titulo, onPress, onPressIcon = 'chevron-left', onPressSecond, onPressSecondIcon = 'trash', ...rest}: Props){
+export function Cabecalho_Modal({titulo, onPress, onPressSecond, onPressSecondIcon = 'trash', ...rest}: Props){
 
     return(
-        <Container arrowSide={onPressIcon}>
+        <Container>
             <WrapLeft>
-                <WrapIcon onPress={onPress} {...rest}>
-                    <IconeLeft name={ onPressIcon }/>
+                <WrapIcon onPress={()=>{ onPress() }}>
+                    <IconeLeft name='chevron-down' />
                 </WrapIcon>
                 <WrapTitle exist={ !onPress ? true : false }>
                     <Titulo>{titulo}</Titulo>
@@ -35,7 +34,6 @@ export function Cabecalho({titulo, onPress, onPressIcon = 'chevron-left', onPres
                     <IconeRight name={ onPressSecondIcon }/>
                 </WrapIcon>
             }
-            
         </Container>
     )
 }

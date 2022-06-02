@@ -2,6 +2,7 @@ import styled, {css} from "styled-components/native";
 import { RFValue } from "react-native-responsive-fontsize";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { RectButton } from "react-native-gesture-handler";
+import { DefaultAppValues } from "../../global/styles/theme";
 
 interface IDelExist{
     exist: boolean;
@@ -11,20 +12,16 @@ interface IIconName{
     name?: string;
 }
 
-interface ITopo{
-    arrowSide: string;
-}
-
-export const Container = styled.View<ITopo>`
+export const Container = styled.View`
+    width: 100%;
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
-    margin: 0 ${({theme}) => theme.margin.lateral_half}px;
-    margin-top: ${RFValue(35)}px ;
-
-    ${({ arrowSide }) => arrowSide === "chevron-down" && css `
-        margin-top: ${RFValue(10)}px ;
-    `};
+    background-color: ${({theme}) => theme.colors.primary};
+    border-top-left-radius: ${ RFValue(DefaultAppValues.bordas.modal_top) }px;
+    border-top-right-radius: ${ RFValue(DefaultAppValues.bordas.modal_top) }px;
+    margin-top: ${RFValue(-30)}px;
+    padding: ${RFValue(10)}px ${RFValue(10)}px;
 
 `;
 
