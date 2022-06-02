@@ -1,7 +1,7 @@
 import { RFPercentage, RFValue } from 'react-native-responsive-fontsize';
 import styled from "styled-components/native";
 import { FontAwesome5 } from '@expo/vector-icons';
-import theme from '../../../../global/styles/theme';
+import theme, { DefaultFontSize } from '../../../../global/styles/theme';
 import { RectButton } from "react-native-gesture-handler";
 
 
@@ -65,12 +65,12 @@ export const WrapText = styled.View`
 `;
 
 export const NomeTipoPagamento = styled.Text`
-    font-size: ${RFValue(16)}px;
+    font-size: ${ RFValue(DefaultFontSize.title) };
     font-family: ${({theme}) => theme.fonts.regular};
 `;
 
 export const Descricao = styled.Text`
-    font-size: ${RFValue(12)}px;
+    font-size: ${ RFValue(DefaultFontSize.description) };
     font-family: ${({theme}) => theme.fonts.thin};
 `;
 
