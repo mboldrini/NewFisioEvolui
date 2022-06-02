@@ -60,4 +60,10 @@ export default{
         top: 10
     }
 }
+
+export const DefaultFontSize = {
+    title: 18,
+    description: 12
+}
+
 //    secondary: '#268596',

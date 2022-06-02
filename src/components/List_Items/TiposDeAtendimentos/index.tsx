@@ -10,8 +10,7 @@ import {
     WrapContent,
     WrapInfos,
     IconeMinus,
-    Tempo,
-    Valor,
+    Title,
     ImageIcon,
     WrapInfosGroup,
 } from './styles';
@@ -60,14 +59,14 @@ export function List_TipoAtendimento({ duracao, preco, nome, id, onPress}: IProp
             
                     <WrapInfosGroup>
                         <ImageIcon source={require('../../../assets/stopwatch.png')}/>
-                        <Tempo>{ ValidaTempo(duracao) }</Tempo>
+                        <Title>{ ValidaTempo(duracao) }</Title>
                     </WrapInfosGroup>
 
                     <IconeMinus name="minus"/> 
 
                     <WrapInfosGroup>
                         <ImageIcon source={require('../../../assets/money.png')}/>
-                        <Valor>{ FormatarPreco(preco) }</Valor>
+                        <Title>{ FormatarPreco(preco) }</Title>
                     </WrapInfosGroup>
 
                 </WrapInfos>

@@ -2,9 +2,7 @@ import { RFPercentage, RFValue } from 'react-native-responsive-fontsize';
 import styled from "styled-components/native";
 import { FontAwesome5 } from '@expo/vector-icons';
 import { RectButton } from "react-native-gesture-handler";
-
-
-
+import theme, { DefaultFontSize } from '../../../global/styles/theme';
 
 export const TipoPagamentoList = styled.View`
     flex-direction: row;
@@ -23,7 +21,7 @@ export const WrapText = styled.View`
 `;
 
 export const NomeTipoPagamento = styled.Text`
-    font-size: ${RFValue(18)}px;
+    font-size: ${ RFValue(DefaultFontSize.title) };
     font-family: ${({theme}) => theme.fonts.regular};
 `;
 
@@ -61,9 +59,9 @@ export const WrapInfosGroup = styled.View`
     justify-content: center;
 `;
 
-export const Tempo = styled.Text`
+export const Title = styled.Text`
     font-family: ${({theme}) => theme.fonts.regular};
-    font-size: ${RFValue(12)}px;
+    font-size: ${ RFValue(DefaultFontSize.description) };
     padding: 0px;
     padding-top: ${RFValue(2)}px;
     padding-left: ${RFValue(3)}px;
@@ -73,14 +71,6 @@ export const IconeMinus = styled(FontAwesome5)`
     font-size: ${RFValue(12)}px;
     color: ${({theme})=> theme.colors.secondary};
     margin: 0 ${RFValue(5)}px;
-`;
-
-export const Valor = styled.Text`
-    font-family: ${({theme}) => theme.fonts.regular};
-    font-size: ${RFValue(12)}px;
-    padding: 0px;
-    padding-top: ${RFValue(2)}px;
-    padding-left: ${RFValue(3)}px;
 `;
 
 
