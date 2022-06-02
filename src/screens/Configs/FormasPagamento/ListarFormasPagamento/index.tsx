@@ -74,11 +74,10 @@ export function ListarFormasPagamento(){
         GetListaAtendimentos();
     },[]);
 
+ 
+
     return(
         <Container>
-        <WrapToast>
-            <Toast position={'top'}  autoHide={true} visibilityTime={6000} onPress={()=>Toast.hide()}/>
-        </WrapToast>
 
         <ScrollView refreshControl={<RefreshControl refreshing={refreshing} onRefresh={()=>{ GetListaAtendimentos() }}/> } 
          contentContainerStyle={{flexGrow: 1}}>

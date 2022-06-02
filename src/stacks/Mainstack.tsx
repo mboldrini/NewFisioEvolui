@@ -11,19 +11,20 @@ import { SignUp } from '../screens/Login/SignUp';
 const Stack = createStackNavigator();
 
 export default () => (
-        <Stack.Navigator
-            initialRouteName="SignIn"
-            screenOptions={{
-                headerShown: false
-            }}
-        >   
-            <Stack.Group>
-                <Stack.Screen name="Loading" component={Loading} options={{headerShown:false}} /> 
-                <Stack.Screen name="MainTab" component={Rotas}/> 
-                <Stack.Screen name="PacientePerfil" component={PacientePerfil} />
-                <Stack.Screen name="SignIn" component={SignIn} />
-                <Stack.Screen name="SignUp" component={SignUp} />
-            </Stack.Group>
-        </Stack.Navigator>
+    <Stack.Navigator
+        initialRouteName="SignIn"
+        screenOptions={{
+            headerShown: false
+        }}
+    >   
+        <Stack.Group>
+    
+            <Stack.Screen name="Loading" component={Loading} options={{headerShown:false}} /> 
+            <Stack.Screen name="MainTab" component={Rotas}/> 
+            <Stack.Screen name="PacientePerfil" component={PacientePerfil} />
+            <Stack.Screen name="SignIn" component={SignIn} />
+            <Stack.Screen name="SignUp" component={SignUp} />
+        </Stack.Group>
+    </Stack.Navigator>
 
 );

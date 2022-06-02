@@ -29,6 +29,7 @@ import { bindActionCreators } from 'redux';
 import { useDispatch, useSelector } from 'react-redux';
 import { actionCreators, State } from '../../../state';
 import { api } from '../../../global/api';
+import Toast from 'react-native-toast-message';
 
 interface IProfileStats{
     qtdAtendimentos: number,

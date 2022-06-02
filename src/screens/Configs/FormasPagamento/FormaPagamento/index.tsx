@@ -215,11 +215,10 @@ export function FormaPagamento(){
         }
     }, [id]);
 
+
+
     return(
         <Container>
-        <WrapToast>
-            <Toast position={'top'}  autoHide={true} visibilityTime={6000} onPress={()=>Toast.hide()}/>
-        </WrapToast>
 
         <ScrollView refreshControl={<RefreshControl refreshing={refreshing} onRefresh={()=>{ GetFormaPagamento(id) }}/> } 
          contentContainerStyle={{flexGrow: 1}}>

@@ -11,14 +11,33 @@ import { FormaPagamento } from '../screens/Configs/FormasPagamento/FormaPagament
 
 const Stack = createStackNavigator();
 
+
+import styled from "styled-components/native";
+import Toast from 'react-native-toast-message';
+// import { View, Text } from 'react-native';
+
+const WrapToast = styled.View`
+    z-index: 1;
+`;
+
+// const toastConfig = {
+//     'success': (internalState: any) => (
+//       <View style={{ borderLeftColor: 'pink' }}>
+//         <Text>{internalState.text1}</Text>
+//       </View>  
+//     )
+//   }
+
+
 export default function ProfileStack(){
     return(
-        <Stack.Navigator
-            initialRouteName="Profile"
-            screenOptions={{
-                headerShown: false
-            }}
-        >   
+    <>
+
+        <WrapToast>
+            <Toast position={'top'}  autoHide={true} visibilityTime={6000} onPress={()=>Toast.hide()} /*config={toastConfig}*/ />
+        </WrapToast>
+
+        <Stack.Navigator initialRouteName="Profile" screenOptions={{ headerShown: false }} >   
             <Stack.Group>
                 <Stack.Screen name="Profile" component={Profile} options={{headerShown:false}} /> 
                 <Stack.Screen name="ListarTiposAtendimentos" component={ListarTiposAtendimentos} options={{headerShown:false}} /> 
@@ -29,6 +48,6 @@ export default function ProfileStack(){
                 <Stack.Screen name="FormaPagamento" component={FormaPagamento} options={{headerShown:false}} /> 
             </Stack.Group>
         </Stack.Navigator>
-
+    </>
     );
 };
