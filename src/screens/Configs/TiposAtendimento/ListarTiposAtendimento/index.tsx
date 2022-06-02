@@ -6,36 +6,35 @@ import { useSelector } from 'react-redux';
 import { State } from '../../../../state';
 import { 
     Container,
-    WrapToast,
-    // ScrollView,
     WrapCentral,
     WrapItens,
     LoadingIcon,
     WrapSemAtendimentos,
     AvisoSemAtendimentos,
-    WrapBtnCadastro
 } from './styles';
 import { Cabecalho } from '../../../../components/Cabecalho';
 
 import { api } from '../../../../global/api';
-import { TipoAtendimentoList } from '../../../../components/TipoAtendimentoList';
-import { Button } from '../../../../components/Buttons/Button/Index';
+import { List_TipoAtendimento } from '../../../../components/List_Items/TiposDeAtendimentos';
 
 interface IListaTipos{
     id: number,
-    nome: string,
-    valor: number,
-    descricao: string
+    name: string;
+    description: string,
+    duration: string,
+    price: number,
+    created_at: string,
+    updated_at: string,    
 }
 
-export function ListarTiposAtendimentos(){
+export function ListarTiposAtendimento(){
     
     const navigation = useNavigation();
     const [refreshing, setRefresh] = useState(false);
 
     const [loading, setLoading] = useState(true);
     
-    const usrState = useSelector((state: State) => state.user);
+    const apiState = useSelector((state: State) => state.apiReducer);
 
     const [listaTipos, setListaTipos] = useState<IListaTipos[]>([]);
 
@@ -45,10 +44,7 @@ export function ListarTiposAtendimentos(){
         setListaTipos([]);
         setLoading(true);
        
-        await api(usrState.token).get('tipoAtendimento/all').then(res =>{
-
-            console.log("Ok?");
-            console.log(res.data);
+        await api(apiState.token).get('servicesTypes/user/all').then(res =>{
 
             setListaTipos(res.data);
 
@@ -57,7 +53,7 @@ export function ListarTiposAtendimentos(){
             console.log(err);
             Toast.show({
                 type: 'error',
-                text1: '⚠️ Erro ao obter lista de atendimentos',
+                text1: '⚠️ Erro ao obter lista de formas de pagamento',
             });
         });
 
@@ -65,34 +61,42 @@ export function ListarTiposAtendimentos(){
     }
 
     useEffect(()=>{
-       GetListaAtendimentos();
+        GetListaAtendimentos();
     },[]);
+
+ 
 
     return(
         <Container>
-        <WrapToast>
-            <Toast position={'top'}  autoHide={true} visibilityTime={6000} onPress={()=>Toast.hide()}/>
-        </WrapToast>
 
         <ScrollView refreshControl={<RefreshControl refreshing={refreshing} onRefresh={()=>{ GetListaAtendimentos() }}/> } 
          contentContainerStyle={{flexGrow: 1}}>
 
-            <Cabecalho titulo="Tipos de Atendimentos" onPress={()=> navigation.goBack() } />
+            <Cabecalho 
+                titulo="Tipos de Atendimentos" 
+                onPress={()=> navigation.goBack() } 
+                onPressSecond={()=> { navigation.navigate('FormaPagamento' as never, { id: null } as never  ) }} 
+                onPressSecondIcon="plus"
+            />
 
             <WrapCentral>
 
             <WrapItens>
 
+
                 { listaTipos &&
                     <FlatList 
                         data={listaTipos}
-                        keyExtractor={(item) => item.nome}
+                        keyExtractor={(item) => item.id +""}
                         renderItem={({item}) =>(
-                            <TipoAtendimentoList 
-                                valor={item.valor} 
-                                nome={item.nome} 
-                                onPress={()=> navigation.navigate('TipoAtendimento' as never, { id: item.id } as never) }  
+                            <List_TipoAtendimento 
+                                nome={item.name} 
+                                preco={item.price} 
+                                duracao={item.duration} 
+                                id={item.id} 
+                                onPress={()=> {console.log(item.id)}}    
                             />
+                            
                         )}
                     />
                 }
@@ -103,20 +107,12 @@ export function ListarTiposAtendimentos(){
 
                 { !loading && listaTipos.length < 1 &&
                     <WrapSemAtendimentos>
-                        <AvisoSemAtendimentos>Nenhum atendimento cadastrado</AvisoSemAtendimentos>
+                        <AvisoSemAtendimentos>Nenhuma forma de pagamento cadastrada </AvisoSemAtendimentos>
                     </WrapSemAtendimentos>
                 }
 
             </WrapItens>
             
-            <WrapBtnCadastro>
-                <Button 
-                    title="Cadastrar Atendimento" 
-                    onPress={()=> navigation.navigate('TipoAtendimento' as never, { id: null } as never ) }
-                    type="ok"
-                />
-            </WrapBtnCadastro>
-
             </WrapCentral>
         </ScrollView>
         </Container>

@@ -109,13 +109,18 @@ export function Profile(){
 
 
             <Body>
-                <BtnList enabled={true}>
-                    <TituloList enabled={true}>Meu Perfil</TituloList>
-                    <WrapIcone><Icone name="chevron-right" enabled={true}/></WrapIcone>
+                <BtnList enabled={false}>
+                    <TituloList enabled={false}>Meu Perfil</TituloList>
+                    <WrapIcone><Icone name="chevron-right" enabled={false}/></WrapIcone>
                 </BtnList>
 
                 <BtnList onPress={()=> navigation.navigate('ListarFormasPagamento' as never)}>
                     <TituloList>Formas de Pagamento</TituloList>
+                    <WrapIcone><Icone name="chevron-right" enabled={true}/></WrapIcone>
+                </BtnList>
+
+                <BtnList onPress={()=> navigation.navigate('ListarTiposAtendimento' as never)}>
+                    <TituloList>Tipos de Atendimento</TituloList>
                     <WrapIcone><Icone name="chevron-right" enabled={true}/></WrapIcone>
                 </BtnList>
 
