@@ -5,7 +5,7 @@ import { TextInputMask } from 'react-native-masked-text';
 export const Container = styled.View``;
 
 export const Input = styled(TextInputMask)`
- background-color: ${({theme}) => theme.colors.input_background};
+    background-color: ${({theme}) => theme.colors.input_background};
     border-radius: ${({theme}) => theme.bordas.padrao}px;
     height: ${RFValue(60)}px;
     margin: 0 ${({theme}) => theme.padding.lateral}px;
