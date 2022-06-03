@@ -6,10 +6,9 @@ import { RectButton } from "react-native-gesture-handler";
 
 interface Props{
     type?: string;
-    largura?: 'half' | 'full';
 }
 
-export const Container = styled.TouchableOpacity<Props>`
+export const Container = styled(RectButton)<Props>`
     background-color: ${({theme}) => theme.colors.button_ok};
     border-radius: ${({theme}) => theme.bordas.padrao}px;
     align-items: center;
@@ -24,13 +23,10 @@ export const Container = styled.TouchableOpacity<Props>`
 
     ${({ type }) => type === "cancel" && css `
         background-color: ${({theme}) => theme.colors.status_cancelado};
-        height: ${RFValue(55)}px;
-        margin-top: ${RFValue(10)}px;
+        /* height: ${RFValue(55)}px; */
+        /* margin-top: ${RFValue(10)}px; */
     `};
 
-    ${({ largura }) => largura === "half" && css `
-        width: 50%;
-    `};
     justify-content: space-between;
 `;
 

@@ -13,14 +13,13 @@ interface Props extends TouchableOpacityProps{
     title: string;
     type?: 'ok' | 'cancel';
     onPress: () => void;
-    largura?: 'half' | 'full';
     leftIcon?: string;
     rightIcon?: string;
 }
 
-export function Button({title, type, onPress, largura, leftIcon, rightIcon, ...rest}: Props){
+export function Button({title, type, onPress, leftIcon, rightIcon, ...rest}: Props){
     return(
-        <Container onPress={onPress} {...rest} type={type} largura={largura}>
+        <Container onPress={onPress} {...rest} type={type} >
             {leftIcon && <LeftIcon name="arrow-left" />}
             <WrapTitle>
                 <Title type={type}> { title } </Title>

@@ -17,6 +17,11 @@ export const Container = styled(GestureHandlerRootView)`
     border-top-left-radius: 50px;
 `;
 
+export const Body = styled.View`
+    flex: 1;
+    margin-bottom: ${RFValue(5)}px;
+`;
+
 export const Header = styled.View`
     align-items: center;
     justify-content: flex-start;
@@ -53,9 +58,6 @@ export const Category = styled.TouchableOpacity<Props>`
     margin-bottom: ${RFValue(5)}px;
     border-radius: ${({theme}) => theme.bordas.padrao}px;
     border-left-width: ${RFValue(5)}px;
-
-
-
 `;
 
 export const Name = styled.Text`
@@ -63,9 +65,7 @@ export const Name = styled.Text`
     font-size: ${RFValue(14)}px;
 `;
 
-export const Separator = styled.View`
-
-`;
+export const Separator = styled.View``;
 
 export const Footer = styled.View`
     width: 100%;
