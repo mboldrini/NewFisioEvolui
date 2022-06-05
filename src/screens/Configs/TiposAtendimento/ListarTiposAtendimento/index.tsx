@@ -17,7 +17,6 @@ import { Cabecalho } from '../../../../components/Cabecalho';
 import { api } from '../../../../global/api';
 import { List_TipoAtendimento } from '../../../../components/List_Items/TiposDeAtendimentos';
 import { Modal_TipoAtendimento } from '../Modal_TipoAtendimento';
-import { Modal_Tempo } from '../../../../components/Modal/ModalTempo';
 
 interface IListaTipos{
     id: number,
@@ -125,15 +124,12 @@ export function ListarTiposAtendimento(){
             
             </WrapCentral>
 
-            {/* <Modal_TipoAtendimento 
-                visible={showModal} 
-                closeModal={() => setShowModal(false) } 
-            /> */}
-
-            <Modal_Tempo
+            <Modal_TipoAtendimento 
                 visible={showModal} 
                 closeModal={() => setShowModal(false) } 
             />
+
+       
 
         </ScrollView>
     </Container>

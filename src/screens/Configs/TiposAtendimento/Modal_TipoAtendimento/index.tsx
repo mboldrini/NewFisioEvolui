@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import Modal from 'react-native-modal';
 import { Cabecalho_Modal } from '../../../../components/Cabecalho_Modal';
 import { Footer_Modal } from '../../../../components/Footers/Footer_Modal';
@@ -12,6 +12,10 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
 import { InputForm } from '../../../../components/Forms/InputForm';
 import { InputMasked } from '../../../../components/Forms/InputMasked';
+import { Button } from '../../../../components/Buttons/Button/Index';
+
+import { View, Text,TouchableOpacity } from 'react-native';
+
 
 interface Props{
     visible: boolean;
@@ -21,12 +25,13 @@ interface Props{
 
 const schema = Yup.object().shape({
     nome: Yup.string().required("Nome é obrigatório"),
-})
+});
+
+
 
 export function Modal_TipoAtendimento({ visible, closeModal, id }: Props){
 
     const { control, handleSubmit, formState: { errors }, reset } = useForm({ resolver: yupResolver(schema) });
-
 
     return(
     <Modal isVisible={visible} animationIn='slideInUp' animationOut='slideOutDown' animationInTiming={700} style={{width: '100%', margin: 0}}>
@@ -53,6 +58,10 @@ export function Modal_TipoAtendimento({ visible, closeModal, id }: Props){
                     keyboardType="number-pad"
                     type="money"
                 />
+
+
+
+            {/* <Button onPress={()=>{ ItsYourBirthday() } } title="ff" /> */}
 
 
             </Body>

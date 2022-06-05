@@ -19,8 +19,6 @@ export const Container = styled(GestureHandlerRootView)`
 
 export const Body = styled.View`
     flex: 1;
-    margin-bottom: ${RFValue(5)}px;
-    border: 1px solid red;
 `;
 
 export const Header = styled.View`
