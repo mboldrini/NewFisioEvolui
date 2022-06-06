@@ -70,7 +70,7 @@ export function Modal_TipoAtendimento({ visible, closeModal, id }: Props){
     <Modal isVisible={visible} animationIn='slideInUp' animationOut='slideOutDown' animationInTiming={700} style={{width: '100%', margin: 0}}>
         <Container>
 
-            <Cabecalho_Modal  titulo='Tipo de Atendimento' onPress={() => closeModal() } />
+            <Cabecalho_Modal  titulo='Tipo de Atendimento' onPress={()=> { closeModal() }} />
 
             <Body>
 

@@ -6,27 +6,17 @@ import { useSelector } from 'react-redux';
 import { State } from '../../../../state';
 import { 
     Container,
-    WrapToast,
-    // ScrollView,
     WrapCentral,
     WrapItens,
     LoadingIcon,
     WrapSemAtendimentos,
     AvisoSemAtendimentos,
-    WrapBtnCadastro,
-
-    TipoPagamentoList,
-    WrapText,
-    NomeTipoPagamento,
-    Descricao,
-
-    WrapIcone,
-    Icone
 } from './styles';
 import { Cabecalho } from '../../../../components/Cabecalho';
 
 import { api } from '../../../../global/api';
 import { RoundButton } from '../../../../components/Buttons/RoundButton/Index';
+import { List_TipoPagamento } from '../../../../components/List_Items/TiposDePagamentos';
 
 interface IListaTipos{
     id: number,
@@ -98,20 +88,11 @@ export function ListarFormasPagamento(){
                         data={listaTipos}
                         keyExtractor={(item) => item.paymentMethod_name}
                         renderItem={({item}) =>(
-                            <TipoPagamentoList>
-                                <WrapText>
-                                    <NomeTipoPagamento numberOfLines={1} ellipsizeMode="tail">{ item.paymentMethod_name }</NomeTipoPagamento>
-                                    { item.description && 
-                                        <Descricao numberOfLines={1} ellipsizeMode="tail" >{ item.description }</Descricao> 
-                                    }
-                                    { !item.description && 
-                                        <Descricao numberOfLines={1} ellipsizeMode="tail" >item sem descrição cadastrada</Descricao> 
-                                    }
-                                </WrapText>
-                                <WrapIcone onPress={()=> navigation.navigate('FormaPagamento' as never, { id: item.id } as never ) }>
-                                    <Icone name="ellipsis-v"/>
-                                </WrapIcone>
-                            </TipoPagamentoList>
+                            <List_TipoPagamento
+                                paymentMethod_name={item.paymentMethod_name}
+                                description={item.description}
+                                onPress={()=>{ navigation.navigate('FormaPagamento' as never, { id: item.id } as never ) }}
+                            />
                         )}
                     />
                 }
