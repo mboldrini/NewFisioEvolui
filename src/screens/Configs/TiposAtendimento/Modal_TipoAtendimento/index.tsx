@@ -5,6 +5,11 @@ import { Footer_Modal } from '../../../../components/Footers/Footer_Modal';
 import { 
     Container,
     Body,
+    WrapDuracao,
+    Duracao,
+    BotaoDuracao,
+    TempoDuracao,
+    ImageIcon
 } from './styles';
 /// Forms
 import * as Yup from 'yup';
@@ -14,7 +19,8 @@ import { InputForm } from '../../../../components/Forms/InputForm';
 import { InputMasked } from '../../../../components/Forms/InputMasked';
 import { Button } from '../../../../components/Buttons/Button/Index';
 
-import { View, Text,TouchableOpacity } from 'react-native';
+import { TimePickerModal } from 'react-native-paper-dates'
+import { Select } from '../../../../components/Forms/Select';
 
 
 interface Props{
@@ -33,6 +39,33 @@ export function Modal_TipoAtendimento({ visible, closeModal, id }: Props){
 
     const { control, handleSubmit, formState: { errors }, reset } = useForm({ resolver: yupResolver(schema) });
 
+    const [visible2, setVisible2] = React.useState(false);
+    const [ hora, setHora ] = useState('00:30');
+
+    const [formaPagamento, setFormaPagamento] = useState({key: -1, name: 'Forma de Pagamento'});
+  
+    const onConfirm = React.useCallback(
+      ({ hours, minutes }) => {
+        setVisible2(false);
+        SetaHoras(hours, minutes);
+      },
+      [setVisible2]
+    );
+    
+    function SetaHoras(hora: number, minuto: number){
+      let hour = ''+ hora;
+      let minute = ''+ minuto;
+      if(hora < 10 ){
+        hour = "0"+ hora;
+      }
+      if( minuto < 9 ){
+        minute = "0"+ minuto;
+      }
+      setHora(hour +':'+ minute);
+    }
+
+
+
     return(
     <Modal isVisible={visible} animationIn='slideInUp' animationOut='slideOutDown' animationInTiming={700} style={{width: '100%', margin: 0}}>
         <Container>
@@ -50,23 +83,65 @@ export function Modal_TipoAtendimento({ visible, closeModal, id }: Props){
                     error={errors.nome && errors.nome.message}
                 />
 
-                <InputMasked 
-                    name="cpf"
-                    control={control}
-                    placeholder="CPF"
-                    error={errors.cpf && errors.cpf.message}
-                    keyboardType="number-pad"
-                    type="money"
+                <InputForm  
+                  name="descricao"
+                  control={control}
+                  placeholder="Descrição"
+                  autoCapitalize="words"
+                  autoCorrect={false}
+                  multiline={true}
+                  numberOfLines={4}
+                  error={errors.descricao && errors.descricao.message}
                 />
 
+                <Select 
+                  title={ formaPagamento.name }
+                  isActive={ formaPagamento.key }
+                  onPress={()=>{ console.log('ff') }}
+                /> 
 
+                <WrapDuracao>
+                  <BotaoDuracao>
+                    <ImageIcon source={require('../../../../assets/stopwatch.png')}/>
+                    <TempoDuracao onPress={()=> setVisible2(true)  }>{ hora }</TempoDuracao>
+                  </BotaoDuracao>
 
-            {/* <Button onPress={()=>{ ItsYourBirthday() } } title="ff" /> */}
+                  <InputMasked 
+                      name="valor"
+                      control={control}
+                      placeholder="Valor do Atendimento"
+                      autoCapitalize="words"
+                      autoCorrect={false}
+                      type={'money'}
+                      error={errors.valor && errors.valor.message}
+                      value="100,00"
+                  />
+                </WrapDuracao>
+
+                
+                
+
+             
 
 
             </Body>
 
-            <Footer_Modal onPressOk={()=> console.log("pressionou OK")} onPressCancel={()=> { console.log("pressinou CANcel")}}/>
+            <Footer_Modal onPressOk={()=> console.log("pressionou OK")} onPressCancel={()=> { closeModal() }}/>
+
+
+
+            <TimePickerModal
+              visible={visible2}
+              onDismiss={()=> {setVisible2(false) } }
+              onConfirm={onConfirm}
+              hours={0} // default: current hours
+              minutes={30} // default: current minutes
+              label="Selecione a Duração" // optional, default 'Select time'
+              cancelLabel="Cancelar" // optional, default: 'Cancel'
+              confirmLabel="Ok" // optional, default: 'Ok'
+              animationType="fade" // optional, default is 'none'
+              locale={'pt-BR'} // optional, default is automically detected by your system
+            />
 
         </Container>
     </Modal>

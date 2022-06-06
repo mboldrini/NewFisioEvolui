@@ -68,6 +68,16 @@ export const DefaultAppValues = {
         description: 12
     },
     bordas: {
+        padrao: 10,
+        modal_top: 20,
         modal_top: 25
+    },
+    margin:{
+        input_bottom: 10,
+        lateral: 24,
+        lateral_half: 12,
+        bottom: 10,
+        lateral_third: 8,
+        top: 10
     }
 }

@@ -21,54 +21,43 @@ export const Body = styled.View`
     flex: 1;
 `;
 
-export const Header = styled.View`
-    align-items: center;
-    justify-content: flex-start;
+export const WrapDuracao = styled.View`
     flex-direction: row;
-    margin-top: ${RFValue(20)}px ;
-    margin-bottom: ${RFValue(10)}px;
-    padding: 0 ${({theme}) => theme.padding.lateral}px;
+    /* align-items: center; */
+    justify-content: space-between;
 `;
 
-export const WrapIcon = styled(RectButton)`
-    border: 1px solid red;
-    margin-right: ${RFValue(15)}px;
-`;
-
-export const Icone = styled(FontAwesome5)`
+export const Duracao = styled.Text`
+    font-family: ${({theme}) => theme.fonts.regular};
+    font-size: ${RFValue(16)}px;
+    margin-right: ${RFValue(10)}px;
     color: ${({theme}) => theme.colors.shape};
-    font-size: ${RFValue(30)}px;
 `;
 
-
-export const Titulo = styled.Text`
-    font-size: ${RFValue(22)}px;
-    color: #ffffff;
-    font-family: ${({theme}) => theme.fonts.regular};
-`;
-
-export const Category = styled.TouchableOpacity<Props>`
-    padding: ${RFValue(15)}px;
+export const BotaoDuracao = styled.TouchableOpacity`
+    padding: ${RFValue(5)}px ${RFValue(10)}px;
     flex-direction: row;
     align-items: center;
- 
-
-    margin: 0 ${({theme}) => theme.margin.lateral}px;
-    margin-bottom: ${RFValue(5)}px;
-    border-radius: ${({theme}) => theme.bordas.padrao}px;
-    border-left-width: ${RFValue(5)}px;
+    background-color: ${({theme}) => theme.colors.secondary};
+    border-radius: ${RFValue(DefaultAppValues.bordas.padrao)}px;
+    border: 1px solid #268596;
+    align-items: center;
+    margin-left: ${RFValue(DefaultAppValues.margin.lateral_half)}px;
+    height: ${RFValue(60)}px;
 `;
 
-export const Name = styled.Text`
-    font-family: ${({theme}) => theme.fonts.regular};
-    font-size: ${RFValue(14)}px;
-`;
-
-export const Separator = styled.View``;
-
-export const Footer = styled.View`
-    width: 100%;
-    padding: 24px;
+export const ImageIcon = styled.Image`
+    width: ${RFValue(22)}px;
+    height: ${RFValue(22)}px;
+    margin-right: ${RFValue(5)}px;
+    align-items: center;
 `;
 
 
+export const TempoDuracao = styled.Text`
+    font-size: ${RFValue(16)}px;
+    color: ${({theme}) => theme.colors.shape};
+    font-family: ${({theme}) => theme.fonts.bold};
+    align-items: center;
+    padding-top: ${RFValue(5)}px;
+`;
