@@ -34,7 +34,7 @@ export function List_TipoPagamento({ paymentMethod_name, description, onPress}: 
                 }
             </WrapText>
 
-            <WrapIcone onPress={()=> { onPress }  }>
+            <WrapIcone onPress={ onPress  }>
                 <Icone name="ellipsis-v"/>
             </WrapIcone>
 

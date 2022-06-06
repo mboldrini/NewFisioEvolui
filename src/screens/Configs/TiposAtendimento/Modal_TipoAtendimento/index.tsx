@@ -21,6 +21,7 @@ import { Button } from '../../../../components/Buttons/Button/Index';
 
 import { TimePickerModal } from 'react-native-paper-dates'
 import { Select } from '../../../../components/Forms/Select';
+import { Modal_ListarFormasPagamento } from '../../FormasPagamento/Modal_ListarFormasPagamento';
 
 
 interface Props{
@@ -43,6 +44,8 @@ export function Modal_TipoAtendimento({ visible, closeModal, id }: Props){
     const [ hora, setHora ] = useState('00:30');
 
     const [formaPagamento, setFormaPagamento] = useState({key: -1, name: 'Forma de Pagamento'});
+
+    const [ showModalFormaPgto, setShowModalFormaPgto ] = useState(false);
   
     const onConfirm = React.useCallback(
       ({ hours, minutes }) => {
@@ -59,7 +62,11 @@ export function Modal_TipoAtendimento({ visible, closeModal, id }: Props){
         hour = "0"+ hora;
       }
       if( minuto < 9 ){
-        minute = "0"+ minuto;
+        if(minuto < 1){
+          minute = 10 +"";
+        }else{
+          minute = "0"+ minuto;
+        }
       }
       setHora(hour +':'+ minute);
     }
@@ -97,7 +104,7 @@ export function Modal_TipoAtendimento({ visible, closeModal, id }: Props){
                 <Select 
                   title={ formaPagamento.name }
                   isActive={ formaPagamento.key }
-                  onPress={()=>{ console.log('ff') }}
+                  onPress={()=>{ setShowModalFormaPgto(true) }}
                 /> 
 
                 <WrapDuracao>
@@ -118,11 +125,6 @@ export function Modal_TipoAtendimento({ visible, closeModal, id }: Props){
                   />
                 </WrapDuracao>
 
-                
-                
-
-             
-
 
             </Body>
 
@@ -141,6 +143,12 @@ export function Modal_TipoAtendimento({ visible, closeModal, id }: Props){
               confirmLabel="Ok" // optional, default: 'Ok'
               animationType="fade" // optional, default is 'none'
               locale={'pt-BR'} // optional, default is automically detected by your system
+            />
+
+            <Modal_ListarFormasPagamento 
+              visible={showModalFormaPgto} 
+              closeModal={()=> { setShowModalFormaPgto (false) }} 
+              setFormasPgto={setFormaPagamento} 
             />
 
         </Container>
