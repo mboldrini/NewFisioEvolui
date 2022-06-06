@@ -22,6 +22,7 @@ import { Button } from '../../../../components/Buttons/Button/Index';
 import { TimePickerModal } from 'react-native-paper-dates'
 import { Select } from '../../../../components/Forms/Select';
 import { Modal_ListarFormasPagamento } from '../../FormasPagamento/Modal_ListarFormasPagamento';
+import { Alert } from 'react-native';
 
 
 interface Props{
@@ -31,7 +32,9 @@ interface Props{
 }
 
 const schema = Yup.object().shape({
-    nome: Yup.string().required("Nome é obrigatório"),
+  nome: Yup.string().required("Nome é obrigatório"),
+  descricao: Yup.string().optional(),
+  valor: Yup.string().optional(),
 });
 
 
@@ -71,13 +74,33 @@ export function Modal_TipoAtendimento({ visible, closeModal, id }: Props){
       setHora(hour +':'+ minute);
     }
 
+    function HandleTipoAtendimento(formInfos: any){
+
+      if(formaPagamento.key == -1){
+        Alert.alert( "Ops!", "Você precisa escolher uma forma de pagamento", [ { text: "OK" } ] );
+        return;
+      }
+
+      let formatedPrice = parseFloat(formInfos.valor.replace("R$", "").replace(".", "").replace(",", "."));
+
+      let infos = {
+        name: formInfos.nome,
+        description: formInfos.description,
+        duration: hora,
+        price: formatedPrice,
+        paymentMethod_id: formaPagamento.key
+      }
+      console.log(infos);
+
+    }
+
 
 
     return(
     <Modal isVisible={visible} animationIn='slideInUp' animationOut='slideOutDown' animationInTiming={700} style={{width: '100%', margin: 0}}>
         <Container>
 
-            <Cabecalho_Modal  titulo='Tipo de Atendimento' onPress={()=> { closeModal() }} />
+            <Cabecalho_Modal  titulo='Tipo de Atendimento' onPress={()=> closeModal()} />
 
             <Body>
 
@@ -121,16 +144,12 @@ export function Modal_TipoAtendimento({ visible, closeModal, id }: Props){
                       autoCorrect={false}
                       type={'money'}
                       error={errors.valor && errors.valor.message}
-                      value="100,00"
                   />
                 </WrapDuracao>
 
-
             </Body>
 
-            <Footer_Modal onPressOk={()=> console.log("pressionou OK")} onPressCancel={()=> { closeModal() }}/>
-
-
+            <Footer_Modal onPressOk={handleSubmit((d) => HandleTipoAtendimento(d as any) ) } onPressCancel={()=> { closeModal() }}/>
 
             <TimePickerModal
               visible={visible2}

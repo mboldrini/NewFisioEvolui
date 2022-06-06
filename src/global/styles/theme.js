@@ -64,8 +64,8 @@ export default{
 
 export const DefaultAppValues = {
     fontSize: {
-        title: 18,
-        description: 12
+        title: 14,
+        description: 10
     },
     bordas: {
         padrao: 10,
