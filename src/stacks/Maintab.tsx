@@ -9,7 +9,7 @@ import { Home } from '../screens/Home';
 import { Search } from '../screens/Search';
 import { Agenda } from '../screens/Agenda';
 import { CadastrarPaciente } from '../screens/CadastrarPaciente';
-import { Profile } from '../screens/Configs/Profile';
+import { Profile as Prof } from '../screens/Configs/Profile';
 
 
 
@@ -27,7 +27,7 @@ export default () => (
         <Screen name="Agenda" component={Agenda} />
         <Screen name="Home" component={Home} />
         <Screen name="Search" component={Search} />
-        <Screen name="Profile" component={Profile} />
+        <Screen name="Prof" component={Prof} />
     </Navigator>
 
 

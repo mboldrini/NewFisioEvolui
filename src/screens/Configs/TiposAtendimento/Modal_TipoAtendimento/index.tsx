@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useMemo, useEffect} from 'react';
 /// Modal Parts
 import Modal from 'react-native-modal';
 import { Cabecalho_Modal } from '../../../../components/Cabecalho_Modal';
@@ -13,7 +13,9 @@ import {
     TempoDuracao,
     ImageIcon,
     WrapLoading,
-    LoadingIcon
+    LoadingIcon,
+
+    Testetexto
 } from './styles';
 /// Forms
 import * as Yup from 'yup';
@@ -27,7 +29,7 @@ import { InputMasked } from '../../../../components/Forms/InputMasked';
 /// Timer Picker
 import { TimePickerModal } from 'react-native-paper-dates'
 /// Avisos
-import { Alert } from 'react-native';
+import { Alert, FlatList, ScrollView } from 'react-native';
 import Toast from 'react-native-toast-message';
 ///Redux
 import { useSelector } from 'react-redux';
@@ -35,6 +37,11 @@ import { State } from '../../../../state';
 import { api } from '../../../../global/api';
 /// Talvez substituir isso aqui
 import { Modal_ListarFormasPagamento } from '../../FormasPagamento/Modal_ListarFormasPagamento';
+
+
+import { Button } from '../../../../components/Buttons/Button/Index';
+import ActionSheet, { SheetManager } from "react-native-actions-sheet";
+import {Text} from 'react-native';
 
 
 interface Props{
@@ -58,103 +65,108 @@ const schema = Yup.object().shape({
 });
 
 export function Modal_TipoAtendimento({ visible, closeModal, id }: Props){
-    /// Form
-    const { control, handleSubmit, formState: { errors }, reset } = useForm({ resolver: yupResolver(schema) });
-    /// Redux
-    const apiState = useSelector((state: State) => state.apiReducer);
+  /// Form
+  const { control, handleSubmit, formState: { errors }, reset } = useForm({ resolver: yupResolver(schema) });
+  /// Redux
+  const apiState = useSelector((state: State) => state.apiReducer);
 
-    /// Loading e 2º modal
-    const [loading, setLoading] = useState(false);
-    const [ showModalFormaPgto, setShowModalFormaPgto ] = useState(false);
+  /// Loading e 2º modal
+  const [loading, setLoading] = useState(false);
+  const [ showModalFormaPgto, setShowModalFormaPgto ] = useState(false);
 
-    /// Infos
-    const [visible2, setVisible2] = React.useState(false);
-    const [ hora, setHora ] = useState('00:30');
-    const [formaPagamento, setFormaPagamento] = useState({key: -1, name: 'Forma de Pagamento'});
+  /// Infos
+  const [visible2, setVisible2] = React.useState(false);
+  const [ hora, setHora ] = useState('00:30');
+  const [formaPagamento, setFormaPagamento] = useState({key: -1, name: 'Forma de Pagamento'});
 
+
+  const onConfirm = React.useCallback(
+    ({ hours, minutes }) => {
+      setVisible2(false);
+      SetaHoras(hours, minutes);
+    },
+    [setVisible2]
+  );
   
-    const onConfirm = React.useCallback(
-      ({ hours, minutes }) => {
-        setVisible2(false);
-        SetaHoras(hours, minutes);
-      },
-      [setVisible2]
-    );
+  function SetaHoras(hora: number, minuto: number){
+    let hour = ''+ hora;
+    let minute = ''+ minuto;
+    if(hora < 10 ){
+      hour = "0"+ hora;
+    }
+    if( minuto < 9 ){
+      if(minuto < 1){
+        minute = 10 +"";
+      }else{
+        minute = "0"+ minuto;
+      }
+    }
+    setHora(hour +':'+ minute);
+  }
+
+  function HandleTipoAtendimento(formInfos: any){
+
+    if(formaPagamento.key == -1){
+      Alert.alert( "Ops!", "Você precisa escolher uma forma de pagamento", [ { text: "OK" } ] );
+      return;
+    }
+
+    if(formInfos.valor == "R$0,00"){
+      Alert.alert( "Ops!", "Você precisa informar o valor", [ { text: "OK" } ] );
+      return;
+    }
+
+    let formatedPrice = parseFloat(formInfos.valor.replace("R$", "").replace(".", "").replace(",", "."));
+
+    let infos = {
+      name: formInfos.nome,
+      description: formInfos.descricao,
+      duration: hora,
+      price: formatedPrice,
+      paymentMethod_id: formaPagamento.key
+    }
+    console.log(infos);
+    CriarTipoAtendimento(infos);
+
+  }
+
+  async function CriarTipoAtendimento(infos: IInfosAtend){
+    setLoading(true);
     
-    function SetaHoras(hora: number, minuto: number){
-      let hour = ''+ hora;
-      let minute = ''+ minuto;
-      if(hora < 10 ){
-        hour = "0"+ hora;
-      }
-      if( minuto < 9 ){
-        if(minuto < 1){
-          minute = 10 +"";
-        }else{
-          minute = "0"+ minuto;
-        }
-      }
-      setHora(hour +':'+ minute);
-    }
+    await api(apiState.token).post('servicesTypes', infos).then(res =>{
 
-    function HandleTipoAtendimento(formInfos: any){
+        Toast.show({
+          type: 'success',
+          text1: '😃 Atendimento cadastrado com sucesso!',
+          text2: 'uhull!'
+        });
 
-      if(formaPagamento.key == -1){
-        Alert.alert( "Ops!", "Você precisa escolher uma forma de pagamento", [ { text: "OK" } ] );
-        return;
-      }
+        reset({
+          nome: '',
+          descricao: '',
+          valor: ''
+        });
+        setFormaPagamento({key: -1, name: 'Forma de Pagamento'});
 
-      if(formInfos.valor == "R$0,00"){
-        Alert.alert( "Ops!", "Você precisa informar o valor", [ { text: "OK" } ] );
-        return;
-      }
+        closeModal();
 
-      let formatedPrice = parseFloat(formInfos.valor.replace("R$", "").replace(".", "").replace(",", "."));
+    }).catch(err => {
+        console.log("ERRO");
+        console.log(err);
+        Toast.show({
+            type: 'error',
+            text1: '⚠️ Erro ao obter lista de formas de pagamento',
+        });
+        closeModal()
+    });
 
-      let infos = {
-        name: formInfos.nome,
-        description: formInfos.descricao,
-        duration: hora,
-        price: formatedPrice,
-        paymentMethod_id: formaPagamento.key
-      }
-      console.log(infos);
-      CriarTipoAtendimento(infos);
+    setLoading(false);
+  }
 
-    }
+  const listaTipos = [
+     20, 30, 34, 36, 43, 45, 47, 51, 54, 57, 73, 77, 78, 83, 91, 95, 98, 105, 112, 114, 120, 121, 123, 132, 146, 154, 160, 162, 167, 176, 181, 195, 204, 211, 231, 234, 235, 248, 254, 256, 260, 267, 268, 292, 295, 296, 297, 299, 300
+  ];
 
-    async function CriarTipoAtendimento(infos: IInfosAtend){
-      setLoading(true);
-     
-      await api(apiState.token).post('servicesTypes', infos).then(res =>{
-
-          Toast.show({
-            type: 'success',
-            text1: '😃 Atendimento cadastrado com sucesso!',
-            text2: 'uhull!'
-          });
-
-          reset({
-            nome: '',
-            descricao: '',
-            valor: ''
-          });
-          setFormaPagamento({key: -1, name: 'Forma de Pagamento'});
-
-          closeModal();
-
-      }).catch(err => {
-          console.log("ERRO");
-          console.log(err);
-          Toast.show({
-              type: 'error',
-              text1: '⚠️ Erro ao obter lista de formas de pagamento',
-          });
-          closeModal()
-      });
-
-      setLoading(false);
-    }
 
 
   return(
@@ -194,6 +206,9 @@ export function Modal_TipoAtendimento({ visible, closeModal, id }: Props){
                   onPress={()=>{ setShowModalFormaPgto(true) }}
                 /> 
 
+              <Button onPress={() => { SheetManager.show("helloworld_sheet") }} title="aaa" />
+   
+
                 <WrapDuracao>
                   <BotaoDuracao>
                     <ImageIcon source={require('../../../../assets/stopwatch.png')}/>
@@ -214,6 +229,32 @@ export function Modal_TipoAtendimento({ visible, closeModal, id }: Props){
               </Form>
 
               <Footer_Modal onPressOk={handleSubmit((d) => HandleTipoAtendimento(d as any) ) } onPressCancel={()=> { closeModal() }}/>
+
+
+              <ActionSheet id="helloworld_sheet" 
+                initialOffsetFromBottom={1} 
+                gestureEnabled={true} 
+                headerAlwaysVisible={true} 
+                elevation={3}
+                extraScroll={3}
+                >
+              <ScrollView
+        nestedScrollEnabled={true}
+     
+      >
+                <FlatList 
+                        data={listaTipos}
+                        keyExtractor={(item) => item +""}
+                        renderItem={({item}) =>(
+                          <Testetexto>{ item }</Testetexto>
+                            
+                        )}
+                        
+                    />
+              </ScrollView>
+</ActionSheet>
+
+
 
             </Body>
           }
