@@ -19,7 +19,20 @@ export const Container = styled(GestureHandlerRootView)`
 
 export const Body = styled.View`
     flex: 1;
+    justify-content: space-between;
 `;
+
+export const Form = styled.View`
+    justify-content: space-between;
+`;
+
+export const WrapLoading = styled.View`
+    flex: 1;
+    margin-top: ${RFValue(100)}px;
+`;
+
+export const LoadingIcon = styled.ActivityIndicator``;
+
 
 export const WrapDuracao = styled.View`
     flex-direction: row;

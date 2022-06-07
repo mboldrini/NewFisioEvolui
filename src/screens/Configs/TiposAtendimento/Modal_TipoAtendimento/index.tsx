@@ -1,28 +1,40 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
+/// Modal Parts
 import Modal from 'react-native-modal';
 import { Cabecalho_Modal } from '../../../../components/Cabecalho_Modal';
 import { Footer_Modal } from '../../../../components/Footers/Footer_Modal';
+/// CSS Parts
 import { 
     Container,
     Body,
+    Form,
     WrapDuracao,
-    Duracao,
     BotaoDuracao,
     TempoDuracao,
-    ImageIcon
+    ImageIcon,
+    WrapLoading,
+    LoadingIcon
 } from './styles';
 /// Forms
 import * as Yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
+/// Select Button
+import { Select } from '../../../../components/Forms/Select';
+/// Forms Inputs
 import { InputForm } from '../../../../components/Forms/InputForm';
 import { InputMasked } from '../../../../components/Forms/InputMasked';
-import { Button } from '../../../../components/Buttons/Button/Index';
-
+/// Timer Picker
 import { TimePickerModal } from 'react-native-paper-dates'
-import { Select } from '../../../../components/Forms/Select';
-import { Modal_ListarFormasPagamento } from '../../FormasPagamento/Modal_ListarFormasPagamento';
+/// Avisos
 import { Alert } from 'react-native';
+import Toast from 'react-native-toast-message';
+///Redux
+import { useSelector } from 'react-redux';
+import { State } from '../../../../state';
+import { api } from '../../../../global/api';
+/// Talvez substituir isso aqui
+import { Modal_ListarFormasPagamento } from '../../FormasPagamento/Modal_ListarFormasPagamento';
 
 
 interface Props{
@@ -31,24 +43,35 @@ interface Props{
     id?: number
 }
 
+interface IInfosAtend{
+  name: string,
+  description?: string,
+  duration: string,
+  price: number,
+  paymentMethod_id: number
+}
+
 const schema = Yup.object().shape({
   nome: Yup.string().required("Nome é obrigatório"),
   descricao: Yup.string().optional(),
   valor: Yup.string().optional(),
 });
 
-
-
 export function Modal_TipoAtendimento({ visible, closeModal, id }: Props){
-
+    /// Form
     const { control, handleSubmit, formState: { errors }, reset } = useForm({ resolver: yupResolver(schema) });
+    /// Redux
+    const apiState = useSelector((state: State) => state.apiReducer);
 
+    /// Loading e 2º modal
+    const [loading, setLoading] = useState(false);
+    const [ showModalFormaPgto, setShowModalFormaPgto ] = useState(false);
+
+    /// Infos
     const [visible2, setVisible2] = React.useState(false);
     const [ hora, setHora ] = useState('00:30');
-
     const [formaPagamento, setFormaPagamento] = useState({key: -1, name: 'Forma de Pagamento'});
 
-    const [ showModalFormaPgto, setShowModalFormaPgto ] = useState(false);
   
     const onConfirm = React.useCallback(
       ({ hours, minutes }) => {
@@ -81,29 +104,70 @@ export function Modal_TipoAtendimento({ visible, closeModal, id }: Props){
         return;
       }
 
+      if(formInfos.valor == "R$0,00"){
+        Alert.alert( "Ops!", "Você precisa informar o valor", [ { text: "OK" } ] );
+        return;
+      }
+
       let formatedPrice = parseFloat(formInfos.valor.replace("R$", "").replace(".", "").replace(",", "."));
 
       let infos = {
         name: formInfos.nome,
-        description: formInfos.description,
+        description: formInfos.descricao,
         duration: hora,
         price: formatedPrice,
         paymentMethod_id: formaPagamento.key
       }
       console.log(infos);
+      CriarTipoAtendimento(infos);
 
     }
 
+    async function CriarTipoAtendimento(infos: IInfosAtend){
+      setLoading(true);
+     
+      await api(apiState.token).post('servicesTypes', infos).then(res =>{
+
+          Toast.show({
+            type: 'success',
+            text1: '😃 Atendimento cadastrado com sucesso!',
+            text2: 'uhull!'
+          });
+
+          reset({
+            nome: '',
+            descricao: '',
+            valor: ''
+          });
+          setFormaPagamento({key: -1, name: 'Forma de Pagamento'});
+
+          closeModal();
+
+      }).catch(err => {
+          console.log("ERRO");
+          console.log(err);
+          Toast.show({
+              type: 'error',
+              text1: '⚠️ Erro ao obter lista de formas de pagamento',
+          });
+          closeModal()
+      });
+
+      setLoading(false);
+    }
 
 
-    return(
+  return(
     <Modal isVisible={visible} animationIn='slideInUp' animationOut='slideOutDown' animationInTiming={700} style={{width: '100%', margin: 0}}>
         <Container>
 
-            <Cabecalho_Modal  titulo='Tipo de Atendimento' onPress={()=> closeModal()} />
+          <Cabecalho_Modal  titulo='Tipo de Atendimento' onPress={()=> closeModal()} />
+
+          { !loading &&
 
             <Body>
-
+     
+              <Form>
                 <InputForm 
                     name="nome"
                     control={control}
@@ -147,9 +211,18 @@ export function Modal_TipoAtendimento({ visible, closeModal, id }: Props){
                   />
                 </WrapDuracao>
 
-            </Body>
+              </Form>
 
-            <Footer_Modal onPressOk={handleSubmit((d) => HandleTipoAtendimento(d as any) ) } onPressCancel={()=> { closeModal() }}/>
+              <Footer_Modal onPressOk={handleSubmit((d) => HandleTipoAtendimento(d as any) ) } onPressCancel={()=> { closeModal() }}/>
+
+            </Body>
+          }
+
+          { loading &&
+            <WrapLoading>
+              <LoadingIcon size="large" color="#FFFFFF"/>   
+            </WrapLoading>
+          }
 
             <TimePickerModal
               visible={visible2}
@@ -172,5 +245,5 @@ export function Modal_TipoAtendimento({ visible, closeModal, id }: Props){
 
         </Container>
     </Modal>
-    )
+  )
 }

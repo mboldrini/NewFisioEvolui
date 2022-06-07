@@ -21,7 +21,7 @@ export const WrapText = styled.View`
 `;
 
 export const NomeTipoPagamento = styled.Text`
-    font-size: ${ RFValue(DefaultAppValues.fontSize.title) };
+    font-size: ${ RFValue(DefaultAppValues.fontSize.title) }px;
     font-family: ${({theme}) => theme.fonts.regular};
 `;
 
@@ -61,7 +61,7 @@ export const WrapInfosGroup = styled.View`
 
 export const Title = styled.Text`
     font-family: ${({theme}) => theme.fonts.regular};
-    font-size: ${ RFValue(DefaultAppValues.fontSize.title) };
+    font-size: ${ RFValue(DefaultAppValues.fontSize.title) }px;
     padding: 0px;
     padding-top: ${RFValue(2)}px;
     padding-left: ${RFValue(3)}px;
