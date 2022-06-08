@@ -14,8 +14,7 @@ import {
     ImageIcon,
     WrapLoading,
     LoadingIcon,
-
-    Testetexto
+    WrapList
 } from './styles';
 /// Forms
 import * as Yup from 'yup';
@@ -38,10 +37,9 @@ import { api } from '../../../../global/api';
 /// Talvez substituir isso aqui
 import { Modal_ListarFormasPagamento } from '../../FormasPagamento/Modal_ListarFormasPagamento';
 
-
 import { Button } from '../../../../components/Buttons/Button/Index';
 import ActionSheet, { SheetManager } from "react-native-actions-sheet";
-import {Text} from 'react-native';
+import { List_TipoPagamento } from '../../../../components/List_Items/TiposDePagamentos';
 
 
 interface Props{
@@ -56,6 +54,15 @@ interface IInfosAtend{
   duration: string,
   price: number,
   paymentMethod_id: number
+}
+
+interface IListaTipos{
+  id: number,
+  paymentMethod_name: string,
+  description: string,
+  paymentMethod_id: number,
+  created_at: string,
+  updated_at: string,    
 }
 
 const schema = Yup.object().shape({
@@ -77,8 +84,9 @@ export function Modal_TipoAtendimento({ visible, closeModal, id }: Props){
   /// Infos
   const [visible2, setVisible2] = React.useState(false);
   const [ hora, setHora ] = useState('00:30');
-  const [formaPagamento, setFormaPagamento] = useState({key: -1, name: 'Forma de Pagamento'});
+  const [formaPagamento, setFormaPagamento] = useState({key: -1, name: 'Carregando...'});
 
+  const [listaTipos, setListaTipos] = useState<IListaTipos[]>([]);
 
   const onConfirm = React.useCallback(
     ({ hours, minutes }) => {
@@ -162,12 +170,39 @@ export function Modal_TipoAtendimento({ visible, closeModal, id }: Props){
 
     setLoading(false);
   }
+  
+  async function GetListaTipoPagamentos(){
 
-  const listaTipos = [
-     20, 30, 34, 36, 43, 45, 47, 51, 54, 57, 73, 77, 78, 83, 91, 95, 98, 105, 112, 114, 120, 121, 123, 132, 146, 154, 160, 162, 167, 176, 181, 195, 204, 211, 231, 234, 235, 248, 254, 256, 260, 267, 268, 292, 295, 296, 297, 299, 300
-  ];
+    setFormaPagamento({key: -1, name: 'Carregando...'})
 
+    await api(apiState.token).get('paymentmethod/user/all').then(res =>{
 
+        setListaTipos(res.data);
+        setFormaPagamento({key: -1, name: 'Forma de Pagamento'});
+
+    }).catch(err => {
+        console.log("ERRO");
+        console.log(err);
+        Toast.show({
+            type: 'error',
+            text1: '⚠️ Erro ao obter lista de formas de pagamento',
+        });
+        setFormaPagamento({key: -1, name: 'Forma de Pagamento'});
+    });
+
+  }
+
+  function AbrirListaPagamentos(){
+    if (listaTipos.length < 1){
+      GetListaTipoPagamentos();
+    }else{
+      SheetManager.show("helloworld_sheet")
+    }
+  }
+
+  useEffect(()=>{
+    GetListaTipoPagamentos();
+  },[]);
 
   return(
     <Modal isVisible={visible} animationIn='slideInUp' animationOut='slideOutDown' animationInTiming={700} style={{width: '100%', margin: 0}}>
@@ -203,11 +238,8 @@ export function Modal_TipoAtendimento({ visible, closeModal, id }: Props){
                 <Select 
                   title={ formaPagamento.name }
                   isActive={ formaPagamento.key }
-                  onPress={()=>{ setShowModalFormaPgto(true) }}
+                  onPress={()=>{ AbrirListaPagamentos() }}
                 /> 
-
-              <Button onPress={() => { SheetManager.show("helloworld_sheet") }} title="aaa" />
-   
 
                 <WrapDuracao>
                   <BotaoDuracao>
@@ -230,31 +262,25 @@ export function Modal_TipoAtendimento({ visible, closeModal, id }: Props){
 
               <Footer_Modal onPressOk={handleSubmit((d) => HandleTipoAtendimento(d as any) ) } onPressCancel={()=> { closeModal() }}/>
 
-
-              <ActionSheet id="helloworld_sheet" 
-                initialOffsetFromBottom={1} 
-                gestureEnabled={true} 
-                headerAlwaysVisible={true} 
-                elevation={3}
-                extraScroll={3}
-                >
-              <ScrollView
-        nestedScrollEnabled={true}
-     
-      >
-                <FlatList 
-                        data={listaTipos}
-                        keyExtractor={(item) => item +""}
-                        renderItem={({item}) =>(
-                          <Testetexto>{ item }</Testetexto>
-                            
-                        )}
-                        
-                    />
-              </ScrollView>
-</ActionSheet>
-
-
+              <ActionSheet id="helloworld_sheet" initialOffsetFromBottom={1} gestureEnabled={true} headerAlwaysVisible={true} elevation={3} extraScroll={3}  containerStyle={{backgroundColor: '#63C2D1'}} >
+                <ScrollView nestedScrollEnabled={true} >
+                  <FlatList 
+                    data={listaTipos}
+                    keyExtractor={(item) => item.paymentMethod_name}
+                    renderItem={({item}) =>(
+                      <WrapList>
+                        <List_TipoPagamento 
+                          paymentMethod_name={item.paymentMethod_name} 
+                          description={item.description} 
+                          onPress={()=>{ 
+                            setFormaPagamento({key: item.id, name: item.paymentMethod_name}); 
+                            SheetManager.hide("helloworld_sheet")  }} 
+                          />
+                      </WrapList>
+                    )}
+                  />
+                </ScrollView>
+              </ActionSheet>
 
             </Body>
           }

@@ -66,7 +66,6 @@ export const ImageIcon = styled.Image`
     align-items: center;
 `;
 
-
 export const TempoDuracao = styled.Text`
     font-size: ${RFValue(16)}px;
     color: ${({theme}) => theme.colors.shape};
@@ -75,14 +74,6 @@ export const TempoDuracao = styled.Text`
     padding-top: ${RFValue(5)}px;
 `;
 
-
-
-export const Testetexto = styled.Text`
-    font-size: 16px;
-    padding: 5px;
-    margin-bottom: 10px;
-    background-color: #c3c3c3;
-    margin: 2px 10px;
-    border: 1px solid red;
-    border-radius: ${RFValue(10)}px;
+export const WrapList = styled.View`
+    margin: 0 ${RFValue(DefaultAppValues.margin.lateral_half)}px;
 `;
