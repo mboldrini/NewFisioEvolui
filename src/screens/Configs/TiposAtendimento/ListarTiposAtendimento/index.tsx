@@ -40,7 +40,7 @@ export function ListarTiposAtendimento(){
     const [listaTipos, setListaTipos] = useState<IListaTipos[]>([]);
 
     const [modalId, setModalId] = useState(null);
-    const [showModal, setShowModal] = useState(true);
+    const [showModal, setShowModal] = useState(false);
 
 
     async function GetListaAtendimentos(){
@@ -127,6 +127,7 @@ export function ListarTiposAtendimento(){
             <Modal_TipoAtendimento 
                 visible={showModal} 
                 closeModal={() => setShowModal(false) } 
+                id={modalId}
             />
 
         </ScrollView>

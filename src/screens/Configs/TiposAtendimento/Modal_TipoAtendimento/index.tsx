@@ -34,8 +34,6 @@ import Toast from 'react-native-toast-message';
 import { useSelector } from 'react-redux';
 import { State } from '../../../../state';
 import { api } from '../../../../global/api';
-/// Talvez substituir isso aqui
-import { Modal_ListarFormasPagamento } from '../../FormasPagamento/Modal_ListarFormasPagamento';
 
 import { Button } from '../../../../components/Buttons/Button/Index';
 import ActionSheet, { SheetManager } from "react-native-actions-sheet";
@@ -200,15 +198,62 @@ export function Modal_TipoAtendimento({ visible, closeModal, id }: Props){
     }
   }
 
+  async function GetInfosTipoAtendimento(id: number){
+    setLoading(true);
+
+    await api(apiState.token).get('servicesTypes/'+ id).then(res =>{
+
+      console.log("ok");
+      console.log(res.data);
+
+      if(res.data.name){
+        reset({
+          nome: res.data.name,
+          descricao: res.data.description,
+          valor: res.data.price
+        });
+  
+        let [hora, minuto, segundo] = res.data.duration.split(":");
+        SetaHoras( parseInt(hora), parseInt(minuto));
+  
+        setFormaPagamento({key: res.data.paymentMethod_id, name: res.data.paymentMethod_name});
+        
+      }else{
+        Toast.show({
+          type: 'error',
+          text1: '⚠️ Erro ao obter informações da forma de pagamento',
+        });
+        closeModal();
+      }
+
+    }).catch(err => {
+        console.log("ERRO");
+        console.log(err);
+        Toast.show({
+            type: 'error',
+            text1: '⚠️ Erro ao obter informações da forma de pagamento',
+        });
+        closeModal();
+    });
+
+    setLoading(false);
+  }
+
   useEffect(()=>{
-    GetListaTipoPagamentos();
-  },[]);
+    if(visible == true){
+      GetListaTipoPagamentos();
+    }
+    if(id){
+      console.log(`ID recebido: ${id}`);
+      GetInfosTipoAtendimento(id);
+    }
+  },[visible]);
 
   return(
     <Modal isVisible={visible} animationIn='slideInUp' animationOut='slideOutDown' animationInTiming={700} style={{width: '100%', margin: 0}}>
         <Container>
 
-          <Cabecalho_Modal  titulo='Tipo de Atendimento' onPress={()=> closeModal()} />
+          <Cabecalho_Modal titulo='Tipo de Atendimento' onPress={()=> { closeModal() }} />
 
           { !loading &&
 
@@ -302,12 +347,6 @@ export function Modal_TipoAtendimento({ visible, closeModal, id }: Props){
               confirmLabel="Ok" // optional, default: 'Ok'
               animationType="fade" // optional, default is 'none'
               locale={'pt-BR'} // optional, default is automically detected by your system
-            />
-
-            <Modal_ListarFormasPagamento 
-              visible={showModalFormaPgto} 
-              closeModal={()=> { setShowModalFormaPgto (false) }} 
-              setFormasPgto={setFormaPagamento} 
             />
 
         </Container>
