@@ -22,5 +22,10 @@ interface SetAPIToken{
     payload: any
 }
 
+interface SetAtendimentos{
+    type: ActionType.SETATENDIMENTOS,
+    payload: any
+}
 
-export type Action = SetInfos | SetId | SetEmail | SetAPIToken; // | OutraAction
+
+export type Action = SetInfos | SetId | SetEmail | SetAPIToken | SetAtendimentos; // | OutraAction

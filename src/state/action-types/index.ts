@@ -2,7 +2,9 @@ export enum ActionType{
     SETINFOS = "setInfos",
     SETEMAIL = "setEmail",
     SETID = "setId",
-    SETAPITOKEN = "setApiToken"
+    SETAPITOKEN = "setApiToken",
+    
+    SETATENDIMENTOS = "setAtendimentos"
 }
 
 export interface IUserType{
@@ -48,6 +50,20 @@ interface IPersonalInfos{
     tiktok?: string
 }
 
+export interface atendimento{
+    id: number,
+    name: string,
+    description: string,
+    duration: string,
+    price: string,
+    created_at: string,
+    updated_at: string,
+}
+
+/// Tipos de Atendimentos
+export interface IAtendimentos{
+    atendimentos: atendimento[];
+}
 
 export interface IApiInfos{
     token: string;

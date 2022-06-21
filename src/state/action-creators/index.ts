@@ -1,4 +1,5 @@
-import { IUserType, IApiInfos } from '../action-types/index';
+import { atendimento } from './../action-types/index';
+import { IUserType, IApiInfos, IAtendimentos } from '../action-types/index';
 import { ActionType } from "../action-types";
 import { Dispatch } from "redux";
 import { Action } from '../actions/index';
@@ -33,6 +34,17 @@ export const setApiInfos = ({token, date}: IApiInfos ) => {
             payload: {
                 token: token,
                 date: date
+            }
+        })
+    }
+}
+
+export const setAtendimentos = ( atendimentos : atendimento[] ) => {
+    return (dispatch: Dispatch<Action>) => {
+        dispatch({
+            type: ActionType.SETATENDIMENTOS,
+            payload: {
+                atendimentos
             }
         })
     }
