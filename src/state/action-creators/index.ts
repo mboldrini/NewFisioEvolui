@@ -50,3 +50,14 @@ export const setAtendimentos = ( atendimentos : atendimento[] ) => {
     }
 }
 
+export const setAtualizaAtendimentos = ( atualiza: boolean ) => {
+    return (dispatch: Dispatch<Action>) => {
+        dispatch({
+            type: ActionType.SETATUALIZAATENDIMENTO,
+            payload: {
+                atualiza: atualiza
+            }
+        })
+    }
+}
+

@@ -27,5 +27,10 @@ interface SetAtendimentos{
     payload: any
 }
 
+interface SetAtualizaAtendimento{
+    type: ActionType.SETATUALIZAATENDIMENTO,
+    payload: any,
+}
 
-export type Action = SetInfos | SetId | SetEmail | SetAPIToken | SetAtendimentos; // | OutraAction
+
+export type Action = SetInfos | SetId | SetEmail | SetAPIToken | SetAtendimentos | SetAtualizaAtendimento; // | OutraAction

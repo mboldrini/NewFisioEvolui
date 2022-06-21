@@ -4,7 +4,8 @@ export enum ActionType{
     SETID = "setId",
     SETAPITOKEN = "setApiToken",
     
-    SETATENDIMENTOS = "setAtendimentos"
+    SETATENDIMENTOS = "setAtendimentos",
+    SETATUALIZAATENDIMENTO = "setAtualizaAtendimento"
 }
 
 export interface IUserType{
@@ -62,6 +63,7 @@ export interface atendimento{
 
 /// Tipos de Atendimentos
 export interface IAtendimentos{
+    atualiza: boolean;
     atendimentos: atendimento[];
 }
 

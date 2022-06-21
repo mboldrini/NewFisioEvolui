@@ -2,8 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import {FlatList, RefreshControl, ScrollView} from 'react-native';
 import Toast from 'react-native-toast-message';
-import { useSelector } from 'react-redux';
-import { State } from '../../../../state';
 import { 
     Container,
     WrapCentral,
@@ -17,6 +15,10 @@ import { Cabecalho } from '../../../../components/Cabecalho';
 import { api } from '../../../../global/api';
 import { List_TipoAtendimento } from '../../../../components/List_Items/TiposDeAtendimentos';
 import { Modal_TipoAtendimento } from '../Modal_TipoAtendimento';
+// /// REDUX
+import { bindActionCreators } from 'redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { actionCreators, State } from '../../../../state';
 
 interface IListaTipos{
     id: number,
@@ -34,7 +36,12 @@ export function ListarTiposAtendimento(){
     const [refreshing, setRefresh] = useState(false);
 
     const [loading, setLoading] = useState(true);
-    
+
+
+    const dispatch = useDispatch();
+    const { setAtendimentos, setAtualizaAtendimentos } = bindActionCreators(actionCreators, dispatch);
+
+    const atendimentosState = useSelector((state: State) => state.atendimentoReducer);    
     const apiState = useSelector((state: State) => state.apiReducer);
 
     const [listaTipos, setListaTipos] = useState<IListaTipos[]>([]);
@@ -50,7 +57,12 @@ export function ListarTiposAtendimento(){
        
         await api(apiState.token).get('servicesTypes/user/all').then(res =>{
 
+            setAtualizaAtendimentos(
+                false
+            );
+
             setListaTipos(res.data);
+            setAtendimentos(res.data);
 
         }).catch(err => {
             console.log("ERRO");
@@ -74,6 +86,11 @@ export function ListarTiposAtendimento(){
         GetListaAtendimentos();
     },[]);
 
+    useEffect(()=>{
+        if(atendimentosState.atualiza){
+            GetListaAtendimentos();
+        }
+    },[atendimentosState]);
  
 
     return(

@@ -6,6 +6,7 @@ import { Action } from "../actions";
 
 //Constante com as informações iniciais
 const initialState = {
+    atualiza: false,
     atendimentos: [
     {
         id: 0,
@@ -25,12 +26,15 @@ const initialState = {
 const atendimentoReducer = (state = initialState, action: Action) => {
     switch(action.type){
         case ActionType.SETATENDIMENTOS:
-            console.log("action.payload");
-            console.log(action.payload);
             return {
                 ...state,
                 atendimentos: action.payload.atendimentos
             }
+        case ActionType.SETATUALIZAATENDIMENTO:
+            return {
+                ...state,
+                atualiza: action.payload.atualiza,
+            };
         default: 
             return state;
     }
