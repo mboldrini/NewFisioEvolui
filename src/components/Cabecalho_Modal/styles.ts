@@ -31,8 +31,8 @@ export const WrapLeft = styled.View`
     align-items: center;
     justify-content: flex-start;
 `;
-
-export const WrapIcon = styled(RectButton)`
+// Era (RectButton)
+export const WrapIcon = styled.TouchableOpacity`
     padding: ${RFValue(5)}px;
 `;
 

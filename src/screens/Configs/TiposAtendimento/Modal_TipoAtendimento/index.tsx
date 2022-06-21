@@ -117,7 +117,7 @@ export function Modal_TipoAtendimento({ visible, closeModal, id }: Props){
       return;
     }
 
-    if(formInfos.valor == "R$0,00"){
+    if(formInfos.valor == "R$0,00" || formInfos.valor.length == 0){
       Alert.alert( "Ops!", "Você precisa informar o valor", [ { text: "OK" } ] );
       return;
     }
@@ -131,7 +131,6 @@ export function Modal_TipoAtendimento({ visible, closeModal, id }: Props){
       price: formatedPrice,
       paymentMethod_id: formaPagamento.key
     }
-    console.log(infos);
     CriarTipoAtendimento(infos);
 
   }
@@ -161,7 +160,7 @@ export function Modal_TipoAtendimento({ visible, closeModal, id }: Props){
         console.log(err);
         Toast.show({
             type: 'error',
-            text1: '⚠️ Erro ao obter lista de formas de pagamento',
+            text1: '⚠️ Erro ao obter informações do atendimento',
         });
         closeModal()
     });
@@ -179,12 +178,14 @@ export function Modal_TipoAtendimento({ visible, closeModal, id }: Props){
         setFormaPagamento({key: -1, name: 'Forma de Pagamento'});
 
     }).catch(err => {
-        console.log("ERRO");
-        console.log(err);
-        Toast.show({
-            type: 'error',
-            text1: '⚠️ Erro ao obter lista de formas de pagamento',
-        });
+      console.group("FormaPagamento");
+      console.log("ERRO ao obter forma de pagamento");
+      console.log(err);
+      console.groupEnd();
+        // Toast.show({
+        //     type: 'error',
+        //     text1: '⚠️ Erro ao obter lista de formas de pagamento',
+        // });
         setFormaPagamento({key: -1, name: 'Forma de Pagamento'});
     });
 
@@ -221,22 +222,74 @@ export function Modal_TipoAtendimento({ visible, closeModal, id }: Props){
       }else{
         Toast.show({
           type: 'error',
-          text1: '⚠️ Erro ao obter informações da forma de pagamento',
+          text1: 'Erro ao obter informações',
         });
         closeModal();
       }
 
     }).catch(err => {
+      console.group("ObtemInfosAtendimento");
         console.log("ERRO");
         console.log(err);
-        Toast.show({
-            type: 'error',
-            text1: '⚠️ Erro ao obter informações da forma de pagamento',
-        });
-        closeModal();
+      console.groupEnd();
+        // Toast.show({
+        //     type: 'error',
+        //     text1: '⚠️ Erro ao obter informações da forma de pagamento',
+        // });
+        // closeModal();
     });
 
     setLoading(false);
+  }
+
+  function HandleDeleteAtendimento(){
+    Alert.alert(
+      "Excluir Tipo de Atendimento",
+      "Realmente deseja excluir esse atendimento?",
+      [
+        {
+          text: "SIM",
+          onPress: () => DeleteTipoAtendimento(),
+        },
+        {
+          text: "Cancelar",
+          style: "cancel",
+        },
+      ]     
+    );
+  }
+
+  async function DeleteTipoAtendimento(){
+    setLoading(true);
+
+    await api(apiState.token).delete('servicesTypes/'+ id).then(res =>{
+
+      Toast.show({
+        type: 'success',
+        text1: 'Tipo de atendimento excluido! 👍',
+      });
+
+      reset({
+        nome: '',
+        descricao: '',
+        valor: ''
+      });
+      setFormaPagamento({key: -1, name: 'Forma de Pagamento'});
+
+      closeModal();
+
+    }).catch(err => {
+      console.log("ERRO");
+      console.log(err.data);
+      // Toast.show({
+      //     type: 'error',
+      //     text1: '⚠️ Erro ao excluir tipo de atendimento',
+      // });
+      // closeModal();
+  });
+
+  setLoading(false);
+
   }
 
   useEffect(()=>{
@@ -253,7 +306,16 @@ export function Modal_TipoAtendimento({ visible, closeModal, id }: Props){
     <Modal isVisible={visible} animationIn='slideInUp' animationOut='slideOutDown' animationInTiming={700} style={{width: '100%', margin: 0}}>
         <Container>
 
-          <Cabecalho_Modal titulo='Tipo de Atendimento' onPress={()=> { closeModal() }} />
+          { !id &&
+            <Cabecalho_Modal titulo='Tipo de Atendimento' onPress={()=> { closeModal() }} />
+          }
+          { id &&
+            <Cabecalho_Modal 
+              titulo='Tipo de Atendimento' 
+              onPress={()=> { closeModal() }} 
+              onPressSecond={()=>{ HandleDeleteAtendimento() } }
+            />
+          }
 
           { !loading &&
 

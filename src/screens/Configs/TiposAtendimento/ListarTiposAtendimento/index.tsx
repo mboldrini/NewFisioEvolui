@@ -57,7 +57,8 @@ export function ListarTiposAtendimento(){
             console.log(err);
             Toast.show({
                 type: 'error',
-                text1: '⚠️ Erro ao obter lista de formas de pagamento',
+                text1: '⚠️ Ops!',
+                text2: 'erro ao obter lista de formas de pagamento',
             });
         });
 
@@ -84,14 +85,13 @@ export function ListarTiposAtendimento(){
             <Cabecalho 
                 titulo="Tipos de Atendimentos" 
                 onPress={()=> navigation.goBack() } 
-                onPressSecond={()=> { navigation.navigate('FormaPagamento' as never, { id: null } as never  ) }} 
+                onPressSecond={()=> { setModalId(null); setShowModal(true) }} 
                 onPressSecondIcon="plus"
             />
 
             <WrapCentral>
 
             <WrapItens>
-
 
                 { listaTipos &&
                     <FlatList 

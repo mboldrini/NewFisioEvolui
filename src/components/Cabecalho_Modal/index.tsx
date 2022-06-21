@@ -22,7 +22,8 @@ export function Cabecalho_Modal({titulo, onPress, onPressSecond, onPressSecondIc
     return(
         <Container>
             <WrapLeft>
-                <WrapIcon onPress={onPress} {...rest}>
+                {/* tinha {...rest} */}
+                <WrapIcon onPress={onPress}> 
                     <IconeLeft name='chevron-down' />
                 </WrapIcon>
                 <WrapTitle exist={ !onPress ? true : false }>
@@ -30,7 +31,7 @@ export function Cabecalho_Modal({titulo, onPress, onPressSecond, onPressSecondIc
                 </WrapTitle>
             </WrapLeft>
             { onPressSecond &&
-                <WrapIcon onPress={onPressSecond} {...rest}>
+                <WrapIcon onPress={onPressSecond}>
                     <IconeRight name={ onPressSecondIcon }/>
                 </WrapIcon>
             }
