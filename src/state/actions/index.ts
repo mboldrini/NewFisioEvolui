@@ -32,5 +32,10 @@ interface SetAtualizaAtendimento{
     payload: any,
 }
 
+interface SetFormasPgto{
+    type: ActionType.SETFORMASPGTO,
+    payload: any,
+}
 
-export type Action = SetInfos | SetId | SetEmail | SetAPIToken | SetAtendimentos | SetAtualizaAtendimento; // | OutraAction
+
+export type Action = SetInfos | SetId | SetEmail | SetAPIToken | SetAtendimentos | SetAtualizaAtendimento | SetFormasPgto; // | OutraAction

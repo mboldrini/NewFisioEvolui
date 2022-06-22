@@ -5,7 +5,9 @@ export enum ActionType{
     SETAPITOKEN = "setApiToken",
     
     SETATENDIMENTOS = "setAtendimentos",
-    SETATUALIZAATENDIMENTO = "setAtualizaAtendimento"
+    SETATUALIZAATENDIMENTO = "setAtualizaAtendimento",
+
+    SETFORMASPGTO = "setFormasPgto"
 }
 
 export interface IUserType{
@@ -51,6 +53,7 @@ interface IPersonalInfos{
     tiktok?: string
 }
 
+/// Tipos de Atendimentos
 export interface atendimento{
     id: number,
     name: string,
@@ -60,11 +63,23 @@ export interface atendimento{
     created_at: string,
     updated_at: string,
 }
-
-/// Tipos de Atendimentos
 export interface IAtendimentos{
     atualiza: boolean;
     atendimentos: atendimento[];
+}
+
+/// Formas de Pagamento
+export interface IPgtos{
+    id: number,
+    description: string;
+    paymentMethod_id: number,
+    paymentMethod_name: string,
+    created_at: string,
+    updated_at: string
+}
+export interface IFormasPgto{
+    atualiza: boolean;
+    pagamentos: IPgtos[];
 }
 
 export interface IApiInfos{

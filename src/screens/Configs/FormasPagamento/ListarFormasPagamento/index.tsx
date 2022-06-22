@@ -2,8 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import {FlatList, RefreshControl, ScrollView} from 'react-native';
 import Toast from 'react-native-toast-message';
-import { useSelector } from 'react-redux';
-import { State } from '../../../../state';
 import { 
     Container,
     WrapCentral,
@@ -15,8 +13,12 @@ import {
 import { Cabecalho } from '../../../../components/Cabecalho';
 
 import { api } from '../../../../global/api';
-import { RoundButton } from '../../../../components/Buttons/RoundButton/Index';
 import { List_TipoPagamento } from '../../../../components/List_Items/TiposDePagamentos';
+
+// /// REDUX
+import { bindActionCreators } from 'redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { actionCreators, State } from '../../../../state';
 
 interface IListaTipos{
     id: number,
@@ -33,11 +35,26 @@ export function ListarFormasPagamento(){
     const [refreshing, setRefresh] = useState(false);
 
     const [loading, setLoading] = useState(true);
-    
-    const apiState = useSelector((state: State) => state.apiReducer);
 
     const [listaTipos, setListaTipos] = useState<IListaTipos[]>([]);
 
+    ///Reducer
+    const dispatch = useDispatch();
+    const { setFormasPgto } = bindActionCreators(actionCreators, dispatch);
+    const formasPgtoState = useSelector((state: State) => state.formasPgtoReducer);   
+
+    const apiState = useSelector((state: State) => state.apiReducer);
+
+
+    function HandleListaAtendimentos(){
+        if(formasPgtoState.pagamentos.length >= 1 || formasPgtoState.pagamentos[0].id != 0 ){
+            console.log("já tem a lista de formas de pagamento no redux");
+            setListaTipos(formasPgtoState.pagamentos);
+        }else{
+            GetListaAtendimentos();
+            console.log("vai pegar a lista dos pagamentos via api");
+        }
+    }
 
     async function GetListaAtendimentos(){
 
@@ -47,6 +64,7 @@ export function ListarFormasPagamento(){
         await api(apiState.token).get('paymentmethod/user/all').then(res =>{
 
             setListaTipos(res.data);
+            setFormasPgto(res.data);
 
         }).catch(err => {
             console.log("ERRO");
@@ -61,14 +79,19 @@ export function ListarFormasPagamento(){
     }
 
     useEffect(()=>{
-        GetListaAtendimentos();
+        HandleListaAtendimentos();
     },[]);
+
+    useEffect(()=>{
+        console.group("FormasPgtoState");
+            console.log(formasPgtoState);
+        console.groupEnd();
+    },[formasPgtoState]);
 
  
 
     return(
         <Container>
-
         <ScrollView refreshControl={<RefreshControl refreshing={refreshing} onRefresh={()=>{ GetListaAtendimentos() }}/> } 
          contentContainerStyle={{flexGrow: 1}}>
 

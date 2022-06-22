@@ -1,4 +1,4 @@
-import { atendimento } from './../action-types/index';
+import { atendimento, IPgtos } from './../action-types/index';
 import { IUserType, IApiInfos, IAtendimentos } from '../action-types/index';
 import { ActionType } from "../action-types";
 import { Dispatch } from "redux";
@@ -61,3 +61,13 @@ export const setAtualizaAtendimentos = ( atualiza: boolean ) => {
     }
 }
 
+export const setFormasPgto = ( pagamentos : IPgtos[] ) => {
+    return (dispatch: Dispatch<Action>) => {
+        dispatch({
+            type: ActionType.SETFORMASPGTO,
+            payload: {
+                pagamentos
+            }
+        })
+    }
+}
