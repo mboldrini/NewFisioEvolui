@@ -31,9 +31,10 @@ import { TimePickerModal } from 'react-native-paper-dates'
 import { Alert, FlatList, ScrollView } from 'react-native';
 import Toast from 'react-native-toast-message';
 ///Redux
-import { useSelector } from 'react-redux';
-import { State } from '../../../../state';
+import { useSelector, useDispatch } from 'react-redux';
+import { State, actionCreators } from '../../../../state';
 import { api } from '../../../../global/api';
+import { bindActionCreators } from 'redux';
 
 import { Button } from '../../../../components/Buttons/Button/Index';
 import ActionSheet, { SheetManager } from "react-native-actions-sheet";
@@ -74,6 +75,8 @@ export function Modal_TipoAtendimento({ visible, closeModal, id }: Props){
   const { control, handleSubmit, formState: { errors }, reset } = useForm({ resolver: yupResolver(schema) });
   /// Redux
   const apiState = useSelector((state: State) => state.apiReducer);
+  const dispatch = useDispatch();
+  const { setAtualizaAtendimentos } = bindActionCreators(actionCreators, dispatch);
 
   /// Loading e 2º modal
   const [loading, setLoading] = useState(false);
@@ -85,6 +88,7 @@ export function Modal_TipoAtendimento({ visible, closeModal, id }: Props){
   const [formaPagamento, setFormaPagamento] = useState({key: -1, name: 'Carregando...'});
 
   const [listaTipos, setListaTipos] = useState<IListaTipos[]>([]);
+
 
   const onConfirm = React.useCallback(
     ({ hours, minutes }) => {
@@ -152,6 +156,7 @@ export function Modal_TipoAtendimento({ visible, closeModal, id }: Props){
           valor: ''
         });
         setFormaPagamento({key: -1, name: 'Forma de Pagamento'});
+        setAtualizaAtendimentos(true);
 
         closeModal();
 
@@ -275,6 +280,7 @@ export function Modal_TipoAtendimento({ visible, closeModal, id }: Props){
         valor: ''
       });
       setFormaPagamento({key: -1, name: 'Forma de Pagamento'});
+      setAtualizaAtendimentos(true);
 
       closeModal();
 
