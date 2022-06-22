@@ -49,6 +49,17 @@ export function ListarTiposAtendimento(){
     const [modalId, setModalId] = useState(null);
     const [showModal, setShowModal] = useState(false);
 
+    function HandleListaAtendimentos(){
+
+        if(atendimentosState.atendimentos.length > 0 ){
+            setListaTipos(atendimentosState.atendimentos);
+            setLoading(false);
+            console.log("Tem atendimentos via Redux, só seta");
+        }else{
+            GetListaAtendimentos();
+            console.log("não tinha lista de atendimentos via redux");
+        }
+    }
 
     async function GetListaAtendimentos(){
 
@@ -83,7 +94,10 @@ export function ListarTiposAtendimento(){
     }
 
     useEffect(()=>{
-        GetListaAtendimentos();
+        // GetListaAtendimentos();
+        // console.log("tem attendimentnos state?");
+        // console.log(atendimentosState);
+        HandleListaAtendimentos();
     },[]);
 
     useEffect(()=>{
