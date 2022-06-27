@@ -71,3 +71,14 @@ export const setFormasPgto = ( pagamentos : IPgtos[] ) => {
         })
     }
 }
+export const setUpdateFormasPgto = ( atualiza: boolean ) => {
+    return (dispatch: Dispatch<Action>) => {
+        dispatch({
+            type: ActionType.SETUPDATEFORMASPGTO,
+            payload: {
+                atualiza: atualiza
+            }
+        })
+    }
+}
+

@@ -30,6 +30,11 @@ const formasPgtoReducer = (state = initialState, action: Action) => {
                 ...state,
                 pagamentos: action.payload.pagamentos
             }
+        case ActionType.SETUPDATEFORMASPGTO:
+            return {
+                ...state,
+                atualiza: action.payload.atualiza,
+            };
         default: 
             return state;
     }

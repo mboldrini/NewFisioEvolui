@@ -7,7 +7,8 @@ export enum ActionType{
     SETATENDIMENTOS = "setAtendimentos",
     SETATUALIZAATENDIMENTO = "setAtualizaAtendimento",
 
-    SETFORMASPGTO = "setFormasPgto"
+    SETFORMASPGTO = "setFormasPgto",
+    SETUPDATEFORMASPGTO = "setUpdateFormasPgto"
 }
 
 export interface IUserType{

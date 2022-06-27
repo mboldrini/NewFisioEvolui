@@ -47,7 +47,7 @@ export function ListarFormasPagamento(){
 
 
     function HandleListaAtendimentos(){
-        if(formasPgtoState.pagamentos.length >= 1 || formasPgtoState.pagamentos[0].id != 0 ){
+        if(formasPgtoState.pagamentos.length > 1 || formasPgtoState.pagamentos[0].id != 0 ){
             console.log("já tem a lista de formas de pagamento no redux");
             setListaTipos(formasPgtoState.pagamentos);
         }else{

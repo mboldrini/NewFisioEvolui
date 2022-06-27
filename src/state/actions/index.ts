@@ -22,20 +22,24 @@ interface SetAPIToken{
     payload: any
 }
 
+/// Tipos de atendimentos
 interface SetAtendimentos{
     type: ActionType.SETATENDIMENTOS,
     payload: any
 }
-
 interface SetAtualizaAtendimento{
     type: ActionType.SETATUALIZAATENDIMENTO,
     payload: any,
 }
-
+/// Formas de Pagamento
 interface SetFormasPgto{
     type: ActionType.SETFORMASPGTO,
     payload: any,
 }
+interface SetAtualizaFormasPgto{
+    type: ActionType.SETUPDATEFORMASPGTO,
+    payload: any,
+}
 
 
-export type Action = SetInfos | SetId | SetEmail | SetAPIToken | SetAtendimentos | SetAtualizaAtendimento | SetFormasPgto; // | OutraAction
+export type Action = SetInfos | SetId | SetEmail | SetAPIToken | SetAtendimentos | SetAtualizaAtendimento | SetFormasPgto | SetAtualizaFormasPgto; // | OutraAction
