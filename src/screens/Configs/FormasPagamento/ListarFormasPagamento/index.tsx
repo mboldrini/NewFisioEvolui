@@ -40,7 +40,7 @@ export function ListarFormasPagamento(){
 
     ///Reducer
     const dispatch = useDispatch();
-    const { setFormasPgto } = bindActionCreators(actionCreators, dispatch);
+    const { setFormasPgto, setUpdateFormasPgto } = bindActionCreators(actionCreators, dispatch);
     const formasPgtoState = useSelector((state: State) => state.formasPgtoReducer);   
 
     const apiState = useSelector((state: State) => state.apiReducer);
@@ -50,13 +50,14 @@ export function ListarFormasPagamento(){
         if(formasPgtoState.pagamentos.length > 1 || formasPgtoState.pagamentos[0].id != 0 ){
             console.log("já tem a lista de formas de pagamento no redux");
             setListaTipos(formasPgtoState.pagamentos);
+            setLoading(false);
         }else{
-            GetListaAtendimentos();
+            GetListaPagamentos();
             console.log("vai pegar a lista dos pagamentos via api");
         }
     }
 
-    async function GetListaAtendimentos(){
+    async function GetListaPagamentos(){
 
         setListaTipos([]);
         setLoading(true);
@@ -65,6 +66,8 @@ export function ListarFormasPagamento(){
 
             setListaTipos(res.data);
             setFormasPgto(res.data);
+            setUpdateFormasPgto(false);
+            console.log("Lista Formas de PGTO atualizada!");
 
         }).catch(err => {
             console.log("ERRO");
@@ -86,13 +89,16 @@ export function ListarFormasPagamento(){
         console.group("FormasPgtoState");
             console.log(formasPgtoState);
         console.groupEnd();
+        if(formasPgtoState.atualiza){
+            GetListaPagamentos();
+        }
     },[formasPgtoState]);
 
  
 
     return(
         <Container>
-        <ScrollView refreshControl={<RefreshControl refreshing={refreshing} onRefresh={()=>{ GetListaAtendimentos() }}/> } 
+        <ScrollView refreshControl={<RefreshControl refreshing={refreshing} onRefresh={()=>{ GetListaPagamentos() }}/> } 
          contentContainerStyle={{flexGrow: 1}}>
 
             <Cabecalho 
@@ -120,7 +126,7 @@ export function ListarFormasPagamento(){
                     />
                 }
 
-                { loading &&
+                { loading == true &&
                     <LoadingIcon size="large" color="#FFFFFF"/>            
                 }
 

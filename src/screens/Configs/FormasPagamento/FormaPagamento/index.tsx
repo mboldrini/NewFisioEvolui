@@ -2,8 +2,12 @@ import React, { useEffect, useState } from 'react';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { Alert, RefreshControl, ScrollView } from 'react-native';
 import Toast from 'react-native-toast-message';
-import { useSelector } from 'react-redux';
-import { State } from '../../../../state';
+
+// /// REDUX
+import { bindActionCreators } from 'redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { actionCreators, State } from '../../../../state';
+
 import { 
     Container,
     WrapToast,
@@ -60,6 +64,10 @@ export function FormaPagamento(){
     const { id } = route.params as IRouteParam;
     
     const apiState = useSelector((state: State) => state.apiReducer);
+
+    ///Reducer
+    const dispatch = useDispatch();
+    const { setUpdateFormasPgto } = bindActionCreators(actionCreators, dispatch);
 
     const [payment, setPayment] = useState<IPayment>(null);
 
@@ -119,6 +127,8 @@ export function FormaPagamento(){
             console.log("SALVOUU!");
             console.log(res.data);
 
+            setUpdateFormasPgto(true);
+
             Toast.show({
                 type: 'success',
                 text1: '😃 informações salvas com sucesso!',
@@ -156,6 +166,8 @@ export function FormaPagamento(){
             console.log("SALVOUU!");
             console.log(res.data.message);
 
+            setUpdateFormasPgto(true);
+
             Toast.show({
                 type: 'success',
                 text1: '😃 informações salvas com sucesso!',
@@ -186,6 +198,8 @@ export function FormaPagamento(){
             console.log("excluiu!");
             console.log(res.data);
 
+            setUpdateFormasPgto(true);
+
             Toast.show({
                 type: 'success',
                 text1: '❌ Forma de pagamento excluída!',
@@ -197,11 +211,15 @@ export function FormaPagamento(){
 
         }).catch(err => {
             console.log("ERRO");
-            console.log(err);
+            console.log(err.response.data);
             Toast.show({
                 type: 'error',
                 text1: '⚠️ Erro ao excluir forma de pagamento',
+                text2: err.response.data.message
             });
+            if(err.response.data.status === 'error'){
+                navigation.goBack();
+            }
         });
 
         setLoading(false);

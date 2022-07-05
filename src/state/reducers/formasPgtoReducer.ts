@@ -1,5 +1,4 @@
 import { IFormasPgto } from './../action-types/index';
-import { IAtendimentos, atendimento } from '../action-types/index';
 // interfaces com os tipos de sets
 import { ActionType, IUserType } from '../action-types/index';
 // interfaces q serão setadas/usadas p/ setar as infos
