@@ -79,5 +79,10 @@ export const DefaultAppValues = {
         bottom: 10,
         lateral_third: 8,
         top: 10
-    }
+    },
+    padding:{
+        lateral: 24,
+        lateral_half: 12,
+        superior: 5,
+    },
 }

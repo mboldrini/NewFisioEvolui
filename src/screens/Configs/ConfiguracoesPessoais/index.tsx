@@ -1,98 +1,123 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { RefreshControl, ScrollView} from 'react-native';
-import Toast from 'react-native-toast-message';
+/// Redux e States
 import { useSelector } from 'react-redux';
 import { State } from '../../../state';
+/// Estetica
+import { Cabecalho } from '../../../components/Cabecalho';
+import { Button } from '../../../components/Buttons/Button/Index';
 import { 
     Container,
-    WrapToast,
-    WrapCentral,
+    Wrap,
+    BtnList,
+    TituloList,
+    WrapHoras,
+    TextoBtn,
+    WrapFooterCadastro,
     LoadingIcon,
-    WrapTitle,
-    Title,
-    
-    InfosGroup,
-    WrapBtns,
-    WrpBtn,
-    Button,
-    Icone,
-    BtnText,
+ 
 } from './styles';
-import { Cabecalho } from '../../../components/Cabecalho';
-
+/// API
+import { api } from '../../../global/api';
 
 export function ConfiguracoesPessoais(){
     
     const navigation = useNavigation();
     const [refreshing, setRefresh] = useState(false);
 
-    const [loading, setLoading] = useState(true);
+    const [loading, setLoading] = useState(false);
     
     const usrState = useSelector((state: State) => state.user);
 
+    ///Reducer
+    const apiState = useSelector((state: State) => state.apiReducer);
+
+    async function GetConfigs(){
+
+        setLoading(true);
+       
+        await api(apiState.token).get('users/configs').then(res =>{
+            
+            console.log('Ok');
+            console.log(res.data);       
+
+        }).catch(err => {
+            console.log("ERRO");
+            console.log(err);
+        });
+
+        setLoading(false);
+    }
+
+    useEffect(()=>{
+        GetConfigs();
+    },[]);
 
     return(
 <Container>
-    <WrapToast>
-            <Toast position={'top'}  autoHide={true} visibilityTime={6000} onPress={()=>Toast.hide()}/>
-    </WrapToast>
-        <ScrollView refreshControl={<RefreshControl refreshing={refreshing} onRefresh={()=>{ console.log("ff") }}/> } 
-         contentContainerStyle={{flexGrow: 1}}>
+    <ScrollView refreshControl={<RefreshControl refreshing={refreshing} onRefresh={()=>{ console.log("ff") }}/> } contentContainerStyle={{flexGrow: 1}}>
 
         <Cabecalho titulo="Configurações do APP" onPress={()=> navigation.goBack() } />
 
-        <WrapCentral>
 
-            <InfosGroup>
-                <WrapTitle>
-                    <Title>Horarios de Atendimento</Title>
-                </WrapTitle>
+        { loading &&
+            <LoadingIcon size="large" color="#FFFFFF"/>            
+        }
 
-                <WrapBtns>
-                    <WrpBtn>
-                        <Button>
-                            <Icone name="hourglass-start"/>
-                            <BtnText>08:00 AM</BtnText>
-                        </Button>
-                    </WrpBtn>
-                    <WrpBtn>
-                        <Button>
-                            <Icone name="hourglass-end"/>
-                            <BtnText>18:00 PM</BtnText>
-                        </Button>
-                    </WrpBtn>
-                </WrapBtns>
-            </InfosGroup>
+        { !loading &&
+            <Wrap>
 
-            <InfosGroup>
-                <WrapTitle>
-                    <Title>Tempo de Atendimento</Title>
-                </WrapTitle>
+                <BtnList>
+                    <TituloList>Início dos Atendimentos:</TituloList>
+                    <WrapHoras>
+                        <TextoBtn>
+                            08:00 AM
+                        </TextoBtn>
+                    </WrapHoras>
+                </BtnList>
 
-                <WrpBtn>
-                    <Button>
-                        <Icone name="clock"/>
-                        <BtnText>00:45m</BtnText>
-                    </Button>
-                </WrpBtn>
-            </InfosGroup>
+                <BtnList>
+                    <TituloList>Fim dos Atendimentos:</TituloList>
+                    <WrapHoras>
+                        <TextoBtn>18:00 PM</TextoBtn>
+                    </WrapHoras>
+                </BtnList>
 
-            <InfosGroup>
-                <WrapTitle>
-                    <Title>Tempo de Deslocamento</Title>
-                </WrapTitle>
+                <BtnList>
+                    <TituloList>Agendamento Retroativo:</TituloList>
+                    <WrapHoras bool={false}>
+                        <TextoBtn>Não</TextoBtn>
+                    </WrapHoras>
+                </BtnList>
+                
+                <BtnList>
+                    <TituloList>Exibir notificaçõoes:</TituloList>
+                    <WrapHoras bool={true}>
+                        <TextoBtn>Sim</TextoBtn>
+                    </WrapHoras>
+                </BtnList>
 
-                <WrpBtn>
-                    <Button>
-                        <Icone name="car"/>
-                        <BtnText>00:15m</BtnText>
-                    </Button>
-                </WrpBtn>
-            </InfosGroup>
+                <BtnList>
+                    <TituloList>Agendamentos ao início do dia:</TituloList>
+                    <WrapHoras bool={true}>
+                        <TextoBtn>Sim</TextoBtn>
+                    </WrapHoras>
+                </BtnList>
+            
+            </Wrap>
+        }
 
-
-        </WrapCentral>
+        { !loading &&
+            <WrapFooterCadastro>
+                <Button 
+                    title="Atualizar Informações" 
+                    onPress={ () => { console.log('FF') }}
+                    type="ok"
+                />
+            </WrapFooterCadastro>
+        }
+        
     </ScrollView>
 </Container>
     )

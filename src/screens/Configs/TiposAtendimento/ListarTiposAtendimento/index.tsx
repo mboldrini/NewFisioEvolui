@@ -51,7 +51,7 @@ export function ListarTiposAtendimento(){
 
     function HandleListaAtendimentos(){
 
-        if(atendimentosState.atendimentos.length > 0 ){
+        if(atendimentosState.atendimentos.length > 0 && atendimentosState.atendimentos[0].id > 0 ){
             setListaTipos(atendimentosState.atendimentos);
             setLoading(false);
             console.log("Tem atendimentos via Redux, só seta");

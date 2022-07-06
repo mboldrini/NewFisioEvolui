@@ -134,9 +134,9 @@ export function Profile(){
                     <WrapIcone><Icone name="chevron-right" enabled={false}/></WrapIcone>
                 </BtnList>
 
-                <BtnList  enabled={false} onPress={() =>  console.log("configs") /*navigation.navigate('ConfiguracoesPessoais' as never)*/ }>
-                    <TituloList enabled={false}>Configurações</TituloList>
-                    <WrapIcone><Icone name="chevron-right" enabled={false}/></WrapIcone>
+                <BtnList  enabled={true} onPress={() => navigation.navigate('ConfiguracoesPessoais' as never) }>
+                    <TituloList enabled={true}>Configurações</TituloList>
+                    <WrapIcone><Icone name="chevron-right" enabled={true}/></WrapIcone>
                 </BtnList>
 
                 <BtnList enabled={false}>
