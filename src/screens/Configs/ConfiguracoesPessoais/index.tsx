@@ -15,11 +15,23 @@ import {
     WrapHoras,
     TextoBtn,
     WrapFooterCadastro,
-    LoadingIcon,
- 
+    LoadingIcon, 
 } from './styles';
 /// API
 import { api } from '../../../global/api';
+
+interface IConfigs{
+    allow_notifications: boolean,
+    allow_retroactiveDate: boolean,
+    start_workHour: string,
+    end_workHour: string,
+    schedule_startDay: boolean,
+    user_premium: boolean,
+    premium_type: number,
+    premium_until: string,
+    updated_at: string,
+    created_at: string,
+}
 
 export function ConfiguracoesPessoais(){
     
@@ -28,7 +40,7 @@ export function ConfiguracoesPessoais(){
 
     const [loading, setLoading] = useState(false);
     
-    const usrState = useSelector((state: State) => state.user);
+    // const usrState = useSelector((state: State) => state.user);
 
     ///Reducer
     const apiState = useSelector((state: State) => state.apiReducer);
