@@ -38,21 +38,56 @@ export function ConfiguracoesPessoais(){
     const navigation = useNavigation();
     const [refreshing, setRefresh] = useState(false);
 
-    const [loading, setLoading] = useState(false);
-    
-    // const usrState = useSelector((state: State) => state.user);
+    let [loading, setLoading] = useState(false);
 
     ///Reducer
     const apiState = useSelector((state: State) => state.apiReducer);
+    // const usrState = useSelector((state: State) => state.user);
+
+    /// Configs Variables
+    const [configs, setConfigs] = useState<IConfigs>({} as IConfigs);
+
+    function GetHourAmPm(hour: string){
+        const [hora, minuto, segundo] = hour.split(":");
+
+        if(parseInt(hora) > 0 && parseInt(hora) < 12){
+            return hora +":"+ minuto + " AM";
+        }else{
+            return hora +":"+ minuto + " PM";
+        }
+    }
+
+    function SetConfigsBooleans(area: string){
+        let tempConfig = configs;
+
+        if(area === "allow_retroactiveDate"){
+            setConfigs({
+                ...configs,
+                allow_retroactiveDate: !configs.allow_retroactiveDate
+            });           
+            return;
+        }else if(area === "allow_notifications"){
+            setConfigs({
+                ...configs,
+                allow_notifications: !configs.allow_notifications
+            });
+            return;
+        }else if(area === "schedule_startDay"){
+            setConfigs({
+                ...configs,
+                schedule_startDay: !configs.schedule_startDay
+            });    
+            return;
+        }
+    }
 
     async function GetConfigs(){
 
         setLoading(true);
        
         await api(apiState.token).get('users/configs').then(res =>{
-            
-            console.log('Ok');
-            console.log(res.data);       
+
+            setConfigs(res.data);
 
         }).catch(err => {
             console.log("ERRO");
@@ -66,9 +101,16 @@ export function ConfiguracoesPessoais(){
         GetConfigs();
     },[]);
 
+
+    useEffect(()=>{
+        console.group("CONFIGS");
+        console.log(configs);
+        console.groupEnd();
+    },[configs]);
+
     return(
 <Container>
-    <ScrollView refreshControl={<RefreshControl refreshing={refreshing} onRefresh={()=>{ console.log("ff") }}/> } contentContainerStyle={{flexGrow: 1}}>
+    <ScrollView refreshControl={<RefreshControl refreshing={refreshing} onRefresh={()=>{ GetConfigs() }}/> } contentContainerStyle={{flexGrow: 1}}>
 
         <Cabecalho titulo="Configurações do APP" onPress={()=> navigation.goBack() } />
 
@@ -77,14 +119,14 @@ export function ConfiguracoesPessoais(){
             <LoadingIcon size="large" color="#FFFFFF"/>            
         }
 
-        { !loading &&
+        { !loading && configs && configs.created_at &&
             <Wrap>
 
                 <BtnList>
                     <TituloList>Início dos Atendimentos:</TituloList>
                     <WrapHoras>
                         <TextoBtn>
-                            08:00 AM
+                            { GetHourAmPm( configs.start_workHour ) }
                         </TextoBtn>
                     </WrapHoras>
                 </BtnList>
@@ -92,28 +134,28 @@ export function ConfiguracoesPessoais(){
                 <BtnList>
                     <TituloList>Fim dos Atendimentos:</TituloList>
                     <WrapHoras>
-                        <TextoBtn>18:00 PM</TextoBtn>
+                        <TextoBtn>{ GetHourAmPm( configs.end_workHour ) }</TextoBtn>
                     </WrapHoras>
                 </BtnList>
 
                 <BtnList>
                     <TituloList>Agendamento Retroativo:</TituloList>
-                    <WrapHoras bool={false}>
-                        <TextoBtn>Não</TextoBtn>
+                    <WrapHoras bool={ configs.allow_retroactiveDate ? true : false } onPress={() => SetConfigsBooleans("allow_retroactiveDate") }>
+                        <TextoBtn>{ configs.allow_retroactiveDate ? "Sim" : "Não"}</TextoBtn>
                     </WrapHoras>
                 </BtnList>
                 
                 <BtnList>
                     <TituloList>Exibir notificaçõoes:</TituloList>
-                    <WrapHoras bool={true}>
-                        <TextoBtn>Sim</TextoBtn>
+                    <WrapHoras bool={ configs.allow_notifications ? true : false } onPress={() => { SetConfigsBooleans("allow_notifications") } }>
+                        <TextoBtn>{ configs.allow_notifications ? "Sim" : "Não"}</TextoBtn>
                     </WrapHoras>
                 </BtnList>
 
                 <BtnList>
                     <TituloList>Agendamentos ao início do dia:</TituloList>
-                    <WrapHoras bool={true}>
-                        <TextoBtn>Sim</TextoBtn>
+                    <WrapHoras bool={ configs.schedule_startDay ? true : false } onPress={() => { SetConfigsBooleans("schedule_startDay") } }>
+                        <TextoBtn>{ configs.schedule_startDay ? "Sim" : "Não"}</TextoBtn>
                     </WrapHoras>
                 </BtnList>
             
