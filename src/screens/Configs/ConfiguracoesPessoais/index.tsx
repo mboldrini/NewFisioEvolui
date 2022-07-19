@@ -81,16 +81,19 @@ export function ConfiguracoesPessoais(){
             minute = "0"+ minuto;
         }
         let newHour = hour +':'+ minute +":00";
-        if(type == "start"){
-            setConfigs({
+        if(type === "start"){
+            let ff = {
                 ...configs,
                 start_workHour: newHour
-            });
-        }else{
-            setConfigs({
+            };
+            setConfigs(ff);
+        }else if(type === 'end'){
+            let ff = {
                 ...configs,
                 end_workHour: newHour
-            });
+            };
+            console.log(configs);
+            setConfigs(ff);
         }
        
     }

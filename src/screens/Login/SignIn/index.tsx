@@ -85,8 +85,12 @@ export function SignIn(){
     }
 
     async function GetApiToken(data: IGoogleData){
+
+        console.group("GetApiToken");
+
         console.log(data);
-        console.log("DATAAAAAAAAAA");
+
+
         if(data.email){
             await api().post('/sessions', {
                 email: data.email,
@@ -95,10 +99,13 @@ export function SignIn(){
             }).then(res =>{
                 let dtAgora = new Date();
 
+                console.log("pegou o token da api");
+
                 setApiInfos({
                     token: res.data.token,
                     date: dtAgora
                 });
+                console.log("setou a api infos");
                 GetUserInfos(res.data.token);
 
             }).catch(err =>{
@@ -118,12 +125,19 @@ export function SignIn(){
 
             });
         }
+
+        console.groupEnd();
     }
 
     async function GetUserInfos(token: string){
+
+        console.group("GetUserInfos");
+
+        console.group("TOKEN");
+        console.log(token);
+        console.groupEnd();
         
-        await api(token).get('/users')
-        .then(res =>{
+        await api(token).get('/users').then(res =>{
 
             console.log("USER INFOS:");
             console.log(res.data);
@@ -140,15 +154,17 @@ export function SignIn(){
                 address: res.data.address, 
                 configs: res.data.configs, 
                 personal_infos: res.data.personal_infos
-            })
+            });
 
-            setUserInfos(res.data);
+            // setUserInfos(res.data);
 
-            navigation.navigate("MainTab" as never);
+           navigation.navigate("MainTab" as never);
 
             setLoading(false);
 
         }).catch(err =>{
+
+            console.log("erro ao obter User Infos");
 
             console.error(err.response.data);
 
@@ -159,6 +175,8 @@ export function SignIn(){
             setLoading(false);
 
         });
+
+        console.groupEnd();
 
     }
 
