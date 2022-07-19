@@ -24,7 +24,7 @@ export const BtnList = styled.View`
     width: 100%;
     border-bottom-color: #4EADBE;
     border-bottom-width: 1px;
-    padding: ${RFValue(5)}px;
+    /* padding: ${RFValue(5)}px; */
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
@@ -33,11 +33,10 @@ export const BtnList = styled.View`
 
 export const TituloList = styled.Text`
     font-family: ${({theme}) => theme.fonts.regular};
-    font-size: ${RFValue(16)}px;
+    font-size: ${RFValue(12)}px;
     color: #ffffff;
     align-items: center;
     justify-content: center;
-    padding-left: ${RFValue(10)}px;
 `;
 
 export const WrapHoras = styled.TouchableOpacity<Props>`
@@ -46,7 +45,8 @@ export const WrapHoras = styled.TouchableOpacity<Props>`
     align-items: center;
     justify-content: center;
     border-radius: ${({theme}) => theme.bordas.padrao}px;
-    padding: ${RFValue(DefaultAppValues.padding.superior)}px 0;
+    padding: ${RFValue(2)}px 0;
+    margin-bottom: ${RFValue(5)}px;
 
     ${({ bool }) => bool == false && css `
         background-color: ${({theme}) => theme.colors.status_cancelado};
@@ -71,7 +71,7 @@ export const WrapIcone = styled.View`
 
 export const Icone = styled(FontAwesome5)`
     color: #ffffff;
-    font-size: ${RFValue(16)}px;
+    font-size: ${RFValue(14)}px;
     align-items: center;
     justify-content: center;
 `;

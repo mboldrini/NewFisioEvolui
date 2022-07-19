@@ -125,7 +125,7 @@ export const BtnList = styled.TouchableOpacity<Props>`
 `;
 
 export const WrapIcone = styled.View`
-    min-width: ${RFValue(45)}px;
+    /* min-width: ${RFValue(30)}px; */
     align-items: center;
     justify-content: center;
 `;
@@ -143,11 +143,10 @@ export const Icone = styled(FontAwesome5)<Props>`
 
 export const TituloList = styled.Text<Props>`
     font-family: ${({theme}) => theme.fonts.bold};
-    font-size: ${RFValue(16)}px;
+    font-size: ${RFValue(12)}px;
     color: #ffffff;
     align-items: center;
     justify-content: center;
-    padding-left: ${RFValue(10)}px;
 
     ${({ enabled }) => enabled == false && css `
         color: #4EADBE;
