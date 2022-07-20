@@ -2,8 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { RefreshControl, ScrollView} from 'react-native';
 /// Redux e States
-import { useSelector } from 'react-redux';
-import { State } from '../../../state';
+import { bindActionCreators } from 'redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { actionCreators, State } from '../../../state';
 /// Estetica
 import { Cabecalho } from '../../../components/Cabecalho';
 import { Button } from '../../../components/Buttons/Button/Index';
@@ -22,7 +23,7 @@ import {
 } from './styles';
 /// API
 import { api } from '../../../global/api';
-import { createIconSetFromFontello } from 'react-native-vector-icons';
+
 
 interface IConfigs{
     allow_notifications: boolean,
@@ -45,8 +46,10 @@ export function ConfiguracoesPessoais(){
     let [loading, setLoading] = useState(false);
 
     ///Reducer
+    const dispatch = useDispatch();
     const apiState = useSelector((state: State) => state.apiReducer);
-    // const usrState = useSelector((state: State) => state.user);
+    const userState = useSelector((state: State) => state.user);
+    const { setUserConfigs } = bindActionCreators(actionCreators, dispatch);
 
     /// Configs Variables
     const [configs, setConfigs] = useState<IConfigs>({} as IConfigs);
@@ -124,6 +127,7 @@ export function ConfiguracoesPessoais(){
         await api(apiState.token).get('users/configs').then(res =>{
 
             setConfigs(res.data);
+            setUserConfigs(res.data);
 
         }).catch(err => {
             console.log("ERRO");
@@ -158,6 +162,8 @@ export function ConfiguracoesPessoais(){
 
             console.log("SALVOU!");
 
+            setUserConfigs(newConfigs);
+
             Toast.show({
                 type: 'success',
                 text1: '😄 Informações salvas com sucesso',
@@ -184,12 +190,6 @@ export function ConfiguracoesPessoais(){
         GetConfigs();
     },[]);
 
-
-    useEffect(()=>{
-        console.group("CONFIGS");
-        console.log(configs);
-        console.groupEnd();
-    },[configs]);
 
     return(
 <Container>
