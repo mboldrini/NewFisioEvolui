@@ -1,4 +1,4 @@
-import { atendimento, IPgtos } from './../action-types/index';
+import { atendimento, IPgtos, IConfigs } from './../action-types/index';
 import { IUserType, IApiInfos, IAtendimentos } from '../action-types/index';
 import { ActionType } from "../action-types";
 import { Dispatch } from "redux";
@@ -22,6 +22,24 @@ export const setUserInfos = ({user_code, name, family_name, given_name, picture,
                 address, 
                 configs, 
                 personal_infos
+            }
+        })
+    }
+}
+
+export const setUserConfigs = ({ start_workHour, end_workHour, allow_retroactiveDate, allow_notifications, schedule_startDay, user_premium, premium_type, premium_until }: IConfigs) => {
+    return (dispatch: Dispatch<Action>) => {
+        dispatch({
+            type: ActionType.SETCONFIGS,
+            payload: {
+                start_workHour, 
+                end_workHour, 
+                allow_retroactiveDate, 
+                allow_notifications, 
+                schedule_startDay, 
+                user_premium, 
+                premium_type,
+                premium_until
             }
         })
     }

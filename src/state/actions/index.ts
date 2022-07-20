@@ -6,6 +6,11 @@ type SetInfos = {
     type: ActionType.SETINFOS,
     payload: any
 }
+/// Configs do APP
+type SetConfigs = {
+    type: ActionType.SETCONFIGS,
+    payload: any
+}
 
 interface SetId{
     type: ActionType.SETID,
@@ -42,4 +47,4 @@ interface SetAtualizaFormasPgto{
 }
 
 
-export type Action = SetInfos | SetId | SetEmail | SetAPIToken | SetAtendimentos | SetAtualizaAtendimento | SetFormasPgto | SetAtualizaFormasPgto; // | OutraAction
+export type Action = SetInfos | SetConfigs | SetId | SetEmail | SetAPIToken | SetAtendimentos | SetAtualizaAtendimento | SetFormasPgto | SetAtualizaFormasPgto; // | OutraAction

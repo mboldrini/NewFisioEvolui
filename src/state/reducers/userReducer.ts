@@ -62,6 +62,20 @@ const reducer = (state = initialState, action: Action) => {
                 configs: action.payload.configs,
                 personal_infos: action.payload.personal_infos
             }
+        case ActionType.SETCONFIGS:
+            return{
+                ...state,
+                configs: {
+                    start_workHour: action.payload.start_workHour,
+                    end_workHour: action.payload.end_workHour,
+                    allow_retroactiveDate: action.payload.allow_retroactiveDate,
+                    allow_notifications: action.payload.allow_notifications,
+                    schedule_startDay: action.payload.schedule_startDay,
+                    user_premium: action.payload.user_premium,
+                    premium_type: action.payload.premium_type,
+                    premium_until: action.payload.premium_until
+                }
+            }
         default: 
             return state;
     }

@@ -8,7 +8,9 @@ export enum ActionType{
     SETATUALIZAATENDIMENTO = "setAtualizaAtendimento",
 
     SETFORMASPGTO = "setFormasPgto",
-    SETUPDATEFORMASPGTO = "setUpdateFormasPgto"
+    SETUPDATEFORMASPGTO = "setUpdateFormasPgto",
+
+    SETCONFIGS = "setConfigs"
 }
 
 export interface IUserType{
@@ -33,7 +35,7 @@ interface IAddress{
     state: string,
     country: string
 }
-interface IConfigs{
+export interface IConfigs{
     start_workHour: string,
     end_workHour: string,
     allow_retroactiveDate: boolean,
@@ -82,6 +84,7 @@ export interface IFormasPgto{
     atualiza: boolean;
     pagamentos: IPgtos[];
 }
+
 
 export interface IApiInfos{
     token: string;
