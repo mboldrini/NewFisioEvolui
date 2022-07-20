@@ -16,7 +16,13 @@ import {
     WrapBtn,
     WrapFooterCadastro,
 
-    Iscrol
+    Iscrol,
+
+    
+    FieldGroup,
+    TitleGroup,
+    Title
+
 } from './styles';
 
 import { Select } from '../../components/Forms/Select';
@@ -233,145 +239,183 @@ export function CadastrarPaciente(){
             <Form >
                 <Fields>
 
-                    <InputForm 
-                        name="nome"
-                        control={control}
-                        placeholder="Nome"
-                        autoCapitalize="words"
-                        autoCorrect={false}
-                        error={errors.nome && errors.nome.message}
-                    />
+                    <FieldGroup>
+                        <TitleGroup>
+                            <Title>Sobre o Paciente</Title>
+                        </TitleGroup>
 
-                    <InputMasked 
-                        name="cpf"
-                        control={control}
-                        placeholder="CPF"
-                        error={errors.cpf && errors.cpf.message}
-                        keyboardType="number-pad"
-                        type="cpf"
-                    />
-
-                    <InputMasked
-                        name="dataNascimento"
-                        control={control}
-                        placeholder="Data de Nascimento"
-                        keyboardType="number-pad"
-                        error={errors.dataNascimento && errors.dataNascimento.message}
-                        type="datetime"
-                        options={{
-                            format: 'DD/MM/YYYY'
-                        }}
-                    />
-
-                    <InputMasked
-                        name="celular"
-                        control={control}
-                        placeholder="Celular"
-                        error={errors.celular && errors.celular.message}
-                        type="cel-phone"
-                        options={{
-                            maskType: 'BRL',
-                            withDDD: true,
-                            dddMask: '(99) '
-                        }}
-                    />
-
-                    <InputForm 
-                        name="email"
-                        control={control}
-                        placeholder="E-mail"
-                        autoCorrect={false}
-                        error={errors.email && errors.email.message}
-                    />
-
-                    <Select 
-                        title={appointmentType.name}
-                        isActive={appointmentType.key}
-                        onPress={()=>{ setTipoAtendimentoVisible(true) }}
-                    />
-
-                    <Select 
-                        title={  temComorbidade.name }
-                        isActive={ temComorbidade.key }
-                        onPress={()=>{ setTemComorbidadeVisible(true) }}
-                    /> 
-
-                    { temComorbidade.key == 1 && 
                         <InputForm 
-                           name="comorbidades"
-                           control={control}
-                           placeholder="Comorbidade(s) do paciente"
-                           autoCapitalize="words"
-                           autoCorrect={false}
-                           multiline={true}
-                           numberOfLines={4}
-                           error={errors.comorbidades && errors.comorbidades.message}
+                            name="nome"
+                            control={control}
+                            placeholder="Nome"
+                            autoCapitalize="words"
+                            autoCorrect={false}
+                            error={errors.nome && errors.nome.message}
                         />
-                    }
 
-                    <InputForm 
-                        name="endereco"
-                        control={control}
-                        placeholder="Endereço"
-                        autoCapitalize="words"
-                        autoCorrect={false}
-                        error={errors.endereco && errors.endereco.message}
-                    />
+                        <InputMasked 
+                            name="cpf"
+                            control={control}
+                            placeholder="CPF"
+                            error={errors.cpf && errors.cpf.message}
+                            keyboardType="number-pad"
+                            type="cpf"
+                        />
 
-                    <InputForm 
-                        name="referencia"
-                        control={control}
-                        placeholder="Referência"
-                        autoCapitalize="words"
-                        autoCorrect={false}
-                        error={errors.referencia && errors.referencia.message}
-                    />
+                        <InputMasked
+                            name="dataNascimento"
+                            control={control}
+                            placeholder="Data de Nascimento"
+                            keyboardType="number-pad"
+                            error={errors.dataNascimento && errors.dataNascimento.message}
+                            type="datetime"
+                            options={{
+                                format: 'DD/MM/YYYY'
+                            }}
+                        />
 
-                    <InputForm 
-                        name="queixa"
-                        control={control}
-                        placeholder="Queixa e/ou motivo do Atendimento"
-                        autoCapitalize="words"
-                        autoCorrect={false}
-                        multiline={true}
-                        numberOfLines={4}
-                        error={errors.queixa && errors.queixa.message}
-                    />
+                       
 
-                    <InputForm 
-                        name="diagnostico"
-                        control={control}
-                        placeholder="Diagnóstico Inícial"
-                        autoCapitalize="words"
-                        autoCorrect={false}
-                        multiline={true}
-                        numberOfLines={4}
-                        error={errors.diagnostico && errors.diagnostico.message}
-                    />
+                    </FieldGroup>
+
+                    <FieldGroup>
+                        <TitleGroup>
+                            <Title>Contato</Title>
+                        </TitleGroup>
+
+                        <InputMasked
+                            name="celular"
+                            control={control}
+                            placeholder="Celular"
+                            error={errors.celular && errors.celular.message}
+                            type="cel-phone"
+                            options={{
+                                maskType: 'BRL',
+                                withDDD: true,
+                                dddMask: '(99) '
+                            }}
+                        />
+
+                        <InputForm 
+                            name="email"
+                            control={control}
+                            placeholder="E-mail"
+                            autoCorrect={false}
+                            error={errors.email && errors.email.message}
+                        />
+
+                    </FieldGroup>
+
+                    <FieldGroup>
+                        <TitleGroup>
+                            <Title>Endereço</Title>
+                        </TitleGroup>
+
+                        <InputForm 
+                            name="endereco"
+                            control={control}
+                            placeholder="Endereço"
+                            autoCapitalize="words"
+                            autoCorrect={false}
+                            error={errors.endereco && errors.endereco.message}
+                        />
+
+                        <InputForm 
+                            name="referencia"
+                            control={control}
+                            placeholder="Referência"
+                            autoCapitalize="words"
+                            autoCorrect={false}
+                            error={errors.referencia && errors.referencia.message}
+                        />
+
+                    </FieldGroup>
+
+                    <FieldGroup>
+                        <TitleGroup>
+                            <Title>Atendimento</Title>
+                        </TitleGroup>
+
+                        <Select 
+                            title={appointmentType.name}
+                            isActive={appointmentType.key}
+                            onPress={()=>{ setTipoAtendimentoVisible(true) }}
+                        />
+
+                        <Select 
+                            title={  temComorbidade.name }
+                            isActive={ temComorbidade.key }
+                            onPress={()=>{ setTemComorbidadeVisible(true) }}
+                        /> 
+
+                        { temComorbidade.key == 1 && 
+                            <InputForm 
+                            name="comorbidades"
+                            control={control}
+                            placeholder="Comorbidade(s) do paciente"
+                            autoCapitalize="words"
+                            autoCorrect={false}
+                            multiline={true}
+                            numberOfLines={4}
+                            error={errors.comorbidades && errors.comorbidades.message}
+                            />
+                        }
+
+                        <InputForm 
+                            name="queixa"
+                            control={control}
+                            placeholder="Queixa e/ou motivo do Atendimento"
+                            autoCapitalize="words"
+                            autoCorrect={false}
+                            multiline={true}
+                            numberOfLines={4}
+                            error={errors.queixa && errors.queixa.message}
+                        />
+
+                        <InputForm 
+                            name="diagnostico"
+                            control={control}
+                            placeholder="Diagnóstico Inícial"
+                            autoCapitalize="words"
+                            autoCorrect={false}
+                            multiline={true}
+                            numberOfLines={4}
+                            error={errors.diagnostico && errors.diagnostico.message}
+                        />
+
+                    </FieldGroup>
+                
                     
                 </Fields>
 
-                <Wrap>
-                    { appointmentList && appointmentList.length > 0 && appointmentList.map( (item, key) => {
-                        return(
-                            <AppointmentList
-                                key={key}
-                                status={item.status}
-                                type={item.tipo}
-                                timestamp={item.timestamp}
-                                onPress={()=>{ AlertExcludeAppointment(item, key) }}
-                            />   
-                        )
-                    }) } 
+                <FieldGroup>
+                    <TitleGroup>
+                        <Title>Agendamentos</Title>
+                    </TitleGroup>
 
-                    <WrapBtn>
-                        <ButtonSimple
-                            type="default"
-                            title="Agendar Horario" 
-                            onPress={()=>setIsAgendarVisible(true)}
-                        />
-                    </WrapBtn>
-                </Wrap>
+                    <Wrap>
+                        { appointmentList && appointmentList.length > 0 && appointmentList.map( (item, key) => {
+                            return(
+                                <AppointmentList
+                                    key={key}
+                                    status={item.status}
+                                    type={item.tipo}
+                                    timestamp={item.timestamp}
+                                    onPress={()=>{ AlertExcludeAppointment(item, key) }}
+                                />   
+                            )
+                        }) } 
+
+                        <WrapBtn>
+                            <ButtonSimple
+                                type="default"
+                                title="Agendar Horario" 
+                                onPress={()=>setIsAgendarVisible(true)}
+                            />
+                        </WrapBtn>
+                    </Wrap>
+                </FieldGroup>
+               
             </Form>
 
             <WrapFooterCadastro>

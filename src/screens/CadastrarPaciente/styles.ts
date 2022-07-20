@@ -1,5 +1,6 @@
 import { RFValue } from "react-native-responsive-fontsize";
 import styled from "styled-components/native";
+import { DefaultAppValues } from "../../global/styles/theme";
 
 export const Container = styled.View`
     flex: 1;
@@ -52,3 +53,23 @@ export const WrapFooterCadastro = styled.View`
     margin-bottom: ${RFValue(20)}px;
     margin-top: ${RFValue(20)}px;
 `;
+
+export const FieldGroup = styled.View`
+    margin-bottom: ${RFValue(15)}px;
+`;
+
+export const TitleGroup = styled.View`
+    width: 100%;
+    margin-bottom: ${RFValue(10)}px;
+    flex: 1;
+    border-bottom-color: #4EADBE;
+    border-bottom-width: 2px;
+`;
+
+export const Title = styled.Text`
+    font-family: ${({theme}) => theme.fonts.regular};
+    color: ${({theme}) => theme.colors.shape};
+    margin: 0 ${RFValue(DefaultAppValues.margin.lateral_half)}px;
+    font-size: ${RFValue(14)}px;
+`;
+
