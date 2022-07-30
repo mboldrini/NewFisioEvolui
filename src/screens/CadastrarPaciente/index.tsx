@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Modal, TouchableWithoutFeedback, Keyboard, Alert, View } from 'react-native';
+import { Modal, TouchableWithoutFeedback, Keyboard, Alert, View, ScrollView, FlatList } from 'react-native';
 import { InputMasked } from '../../components/Forms/InputMasked';
 import { useForm } from 'react-hook-form';
 import { InputForm } from '../../components/Forms/InputForm';
@@ -21,7 +21,9 @@ import {
     
     FieldGroup,
     TitleGroup,
-    Title
+    Title,
+
+    WrapList
 
 } from './styles';
 
@@ -43,6 +45,7 @@ import { ModalTemComorbidade } from '../../components/Modal/ModalTemComorbidade'
 
 import { ButtonSimple } from '../../components/Buttons/ButtonSimple/Index';
 import { AppointmentList } from '../../components/AppointmentList';
+import ActionSheet, { SheetManager } from "react-native-actions-sheet";
 
 const schema = Yup.object().shape({
     nome: Yup.string().required("Nome é obrigatório"),
@@ -51,27 +54,32 @@ const schema = Yup.object().shape({
     celular: Yup.string().required("Telefone de contato é obrigatório"),
     email: Yup.string().required("Email é obrigatório"),
     endereco: Yup.string().required("Endereço é obrigatório"),
-    tipoComorbidade: Yup.string().optional(),
-    comorbidades: Yup.string().optional(),
-    referencia: Yup.string().optional().min(5, "Tamanho mínimo de 5 letras").max(254, "O tamanho não deve ser maior que 254 letras"),
-    queixa: Yup.string().optional().min(15, "Tamanho mínimo de 15 letras").max(254, "O tamanho não deve ser maior que 254 letras"),
-    diagnostico: Yup.string().optional().min(20, "Tamanho mínimo de 20 letras").max(254, "O tamanho não deve ser maior que 254 letras"),
-})
-
+    hpp: Yup.string().optional(),
+    diagnostico: Yup.string().optional(),
+    queixa: Yup.string().optional(),
+    hda: Yup.string().optional(),
+    diagnosticoFuncional: Yup.string().optional(),
+    avaliacaoFisica: Yup.string().optional(),
+    avaliacaoRespiratoria: Yup.string().optional(),
+    objetivos: Yup.string().optional(),
+    orientacoes: Yup.string().optional(),
+});
 
 import Toast from 'react-native-toast-message';
+import { List_TipoPagamento } from '../../components/List_Items/TiposDePagamentos';
 
 
 export function CadastrarPaciente(){
 
     /// Redux 
     const apiState = useSelector((state: State) => state.apiReducer);
+    const atendimentosState = useSelector((state: State) => state.atendimentoReducer); 
 
     /// Modal's
     const [loading, setLoading] = useState(false);
     /// New Modal's Way
     const [ isAgendarVisible, setIsAgendarVisible ] = useState(false);
-    const [ isTipoAtendimentoVisible, setTipoAtendimentoVisible] = useState(false);
+   // const [ isTipoAtendimentoVisible, setTipoAtendimentoVisible] = useState(false);
     const [ isTemComorbidadeVisible, setTemComorbidadeVisible ] = useState(false);
 
 
@@ -98,7 +106,7 @@ export function CadastrarPaciente(){
             Alert.alert( "Ops!", "Você precisa informar se o paciente tem comorbidade(s)", [ { text: "OK" } ] );
             return;
         }
-        if(temComorbidade.key == 1 && (form.comorbidades?.length < 20 || !form.comorbidades) ){
+        if(temComorbidade.key == 1 && (form.hpp?.length < 20 || !form.hpp) ){
             Alert.alert( "Ops!", "Você precisa informar a(s) comorbidade(s) do paciente", [ { text: "OK" } ] );
             return;
         }
@@ -107,26 +115,24 @@ export function CadastrarPaciente(){
             return;
         }
 
+      
         const data: INewPatient = {
-            nome: form.nome,
-            cpf: form.cpf,
-            dataNascimento: form.dataNascimento, //form.dataNascimento,
-            celular: form.celular,
-            telefoneRecado: form.celular,
+            name: form.nome,
+            dataNascimento: form.dataNascimento, 
+            document: form.cpf,
             email: form.email,
-            tipoAtendimento: appointmentType.key,
-            temComorbidade: temComorbidade.key == 0 ? false : true,
-            logradouro: form.endereco,
-            uf: 0,
-            bairro: "bairroOo",
-            referencia: form.referencia,
-            queixamotivo: form.queixa,
-            diagnosticos: form.diagnostico,
-            comorbidades: form.comorbidades,
-            agendamentos: appointmentList
+            celphone: form.celular,
+            second_celphone: form.celular,
+            instagram: '',
+            address: form.endereco,
+            latitude: '',
+            longitude: '',
+            serviceType_id: appointmentType.key
         }
 
-       CreateNewPatient(data);
+        console.log(data);
+
+      // CreateNewPatient(data);
 
     }
 
@@ -139,7 +145,7 @@ export function CadastrarPaciente(){
             Toast.show({
                 type: 'success',
                 text1: 'Paciente cadastrado!',
-                text2: `${data.nome} foi cadastrado(a) na lista de pacientes` // 'This is some something 👋'
+                text2: `${data.name} foi cadastrado(a) na lista de pacientes` // 'This is some something 👋'
               });
 
             reset({
@@ -218,12 +224,13 @@ export function CadastrarPaciente(){
     useEffect(()=>{
         console.log("carregou!");
 
-        Toast.show({
-            type: 'error',
-            text1: 'Hello',
-            text2: 'This is some something 👋'
-          });
+        // Toast.show({
+        //     type: 'error',
+        //     text1: 'Hello',
+        //     text2: 'This is some something 👋'
+        //   });
 
+        console.log(atendimentosState);
     },[]);
 
     return(
@@ -274,15 +281,6 @@ export function CadastrarPaciente(){
                             }}
                         />
 
-                       
-
-                    </FieldGroup>
-
-                    <FieldGroup>
-                        <TitleGroup>
-                            <Title>Contato</Title>
-                        </TitleGroup>
-
                         <InputMasked
                             name="celular"
                             control={control}
@@ -304,13 +302,14 @@ export function CadastrarPaciente(){
                             error={errors.email && errors.email.message}
                         />
 
-                    </FieldGroup>
-
-                    <FieldGroup>
-                        <TitleGroup>
-                            <Title>Endereço</Title>
-                        </TitleGroup>
-
+                        <InputForm 
+                            name="instagram"
+                            control={control}
+                            placeholder="instagram"
+                            autoCorrect={false}
+                            error={errors.instagram && errors.instagram.message}
+                        />
+                        
                         <InputForm 
                             name="endereco"
                             control={control}
@@ -318,15 +317,6 @@ export function CadastrarPaciente(){
                             autoCapitalize="words"
                             autoCorrect={false}
                             error={errors.endereco && errors.endereco.message}
-                        />
-
-                        <InputForm 
-                            name="referencia"
-                            control={control}
-                            placeholder="Referência"
-                            autoCapitalize="words"
-                            autoCorrect={false}
-                            error={errors.referencia && errors.referencia.message}
                         />
 
                     </FieldGroup>
@@ -339,11 +329,11 @@ export function CadastrarPaciente(){
                         <Select 
                             title={appointmentType.name}
                             isActive={appointmentType.key}
-                            onPress={()=>{ setTipoAtendimentoVisible(true) }}
+                            onPress={()=>{ SheetManager.show("modalTiposAtendimentos") }}
                         />
 
                         <Select 
-                            title={  temComorbidade.name }
+                            title={ temComorbidade.name }
                             isActive={ temComorbidade.key }
                             onPress={()=>{ setTemComorbidadeVisible(true) }}
                         /> 
@@ -362,6 +352,17 @@ export function CadastrarPaciente(){
                         }
 
                         <InputForm 
+                            name="diagnostico"
+                            control={control}
+                            placeholder="Diagnóstico Clínico"
+                            autoCapitalize="words"
+                            autoCorrect={false}
+                            multiline={true}
+                            numberOfLines={4}
+                            error={errors.diagnostico && errors.diagnostico.message}
+                        />
+
+                        <InputForm 
                             name="queixa"
                             control={control}
                             placeholder="Queixa e/ou motivo do Atendimento"
@@ -373,18 +374,72 @@ export function CadastrarPaciente(){
                         />
 
                         <InputForm 
-                            name="diagnostico"
+                            name="hda"
                             control={control}
-                            placeholder="Diagnóstico Inícial"
+                            placeholder="Histórico de Doença Atual"
                             autoCapitalize="words"
                             autoCorrect={false}
                             multiline={true}
                             numberOfLines={4}
-                            error={errors.diagnostico && errors.diagnostico.message}
+                            error={errors.hda && errors.hda.message}
+                        />
+
+                        <InputForm 
+                            name="diagnosticoFuncional"
+                            control={control}
+                            placeholder="Diagnóstico Funcional"
+                            autoCapitalize="words"
+                            autoCorrect={false}
+                            multiline={true}
+                            numberOfLines={4}
+                            error={errors.diagnosticoFuncional && errors.diagnosticoFuncional.message}
+                        />
+
+                        <InputForm 
+                            name="avaliacaoFisica"
+                            control={control}
+                            placeholder="Avaliação Física"
+                            autoCapitalize="words"
+                            autoCorrect={false}
+                            multiline={true}
+                            numberOfLines={4}
+                            error={errors.avaliacaoFisica && errors.avaliacaoFisica.message}
+                        />
+
+                        <InputForm 
+                            name="avaliacaoRespiratoria"
+                            control={control}
+                            placeholder="Avaliação Respiratória"
+                            autoCapitalize="words"
+                            autoCorrect={false}
+                            multiline={true}
+                            numberOfLines={4}
+                            error={errors.avaliacaoRespiratoria && errors.avaliacaoRespiratoria.message}
+                        />
+
+                        <InputForm 
+                            name="objetivos"
+                            control={control}
+                            placeholder="Objetivos e Metas"
+                            autoCapitalize="words"
+                            autoCorrect={false}
+                            multiline={true}
+                            numberOfLines={4}
+                            error={errors.objetivos && errors.objetivos.message}
+                        />
+
+                        <InputForm 
+                            name="orientacoes"
+                            control={control}
+                            placeholder="Orientações"
+                            autoCapitalize="words"
+                            autoCorrect={false}
+                            multiline={true}
+                            numberOfLines={4}
+                            error={errors.orientacoes && errors.orientacoes.message}
                         />
 
                     </FieldGroup>
-                
                     
                 </Fields>
 
@@ -427,6 +482,27 @@ export function CadastrarPaciente(){
             </WrapFooterCadastro>
 
             <ModalLoading visible={loading} infos={{mensagem:"Carregando informaões do paciente...", tipo: 'loading'}}/>
+
+            <ActionSheet id="modalTiposAtendimentos" initialOffsetFromBottom={1} gestureEnabled={true} headerAlwaysVisible={true} elevation={3} extraScroll={3}  containerStyle={{backgroundColor: '#63C2D1'}} >
+                <ScrollView nestedScrollEnabled={true} >
+                    <FlatList 
+                        data={atendimentosState.atendimentos}
+                        keyExtractor={(item) => item.name}
+                        renderItem={({item}) =>(
+                            <WrapList>
+                                <List_TipoPagamento 
+                                    paymentMethod_name={item.name} 
+                                    description={item.description} 
+                                    onPress={()=>{ 
+                                        setAppointmentType({key: item.id ,name: item.name })
+                                        SheetManager.hide("modalTiposAtendimentos")  
+                                    }} 
+                                />
+                            </WrapList>
+                        )}
+                    />
+                </ScrollView>
+            </ActionSheet>
 
             <ModalAgendamento 
                 isVisible={isAgendarVisible} 

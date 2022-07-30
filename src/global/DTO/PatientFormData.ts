@@ -5,9 +5,12 @@ export interface FormData{
     celular: number,
     email: string,
     endereco: string,
-    temComorbidade: boolean,
-    comorbidades?: string;
-    referencia?: string,
-    queixa?: string,
-    diagnostico?: string;
+    hpp: string,
+    diagnostico: string,
+    queixa: string,
+    hda: string,
+    diagnosticoFuncional: string,
+    avaliacaoFisica: string,
+    objetivos: string;
+    orientacoes: string
 }

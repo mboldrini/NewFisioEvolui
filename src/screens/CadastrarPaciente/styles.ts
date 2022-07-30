@@ -73,3 +73,8 @@ export const Title = styled.Text`
     font-size: ${RFValue(14)}px;
 `;
 
+export const WrapList = styled.View`
+    margin: 0 ${RFValue(DefaultAppValues.margin.lateral_half)}px;
+`;
+
+
