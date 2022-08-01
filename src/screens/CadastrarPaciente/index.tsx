@@ -43,24 +43,26 @@ import { ModalAgendamento } from '../../components/Modal/ModalAgendamento';
 import { ModalTemComorbidade } from '../../components/Modal/ModalTemComorbidade';
 // import { ModalTipoAtendimento } from '../../components/Modal/ModalTipoAtendimento';
 
+import { format } from 'date-fns';
+
 import { ButtonSimple } from '../../components/Buttons/ButtonSimple/Index';
 import { AppointmentList } from '../../components/AppointmentList';
 import ActionSheet, { SheetManager } from "react-native-actions-sheet";
 
 const schema = Yup.object().shape({
-    nome: Yup.string().required("Nome é obrigatório"),
-    cpf: Yup.string().required("CPF é obrigatório").length(14, "CPF deve ter 11 dígitos"),
-    dataNascimento: Yup.string().optional().length(10, "Formato de data: 00/00/0000"),
-    celular: Yup.string().required("Telefone de contato é obrigatório"),
-    email: Yup.string().required("Email é obrigatório"),
-    endereco: Yup.string().required("Endereço é obrigatório"),
-    hpp: Yup.string().optional(),
-    diagnostico: Yup.string().optional(),
-    queixa: Yup.string().optional(),
-    hda: Yup.string().optional(),
-    diagnosticoFuncional: Yup.string().optional(),
-    avaliacaoFisica: Yup.string().optional(),
-    avaliacaoRespiratoria: Yup.string().optional(),
+    nome: Yup.string().required("Nome é obrigatório").default("Bartolomeu Junior"),
+    cpf: Yup.string().required("CPF é obrigatório").length(14, "CPF deve ter 11 dígitos").default("159.451.647-99"),
+    dataNascimento: Yup.string().optional().length(10, "Formato de data: 00/00/0000").default("01/07/1995"),
+    celular: Yup.string().required("Telefone de contato é obrigatório").default("(27) 99877-1424"),
+    email: Yup.string().required("Email é obrigatório").default("admin@admin.com"),
+    endereco: Yup.string().required("Endereço é obrigatório").default("Rua bartolomeu pinto"),
+    hpp: Yup.string().optional().default("Hpp padrao"),
+    diagnostico: Yup.string().optional().default("diagnostico padrao"),
+    queixa: Yup.string().optional().default("queixa padrao"),
+    hda: Yup.string().optional().default("hda padrao"),
+    diagnosticoFuncional: Yup.string().optional().default("diagnostico funcional Padrao"),
+    avaliacaoFisica: Yup.string().optional().default("avaliacao fisica padrão"),
+    avaliacaoRespiratoria: Yup.string().optional().default("avaliação respiratória padrao"),
     objetivos: Yup.string().optional(),
     orientacoes: Yup.string().optional(),
 });
@@ -68,6 +70,11 @@ const schema = Yup.object().shape({
 import Toast from 'react-native-toast-message';
 import { List_TipoPagamento } from '../../components/List_Items/TiposDePagamentos';
 
+import {LogBox} from "react-native";
+LogBox.ignoreLogs([
+    "ViewPropTypes will be removed",
+    "ColorPropType will be removed",
+    ])
 
 export function CadastrarPaciente(){
 
@@ -114,25 +121,112 @@ export function CadastrarPaciente(){
             Alert.alert( "Ops!", "Você precisa informar o tipo de atendimento", [ { text: "OK" } ] );
             return;
         }
+        
+        const date = format(new Date(), "yyyy-MM-dd");;
 
-      
-        const data: INewPatient = {
+        let data: any = {
             name: form.nome,
             dataNascimento: form.dataNascimento, 
             document: form.cpf,
             email: form.email,
             celphone: form.celular,
             second_celphone: form.celular,
-            instagram: '',
+            instagram: '.',
             address: form.endereco,
-            latitude: '',
-            longitude: '',
+            latitude: '0',
+            longitude: '0',
             serviceType_id: appointmentType.key
         }
 
+        if(form.hpp){
+            data = {
+                ...data,
+                "hpp": {
+                    "hpp": form.hpp,
+                    "date": date
+                }
+            }
+        }
+        if(form.diagnostico){
+            data = {
+                ...data,
+                "diagnostic": {
+                    "diagnostic": form.diagnostico,
+                    "date": date
+                }
+            }
+        }
+        if(form.queixa){
+            data = {
+                ...data,
+                "complaint": {
+                    "complaint": form.queixa,
+                    "date": date
+                }
+            }
+        }
+        if(form.hda){
+            data = {
+                ...data,
+                "hda": {
+                    "hda": form.queixa,
+                    "date": date
+                }
+            }
+        }
+        if(form.diagnosticoFuncional){
+            data = {
+                ...data,
+                "funcionalDiagnosis": {
+                    "diagnostic": form.diagnosticoFuncional,
+                    "date": date
+                }
+            }
+        }
+        if(form.avaliacaoFisica){
+            data = {
+                ...data,
+                "physicalEval": {
+                    "evaluation": form.diagnosticoFuncional,
+                    "date": date
+                }
+            }
+        }
+        if(form.avaliacaoRespiratoria){
+            data = {
+                ...data,
+                "respiratoryEval": {
+                    "evaluation": form.avaliacaoRespiratoria,
+                    "date": date
+                }
+            }
+        }
+        if(form.objetivos){
+            data = {
+                ...data,
+                "objective": {
+                    "objective": form.objetivos,
+                    "date": date
+                }
+            }
+        }
+        if(form.orientacoes ){
+            data = {
+                ...data,
+                "guideline": {
+                    "guideline": form.orientacoes,
+                    "date": date
+                }
+            }
+        }
+
+        console.log(form);
+        console.log("NOVO:");
         console.log(data);
 
-      // CreateNewPatient(data);
+        console.log(JSON.stringify(data));
+
+        CreateNewPatient(data);
 
     }
 
@@ -140,7 +234,7 @@ export function CadastrarPaciente(){
 
         setLoading(true);
 
-        await api(apiState.token).post('/paciente/', data ).then(res =>{
+        await api(apiState.token).post('/clients/', data ).then(res =>{
 
             Toast.show({
                 type: 'success',
@@ -167,13 +261,13 @@ export function CadastrarPaciente(){
 
         }).catch(err =>{
             console.error("Erro ao cadastrar paciente");
-            //alert("Erro ao cadastrar pacientee!");
+            console.log(err.response.data);
             if(err.response.data){
                 console.error(err.response.data.message, err.response.data.statusCode);
             }
             Toast.show({
                 type: 'error',
-                text1: 'Erro ao cadastrar -'+ err.response.data.statusCode,
+                text1: 'Erro ao cadastrar paciente',
                 text2: err.response.data.message
             });
         });
@@ -231,6 +325,11 @@ export function CadastrarPaciente(){
         //   });
 
         console.log(atendimentosState);
+
+        reset({
+            name: "Bartolomeu Junior"
+        });
+
     },[]);
 
     return(

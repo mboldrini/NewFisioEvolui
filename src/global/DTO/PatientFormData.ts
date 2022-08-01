@@ -1,8 +1,8 @@
 export interface FormData{
     nome: string,
-    cpf: number,
+    cpf: string,
     dataNascimento: string,
-    celular: number,
+    celular: string,
     email: string,
     endereco: string,
     hpp: string,
@@ -11,6 +11,7 @@ export interface FormData{
     hda: string,
     diagnosticoFuncional: string,
     avaliacaoFisica: string,
+    avaliacaoRespiratoria: string,
     objetivos: string;
     orientacoes: string
 }
