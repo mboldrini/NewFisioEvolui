@@ -86,7 +86,7 @@ export function CadastrarPaciente(){
     const [loading, setLoading] = useState(false);
     /// New Modal's Way
     const [ isAgendarVisible, setIsAgendarVisible ] = useState(false);
-   // const [ isTipoAtendimentoVisible, setTipoAtendimentoVisible] = useState(false);
+    // const [ isTipoAtendimentoVisible, setTipoAtendimentoVisible] = useState(false);
     const [ isTemComorbidadeVisible, setTemComorbidadeVisible ] = useState(false);
 
 
@@ -249,11 +249,15 @@ export function CadastrarPaciente(){
                 celular: '',
                 email: '',
                 endereco: '',
-                tipoComorbidade: '',
-                comorbidades: '',
-                referencia: '',
-                queixa: '',
+                hpp: '',
                 diagnostico: '',
+                queixa: '',
+                hda: '',
+                diagnosticoFuncional: '',
+                avaliacaoFisica: '',
+                avaliacaoRespiratoria: '',
+                objetivos: '',
+                orientacoes: ''
             });
             setAppointmentType({key: -1,name: 'Tipo de Atendimento'});
             setTemComorbidade({key: -1, name: 'Paciente tem comorbidade'});
@@ -301,36 +305,22 @@ export function CadastrarPaciente(){
     }
 
     useEffect(()=>{
-        if(appointment && appointment.data){
+        if(appointment && appointment.date_scheduled){
 
             console.log("APPOINTMENT:");
             console.log(appointment);
 
             // let newArray = [...appointmentList, appointment];
+
+            // console.log(newArray);
            
-            // newArray = Array.from(new Set(newArray.map(JSON.stringify))).map(JSON.parse);
+            // // newArray = Array.from(new Set(newArray.map(JSON.stringify))).map(JSON.parse);
 
             // setAppointmentList(newArray);
             // setAppointment(null);
+
         }
     },[appointment]);
-
-    useEffect(()=>{
-        console.log("carregou!");
-
-        // Toast.show({
-        //     type: 'error',
-        //     text1: 'Hello',
-        //     text2: 'This is some something 👋'
-        //   });
-
-        console.log(atendimentosState);
-
-        reset({
-            name: "Bartolomeu Junior"
-        });
-
-    },[]);
 
     return(
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
@@ -553,8 +543,8 @@ export function CadastrarPaciente(){
                                 <AppointmentList
                                     key={key}
                                     status={item.status}
-                                    type={item.tipo}
-                                    timestamp={item.timestamp}
+                                    type={item.type}
+                                    timestamp={item.date_scheduled}
                                     onPress={()=>{ AlertExcludeAppointment(item, key) }}
                                 />   
                             )
@@ -607,6 +597,7 @@ export function CadastrarPaciente(){
                 isVisible={isAgendarVisible} 
                 setIsVisible={()=> setIsAgendarVisible(false) }
                 setSelectedApointment={setAppointment}
+                idServiceType={appointmentType.key}
             />
 
             {/* <ModalTipoAtendimento

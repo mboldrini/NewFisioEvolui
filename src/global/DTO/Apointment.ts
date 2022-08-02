@@ -1,6 +1,12 @@
 export default interface IApointment{
-    data: string,
-    hora: number,
+    date_scheduled: string,
+    start_hour: string,
+    end_hour: string,
+    type: number,
     status: number,
-    tipo: number
+    serviceType_id: number,
+    description: string,
+    comments: string,
 }
+
+
