@@ -11,6 +11,7 @@ import { actionCreators, State } from '../../../state';
 import {
     Container,
     Body,
+    WrapCentral,
     Header,
     WrapIcone,
     Icone,
@@ -108,6 +109,8 @@ export function ModalAgendamento({ isVisible, setIsVisible, setSelectedApointmen
 
             setAvailableTimesList([]);
             setSelectedHour(null);
+            setSelectedEndHour(null);
+            setIsAnEvaluation(false);
 
             let params = {
                 "serviceType_id": idServiceType,
@@ -195,6 +198,9 @@ export function ModalAgendamento({ isVisible, setIsVisible, setSelectedApointmen
     useEffect(()=>{
         setAvailableTimesList([]);
         setSelectedDate(null);
+        setSelectedHour(null);
+        setSelectedEndHour(null);
+        setIsAnEvaluation(false);
 
         if(idServiceType == -1){
             console.log("É MENOS ! CANCELA!");
@@ -210,10 +216,13 @@ export function ModalAgendamento({ isVisible, setIsVisible, setSelectedApointmen
             animationIn='slideInUp' 
             animationOut='slideOutDown' 
             animationInTiming={700} 
-            style={{width: '100%', margin: 0}}
+            style={{width: '100%', margin: 0, justifyContent: 'space-between', flex: 1, flexDirection: 'column'}}
         >
         <Container>
             <Body>
+
+            <WrapCentral>
+
 
                 <Header isActive={true} /*isActive={ temDtPrevia() }*/>
                     <WrapIcone>
@@ -228,6 +237,8 @@ export function ModalAgendamento({ isVisible, setIsVisible, setSelectedApointmen
                         </WrapIcone> */}
                     {/* } */}
                 </Header>
+
+
 
                 <WrapCalendar>
                     <CustomCalendar
@@ -248,8 +259,8 @@ export function ModalAgendamento({ isVisible, setIsVisible, setSelectedApointmen
                         }}
 
                         style={{
-                            marginRight: theme.margin.lateral,
-                            marginLeft: theme.margin.lateral,
+                            marginRight: theme.margin.lateral_half,
+                            marginLeft: theme.margin.lateral_half,
                             borderRadius: theme.bordas.padrao,
                         }}
 
@@ -344,6 +355,9 @@ export function ModalAgendamento({ isVisible, setIsVisible, setSelectedApointmen
                         />
                     </WrapIsEvaluation>
                 }
+
+</WrapCentral>
+
             
                 <WrapButtons>
 
@@ -356,6 +370,9 @@ export function ModalAgendamento({ isVisible, setIsVisible, setSelectedApointmen
                     </Button>
 
                 </WrapButtons>
+
+
+
 
             </Body>
         </Container>

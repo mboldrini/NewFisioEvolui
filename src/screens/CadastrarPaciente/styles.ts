@@ -38,7 +38,7 @@ export const Wrap = styled.View`
     background-color: ${({theme}) => theme.colors.secondary_light};
     /* border-radius: ${({theme}) => theme.bordas.padrao}px; */
     /* margin: 0 ${({theme}) => theme.margin.lateral}px; */
-    padding: 0 ${({theme}) => theme.margin.lateral}px;
+    padding: 0 ${({theme}) => theme.margin.lateral_half}px;
     padding-top: ${RFValue(10)}px;
 `;
 

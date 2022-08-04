@@ -281,11 +281,11 @@ export function CadastrarPaciente(){
     }
 
     function AlertExcludeAppointment(item: IApointment, key: number){
-        let [year, month, day] = item.data.split("-");
+        let [year, month, day] = item.start_hour.split("-");
         let date = day +"/"+ month +"/"+ year;
         Alert.alert(
             "Atenção!",
-            `Deseja excluir o agendamento do dia: ${date} as ${item.hora} Horas`,
+            `Deseja excluir o agendamento do dia: ${date} as ${item.start_hour} Horas`,
             [
                 {
                     text: "Excluir",
@@ -310,14 +310,14 @@ export function CadastrarPaciente(){
             console.log("APPOINTMENT:");
             console.log(appointment);
 
-            // let newArray = [...appointmentList, appointment];
+            let newArray = [...appointmentList, appointment];
 
-            // console.log(newArray);
+            console.log(newArray);
            
-            // // newArray = Array.from(new Set(newArray.map(JSON.stringify))).map(JSON.parse);
+            // newArray = Array.from(new Set(newArray.map(JSON.stringify))).map(JSON.parse);
 
-            // setAppointmentList(newArray);
-            // setAppointment(null);
+            setAppointmentList(newArray);
+            setAppointment(null);
 
         }
     },[appointment]);
@@ -335,7 +335,7 @@ export function CadastrarPaciente(){
             <Form >
                 <Fields>
 
-                    <FieldGroup>
+                    {/* <FieldGroup>
                         <TitleGroup>
                             <Title>Sobre o Paciente</Title>
                         </TitleGroup>
@@ -409,7 +409,7 @@ export function CadastrarPaciente(){
                         />
 
                     </FieldGroup>
-
+                        */}
                     <FieldGroup>
                         <TitleGroup>
                             <Title>Atendimento</Title>
@@ -421,7 +421,7 @@ export function CadastrarPaciente(){
                             onPress={()=>{ SheetManager.show("modalTiposAtendimentos") }}
                         />
 
-                        <Select 
+                        {/* <Select 
                             title={ temComorbidade.name }
                             isActive={ temComorbidade.key }
                             onPress={()=>{ setTemComorbidadeVisible(true) }}
@@ -526,10 +526,10 @@ export function CadastrarPaciente(){
                             multiline={true}
                             numberOfLines={4}
                             error={errors.orientacoes && errors.orientacoes.message}
-                        />
+                        /> */}
 
                     </FieldGroup>
-                    
+                     
                 </Fields>
 
                 <FieldGroup>
@@ -544,7 +544,9 @@ export function CadastrarPaciente(){
                                     key={key}
                                     status={item.status}
                                     type={item.type}
-                                    timestamp={item.date_scheduled}
+                                    date_scheduled={item.date_scheduled}
+                                    start_hour={item.start_hour}
+                                    end_hour={item.end_hour}
                                     onPress={()=>{ AlertExcludeAppointment(item, key) }}
                                 />   
                             )
