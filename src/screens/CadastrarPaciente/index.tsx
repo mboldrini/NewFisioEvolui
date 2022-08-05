@@ -89,7 +89,6 @@ export function CadastrarPaciente(){
     // const [ isTipoAtendimentoVisible, setTipoAtendimentoVisible] = useState(false);
     const [ isTemComorbidadeVisible, setTemComorbidadeVisible ] = useState(false);
 
-
     const [appointmentType, setAppointmentType] = useState({key: -1,name: 'Tipo de Atendimento'});
     const [temComorbidade, setTemComorbidade] = useState({key: -1, name: 'Paciente tem comorbidade'});
 
@@ -219,6 +218,17 @@ export function CadastrarPaciente(){
                 }
             }
         }
+        if(appointmentList.length > 0){
+            let appList = appointmentList.map(appointment => ({
+                type: appointment.type,
+                date_scheduled: appointment.date_scheduled,
+                start_hour: appointment.start_hour +":00"
+            }));
+            data = {
+                ...data,
+                "appointment": appList
+            }
+        }
 
         console.log(form);
         console.log("NOVO:");
@@ -322,6 +332,11 @@ export function CadastrarPaciente(){
         }
     },[appointment]);
 
+    useEffect(()=>{
+        setAppointment(null);
+        setAppointmentList([]);
+    }, [appointmentType]);
+
     return(
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <Container>
@@ -335,223 +350,217 @@ export function CadastrarPaciente(){
             <Form >
                 <Fields>
 
-                    {/* <FieldGroup>
-                        <TitleGroup>
-                            <Title>Sobre o Paciente</Title>
-                        </TitleGroup>
-
-                        <InputForm 
-                            name="nome"
-                            control={control}
-                            placeholder="Nome"
-                            autoCapitalize="words"
-                            autoCorrect={false}
-                            error={errors.nome && errors.nome.message}
-                        />
-
-                        <InputMasked 
-                            name="cpf"
-                            control={control}
-                            placeholder="CPF"
-                            error={errors.cpf && errors.cpf.message}
-                            keyboardType="number-pad"
-                            type="cpf"
-                        />
-
-                        <InputMasked
-                            name="dataNascimento"
-                            control={control}
-                            placeholder="Data de Nascimento"
-                            keyboardType="number-pad"
-                            error={errors.dataNascimento && errors.dataNascimento.message}
-                            type="datetime"
-                            options={{
-                                format: 'DD/MM/YYYY'
-                            }}
-                        />
-
-                        <InputMasked
-                            name="celular"
-                            control={control}
-                            placeholder="Celular"
-                            error={errors.celular && errors.celular.message}
-                            type="cel-phone"
-                            options={{
-                                maskType: 'BRL',
-                                withDDD: true,
-                                dddMask: '(99) '
-                            }}
-                        />
-
-                        <InputForm 
-                            name="email"
-                            control={control}
-                            placeholder="E-mail"
-                            autoCorrect={false}
-                            error={errors.email && errors.email.message}
-                        />
-
-                        <InputForm 
-                            name="instagram"
-                            control={control}
-                            placeholder="instagram"
-                            autoCorrect={false}
-                            error={errors.instagram && errors.instagram.message}
-                        />
-                        
-                        <InputForm 
-                            name="endereco"
-                            control={control}
-                            placeholder="Endereço"
-                            autoCapitalize="words"
-                            autoCorrect={false}
-                            error={errors.endereco && errors.endereco.message}
-                        />
-
-                    </FieldGroup>
-                        */}
-                    <FieldGroup>
-                        <TitleGroup>
-                            <Title>Atendimento</Title>
-                        </TitleGroup>
-
-                        <Select 
-                            title={appointmentType.name}
-                            isActive={appointmentType.key}
-                            onPress={()=>{ SheetManager.show("modalTiposAtendimentos") }}
-                        />
-
-                        {/* <Select 
-                            title={ temComorbidade.name }
-                            isActive={ temComorbidade.key }
-                            onPress={()=>{ setTemComorbidadeVisible(true) }}
-                        /> 
-
-                        { temComorbidade.key == 1 && 
-                            <InputForm 
-                            name="comorbidades"
-                            control={control}
-                            placeholder="Comorbidade(s) do paciente"
-                            autoCapitalize="words"
-                            autoCorrect={false}
-                            multiline={true}
-                            numberOfLines={4}
-                            error={errors.comorbidades && errors.comorbidades.message}
-                            />
-                        }
-
-                        <InputForm 
-                            name="diagnostico"
-                            control={control}
-                            placeholder="Diagnóstico Clínico"
-                            autoCapitalize="words"
-                            autoCorrect={false}
-                            multiline={true}
-                            numberOfLines={4}
-                            error={errors.diagnostico && errors.diagnostico.message}
-                        />
-
-                        <InputForm 
-                            name="queixa"
-                            control={control}
-                            placeholder="Queixa e/ou motivo do Atendimento"
-                            autoCapitalize="words"
-                            autoCorrect={false}
-                            multiline={true}
-                            numberOfLines={4}
-                            error={errors.queixa && errors.queixa.message}
-                        />
-
-                        <InputForm 
-                            name="hda"
-                            control={control}
-                            placeholder="Histórico de Doença Atual"
-                            autoCapitalize="words"
-                            autoCorrect={false}
-                            multiline={true}
-                            numberOfLines={4}
-                            error={errors.hda && errors.hda.message}
-                        />
-
-                        <InputForm 
-                            name="diagnosticoFuncional"
-                            control={control}
-                            placeholder="Diagnóstico Funcional"
-                            autoCapitalize="words"
-                            autoCorrect={false}
-                            multiline={true}
-                            numberOfLines={4}
-                            error={errors.diagnosticoFuncional && errors.diagnosticoFuncional.message}
-                        />
-
-                        <InputForm 
-                            name="avaliacaoFisica"
-                            control={control}
-                            placeholder="Avaliação Física"
-                            autoCapitalize="words"
-                            autoCorrect={false}
-                            multiline={true}
-                            numberOfLines={4}
-                            error={errors.avaliacaoFisica && errors.avaliacaoFisica.message}
-                        />
-
-                        <InputForm 
-                            name="avaliacaoRespiratoria"
-                            control={control}
-                            placeholder="Avaliação Respiratória"
-                            autoCapitalize="words"
-                            autoCorrect={false}
-                            multiline={true}
-                            numberOfLines={4}
-                            error={errors.avaliacaoRespiratoria && errors.avaliacaoRespiratoria.message}
-                        />
-
-                        <InputForm 
-                            name="objetivos"
-                            control={control}
-                            placeholder="Objetivos e Metas"
-                            autoCapitalize="words"
-                            autoCorrect={false}
-                            multiline={true}
-                            numberOfLines={4}
-                            error={errors.objetivos && errors.objetivos.message}
-                        />
-
-                        <InputForm 
-                            name="orientacoes"
-                            control={control}
-                            placeholder="Orientações"
-                            autoCapitalize="words"
-                            autoCorrect={false}
-                            multiline={true}
-                            numberOfLines={4}
-                            error={errors.orientacoes && errors.orientacoes.message}
-                        /> */}
-
-                    </FieldGroup>
-                     
-                </Fields>
-
-                <FieldGroup>
                     <TitleGroup>
-                        <Title>Agendamentos</Title>
+                        <Title>Sobre o Paciente</Title>
                     </TitleGroup>
 
-                    <Wrap>
-                        { appointmentList && appointmentList.length > 0 && appointmentList.map( (item, key) => {
-                            return(
-                                <AppointmentList
-                                    key={key}
-                                    status={item.status}
-                                    type={item.type}
-                                    date_scheduled={item.date_scheduled}
-                                    start_hour={item.start_hour}
-                                    end_hour={item.end_hour}
-                                    onPress={()=>{ AlertExcludeAppointment(item, key) }}
-                                />   
-                            )
-                        }) } 
+                    <InputForm 
+                        name="nome"
+                        control={control}
+                        placeholder="Nome"
+                        autoCapitalize="words"
+                        autoCorrect={false}
+                        error={errors.nome && errors.nome.message}
+                    />
 
+                    <InputMasked 
+                        name="cpf"
+                        control={control}
+                        placeholder="CPF"
+                        error={errors.cpf && errors.cpf.message}
+                        keyboardType="number-pad"
+                        type="cpf"
+                    />
+
+                    <InputMasked
+                        name="dataNascimento"
+                        control={control}
+                        placeholder="Data de Nascimento"
+                        keyboardType="number-pad"
+                        error={errors.dataNascimento && errors.dataNascimento.message}
+                        type="datetime"
+                        options={{
+                            format: 'DD/MM/YYYY'
+                        }}
+                    />
+
+                    <InputMasked
+                        name="celular"
+                        control={control}
+                        placeholder="Celular"
+                        error={errors.celular && errors.celular.message}
+                        type="cel-phone"
+                        options={{
+                            maskType: 'BRL',
+                            withDDD: true,
+                            dddMask: '(99) '
+                        }}
+                    />
+
+                    <InputForm 
+                        name="email"
+                        control={control}
+                        placeholder="E-mail"
+                        autoCorrect={false}
+                        error={errors.email && errors.email.message}
+                    />
+
+                    <InputForm 
+                        name="instagram"
+                        control={control}
+                        placeholder="instagram"
+                        autoCorrect={false}
+                        error={errors.instagram && errors.instagram.message}
+                    />
+                    
+                    <InputForm 
+                        name="endereco"
+                        control={control}
+                        placeholder="Endereço"
+                        autoCapitalize="words"
+                        autoCorrect={false}
+                        error={errors.endereco && errors.endereco.message}
+                    />
+
+                    <TitleGroup>
+                        <Title>Atendimento</Title>
+                    </TitleGroup>
+
+                    <Select 
+                        title={appointmentType.name}
+                        isActive={appointmentType.key}
+                        onPress={()=>{ SheetManager.show("modalTiposAtendimentos") }}
+                    />
+
+                    <Select 
+                        title={ temComorbidade.name }
+                        isActive={ temComorbidade.key }
+                        onPress={()=>{ setTemComorbidadeVisible(true) }}
+                    /> 
+
+                    { temComorbidade.key == 1 && 
+                        <InputForm 
+                        name="comorbidades"
+                        control={control}
+                        placeholder="Comorbidade(s) do paciente"
+                        autoCapitalize="words"
+                        autoCorrect={false}
+                        multiline={true}
+                        numberOfLines={4}
+                        error={errors.comorbidades && errors.comorbidades.message}
+                        />
+                    }
+
+                    <InputForm 
+                        name="diagnostico"
+                        control={control}
+                        placeholder="Diagnóstico Clínico"
+                        autoCapitalize="words"
+                        autoCorrect={false}
+                        multiline={true}
+                        numberOfLines={4}
+                        error={errors.diagnostico && errors.diagnostico.message}
+                    />
+
+                    <InputForm 
+                        name="queixa"
+                        control={control}
+                        placeholder="Queixa e/ou motivo do Atendimento"
+                        autoCapitalize="words"
+                        autoCorrect={false}
+                        multiline={true}
+                        numberOfLines={4}
+                        error={errors.queixa && errors.queixa.message}
+                    />
+
+                    <InputForm 
+                        name="hda"
+                        control={control}
+                        placeholder="Histórico de Doença Atual"
+                        autoCapitalize="words"
+                        autoCorrect={false}
+                        multiline={true}
+                        numberOfLines={4}
+                        error={errors.hda && errors.hda.message}
+                    />
+
+                    <InputForm 
+                        name="diagnosticoFuncional"
+                        control={control}
+                        placeholder="Diagnóstico Funcional"
+                        autoCapitalize="words"
+                        autoCorrect={false}
+                        multiline={true}
+                        numberOfLines={4}
+                        error={errors.diagnosticoFuncional && errors.diagnosticoFuncional.message}
+                    />
+
+                    <InputForm 
+                        name="avaliacaoFisica"
+                        control={control}
+                        placeholder="Avaliação Física"
+                        autoCapitalize="words"
+                        autoCorrect={false}
+                        multiline={true}
+                        numberOfLines={4}
+                        error={errors.avaliacaoFisica && errors.avaliacaoFisica.message}
+                    />
+
+                    <InputForm 
+                        name="avaliacaoRespiratoria"
+                        control={control}
+                        placeholder="Avaliação Respiratória"
+                        autoCapitalize="words"
+                        autoCorrect={false}
+                        multiline={true}
+                        numberOfLines={4}
+                        error={errors.avaliacaoRespiratoria && errors.avaliacaoRespiratoria.message}
+                    />
+
+                    <InputForm 
+                        name="objetivos"
+                        control={control}
+                        placeholder="Objetivos e Metas"
+                        autoCapitalize="words"
+                        autoCorrect={false}
+                        multiline={true}
+                        numberOfLines={4}
+                        error={errors.objetivos && errors.objetivos.message}
+                    />
+
+                    <InputForm 
+                        name="orientacoes"
+                        control={control}
+                        placeholder="Orientações"
+                        autoCapitalize="words"
+                        autoCorrect={false}
+                        multiline={true}
+                        numberOfLines={4}
+                        error={errors.orientacoes && errors.orientacoes.message}
+                    /> 
+
+                </Fields>
+
+                <TitleGroup>
+                    <Title>Agendamentos</Title>
+                </TitleGroup>
+
+                <Wrap>
+                    { !isAgendarVisible && appointmentList.length > 0 && appointmentList.map( (item, key) => {
+                        return(
+                            <AppointmentList
+                                key={key}
+                                status={item.status}
+                                type={item.type}
+                                date_scheduled={item.date_scheduled}
+                                start_hour={item.start_hour}
+                                end_hour={item.end_hour}
+                                onPress={()=>{ AlertExcludeAppointment(item, key) }}
+                            />   
+                        )
+                    }) } 
+
+                    { appointmentType.key != -1 &&
                         <WrapBtn>
                             <ButtonSimple
                                 type="default"
@@ -559,8 +568,9 @@ export function CadastrarPaciente(){
                                 onPress={()=>setIsAgendarVisible(true)}
                             />
                         </WrapBtn>
-                    </Wrap>
-                </FieldGroup>
+                    }
+                  
+                </Wrap>
                
             </Form>
 

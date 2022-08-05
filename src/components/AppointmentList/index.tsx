@@ -35,7 +35,7 @@ export function AppointmentList({status, date_scheduled, start_hour, end_hour, t
         return hora +":"+ minuto;
     }
 
-    console.log(`Type: ${type}`);
+    console.log("Agendando dia: "+ date_scheduled +" - "+ start_hour);
 
     return(
         <Container status={status}>
