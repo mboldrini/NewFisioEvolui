@@ -2,7 +2,7 @@ import { FontAwesome5 } from '@expo/vector-icons';
 import { RFValue, RFPercentage } from "react-native-responsive-fontsize";
 import styled, {css} from "styled-components/native";
 import { RectButton } from "react-native-gesture-handler";
-
+import {GestureHandlerRootView} from 'react-native-gesture-handler';
 
 interface Props{
     isActive: boolean;
@@ -15,7 +15,7 @@ interface PropsHoraEscolhida{
     ativo: boolean;
 }
 
-export const Container = styled.ScrollView`
+export const Container = styled(GestureHandlerRootView)`
     flex: 1;
     background-color: ${({theme}) => theme.colors.primary};
     margin-top: ${RFValue(40)}px;
