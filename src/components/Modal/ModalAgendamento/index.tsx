@@ -11,6 +11,7 @@ import { actionCreators, State } from '../../../state';
 import {
     Container,
     Body,
+    WrapCentral,
     Header,
     WrapIcone,
     Icone,
@@ -45,7 +46,8 @@ import IApointment from '../../../global/DTO/Apointment';
 interface Props{
     isVisible: boolean;
     setIsVisible: () => void;
-    setSelectedApointment: ({data, hora, status, tipo}: IApointment) => void;
+    setSelectedApointment: ({date_scheduled, start_hour, end_hour, type, status, serviceType_id, description, comments}: IApointment) => void;
+    idServiceType: number;
 }
 
 //Configs Locale - Calendar
@@ -62,12 +64,15 @@ interface ISelectedDay{
 
 // List of Scheduled Objects
 interface IHorariosApi{
-    id: number,
-    hora: number,
-    indisponivel: boolean
+    start_hour: string,
+    end_hour: string,
+    duration: string,
+    date_scheduled: Date,
+    user_id: number,
+    serviceType_id: number
 }
 
-export function ModalAgendamento({ isVisible, setIsVisible, setSelectedApointment }: Props){
+export function ModalAgendamento({ isVisible, setIsVisible, setSelectedApointment, idServiceType }: Props){
 
     /* CSS Theme */
     const theme = useTheme();
@@ -86,30 +91,47 @@ export function ModalAgendamento({ isVisible, setIsVisible, setSelectedApointmen
     const [availableTimesList, setAvailableTimesList] = useState([]);
     // Hour Selected by the user
     const [selectedHour, setSelectedHour] = useState(null);
+    const [selectedEndHour, setSelectedEndHour] = useState(null);
 
     // Is an Avaliation
     const [isAnEvaluation, setIsAnEvaluation] = useState(false);
 
+    function FormatHour(hour: string){
+        const [hora, minuto, segundo] = hour.split(":");
+        return hora +":"+ minuto;
+    }
 
     async function GetScheduledHours(){
 
         if(selectedDate){
 
-            console.log("API - obtendo lista de horas");
+            console.group("API - obtendo lista de horas");
+
             setAvailableTimesList([]);
             setSelectedHour(null);
+            setSelectedEndHour(null);
+            setIsAnEvaluation(false);
+
+            let params = {
+                "serviceType_id": idServiceType,
+                "date_scheduled": Object.keys(selectedDate)[0] +"T00:00:00.000-03:00",
+                "start_hour": "00:00:01"
+            }
 
             try{
 
-                const dtInicio = Object.keys(selectedDate)[0] + "T00:01";
-                const dtFim = Object.keys(selectedDate)[0] + "T23:59";
+                await api(apiState.token).post('/appointments/availability', params).then(res =>{
 
-                await api(apiState.token).post('/agendamento/allhoursday', {
-                    dataInicio: dtInicio,
-                    dataFim: dtFim,
-                }).then(res =>{
+                    let listaHoras = res.data.hours_availabled.map( (item: any) => {
+                        return({
+                            indisponivel: false,
+                            start_hour: FormatHour(item.start_hour),
+                            end_hour: FormatHour(item.end_hour)
+                        });
+                    });
 
-                    ShowScheduledHours(res.data);
+                    setAvailableTimesList(listaHoras);
+
 
                 }).catch(err =>{
                     console.log("Nenhum horario agendado p/ esse dia!");
@@ -123,20 +145,10 @@ export function ModalAgendamento({ isVisible, setIsVisible, setSelectedApointmen
                 alert(err);
             }
 
+            console.groupEnd();
+
         }
      
-    }
-
-    function ShowScheduledHours(horarios: IHorariosApi[]){
-
-        let horas = horarios.filter( (horario) => {
-            if( horario.hora >= 8 && horario.hora <= 20 ){
-                return horario;
-            }
-        });
-        
-        setAvailableTimesList(horas);
-
     }
 
     function HandleApointment(){
@@ -150,22 +162,23 @@ export function ModalAgendamento({ isVisible, setIsVisible, setSelectedApointmen
         }
 
         let [ano, mes, dia] = Object.keys(selectedDate)[0].split('-');
-        let dt = new Date( parseInt(ano), parseInt(mes), parseInt(dia));
-            dt.setHours(selectedHour, 0.20 );
-
-        console.log(dt);
+        let dt = ano +"-"+ mes +"-"+ dia +"T00:00:00.000-03:00";
 
         const apointment = {
-            timestamp: dt.getTime(),
-            tipo: isAnEvaluation == true ? 1 : 0,
-            status: 1
+            date_scheduled: dt,
+            start_hour: selectedHour,
+            end_hour: selectedEndHour,
+            type: isAnEvaluation == true ? 1 : 0,
+            status: 1,
+            serviceType_id: idServiceType,
+            description: "",
+            comments: "",
         }
 
-        console.log( apointment );
+        console.log(apointment);
 
-
-        //setSelectedApointment(apointment);
-        //setIsVisible();
+        setSelectedApointment(apointment);
+        setIsVisible();
 
     }
   
@@ -185,6 +198,15 @@ export function ModalAgendamento({ isVisible, setIsVisible, setSelectedApointmen
     useEffect(()=>{
         setAvailableTimesList([]);
         setSelectedDate(null);
+        setSelectedHour(null);
+        setSelectedEndHour(null);
+        setIsAnEvaluation(false);
+
+        if(idServiceType == -1){
+            console.log("É MENOS ! CANCELA!");
+        }else{
+            console.log(idServiceType);
+        }
     },[isVisible]);
     
 
@@ -194,10 +216,13 @@ export function ModalAgendamento({ isVisible, setIsVisible, setSelectedApointmen
             animationIn='slideInUp' 
             animationOut='slideOutDown' 
             animationInTiming={700} 
-            style={{width: '100%', margin: 0}}
+            style={{width: '100%', margin: 0, justifyContent: 'space-between', flex: 1, flexDirection: 'column'}}
         >
         <Container>
             <Body>
+
+            <WrapCentral>
+
 
                 <Header isActive={true} /*isActive={ temDtPrevia() }*/>
                     <WrapIcone>
@@ -212,6 +237,8 @@ export function ModalAgendamento({ isVisible, setIsVisible, setSelectedApointmen
                         </WrapIcone> */}
                     {/* } */}
                 </Header>
+
+
 
                 <WrapCalendar>
                     <CustomCalendar
@@ -232,8 +259,8 @@ export function ModalAgendamento({ isVisible, setIsVisible, setSelectedApointmen
                         }}
 
                         style={{
-                            marginRight: theme.margin.lateral,
-                            marginLeft: theme.margin.lateral,
+                            marginRight: theme.margin.lateral_half,
+                            marginLeft: theme.margin.lateral_half,
                             borderRadius: theme.bordas.padrao,
                         }}
 
@@ -244,7 +271,6 @@ export function ModalAgendamento({ isVisible, setIsVisible, setSelectedApointmen
                             textDayFontSize: 15,
                             textSectionTitleColor: '#000000',
                             textMonthFontFamily: theme.fonts.bold,
-
                             todayTextColor: '#00adf5',
                             selectedDayBackgroundColor: '#4EADBE',
                             dotColor: '#4EADBE',
@@ -256,7 +282,7 @@ export function ModalAgendamento({ isVisible, setIsVisible, setSelectedApointmen
 
                         markedDates={selectedDate}
 
-                    disabledDaysIndexes={[0,6]}
+                        disabledDaysIndexes={[0,6]}
 
                         // Handler which gets executed on day long press. Default = undefined
                         onDayLongPress={day => {
@@ -296,20 +322,21 @@ export function ModalAgendamento({ isVisible, setIsVisible, setSelectedApointmen
                     <TimeList>
                         {availableTimesList.map((item, key)=>(
                             <TimeItem
-                                escolhido={item.hora == selectedHour}
+                                escolhido={item.start_hour == selectedHour}
                                 ativo={!item.indisponivel}
                                 key={key}
                                 onPress={()=>{
                                     if(item.indisponivel == false){
-                                        setSelectedHour(item.hora)
+                                        setSelectedHour(item.start_hour);
+                                        setSelectedEndHour(item.end_hour);
                                     }
                                 }}
                             >
                                 <TimeItemText
-                                    escolhido={item.hora == selectedHour}
+                                    escolhido={item.start_hour == selectedHour}
                                     ativo={!item.indisponivel}
                                 >
-                                    {item.hora}
+                                    {item.start_hour}
                                 </TimeItemText>
                             </TimeItem>
                         ))}
@@ -328,6 +355,9 @@ export function ModalAgendamento({ isVisible, setIsVisible, setSelectedApointmen
                         />
                     </WrapIsEvaluation>
                 }
+
+</WrapCentral>
+
             
                 <WrapButtons>
 
@@ -340,6 +370,9 @@ export function ModalAgendamento({ isVisible, setIsVisible, setSelectedApointmen
                     </Button>
 
                 </WrapButtons>
+
+
+
 
             </Body>
         </Container>

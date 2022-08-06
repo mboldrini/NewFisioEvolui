@@ -346,18 +346,6 @@ export function PacientePerfil(){
 
                     <Spacer/>
 
-                    { pctInfos?.telefoneRecado && 
-                        <WrapInfo>
-                            <Icone name="phone"/>
-                            <InfoArea>
-                                <Description>Tel. Recado</Description>
-                                <Info>{ pctInfos.telefoneRecado }</Info>
-                            </InfoArea>
-                        </WrapInfo>
-                    }
-
-                    <Spacer/>
-
                     { pctInfos.email && 
                         <WrapInfo>
                             <Icone name="envelope"/>

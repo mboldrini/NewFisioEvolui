@@ -5,7 +5,7 @@ import { TextInput } from 'react-native';
 export const Container = styled(TextInput)`
     background-color: ${({theme}) => theme.colors.input_background};
     border-radius: ${({theme}) => theme.bordas.padrao}px;
-    height: ${RFValue(60)}px;
+    height: ${RFValue(40)}px;
     margin: 0 ${({theme}) => theme.padding.lateral_half}px;
     margin-bottom: ${({theme}) => theme.margin.input_bottom}px;
     color: #000000;

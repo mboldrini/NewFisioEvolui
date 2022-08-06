@@ -1,6 +1,5 @@
 import React, {useEffect, useState}from 'react';
-import { FlatList } from 'react-native';
-import {RefreshControl} from 'react-native';
+import {FlatList, RefreshControl} from 'react-native';
 import {useNavigation } from '@react-navigation/native';
 import { months, days, daysLong} from '../../global/variaveis/Dates';
 import { ITipoAgendamento } from '../../global/interfaces';
@@ -8,8 +7,6 @@ import {
     Container,
     Iscroll,
     WrapToast,
-    Header,
-    Titulo,
     DateWrapper,
     Today,
     SelectDateWrapper,
@@ -35,7 +32,8 @@ import { State } from '../../state';
 // Item de agenda
 import { AgendaItem } from '../../components/AgendaItem';
 // Date-fns
-import { getDayOfYear, getDay, getMonth, getYear, getDaysInMonth, getDate, format } from 'date-fns';
+import { getDay, getMonth, getYear, getDaysInMonth, getDate, format } from 'date-fns';
+
 
 export function Agenda(){
 
@@ -57,7 +55,7 @@ export function Agenda(){
     // Dias disponiveis no mes escolhido
     const [listdias, setListdias] = useState([]);
     // Agendamentos marcados para o dia escolhido
-    const [agendamentos, setAgendamentos] = useState<ITipoAgendamento[]>([]);
+    const [agendamentos, setAgendamentos] = useState<ITipoAgendamento[]>(null);
 
 
     const getAtualDay = () => {
@@ -118,29 +116,32 @@ export function Agenda(){
     }
 
     async function GetAgendaDia(dtEscolhida: Date){
-        console.log( format(dtEscolhida, 'yyyy-MM-dd') );
-
-        let rangeData = {
-            dataInicio: format(dtEscolhida, 'yyyy-MM-dd') + "T00:01",
-            dataFim: format(dtEscolhida, 'yyyy-MM-dd') +"T23:59"
-        }
 
         setLoading(true);
+
+        console.group("GetAllMonthAppointments -"+ selectedDate);
+
+        let rangeData = {
+            date: format(new Date(selectedYear, selectedMonth, selectedDay ), 'yyyy-MM-dd') +"T00:00:00.000-03:00"
+        }
+
+        console.log(rangeData);
+
         
-        await api(apiState.token).post('/agendamento/allappointments', rangeData).then(res => {
+        await api(apiState.token).post('/appointments/day', rangeData).then(res => {
+
+            console.log(res.data);
 
             setAgendamentos(res.data);
 
         }).catch(err =>{
             console.log("ERRO!");
-            console.error(err);
-            Toast.show({
-                type: 'error',
-                text1: 'OPS! erro ao obter agenda do dia.',
-            });
+            console.log(err.message);
         });
 
         setLoading(false);
+
+        console.groupEnd();
 
     }
 
@@ -163,6 +164,7 @@ export function Agenda(){
         }
     }, [selectedDay]);
 
+
     return(
         <Container >
             
@@ -171,10 +173,6 @@ export function Agenda(){
         </WrapToast>
 
         <Iscroll refreshControl={<RefreshControl refreshing={refreshing} onRefresh={getAtualDay}/>}>
-
-            <Header>
-                <Titulo>Agenda do Dia</Titulo>
-            </Header>
 
             <DateWrapper>
                 <Today>Hoje é {dataHoje}</Today>
@@ -195,7 +193,11 @@ export function Agenda(){
                         horizontal={true}
                         renderItem={({item}) =>{
                         return (
-                            <DateItem key={item.key} diaEscolhido={selectedDay} diaHoje={diaHoje}  onPress={()=>{ item.status ? setSelectedDay(item.number) : null}} style={{backgroundColor: item.number === selectedDay ? '#4EADBE' : '#FFFFFF' }}>
+                            <DateItem 
+                                key={item.key} 
+                                onPress={()=>{ item.status ? setSelectedDay(item.number) : null}} 
+                                style={{backgroundColor: item.number === selectedDay ? '#4EADBE' : '#FFFFFF' }}
+                            >
                                 <DateItemWeekDay style={{color: item.number === selectedDay ? '#FFFFFF' : '#000000'}}>{item.weekday}</DateItemWeekDay>
                                 <DateItemWeekNumber style={{ color: item.number === selectedDay ? '#FFFFFF' : '#000000'}}>{item.number}</DateItemWeekNumber>
                             </DateItem>   
@@ -210,25 +212,28 @@ export function Agenda(){
                 </Wrap>
             }
 
-            { loading == false && agendamentos.length >= 1 &&
+            { loading == false && agendamentos &&
                 <FlatList
                     data={agendamentos}
-                    keyExtractor={(item) => item.dataHora}
-                    renderItem={({item}) =>{
+                    keyExtractor={(item, index) => item.id +"_"+ item.client_name}
+                    renderItem={ ({item}) =>{
                         return (
                             <AgendaItem 
-                                key={item.dataHora}
+                                key={item.id}
+                                client_name={item.client_name}
                                 status={item.status}
-                                tipo={item.tipo}
-                                paciente_nome={item.paciente_nome}
-                                dataHora={item.dataHora}
+                                date_scheduled={item.date_scheduled}
+                                start_hour={item.start_hour}
+                                end_hour={item.end_hour}
+                                duration={item.duration}
+                                type={item.type}
                             />
                         )} 
                     }
                 /> 
-            }
+            } 
 
-            { !loading && agendamentos.length <= 0 &&
+            { !loading && !agendamentos &&
                 <Wrap>
                     <TextoSemAgendamentos>Nenhum agendamento encontrado</TextoSemAgendamentos>
                 </Wrap>

@@ -22,37 +22,33 @@ import {
 interface Props{
     type: number;
     status: number;
-    timestamp: number,
+    date_scheduled: string,
+    start_hour: string;
+    end_hour: string;
     onPress: () => void;
 }
 
-export function AppointmentList({status, timestamp, type, onPress}: Props){
+export function AppointmentList({status, date_scheduled, start_hour, end_hour, type, onPress}: Props){
 
-    function GetStartHour(stamp: number){
-        let date = new Date(stamp);
-
-        return date.getHours() +":"+ date.getMinutes();
+    function GetShortHour(stamp: string){
+        const [hora, minuto, segundo] = stamp.split(":");
+        return hora +":"+ minuto;
     }
 
-    function GetEndHour(stamp: number){
-        // let date = new Date(stamp);
-        return "99:99";
-    }
-
-    console.log(`Type: ${type}`);
+    console.log("Agendando dia: "+ date_scheduled +" - "+ start_hour);
 
     return(
         <Container status={status}>
              <WrapInfos>
                 <WrapDate>
-                     <WeekDay>{ daysLong[getDay( new Date(timestamp) )] }</WeekDay>
+                     <WeekDay>{ daysLong[getDay( new Date(date_scheduled) )] }</WeekDay>
                      <Day> dia </Day>
-                     <DateStr>{ format( new Date(timestamp), 'dd/M/yyyy') } </DateStr>
+                     <DateStr>{ format( new Date(date_scheduled), 'dd/MM/yyyy') } </DateStr>
                  </WrapDate>
 
                  <WrapHours>
                      <HourIcon name={ AppointmentIcons[type] } status={type}/>
-                     <Hour>{ GetStartHour(timestamp) } as { GetEndHour(timestamp)}</Hour>
+                     <Hour>{ GetShortHour(start_hour) } até { GetShortHour(end_hour)}</Hour>
                      { type == 1 &&
                         <>
                             <Traco> - </Traco>

@@ -1,37 +1,44 @@
 import { FontAwesome5 } from '@expo/vector-icons';
-import { RFPercentage, RFValue } from "react-native-responsive-fontsize";
+import { RFValue, RFPercentage } from "react-native-responsive-fontsize";
 import styled, {css} from "styled-components/native";
 import { RectButton } from "react-native-gesture-handler";
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
 
-//import CalendarPicker from 'react-native-calendar-picker';
-
 interface Props{
     isActive: boolean;
-  
 }
 interface PropsFooterButton{
     type: 'ok' | 'cancel';
 }
-
 interface PropsHoraEscolhida{
     escolhido: boolean;
     ativo: boolean;
 }
 
-export const Container = styled.ScrollView`
+export const Container = styled(GestureHandlerRootView)`
     flex: 1;
     background-color: ${({theme}) => theme.colors.primary};
     margin-top: ${RFValue(40)}px;
 `;
 
-export const Body = styled.View``;
+export const Body = styled.View`
+    flex: 1;
+    justify-content: space-between;
+`;
+
+export const WrapCentral = styled.View`
+    /* flex: 1; */
+    /* flex-direction: column;
+    justify-content: space-between;
+    border: 1px solid red; */
+    /* border: 1px solid black; */
+`;
 
 export const Header = styled.View<Props>`
     flex-direction: row;
     align-items: center;
 
-    margin-top: ${RFValue(35)}px ;
+    margin-top: ${RFValue(10)}px ;
     margin-bottom: ${RFValue(10)}px;
     padding: 0 ${({theme}) => theme.padding.lateral}px;
 
@@ -69,7 +76,7 @@ export const Wrap = styled.View`
     align-items:center;
     justify-content: center;
     padding: ${({theme}) => theme.padding.superior}px 0;
-    margin: 0 ${({theme}) => theme.margin.lateral}px;
+    margin: 0 ${({theme}) => theme.margin.lateral_half}px;
     margin-top: ${({theme}) => theme.margin.lateral_half}px;
 `;
 
@@ -80,7 +87,7 @@ export const WrapCarregandoHoras = styled.View`
     border-radius: ${({theme}) => theme.bordas.padrao}px;
     align-items:center;
     justify-content: center;
-    margin: ${RFValue(50)}px ${({theme}) => theme.margin.lateral}px;
+    margin: ${RFValue(50)}px ${({theme}) => theme.margin.lateral_half}px;
 `;
 
 export const TextCarregandoHoras = styled.Text`
@@ -146,7 +153,7 @@ export const WrapIsEvaluation = styled.View`
     border-radius: ${({theme}) => theme.bordas.padrao}px;
     align-items:center;
     justify-content: flex-start;
-    margin: 0 ${({theme}) => theme.margin.lateral}px;
+    margin: 0 ${({theme}) => theme.margin.lateral_half}px;
     margin-top: ${({theme}) => theme.margin.lateral_half}px;
     padding-left: ${({theme}) => theme.padding.lateral}px;
 `;
@@ -159,9 +166,9 @@ export const TextEvaluation = styled.Text`
 
 
 export const WrapButtons = styled.View`
-    margin: 0 ${({theme}) => theme.margin.lateral}px;
-    margin-top: ${({theme}) => theme.margin.lateral + RFValue(5)}px;
-    margin-bottom: ${({theme}) => theme.margin.lateral}px;
+    margin: 0 ${({theme}) => theme.margin.lateral_half}px;
+    margin-top: ${({theme}) => theme.margin.lateral_half + RFValue(5)}px;
+    margin-bottom: ${({theme}) => theme.margin.lateral_half}px;
     flex-direction: row;
     justify-content: space-between;
     align-items: center;

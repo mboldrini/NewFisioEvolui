@@ -1,13 +1,17 @@
 export interface FormData{
     nome: string,
-    cpf: number,
+    cpf: string,
     dataNascimento: string,
-    celular: number,
+    celular: string,
     email: string,
     endereco: string,
-    temComorbidade: boolean,
-    comorbidades?: string;
-    referencia?: string,
-    queixa?: string,
-    diagnostico?: string;
+    hpp: string,
+    diagnostico: string,
+    queixa: string,
+    hda: string,
+    diagnosticoFuncional: string,
+    avaliacaoFisica: string,
+    avaliacaoRespiratoria: string,
+    objetivos: string;
+    orientacoes: string
 }

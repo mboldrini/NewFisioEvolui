@@ -1,0 +1,10 @@
+DELETE FROM clients_respiratoryeval;
+DELETE FROM clients_physicaleval;
+DELETE FROM clients_objectives;
+DELETE FROM clients_hpp;
+DELETE FROM clients_hda;
+DELETE FROM clients_guidelines;
+DELETE FROM clients_funcionaldiagnosis;
+DELETE FROM clients_complaint;
+DELETE FROM clients_clinicaldiagnosis;
+DELETE FROM clients;

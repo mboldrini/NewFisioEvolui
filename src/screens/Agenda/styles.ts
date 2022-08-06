@@ -8,7 +8,7 @@ interface PropsDiaEscolhido{
     diaHoje: string;
 }
 
-export const Container = styled.View`
+export const Container = styled.SafeAreaView`
     flex: 1;
     background-color: ${({theme}) => theme.colors.primary};
 `;
@@ -35,13 +35,14 @@ export const Titulo = styled.Text`
 
 export const DateWrapper = styled.View`
     background-color: ${({theme}) => theme.colors.shape };
-    margin: 0px ${({theme }) => theme.margin.lateral}px;
+    margin: 0px ${({theme }) => theme.margin.lateral_half}px;
     border-radius: ${({theme}) => theme.bordas.padrao}px;
     padding: ${({theme}) => theme.padding.superior}px 0px;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     margin-bottom: ${({theme}) => theme.margin.bottom}px;
+    margin-top: ${RFValue(30)}px;
     border-width: 1px;
     border-color: #f5f5f5;
     border-bottom-width: 1px;
@@ -55,11 +56,11 @@ export const DateWrapper = styled.View`
 
 export const Today = styled.Text`
     font-family: ${({theme}) => theme.fonts.thin};
-    font-size: ${RFValue(12)}px;
+    font-size: ${RFValue(10)}px;
     padding: ${({theme}) => theme.padding.superior}px ${RFValue(10)}px;
     border-color: #f5f5f5;
     border-bottom-width: 1px;
-    margin-bottom: ${({theme}) => theme.margin.bottom}px;
+    margin-bottom: ${RFValue(5)}px;
 `;
 
 export const SelectDateWrapper = styled.View`
@@ -91,34 +92,34 @@ export const Month = styled.Text`
     padding: 0 ${RFValue(10)}px;
     padding-top: 2px;
     font-family: ${({theme}) => theme.fonts.bold};
-    font-size: ${RFValue(18)}px;
+    font-size: ${RFValue(12)}px;
     align-items: center;
     justify-content: center;
 `;
 
 export const DateList = styled.ScrollView.attrs({
     horizontal:true,
-    showsHorizontalScrollIndicator:false,
+    showsHorizontalScrollIndicator:true,
     contentContainerStyle: { paddingHorizontal: 5 }
 })`
     padding-bottom: ${RFValue(5)}px;
 `;
 
-export const DateItem = styled.TouchableOpacity<PropsDiaEscolhido>`
-    width: ${RFValue(45)}px;
+export const DateItem = styled.TouchableOpacity`
     justify-content: center;
     align-items: center;
     border-radius: ${({theme}) => theme.bordas.padrao}px;
     margin: 0 2px;
+    padding: 0 ${RFValue(5)}px;
 `;
 
 export const DateItemWeekDay = styled.Text`
     font-family: ${({theme}) => theme.fonts.regular};
-    font-size: ${RFValue(16)}px;
+    font-size: ${RFValue(12)}px;
 `;
 export const DateItemWeekNumber = styled.Text`
     font-family: ${({theme}) => theme.fonts.regular};
-    font-size: ${RFValue(16)}px;
+    font-size: ${RFValue(12)}px;
 `;
 
 export const Wrap = styled.View`

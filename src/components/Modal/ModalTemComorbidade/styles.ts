@@ -1,6 +1,5 @@
 import { RFValue } from "react-native-responsive-fontsize";
 import styled from "styled-components/native";
-
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import theme from '../../../global/styles/theme';
 
