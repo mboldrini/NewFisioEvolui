@@ -1,7 +1,7 @@
 import React, { useEffect, useContext, useState } from 'react';
 import { PacienteList } from '../../components/PacienteList';
 import {useNavigation} from '@react-navigation/native';
-import { FlatList } from 'react-native';
+import {FlatList, RefreshControl} from 'react-native';
 // API
 import { api } from '../../global/api';
 // REDUX
@@ -37,6 +37,8 @@ export function Home(){
 
     const apiState = useSelector((state: State) => state.apiReducer);
 
+    const [refreshing, setRefresh] = useState(false);
+
     const [patientList, setPatientList] = useState<IPatient[]>([]);
 
     function HandleNavigate(id: number){
@@ -50,7 +52,7 @@ export function Home(){
 
         console.log(apiState);
 
-        await api(apiState.token).post('/paciente/all', '').then(res=>{
+        await api(apiState.token).get('/clients/user/all').then(res=>{
 
             setPatientList(res.data);
             console.log("ok?");
@@ -71,7 +73,8 @@ export function Home(){
     },[]);
 
     return(
-        <Container>
+        <Container refreshControl={<RefreshControl refreshing={refreshing} onRefresh={ ()=>console.log("Refresh") }/>}>
+
 
             <Header>
                 <Titulo>Pesquisar nome do paciente</Titulo>
@@ -86,10 +89,10 @@ export function Home(){
                         <PacienteList
                             key={item.id}
                             companyIcon={"hospital"}/*{item.companyIcon}*/
-                            companyName={ item.tipoAtendimento }
+                            companyName={ item.serviceType_name }
                             // lastConsult={"01/01/2001"}
-                            personName={ item.nome }
-                            address={ item.logradouro }
+                            personName={ item.name }
+                            address={ item.address }
                             onPress={()=>{ HandleNavigate(item.id) }}
                         />
                     )}
