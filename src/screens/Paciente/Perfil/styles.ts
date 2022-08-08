@@ -21,13 +21,11 @@ export const WrapGroup = styled.View`
 `;
 
 export const WrapGroupBtn = styled.View`
-    background-color: ${({theme}) => theme.colors.secondary};
-    margin: 0 ${({theme}) => theme.margin.lateral_half}px;
-    border-radius: ${({theme}) => theme.bordas.padrao}px;
-    margin-bottom: ${({theme}) => theme.margin.bottom}px;
+    /* background-color: ${({theme}) => theme.colors.secondary}; */
+    /* margin: 0 ${({theme}) => theme.margin.lateral_half}px; */
+    /* border-radius: ${({theme}) => theme.bordas.padrao}px; */
+    /* margin-bottom: ${({theme}) => theme.margin.bottom}px; */
     padding: 0 ${({theme}) => theme.padding.lateral_half}px;
-    padding-top: ${RFValue(5)}px;
-    padding-bottom: ${RFValue(5)}px;
     /* padding: ${RFValue(10)}px ${({theme}) => theme.padding.lateral_half}px; */
 `;
 
@@ -154,7 +152,7 @@ export const Month = styled.Text`
 export const WrapAgendamentos = styled.View`
     align-items: center;
     justify-content: center;
-    margin-top: ${RFValue(10)}px;
+    margin: 0 ${({theme}) => theme.margin.lateral_half}px;
 `;
 
 export const LoadingIcon = styled.ActivityIndicator`

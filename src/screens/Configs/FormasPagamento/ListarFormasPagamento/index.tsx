@@ -110,7 +110,7 @@ export function ListarFormasPagamento(){
 
             <WrapCentral>
 
-            <WrapItens>
+             <WrapItens>
 
                 { listaTipos &&
                     <FlatList 
@@ -136,7 +136,7 @@ export function ListarFormasPagamento(){
                     </WrapSemAtendimentos>
                 }
 
-            </WrapItens>
+            </WrapItens> 
             
             </WrapCentral>
         </ScrollView>

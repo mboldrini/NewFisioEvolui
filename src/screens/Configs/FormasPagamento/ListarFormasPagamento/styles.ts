@@ -37,9 +37,9 @@ export const WrapSemAtendimentos = styled.View`
 export const AvisoSemAtendimentos = styled.Text`
     padding-bottom: ${RFValue(50)}px;
     padding-top: ${RFValue(50)}px;
-    font-family: ${({theme}) => theme.fonts.bold};
+    /* font-family: ${({theme}) => theme.fonts.bold}; */
     color: ${({theme}) => theme.colors.text_dark};
-    font-size: ${RFValue(18)}px;
+    /* font-size: ${RFValue(18)}px; */
 `;
 
 export const WrapBtnCadastro = styled.View`

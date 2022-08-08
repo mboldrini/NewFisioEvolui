@@ -21,12 +21,12 @@ export const WrapText = styled.View`
 `;
 
 export const NomeTipoPagamento = styled.Text`
-    font-size: ${ RFValue(DefaultAppValues.fontSize.title) }px;
+    font-size: ${ RFValue(DefaultAppValues.fontSize.tres) }px;
     font-family: ${({theme}) => theme.fonts.regular};
 `;
 
 export const Descricao = styled.Text`
-    font-size: ${ RFValue(DefaultAppValues.fontSize.description) }px;
+    font-size: ${ RFValue(DefaultAppValues.fontSize.dois) }px;
     font-family: ${({theme}) => theme.fonts.thin};
 `;
 

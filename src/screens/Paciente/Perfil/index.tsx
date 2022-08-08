@@ -53,7 +53,7 @@ import { Iscrol } from '../../CadastrarPaciente/styles';
 import { ModalAgendamento } from '../../../components/Modal/ModalAgendamento';
 import IApointment from '../../../global/DTO/Apointment';
 import { ButtonSimple } from '../../../components/Buttons/ButtonSimple/Index';
-import { IPctInfos, IAgendamentos, IRoute, IAgendamentosApi, IPctInfosList } from './Interfaces';
+import { IPctInfos, IAgendamentos, IRoute, IAgendamentosApi, IPctInfosList, IExpandablesShow } from './Interfaces';
 
 
 export function PacientePerfil(){
@@ -85,9 +85,15 @@ export function PacientePerfil(){
 
     const [exp1, setExp1] = useState(true);
 
-    const [expandables, setExpandables] = useState({
+    const [expandables, setExpandables] = useState<IExpandablesShow>({
         complaint: false,
-        hda: false
+        hda: false,
+        hpp: false,
+        functional: false,
+        physical: false,
+        respiratory: false,
+        objectives: false,
+        appointments: false
     });
 
     
@@ -130,8 +136,12 @@ export function PacientePerfil(){
             "date": new Date()
         }
 
+        console.log("Paramsn:");
+        console.log(JSON.stringify(params));
+
         await api(apiState.token).post('/clients/infos', params ).then(res => {
 
+            console.log("Retorno:");
             console.log(res.data);
 
             setInfosList(res.data);
@@ -275,11 +285,11 @@ export function PacientePerfil(){
     // }, [selectedMonth]);
 
 
-    // useEffect(()=>{
-    //     if(appointment?.data){
-    //         CadastraAgendamento();
-    //     }
-    // },[appointment]);
+    useEffect(()=>{
+        if(appointment?.date_scheduled){
+            CadastraAgendamento();
+        }
+    },[appointment]);
 
 
 
@@ -364,7 +374,7 @@ export function PacientePerfil(){
                 </WrapGroup>
 
 
-                { infosList?.complaints && 
+                { infosList?.complaints && infosList?.complaints.length > 0 && 
                     <SectionExpandable top={false} expanded={expandables.complaint}
                         sectionHeader={
                             <WrapExpandTitle>
@@ -392,7 +402,7 @@ export function PacientePerfil(){
                     </SectionExpandable>
                 } 
 
-                {infosList?.hda &&
+                {infosList?.hda && infosList?.hda.length > 0 &&
                     <SectionExpandable top={false} expanded={expandables.hda}
                         sectionHeader={
                             <WrapExpandTitle>
@@ -420,113 +430,190 @@ export function PacientePerfil(){
                     </SectionExpandable>
                 }
 
-
-
-
-                {/*
-
-                { infosList?.hpp && 
-                    <WrapGroup>
-                        <Title>HPP - História Patológico Pregresso</Title>
-
+                {infosList?.hpp && infosList?.hpp.length > 0 &&
+                    <SectionExpandable top={false} expanded={expandables.hpp}
+                        sectionHeader={
+                            <WrapExpandTitle>
+                                <ExpandableTitle>HPP - História Patológico Pregresso</ExpandableTitle>
+                                <Icone name={expandables.hpp ? 'chevron-up' : 'chevron-down'} onPress={() => setExpandables({...expandables, hpp: !expandables.hpp})}/>
+                            </WrapExpandTitle>
+                        }
+                    >
                         { infosList?.hpp.length >= 1 && 
                             infosList.hpp.map( (item, key) => {
                                 return(
-                                    <WrapInfo  key={key + item.date}>
+                                    <WrapInfoList key={key +"-"+ item.date}>
                                         <InfoArea>
                                             <Description>{ format(new Date(item.date), 'dd/MM/yyyy' ) }</Description>
                                             <InfoTexto>{ item.hpp }</InfoTexto>
                                         </InfoArea>
-                                    </WrapInfo>
-
+                                        <WrapIconeEdit onPress={()=> console.log(item)}>
+                                            <IconeItemEdit name="ellipsis-v" />
+                                            </WrapIconeEdit>
+                                        </WrapInfoList>
                                 )
                             })
                         }
-                    </WrapGroup>
-                } 
+                        <Line />
+                    </SectionExpandable>
+                }
 
-                { infosList?.functional && 
-                    <WrapGroup>
-                        <Title>Diagnóstico Funcional</Title>
 
+                {infosList?.functional && infosList?.functional.length > 0 &&
+                    <SectionExpandable top={false} expanded={expandables.functional}
+                        sectionHeader={
+                            <WrapExpandTitle>
+                                <ExpandableTitle>Diagnóstico Funcional</ExpandableTitle>
+                                <Icone name={expandables.functional ? 'chevron-up' : 'chevron-down'} onPress={() => setExpandables({...expandables, functional: !expandables.functional})}/>
+                            </WrapExpandTitle>
+                        }
+                    >
                         { infosList?.functional.length >= 1 && 
                             infosList.functional.map( (item, key) => {
                                 return(
-                                    <WrapInfo key={key + item.date}>
+                                    <WrapInfoList key={key +"-"+ item.date}>
                                         <InfoArea>
                                             <Description>{ format(new Date(item.date), 'dd/MM/yyyy' ) }</Description>
                                             <InfoTexto>{ item.diagnosis }</InfoTexto>
                                         </InfoArea>
-                                    </WrapInfo>
-
+                                        <WrapIconeEdit onPress={()=> console.log(item)}>
+                                            <IconeItemEdit name="ellipsis-v" />
+                                            </WrapIconeEdit>
+                                        </WrapInfoList>
                                 )
                             })
                         }
-                    </WrapGroup>
-                } 
+                        <Line />
+                    </SectionExpandable>
+                }
 
-                { infosList?.physical && 
-                    <WrapGroup>
-                        <Title>Avaliação Física</Title>
-
+                {infosList?.physical && infosList?.physical.length > 0 &&
+                    <SectionExpandable top={false} expanded={expandables.physical}
+                        sectionHeader={
+                            <WrapExpandTitle>
+                                <ExpandableTitle>Diagnóstico Funcional</ExpandableTitle>
+                                <Icone name={expandables.physical ? 'chevron-up' : 'chevron-down'} onPress={() => setExpandables({...expandables, physical: !expandables.physical})}/>
+                            </WrapExpandTitle>
+                        }
+                    >
                         { infosList?.physical.length >= 1 && 
                             infosList.physical.map( (item, key) => {
                                 return(
-                                    <WrapInfo key={key + item.date}>
+                                    <WrapInfoList key={key +"-"+ item.date}>
                                         <InfoArea>
                                             <Description>{ format(new Date(item.date), 'dd/MM/yyyy' ) }</Description>
                                             <InfoTexto>{ item.evaluation }</InfoTexto>
                                         </InfoArea>
-                                    </WrapInfo>
-
+                                        <WrapIconeEdit onPress={()=> console.log(item)}>
+                                            <IconeItemEdit name="ellipsis-v" />
+                                            </WrapIconeEdit>
+                                        </WrapInfoList>
                                 )
                             })
                         }
-                    </WrapGroup>
-                } 
+                        <Line />
+                    </SectionExpandable>
+                }
 
-                { infosList?.respiratory && 
-                    <WrapGroup>
-                        <Title>Avaliação Respiratória</Title>
-
+                
+                {infosList?.respiratory && infosList?.respiratory.length > 0 &&
+                    <SectionExpandable top={false} expanded={expandables.respiratory}
+                        sectionHeader={
+                            <WrapExpandTitle>
+                                <ExpandableTitle>Avaliação Respiratória</ExpandableTitle>
+                                <Icone name={expandables.respiratory ? 'chevron-up' : 'chevron-down'} onPress={() => setExpandables({...expandables, respiratory: !expandables.respiratory})}/>
+                            </WrapExpandTitle>
+                        }
+                    >
                         { infosList?.respiratory.length >= 1 && 
                             infosList.respiratory.map( (item, key) => {
                                 return(
-                                    <WrapInfo key={key + item.date}>
+                                    <WrapInfoList key={key +"-"+ item.date}>
                                         <InfoArea>
                                             <Description>{ format(new Date(item.date), 'dd/MM/yyyy' ) }</Description>
                                             <InfoTexto>{ item.evaluation }</InfoTexto>
                                         </InfoArea>
-                                    </WrapInfo>
-
+                                        <WrapIconeEdit onPress={()=> console.log(item)}>
+                                            <IconeItemEdit name="ellipsis-v" />
+                                            </WrapIconeEdit>
+                                        </WrapInfoList>
                                 )
                             })
                         }
-                    </WrapGroup>
-                } 
+                        <Line />
+                    </SectionExpandable>
+                }
 
-                { infosList?.objectives && 
-                    <WrapGroup>
-                        <Title>Objetivos e Metas</Title>
-
+                {infosList?.objectives && infosList?.objectives.length > 0 &&
+                    <SectionExpandable top={false} expanded={expandables.objectives}
+                        sectionHeader={
+                            <WrapExpandTitle>
+                                <ExpandableTitle>Objetivos e Metas</ExpandableTitle>
+                                <Icone name={expandables.objectives ? 'chevron-up' : 'chevron-down'} onPress={() => setExpandables({...expandables, objectives: !expandables.objectives})}/>
+                            </WrapExpandTitle>
+                        }
+                    >
                         { infosList?.objectives.length >= 1 && 
                             infosList.objectives.map( (item, key) => {
                                 return(
-                                    <WrapInfo key={key + item.date}>
+                                    <WrapInfoList key={key +"-"+ item.date}>
                                         <InfoArea>
                                             <Description>{ format(new Date(item.date), 'dd/MM/yyyy' ) }</Description>
                                             <InfoTexto>{ item.objectives }</InfoTexto>
                                         </InfoArea>
-                                    </WrapInfo>
-
+                                        <WrapIconeEdit onPress={()=> console.log(item)}>
+                                            <IconeItemEdit name="ellipsis-v" />
+                                            </WrapIconeEdit>
+                                        </WrapInfoList>
                                 )
                             })
                         }
-                    </WrapGroup>
-                }  */}
+                        <Line />
+                    </SectionExpandable>
+                }
+
+                {infosList?.appointment &&
+                    <SectionExpandable top={false} expanded={expandables.appointments}
+                        sectionHeader={
+                            <WrapExpandTitle>
+                                <ExpandableTitle>Agendamentos do Mês</ExpandableTitle>
+                                <Icone name={expandables.appointments ? 'chevron-up' : 'chevron-down'} onPress={() => setExpandables({...expandables, appointments: !expandables.appointments})}/>
+                            </WrapExpandTitle>
+                        }
+                    >
+                        { infosList?.appointment.length >= 1 && 
+                            infosList.appointment.map( (item, key) => {
+                                return(
+                                    <WrapAgendamentos>
+                                       <AppointmentList
+                                            key={key}
+                                            status={item.status}
+                                            type={item.type}
+                                            date_scheduled={item.date_scheduled}
+                                            start_hour={item.start_hour}
+                                            end_hour={item.end_hour}
+                                            onPress={()=>{ AlertExcludeAppointment(item, key) }}
+                                        />  
+                                    </WrapAgendamentos>
+                                )
+                            })
+                        }
+
+                        <WrapGroupBtn>
+                    <ButtonSimple
+                        type="default"
+                        title="Agendar Atendimento" 
+                        onPress={()=> setIsAgendamentoVisible(true) }
+                    />
+                </WrapGroupBtn>
+
+                <Line />
+
+                    </SectionExpandable>
+                }
 
 
-
+                {/*
 
 
                 {/* <WrapGroup>
@@ -573,13 +660,7 @@ export function PacientePerfil(){
                     </WrapAgendamentos>
                 </WrapGroup> */}
 
-                <WrapGroupBtn>
-                    <ButtonSimple
-                        type="default"
-                        title="Agendar Atendimento" 
-                        onPress={()=> setIsAgendamentoVisible(true) }
-                    />
-                </WrapGroupBtn>
+            
 
 
             </>
@@ -593,11 +674,14 @@ export function PacientePerfil(){
 
             <BottomSpacer/>
               
-            <ModalAgendamento 
-                isVisible={isAgendamentoVisible} 
-                setIsVisible={()=> setIsAgendamentoVisible(false) }
-                setSelectedApointment={setAppointment}
-            />
+            { pctInfos?.serviceType &&
+                <ModalAgendamento 
+                    isVisible={isAgendamentoVisible} 
+                    setIsVisible={()=> setIsAgendamentoVisible(false) }
+                    setSelectedApointment={setAppointment}
+                    idServiceType={pctInfos.serviceType.id}
+                />
+            }
 
         </Iscrol>
         </Container>

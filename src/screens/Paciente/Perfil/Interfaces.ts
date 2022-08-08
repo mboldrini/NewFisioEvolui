@@ -139,7 +139,7 @@ interface IAppointment{
     id: number,
     status: number,
     type: number,
-    date_scheduled: Date,
+    date_scheduled: string,
     start_hour: string,
     end_hour: string,
     duration: string,
@@ -159,4 +159,15 @@ export interface IPctInfosList{
     physical?: IPhysical[],
     respiratory?: IRespiratory[],
     appointment?: IAppointment[]
+}
+
+export interface IExpandablesShow{
+    complaint: boolean,
+    hda: boolean,
+    hpp: boolean,
+    functional: boolean,
+    physical: boolean,
+    respiratory: boolean,
+    objectives: boolean,
+    appointments: boolean
 }
