@@ -8,6 +8,7 @@ import { api } from '../../global/api';
 import { useSelector } from 'react-redux';
 import { State } from '../../state';
 import LottieView from 'lottie-react-native';
+import { Toast } from 'react-native-toast-message/lib/src/Toast';
 
 import { 
     Container,
@@ -24,10 +25,15 @@ import {
 import { ModalLoading } from '../../components/Modal/ModalLoading';
 
 interface IPatient{
-    id: number
-    nome: string,
-    tipoAtendimento: string,
-    logradouro: string
+    id: number,
+    name: string,
+    dataNascimento: Date,
+    document: string,
+    email: string,
+    celphone: string,
+    address: string,
+    serviceType_id: number,
+    serviceType_name: string,
 }
 
 
@@ -52,6 +58,8 @@ export function Home(){
 
         console.log(apiState);
 
+        setPatientList([]);
+
         await api(apiState.token).get('/clients/user/all').then(res=>{
 
             setPatientList(res.data);
@@ -59,7 +67,13 @@ export function Home(){
             console.log(res.data);
 
         }).catch(err=>{
-            console.error(err);
+            console.log(err);
+
+            Toast.show({
+                type: 'error',
+                text1: 'Ops!',
+                text2: `Erro ao obter a lista de pacientes` 
+            });
         })
 
         console.groupEnd();
@@ -73,7 +87,7 @@ export function Home(){
     },[]);
 
     return(
-        <Container refreshControl={<RefreshControl refreshing={refreshing} onRefresh={ ()=>console.log("Refresh") }/>}>
+        <Container refreshControl={<RefreshControl refreshing={refreshing} onRefresh={ ()=> GetPatientList() }/>}>
 
 
             <Header>
@@ -90,7 +104,6 @@ export function Home(){
                             key={item.id}
                             companyIcon={"hospital"}/*{item.companyIcon}*/
                             companyName={ item.serviceType_name }
-                            // lastConsult={"01/01/2001"}
                             personName={ item.name }
                             address={ item.address }
                             onPress={()=>{ HandleNavigate(item.id) }}

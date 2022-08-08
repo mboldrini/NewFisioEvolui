@@ -59,6 +59,12 @@ export default{
         bottom: 10,
         lateral_third: 8,
         top: 10
+    },
+    fontSize:{
+        um: 10,
+        dois: 12,
+        tres: 14,
+        quatro: 16
     }
 }
 
@@ -85,4 +91,10 @@ export const DefaultAppValues = {
         lateral_half: 12,
         superior: 5,
     },
+    fontSize:{
+        um: 10,
+        dois: 12,
+        tres: 14,
+        quatro: 16
+    }
 }

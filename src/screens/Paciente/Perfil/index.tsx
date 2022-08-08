@@ -4,15 +4,26 @@ import {useNavigation, useRoute } from '@react-navigation/native';
 import { 
     Container,
     WrapGroup,
+    WrapGroupBtn,
     Title,
     WrapInfo,
     Spacer,
     Icone,
+
+    WrapIconeEdit,
+    IconeItemEdit,
     InfoArea,
     Description,
     Info,
     InfoTexto,
     WrapLoadingPctInfos,
+
+    SectionExpandable,
+    WrapExpandTitle,
+    ExpandableTitle,
+    Line,
+    WrapInfoList,
+
     DateWrapper,
     SelectDateWrapper,
     IconeChangeMonth,
@@ -42,41 +53,8 @@ import { Iscrol } from '../../CadastrarPaciente/styles';
 import { ModalAgendamento } from '../../../components/Modal/ModalAgendamento';
 import IApointment from '../../../global/DTO/Apointment';
 import { ButtonSimple } from '../../../components/Buttons/ButtonSimple/Index';
+import { IPctInfos, IAgendamentos, IRoute, IAgendamentosApi, IPctInfosList } from './Interfaces';
 
-
-interface IPctInfos{
-    id: number,
-    nome: string,
-    cpf: string,
-    dataNascimento: string,
-    celular: string,
-    email: string,
-    tipoAtendimento: string,
-    temComorbidade: boolean,
-    logradouro: string,
-    queixamotivo: string,
-    diagnosticos: string,
-    comorbidades: string
-}
-
-interface IAgendamentos{
-    id: number,
-    tipo: number,
-    status: number,
-    timestamp: number,
-}
-
-interface IAgendamentosApi{
-    id: number,
-    timestamp: string,
-    data: string,
-    tipo: number,
-    status: number
-}
-
-interface IRoute{
-    id: number
-}
 
 export function PacientePerfil(){
 
@@ -89,31 +67,47 @@ export function PacientePerfil(){
     const apiState = useSelector((state: State) => state.apiReducer);
 
     const [loading, setLoading] = useState(true);
+    /// Infos do Paciente
     const [pctInfos, setPctInfos] = useState<IPctInfos>(null);
-    // Agendamentos do paciente
-    const [loadingAgendamentos, setLoadingAgendamentos] = useState(true);
-    const [pctAgendamentos, setPctAgendamentos] = useState<IAgendamentos[]>([]);
-    
-    const [selectedYear, setSelectedYear] = useState(0);
-    const [selectedMonth, setSelectedMonth] = useState(0);
+    const [infosList, setInfosList] = useState<IPctInfosList>(null);
+
+    // // Agendamentos do paciente
+    // const [loadingAgendamentos, setLoadingAgendamentos] = useState(true);
+    // const [pctAgendamentos, setPctAgendamentos] = useState<IAgendamentos[]>([]);
+    // const [selectedYear, setSelectedYear] = useState(0);
+    // const [selectedMonth, setSelectedMonth] = useState(0);
 
 
     const [ isAgendamentoVisible, setIsAgendamentoVisible] = useState(false);
     // Appointment received from Modal
     const [appointment, setAppointment] = useState({} as IApointment | null);
 
+
+    const [exp1, setExp1] = useState(true);
+
+    const [expandables, setExpandables] = useState({
+        complaint: false,
+        hda: false
+    });
+
     
     function handleNavigate(){ navigation.goBack(); }
 
+
     async function GetPacienteInfos(){
+        console.group("GetPacienteInfos");
 
         setLoading(true);
 
-        await api(apiState.token).get('/paciente/'+ id ).then(res => {
+        await api(apiState.token).get('/clients/'+ id ).then(res => {
 
             setPctInfos(res.data);
 
             setLoading(false);
+
+            console.log(res.data);
+
+            GetPacienteInfosList(id);
 
         }).catch(err => {
             console.log(err);
@@ -124,12 +118,39 @@ export function PacientePerfil(){
                 text2: `${err}`
             });
 
-            setTimeout(() => {
-                navigation.goBack();
-            }, 3000);
+        });
+        console.groupEnd();
+    }
+
+    async function GetPacienteInfosList(id: number){
+        console.group("GetPacienteInfosList");
+
+        const params = {
+            "client_id": id,
+            "date": new Date()
+        }
+
+        await api(apiState.token).post('/clients/infos', params ).then(res => {
+
+            console.log(res.data);
+
+            setInfosList(res.data);
+
+        }).catch(err => {
+            console.log(err);
+
+            Toast.show({
+                type: 'error',
+                text1: 'OPS! erro ao obter a lista informações do paciente.',
+                text2: `${err}`
+            });
 
         });
+
+        console.groupEnd();
     }
+
+
 
     const handleDateClick = (side: String) => {
         let mountDate = new Date(selectedYear, selectedMonth, 1);
@@ -142,22 +163,6 @@ export function PacientePerfil(){
 
         setSelectedYear( getYear(mountDate) );
         setSelectedMonth( getMonth(mountDate) );
-    }
-
-    function GetDateRange(id: number){
-        let data = new Date(selectedYear, selectedMonth);
-        let startDate = format(data, 'yyyy-MM-dd');
-        let endDate = format(lastDayOfMonth( data ), 'yyyy-MM-dd');
-
-        let agendaSelecionada = {
-            "paciente_id": id,
-            "dataInicio": startDate,
-            "dataFim": endDate
-        }
-
-        console.log(agendaSelecionada   );
-
-        return agendaSelecionada
     }
 
     function MontaListaAgendamentos(listaAgendamentos: IAgendamentosApi[]){
@@ -256,34 +261,25 @@ export function PacientePerfil(){
 
 
     useEffect(()=>{
-
-        function DefineDataHoje(){
-            let d = new Date();
-            setSelectedMonth(getMonth(d));
-            setSelectedYear(getYear(d));
-        }
-
         if(!id){
             console.log("Sem route ID");
         }else{
             GetPacienteInfos();
-            DefineDataHoje();
         }   
-
     }, []);
 
-    useEffect(()=>{
-        if(pctInfos?.nome.length > 2 && id){
-            GetAgendamentos();
-        }
-    }, [selectedMonth]);
+    // useEffect(()=>{
+    //     if(pctInfos?.name.length > 2 && id){
+    //         GetAgendamentos();
+    //     }
+    // }, [selectedMonth]);
 
 
-    useEffect(()=>{
-        if(appointment?.data){
-            CadastraAgendamento();
-        }
-    },[appointment]);
+    // useEffect(()=>{
+    //     if(appointment?.data){
+    //         CadastraAgendamento();
+    //     }
+    // },[appointment]);
 
 
 
@@ -304,8 +300,8 @@ export function PacientePerfil(){
 
                 <PacienteHeader 
                     iconeTipo="hospital"
-                    tipo={pctInfos.tipoAtendimento}
-                    nome={pctInfos.nome}
+                    tipo={pctInfos.serviceType.name}
+                    nome={pctInfos.name}
                 />
 
                 <WrapGroup>
@@ -317,7 +313,7 @@ export function PacientePerfil(){
                         <Icone name="calendar-day"/>
                         <InfoArea>
                             <Description>Data de Nascimento</Description>
-                            <Info>{ pctInfos?.dataNascimento }</Info>
+                            <Info>{ format( new Date(pctInfos?.dataNascimento), 'dd/MM/yyyy') }</Info>
                         </InfoArea>
                     </WrapInfo>
 
@@ -327,7 +323,7 @@ export function PacientePerfil(){
                         <Icone name="id-card"/>
                         <InfoArea>
                             <Description>CPF</Description>
-                            <Info>{ pctInfos?.cpf}</Info>
+                            <Info>{ pctInfos?.document}</Info>
                         </InfoArea>
                     </WrapInfo>
 
@@ -340,7 +336,7 @@ export function PacientePerfil(){
                         <Icone name="whatsapp"/>
                         <InfoArea>
                             <Description>Celular</Description>
-                            <Info>{ pctInfos.celular }</Info>
+                            <Info>{ pctInfos.celphone }</Info>
                         </InfoArea>
                     </WrapInfo>
 
@@ -362,48 +358,178 @@ export function PacientePerfil(){
                         <Icone name="map-pin"/>
                         <InfoArea>
                             <Description>Endereço</Description>
-                            <Info>{ pctInfos.logradouro }</Info>
+                            <Info>{ pctInfos.address }</Info>
                         </InfoArea>
                     </WrapInfo>
                 </WrapGroup>
 
-                { (pctInfos.temComorbidade || pctInfos?.queixamotivo?.length > 1 || pctInfos?.diagnosticos?.length > 1) && 
-                <WrapGroup>
-                    <Title>Informações de Médicas</Title>
-                    
-                    { pctInfos.temComorbidade && 
-                        <WrapInfo>
-                            <Icone name="star-of-life"/>
-                            <InfoArea>
-                                <Description>Comorbidade</Description>
-                                <InfoTexto>{ pctInfos?.comorbidades }</InfoTexto>
-                            </InfoArea>
-                        </WrapInfo>
-                    }
 
-                    { pctInfos?.queixamotivo?.length > 1 && 
-                        <WrapInfo>
-                            <Icone name="star-of-life"/>
-                            <InfoArea>
-                                <Description>Queixa/Motivo do atendimento</Description>
-                                <InfoTexto>{ pctInfos?.queixamotivo }</InfoTexto>
-                            </InfoArea>
-                        </WrapInfo>
-                    }
+                { infosList?.complaints && 
+                    <SectionExpandable top={false} expanded={expandables.complaint}
+                        sectionHeader={
+                            <WrapExpandTitle>
+                                <ExpandableTitle>Queixa Principal</ExpandableTitle>
+                                <Icone name={expandables.complaint ? 'chevron-up' : 'chevron-down'} onPress={() => setExpandables({...expandables, complaint: !expandables.complaint})}/>
+                            </WrapExpandTitle>
+                        }
+                    >
+                        { infosList?.complaints.length >= 1 && 
+                            infosList.complaints.map( (item, key) => {
+                                return(
+                                    <WrapInfoList key={key +"-"+ item.date}>
+                                        <InfoArea>
+                                            <Description>{ format(new Date(item.date), 'dd/MM/yyyy' ) }</Description>
+                                            <InfoTexto>{ item.complaint }</InfoTexto>
+                                        </InfoArea>
+                                        <WrapIconeEdit onPress={()=> console.log(item)}>
+                                            <IconeItemEdit name="ellipsis-v" />
+                                        </WrapIconeEdit>
+                                    </WrapInfoList>
+                                )
+                            })
+                        }
+                        <Line />
+                    </SectionExpandable>
+                } 
 
-                    { pctInfos?.diagnosticos?.length > 1 && 
-                        <WrapInfo>
-                            <Icone name="star-of-life"/>
-                            <InfoArea>
-                                <Description>Diagnóstico Inicial</Description>
-                                <InfoTexto>{ pctInfos?.diagnosticos }</InfoTexto>
-                            </InfoArea>
-                        </WrapInfo>
-                    }
-                </WrapGroup>
+                {infosList?.hda &&
+                    <SectionExpandable top={false} expanded={expandables.hda}
+                        sectionHeader={
+                            <WrapExpandTitle>
+                                <ExpandableTitle>HDA - História da Doença Atual</ExpandableTitle>
+                                <Icone name={expandables.hda ? 'chevron-up' : 'chevron-down'} onPress={() => setExpandables({...expandables, hda: !expandables.hda})}/>
+                            </WrapExpandTitle>
+                        }
+                    >
+                        { infosList?.hda.length >= 1 && 
+                            infosList.hda.map( (item, key) => {
+                                return(
+                                    <WrapInfoList key={key +"-"+ item.date}>
+                                        <InfoArea>
+                                            <Description>{ format(new Date(item.date), 'dd/MM/yyyy' ) }</Description>
+                                            <InfoTexto>{ item.hda }</InfoTexto>
+                                        </InfoArea>
+                                        <WrapIconeEdit onPress={()=> console.log(item)}>
+                                            <IconeItemEdit name="ellipsis-v" />
+                                            </WrapIconeEdit>
+                                        </WrapInfoList>
+                                )
+                            })
+                        }
+                        <Line />
+                    </SectionExpandable>
                 }
 
-                <WrapGroup>
+
+
+
+                {/*
+
+                { infosList?.hpp && 
+                    <WrapGroup>
+                        <Title>HPP - História Patológico Pregresso</Title>
+
+                        { infosList?.hpp.length >= 1 && 
+                            infosList.hpp.map( (item, key) => {
+                                return(
+                                    <WrapInfo  key={key + item.date}>
+                                        <InfoArea>
+                                            <Description>{ format(new Date(item.date), 'dd/MM/yyyy' ) }</Description>
+                                            <InfoTexto>{ item.hpp }</InfoTexto>
+                                        </InfoArea>
+                                    </WrapInfo>
+
+                                )
+                            })
+                        }
+                    </WrapGroup>
+                } 
+
+                { infosList?.functional && 
+                    <WrapGroup>
+                        <Title>Diagnóstico Funcional</Title>
+
+                        { infosList?.functional.length >= 1 && 
+                            infosList.functional.map( (item, key) => {
+                                return(
+                                    <WrapInfo key={key + item.date}>
+                                        <InfoArea>
+                                            <Description>{ format(new Date(item.date), 'dd/MM/yyyy' ) }</Description>
+                                            <InfoTexto>{ item.diagnosis }</InfoTexto>
+                                        </InfoArea>
+                                    </WrapInfo>
+
+                                )
+                            })
+                        }
+                    </WrapGroup>
+                } 
+
+                { infosList?.physical && 
+                    <WrapGroup>
+                        <Title>Avaliação Física</Title>
+
+                        { infosList?.physical.length >= 1 && 
+                            infosList.physical.map( (item, key) => {
+                                return(
+                                    <WrapInfo key={key + item.date}>
+                                        <InfoArea>
+                                            <Description>{ format(new Date(item.date), 'dd/MM/yyyy' ) }</Description>
+                                            <InfoTexto>{ item.evaluation }</InfoTexto>
+                                        </InfoArea>
+                                    </WrapInfo>
+
+                                )
+                            })
+                        }
+                    </WrapGroup>
+                } 
+
+                { infosList?.respiratory && 
+                    <WrapGroup>
+                        <Title>Avaliação Respiratória</Title>
+
+                        { infosList?.respiratory.length >= 1 && 
+                            infosList.respiratory.map( (item, key) => {
+                                return(
+                                    <WrapInfo key={key + item.date}>
+                                        <InfoArea>
+                                            <Description>{ format(new Date(item.date), 'dd/MM/yyyy' ) }</Description>
+                                            <InfoTexto>{ item.evaluation }</InfoTexto>
+                                        </InfoArea>
+                                    </WrapInfo>
+
+                                )
+                            })
+                        }
+                    </WrapGroup>
+                } 
+
+                { infosList?.objectives && 
+                    <WrapGroup>
+                        <Title>Objetivos e Metas</Title>
+
+                        { infosList?.objectives.length >= 1 && 
+                            infosList.objectives.map( (item, key) => {
+                                return(
+                                    <WrapInfo key={key + item.date}>
+                                        <InfoArea>
+                                            <Description>{ format(new Date(item.date), 'dd/MM/yyyy' ) }</Description>
+                                            <InfoTexto>{ item.objectives }</InfoTexto>
+                                        </InfoArea>
+                                    </WrapInfo>
+
+                                )
+                            })
+                        }
+                    </WrapGroup>
+                }  */}
+
+
+
+
+
+                {/* <WrapGroup>
                     <Title>Agendamentos do Paciente</Title>
 
                     <DateWrapper>
@@ -445,15 +571,15 @@ export function PacientePerfil(){
                         })
                     }
                     </WrapAgendamentos>
-                </WrapGroup>
+                </WrapGroup> */}
 
-                <WrapGroup>
+                <WrapGroupBtn>
                     <ButtonSimple
                         type="default"
                         title="Agendar Atendimento" 
                         onPress={()=> setIsAgendamentoVisible(true) }
                     />
-                </WrapGroup>
+                </WrapGroupBtn>
 
 
             </>
