@@ -377,33 +377,7 @@ export function PacientePerfil(){
                 </WrapGroup>
 
 
-                { infosList?.diagnostic && infosList?.diagnostic.length > 0 && 
-                    <SectionExpandable top={false} expanded={expandables.diagnostic}
-                        sectionHeader={
-                            <WrapExpandTitle>
-                                <ExpandableTitle>Diagnóstico Inícial</ExpandableTitle>
-                                <Icone name={expandables.diagnostic ? 'chevron-up' : 'chevron-down'} onPress={() => setExpandables({...expandables, diagnostic: !expandables.diagnostic})}/>
-                            </WrapExpandTitle>
-                        }
-                    >
-                        { infosList?.diagnostic.length >= 1 && 
-                            infosList.diagnostic.map( (item, key) => {
-                                return(
-                                    <WrapInfoList key={key +"-"+ item.date}>
-                                        <InfoArea>
-                                            <Description>{ format(new Date(item.date), 'dd/MM/yyyy' ) }</Description>
-                                            <InfoTexto>{ item.about }</InfoTexto>
-                                        </InfoArea>
-                                        <WrapIconeEdit onPress={()=> console.log(item)}>
-                                            <IconeItemEdit name="ellipsis-v" />
-                                        </WrapIconeEdit>
-                                    </WrapInfoList>
-                                )
-                            })
-                        }
-                        <Line />
-                    </SectionExpandable>
-                } 
+ 
 
 
                 { infosList?.complaints && infosList?.complaints.length > 0 && 
@@ -490,18 +464,17 @@ export function PacientePerfil(){
                     </SectionExpandable>
                 }
 
-
-                {infosList?.functional && infosList?.functional.length > 0 &&
-                    <SectionExpandable top={false} expanded={expandables.functional}
+                { infosList?.clinicalDiagnostic && infosList?.clinicalDiagnostic.length > 0 && 
+                    <SectionExpandable top={false} expanded={expandables.diagnostic}
                         sectionHeader={
                             <WrapExpandTitle>
                                 <ExpandableTitle>Diagnóstico Funcional</ExpandableTitle>
-                                <Icone name={expandables.functional ? 'chevron-up' : 'chevron-down'} onPress={() => setExpandables({...expandables, functional: !expandables.functional})}/>
+                                <Icone name={expandables.diagnostic ? 'chevron-up' : 'chevron-down'} onPress={() => setExpandables({...expandables, diagnostic: !expandables.diagnostic})}/>
                             </WrapExpandTitle>
                         }
                     >
-                        { infosList?.functional.length >= 1 && 
-                            infosList.functional.map( (item, key) => {
+                        { infosList?.clinicalDiagnostic.length >= 1 && 
+                            infosList.clinicalDiagnostic.map( (item, key) => {
                                 return(
                                     <WrapInfoList key={key +"-"+ item.date}>
                                         <InfoArea>
@@ -510,26 +483,26 @@ export function PacientePerfil(){
                                         </InfoArea>
                                         <WrapIconeEdit onPress={()=> console.log(item)}>
                                             <IconeItemEdit name="ellipsis-v" />
-                                            </WrapIconeEdit>
-                                        </WrapInfoList>
+                                        </WrapIconeEdit>
+                                    </WrapInfoList>
                                 )
                             })
                         }
                         <Line />
                     </SectionExpandable>
-                }
+                } 
 
-                {infosList?.physical && infosList?.physical.length > 0 &&
+                {infosList?.physicalEvaluation && infosList?.physicalEvaluation.length > 0 &&
                     <SectionExpandable top={false} expanded={expandables.physical}
                         sectionHeader={
                             <WrapExpandTitle>
-                                <ExpandableTitle>Diagnóstico Funcional</ExpandableTitle>
+                                <ExpandableTitle>Avaliação Física</ExpandableTitle>
                                 <Icone name={expandables.physical ? 'chevron-up' : 'chevron-down'} onPress={() => setExpandables({...expandables, physical: !expandables.physical})}/>
                             </WrapExpandTitle>
                         }
                     >
-                        { infosList?.physical.length >= 1 && 
-                            infosList.physical.map( (item, key) => {
+                        { infosList?.physicalEvaluation.length >= 1 && 
+                            infosList.physicalEvaluation.map( (item, key) => {
                                 return(
                                     <WrapInfoList key={key +"-"+ item.date}>
                                         <InfoArea>
@@ -547,8 +520,7 @@ export function PacientePerfil(){
                     </SectionExpandable>
                 }
 
-                
-                {infosList?.respiratory && infosList?.respiratory.length > 0 &&
+                {infosList?.respiratoryEvaluation && infosList?.respiratoryEvaluation.length > 0 &&
                     <SectionExpandable top={false} expanded={expandables.respiratory}
                         sectionHeader={
                             <WrapExpandTitle>
@@ -557,8 +529,36 @@ export function PacientePerfil(){
                             </WrapExpandTitle>
                         }
                     >
-                        { infosList?.respiratory.length >= 1 && 
-                            infosList.respiratory.map( (item, key) => {
+                        { infosList?.respiratoryEvaluation.length >= 1 && 
+                            infosList.respiratoryEvaluation.map( (item, key) => {
+                                return(
+                                    <WrapInfoList key={key +"-"+ item.date}>
+                                        <InfoArea>
+                                            <Description>{ format(new Date(item.date), 'dd/MM/yyyy' ) }</Description>
+                                            <InfoTexto>{ item.about }</InfoTexto>
+                                        </InfoArea>
+                                        <WrapIconeEdit onPress={()=> console.log(item)}>
+                                            <IconeItemEdit name="ellipsis-v" />
+                                            </WrapIconeEdit>
+                                        </WrapInfoList>
+                                )
+                            })
+                        }
+                        <Line />
+                    </SectionExpandable>
+                }
+
+                {infosList?.functionalDiagnostic && infosList?.functionalDiagnostic.length > 0 &&
+                    <SectionExpandable top={false} expanded={expandables.functional}
+                        sectionHeader={
+                            <WrapExpandTitle>
+                                <ExpandableTitle>Diagnóstico Funcional</ExpandableTitle>
+                                <Icone name={expandables.functional ? 'chevron-up' : 'chevron-down'} onPress={() => setExpandables({...expandables, functional: !expandables.functional})}/>
+                            </WrapExpandTitle>
+                        }
+                    >
+                        { infosList?.functionalDiagnostic.length >= 1 && 
+                            infosList.functionalDiagnostic.map( (item, key) => {
                                 return(
                                     <WrapInfoList key={key +"-"+ item.date}>
                                         <InfoArea>

@@ -149,16 +149,17 @@ interface IAppointment{
 }
 
 export interface IPctInfosList{
+    clinicalDiagnostic?: IDiagnostic[],
     complaints?: IComplaints[],
-    diagnostic?: IDiagnostic[],
-    functional?: IFunctional[],
+    functionalDiagnostic?: IFunctional[],
     guideline?: IGuideline[],
     hda?: IHda[],
     hpp?: IHpp[],
     objectives?: IObjectives[],
-    physical?: IPhysical[],
-    respiratory?: IRespiratory[],
-    appointment?: IAppointment[]
+    physicalEvaluation?: IPhysical[],
+    respiratoryEvaluation?: IRespiratory[],
+    appointment?: IAppointment[],
+    evolution: string,
 }
 
 export interface IExpandablesShow{

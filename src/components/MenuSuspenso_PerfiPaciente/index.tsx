@@ -25,15 +25,15 @@ export function MenuSuspensoPaciente(){
 
     const options = [
         {
-            title: 'Dianóstico Inícial',
+            title: 'Diagnóstico Clínico',
             icon: 'grid',
-            action: () => alert("Dianósticos")
-        },
+            action: () => alert("Diagnóstico Clínico")
+        }, 
         {
-            title: 'Reclamações',
+            title: 'Queixa Principal',
             icon: 'grid',
-            action: () => alert("Reclamações")
-        },
+            action: () => alert("Queixa Principal")
+        }, 
         {
             title: 'HDA',
             icon: 'grid',
@@ -43,11 +43,6 @@ export function MenuSuspensoPaciente(){
             title: 'HPP',
             icon: 'grid',
             action: () => alert("HPP")
-        },
-        {
-            title: 'Diagnóstico Funcional',
-            icon: 'grid',
-            action: () => alert("Diagnóstico Funcional")
         },
         {
             title: 'Avaliação Física',
@@ -60,14 +55,29 @@ export function MenuSuspensoPaciente(){
             action: () => alert("Avaliação Respiratória")
         },
         {
+            title: 'Diagnóstico Funcional',
+            icon: 'grid',
+            action: () => alert("Diagnóstico Funcional")
+        },
+        {
             title: 'Objetivos/Metas',
             icon: 'grid',
             action: () => alert("Objetivos/Metas")
         },
         {
-            title: 'Recomendações',
+            title: 'Evoluções',
             icon: 'grid',
-            action: () => alert("Recomendações")
+            action: () => alert("Evoluções")
+        },
+        {
+            title: 'Orientações',
+            icon: 'grid',
+            action: () => alert("Orientações")
+        },
+        {
+            title: 'Agendamentos',
+            icon: 'grid',
+            action: () => alert("Agendamentos")
         },
     ]
 
