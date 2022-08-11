@@ -47,7 +47,7 @@ export interface IRoute{
 
 interface IComplaints{
     id: number,
-    complaint: string,
+    about: string,
     comments: string,
     date: Date,
     client_id: number,
@@ -57,7 +57,7 @@ interface IComplaints{
 }
 interface IDiagnostic{
     id: number,
-    diagnostic: string,
+    about: string,
     comments: string,
     date: Date,
     client_id: number,
@@ -67,7 +67,7 @@ interface IDiagnostic{
 }
 interface IFunctional{
     id: number,
-    diagnosis: string,
+    about: string,
     comments: string,
     date: Date,
     client_id: number,
@@ -77,7 +77,7 @@ interface IFunctional{
 }
 interface IGuideline{
     id: number,
-    guideline: string,
+    about: string,
     comments: string,
     date: Date,
     client_id: number,
@@ -87,7 +87,7 @@ interface IGuideline{
 }
 interface IHda{
     id: number,
-    hda: string,
+    about: string,
     comments: string,
     date: Date,
     client_id: number,
@@ -97,7 +97,7 @@ interface IHda{
 }
 interface IHpp{
     id: number,
-    hpp: string,
+    about: string,
     comments: string,
     date: Date,
     client_id: number,
@@ -107,7 +107,7 @@ interface IHpp{
 }
 interface IObjectives{
     id: number,
-    objectives: string,
+    about: string,
     comments: string,
     date: Date,
     client_id: number,
@@ -117,7 +117,7 @@ interface IObjectives{
 }
 interface IPhysical{
     id: number,
-    evaluation: string,
+    about: string,
     comments: string,
     date: Date,
     client_id: number,
@@ -127,7 +127,7 @@ interface IPhysical{
 }
 interface IRespiratory{
     id: number,
-    evaluation: string,
+    about: string,
     comments: string,
     date: Date,
     client_id: number,
@@ -169,5 +169,7 @@ export interface IExpandablesShow{
     physical: boolean,
     respiratory: boolean,
     objectives: boolean,
-    appointments: boolean
+    appointments: boolean,
+    diagnostic: boolean,
+    guideline: boolean    
 }

@@ -70,8 +70,9 @@ export const Hour = styled.Text<Props>`
 `;
 
 export const WrapDate = styled.View`
-    align-items: flex-start;
+    align-items: center;
     flex-direction: row;
+    justify-content: flex-start;
 `;
 
 export const WeekDay = styled.Text`
@@ -112,3 +113,20 @@ export const Type = styled.Text`
     padding-top: ${RFValue(5)}px;
 `;
 
+export const Status = styled.Text<Props>`
+    justify-content: flex-start;
+    align-items: center;
+    font-family: ${({ theme }) => theme.fonts.regular};
+    font-size: ${RFValue(10)}px;
+    /* padding-top: ${RFValue(3)}px; */
+    border-radius: ${RFValue(DefaultAppValues.bordas.padrao)}px;
+    padding: 0 ${RFValue(5)}px;
+    margin-top: ${RFValue(2)}px;
+
+    ${({ status }) => status == 1 && css ` background-color: ${({theme}) => theme.colors.status_default}; `};
+    ${({ status }) => status == 2 && css ` background-color: ${({theme}) => theme.colors.status_atendido}; `};
+    ${({ status }) => status == 3 && css ` background-color: ${({theme}) => theme.colors.status_remarcado}; `};
+    ${({ status }) => status == 4 && css ` background-color: ${({theme}) => theme.colors.status_cancelado}; `};
+    ${({ status }) => status == 5 && css ` background-color: ${({theme}) => theme.colors.status_desmarcado}; `};
+    ${({ status }) => status == 6 && css ` background-color: ${({theme}) => theme.colors.status_avaliacao}; `};
+`;

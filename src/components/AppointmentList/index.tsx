@@ -9,6 +9,7 @@ import {
     HourIcon,
     Hour,
     WrapDate,
+    Status,
     WeekDay,
     Day,
     DateStr,
@@ -18,6 +19,7 @@ import {
     Traco,
     Type
 } from './styles';
+import { statusAtendimento } from '../../global/variaveis/globais';
 
 interface Props{
     type: number;
@@ -35,7 +37,7 @@ export function AppointmentList({status, date_scheduled, start_hour, end_hour, t
         return hora +":"+ minuto;
     }
 
-    console.log("Agendando dia: "+ date_scheduled +" - "+ start_hour);
+    console.log("Status: " + status +" - "+ statusAtendimento[status] );
 
     return(
         <Container status={status}>
@@ -43,19 +45,21 @@ export function AppointmentList({status, date_scheduled, start_hour, end_hour, t
                 <WrapDate>
                      <WeekDay>{ daysLong[getDay( new Date(date_scheduled) )] }</WeekDay>
                      <Day> dia </Day>
-                     <DateStr>{ format( new Date(date_scheduled), 'dd/MM/yyyy') } </DateStr>
+                     <DateStr>{ format( new Date(date_scheduled), 'dd/MM/yyyy') } 
+                        { type == 1 &&
+                            <>
+                                <Traco> - </Traco>
+                                <EvaluationIcon name="notes-medical" />
+                                <Type> Avaliação</Type>
+                            </>
+                        }
+                     </DateStr>
                  </WrapDate>
 
                  <WrapHours>
                      <HourIcon name={ AppointmentIcons[type] } status={type}/>
-                     <Hour>{ GetShortHour(start_hour) } até { GetShortHour(end_hour)}</Hour>
-                     { type == 1 &&
-                        <>
-                            <Traco> - </Traco>
-                            <EvaluationIcon name="notes-medical" />
-                            <Type>Avaliação</Type>
-                        </>
-                     }
+                     <Hour>{ GetShortHour(start_hour) } até { GetShortHour(end_hour)}  - </Hour>
+                    <Status status={status}>{ statusAtendimento[status] }</Status>
                  </WrapHours>
              </WrapInfos>
              <WrapButton onPress={onPress}>

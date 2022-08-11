@@ -2383,6 +2383,11 @@
   resolved "https://registry.yarnpkg.com/@react-native-community/netinfo/-/netinfo-8.2.0.tgz#0bcf2b618c3b0ab72bb5529df3e580af9e6ae96b"
   integrity sha512-mPMg9Uu2XeMX3tainvCWLhD9FZtdox3fcbPXJINuyFNgEQ2AUhGcoUT1dUpcFZrY4eXYiO9cckPhPHq9lWzSAA==
 
+"@react-native-picker/picker@^2.4.3":
+  version "2.4.3"
+  resolved "https://registry.yarnpkg.com/@react-native-picker/picker/-/picker-2.4.3.tgz#36a2efae4b874e5b4479fd4f089e7e0bae0c1a79"
+  integrity sha512-YdfRdYdu3jwkeSuBpNMlxQb8HE6zqLmBKwzU8l/RszXRNcXLZQdiq+fR56hHpwjNc+L447eJrnovC5n6cnbkzg==
+
 "@react-native/assets@1.0.0":
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/@react-native/assets/-/assets-1.0.0.tgz#c6f9bf63d274bafc8e970628de24986b30a55c8e"
@@ -2690,7 +2695,7 @@
     hoist-non-react-statics "^3.3.0"
     redux "^4.0.0"
 
-"@types/react@*", "@types/react@~17.0.21":
+"@types/react@*":
   version "17.0.33"
   resolved "https://registry.yarnpkg.com/@types/react/-/react-17.0.33.tgz#e01ae3de7613dac1094569880bb3792732203ad5"
   integrity sha512-pLWntxXpDPaU+RTAuSGWGSEL2FRTNyRQOjSWDke/rxRg14ncsZvx8AKWMWZqvc1UOaJIAoObdZhAWvRaHFi5rw==
@@ -2699,7 +2704,7 @@
     "@types/scheduler" "*"
     csstype "^3.0.2"
 
-"@types/react@^17":
+"@types/react@^17", "@types/react@~17.0.21":
   version "17.0.48"
   resolved "https://registry.yarnpkg.com/@types/react/-/react-17.0.48.tgz#a4532a8b91d7b27b8768b6fc0c3bccb760d15a6c"
   integrity sha512-zJ6IYlJ8cYYxiJfUaZOQee4lh99mFihBoqkOSEGV+dFi9leROW6+PgstzQ+w3gWTnUfskALtQPGHK6dYmPj+2A==

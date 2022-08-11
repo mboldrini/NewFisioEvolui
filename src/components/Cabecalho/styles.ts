@@ -20,7 +20,7 @@ export const Container = styled.View<ITopo>`
     align-items: center;
     justify-content: space-between;
     margin: 0 ${({theme}) => theme.margin.lateral_half}px;
-    margin-top: ${RFValue(35)}px ;
+    margin-top: ${RFValue(10)}px ;
 
     ${({ arrowSide }) => arrowSide === "chevron-down" && css `
         margin-top: ${RFValue(10)}px ;
