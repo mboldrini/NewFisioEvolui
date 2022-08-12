@@ -23,17 +23,26 @@ import {
     ExpandableTitle,
     Line,
     WrapInfoList,
-
-    DateWrapper,
-    SelectDateWrapper,
-    IconeChangeMonth,
-    ChangeMonthLeft,
-    ChangeMonthRight,
-    Month,
     WrapAgendamentos,
-    WrapToast,
     LoadingIcon,
-    TextSemAgendamentos
+
+
+    /// Cabeçalho
+    ContainerCabecalho,
+    WrapLeft,
+    IconeLeft,
+    IconeRight,
+    WrapTitle,
+    Titulo,
+
+
+    /// MENU
+    ViewBtn,
+    AreaMenu,
+    BtnMenuList,
+    TituloMenu,
+    IconeMenu,
+
 } from './styles';
 import Toast from 'react-native-toast-message';
 
@@ -46,16 +55,15 @@ import { api } from '../../../global/api';
 import { useSelector } from 'react-redux';
 import { State } from '../../../state';
 // Imports
-import { months} from '../../../global/variaveis/Dates';
-import { getMonth, getYear, lastDayOfMonth, format } from 'date-fns';
+import { format } from 'date-fns';
 import { AppointmentList } from '../../../components/AppointmentList';
 import { Iscrol } from '../../CadastrarPaciente/styles';
 import { ModalAgendamento } from '../../../components/Modal/ModalAgendamento';
 import IApointment from '../../../global/DTO/Apointment';
 import { ButtonSimple } from '../../../components/Buttons/ButtonSimple/Index';
-import { IPctInfos, IAgendamentos, IRoute, IAgendamentosApi, IPctInfosList, IExpandablesShow } from './Interfaces';
-import { MenuSuspensoPaciente } from '../../../components/MenuSuspenso_PerfiPaciente';
+import { IPctInfos, IRoute, IAgendamentosApi, IPctInfosList, IExpandablesShow } from './Interfaces';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { Modal } from 'react-native-ui-lib';
 
 
 export function PacientePerfil(){
@@ -73,18 +81,14 @@ export function PacientePerfil(){
     const [pctInfos, setPctInfos] = useState<IPctInfos>(null);
     const [infosList, setInfosList] = useState<IPctInfosList>(null);
 
-    // // Agendamentos do paciente
-    // const [loadingAgendamentos, setLoadingAgendamentos] = useState(true);
-    // const [pctAgendamentos, setPctAgendamentos] = useState<IAgendamentos[]>([]);
-    // const [selectedYear, setSelectedYear] = useState(0);
-    // const [selectedMonth, setSelectedMonth] = useState(0);
-
+    const [menuVisible, setMenuVisible] = useState(false);
 
     const [ isAgendamentoVisible, setIsAgendamentoVisible] = useState(false);
     // Appointment received from Modal
     const [appointment, setAppointment] = useState({} as IApointment | null);
 
     const [expandables, setExpandables] = useState<IExpandablesShow>({
+        clinicalDiagnostic: false,
         complaint: false,
         hda: false,
         hpp: false,
@@ -92,14 +96,10 @@ export function PacientePerfil(){
         physical: false,
         respiratory: false,
         objectives: false,
+        evolution: false,
+        guideline: false,
         appointments: false,
-        diagnostic: false,
-        guideline: false
     });
-
-    
-    function handleNavigate(){ navigation.goBack(); }
-
 
     async function GetPacienteInfos(){
         console.group("GetPacienteInfos");
@@ -161,19 +161,6 @@ export function PacientePerfil(){
         console.groupEnd();
     }
 
-    // const handleDateClick = (side: String) => {
-    //     let mountDate = new Date(selectedYear, selectedMonth, 1);
-
-    //     if(side == "left"){
-    //         mountDate.setMonth( mountDate.getMonth() -1 );
-    //     }else{
-    //         mountDate.setMonth( mountDate.getMonth() +1 );
-    //     }
-
-    //     setSelectedYear( getYear(mountDate) );
-    //     setSelectedMonth( getMonth(mountDate) );
-    // }
-
     function MontaListaAgendamentos(listaAgendamentos: IAgendamentosApi[]){
 
         function FormatHoraAgendamento(dtHora: string){
@@ -209,32 +196,6 @@ export function PacientePerfil(){
         }
     }
 
-    async function GetAgendamentos(){
-
-        setPctAgendamentos([]);
-        setLoadingAgendamentos(true);
-        
-        await api(apiState.token).post('/agendamento/all', GetDateRange(id) ).then(res =>{
-            
-            MontaListaAgendamentos(res.data);
-
-        }).catch(err => {
-
-            console.log("erro?");
-            console.log(err);     
-            
-            Toast.show({
-                type: 'error',
-                text1: 'OPS! erro ao obter agendamentos do paciente.',
-                text2: `${err}`
-            });    
-
-            setLoadingAgendamentos(false);
-
-        });
-
-    }
-
     async function CadastraAgendamento(){
         console.log("Cadastra novo agendamento p/ o pct");
 
@@ -268,6 +229,30 @@ export function PacientePerfil(){
         });
     }
 
+    function HandleInfosPage(tipo: string){
+        navigation.navigate('ListaInfosPaciente' as never, { 
+            idPaciente: pctInfos.id,
+            nomePaciente: pctInfos.name,
+            tipo: tipo,
+        } as never)
+        
+    }
+
+    const listaMenuPerfil = [
+        { title: 'Diagnóstico Clínico',     action: () => HandleInfosPage("diagnosticoClinico") }, 
+        { title: 'Queixa Principal',        action: () => HandleInfosPage("queixaPrincipal") }, 
+        { title: 'HDA',                     action: () => HandleInfosPage("hda") },
+        { title: 'HPP',                     action: () => HandleInfosPage("hpp") },
+        { title: 'Avaliação Física',        action: () => HandleInfosPage("avaliacaoFisica") },
+        { title: 'Avaliação Respiratória',  action: () => HandleInfosPage("avaliacaoRespiratoria") },
+        { title: 'Diagnóstico Funcional',   action: () => HandleInfosPage("diagnosticoFuncional") },
+        { title: 'Objetivos/Metas',         action: () => HandleInfosPage("objetivos") },
+        { title: 'Evoluções',               action: () => HandleInfosPage("evolucoes") },
+        { title: 'Orientações',             action: () => HandleInfosPage("orientacoes") },
+        { title: 'Agendamentos',            action: () => HandleInfosPage("agendamentos") },
+    ]
+
+
 
     useEffect(()=>{
         if(!id){
@@ -276,13 +261,6 @@ export function PacientePerfil(){
             GetPacienteInfos();
         }   
     }, []);
-
-    // useEffect(()=>{
-    //     if(pctInfos?.name.length > 2 && id){
-    //         GetAgendamentos();
-    //     }
-    // }, [selectedMonth]);
-
 
     useEffect(()=>{
         if(appointment?.date_scheduled){
@@ -295,19 +273,38 @@ export function PacientePerfil(){
     return(
         <Container >
         <SafeAreaView>
-
-            <WrapToast>
-                <Toast position={'top'}  autoHide={true} visibilityTime={6000} onPress={()=>Toast.hide()}/>
-            </WrapToast>
         <Iscrol refreshControl={<RefreshControl refreshing={refreshing} onRefresh={()=>{ GetPacienteInfos() }}/>}>
 
-            <Cabecalho 
+            <ContainerCabecalho >
+                <WrapLeft>
+                    <IconeLeft name="chevron-left" onPress={() => navigation.goBack() }/>
+                    <WrapTitle>
+                        <Titulo>Perfil do Paciente</Titulo>
+                    </WrapTitle>
+                </WrapLeft>
+
+                <IconeRight name="cog" onPress={() => setMenuVisible(true)} />
+
+                <Modal transparent visible={menuVisible} style={{position: 'absolute'}}>
+                    <SafeAreaView style={{flex: 1, zIndex: -2}} onTouchEnd={() => setMenuVisible(false)}>
+                        <AreaMenu style={{zIndex: 3}}>
+                            {listaMenuPerfil.map((op, i) => (
+                                <BtnMenuList key={i} onPress={op.action } lastItem={ i === listaMenuPerfil.length -1 }>
+                                    <IconeMenu name="list-ul" />
+                                    <TituloMenu>{ op.title }</TituloMenu>
+                                </BtnMenuList>
+                            ))}
+                        </AreaMenu>
+                    </SafeAreaView>
+                </Modal>
+                
+            </ContainerCabecalho>
+
+            {/* <Cabecalho 
                 titulo="Perfil do Paciente"
                 onPress={handleNavigate}
-            />
+            /> */}
 
-            <MenuSuspensoPaciente />
-        
             { pctInfos && loading == false &&
             <>
 
@@ -378,7 +375,33 @@ export function PacientePerfil(){
 
 
  
-
+                { infosList?.clinicalDiagnostic && infosList?.clinicalDiagnostic.length > 0 && 
+                    <SectionExpandable top={false} expanded={expandables.clinicalDiagnostic}
+                        sectionHeader={
+                            <WrapExpandTitle>
+                                <ExpandableTitle>Diagnóstico Clínico</ExpandableTitle>
+                                <Icone name={expandables.clinicalDiagnostic ? 'chevron-up' : 'chevron-down'} onPress={() => setExpandables({...expandables, clinicalDiagnostic: !expandables.clinicalDiagnostic})}/>
+                            </WrapExpandTitle>
+                        }
+                    >
+                        { infosList?.clinicalDiagnostic.length >= 1 && 
+                            infosList.clinicalDiagnostic.map( (item, key) => {
+                                return(
+                                    <WrapInfoList key={key +"-"+ item.date}>
+                                        <InfoArea>
+                                            <Description>{ format(new Date(item.date), 'dd/MM/yyyy' ) }</Description>
+                                            <InfoTexto>{ item.about }</InfoTexto>
+                                        </InfoArea>
+                                        <WrapIconeEdit onPress={()=> console.log(item)}>
+                                            <IconeItemEdit name="ellipsis-v" />
+                                        </WrapIconeEdit>
+                                    </WrapInfoList>
+                                )
+                            })
+                        }
+                        <Line />
+                    </SectionExpandable>
+                } 
 
                 { infosList?.complaints && infosList?.complaints.length > 0 && 
                     <SectionExpandable top={false} expanded={expandables.complaint}
@@ -464,34 +487,6 @@ export function PacientePerfil(){
                     </SectionExpandable>
                 }
 
-                { infosList?.clinicalDiagnostic && infosList?.clinicalDiagnostic.length > 0 && 
-                    <SectionExpandable top={false} expanded={expandables.diagnostic}
-                        sectionHeader={
-                            <WrapExpandTitle>
-                                <ExpandableTitle>Diagnóstico Funcional</ExpandableTitle>
-                                <Icone name={expandables.diagnostic ? 'chevron-up' : 'chevron-down'} onPress={() => setExpandables({...expandables, diagnostic: !expandables.diagnostic})}/>
-                            </WrapExpandTitle>
-                        }
-                    >
-                        { infosList?.clinicalDiagnostic.length >= 1 && 
-                            infosList.clinicalDiagnostic.map( (item, key) => {
-                                return(
-                                    <WrapInfoList key={key +"-"+ item.date}>
-                                        <InfoArea>
-                                            <Description>{ format(new Date(item.date), 'dd/MM/yyyy' ) }</Description>
-                                            <InfoTexto>{ item.about }</InfoTexto>
-                                        </InfoArea>
-                                        <WrapIconeEdit onPress={()=> console.log(item)}>
-                                            <IconeItemEdit name="ellipsis-v" />
-                                        </WrapIconeEdit>
-                                    </WrapInfoList>
-                                )
-                            })
-                        }
-                        <Line />
-                    </SectionExpandable>
-                } 
-
                 {infosList?.physicalEvaluation && infosList?.physicalEvaluation.length > 0 &&
                     <SectionExpandable top={false} expanded={expandables.physical}
                         sectionHeader={
@@ -548,6 +543,7 @@ export function PacientePerfil(){
                     </SectionExpandable>
                 }
 
+
                 {infosList?.functionalDiagnostic && infosList?.functionalDiagnostic.length > 0 &&
                     <SectionExpandable top={false} expanded={expandables.functional}
                         sectionHeader={
@@ -576,6 +572,7 @@ export function PacientePerfil(){
                     </SectionExpandable>
                 }
 
+                
                 {infosList?.objectives && infosList?.objectives.length > 0 &&
                     <SectionExpandable top={false} expanded={expandables.objectives}
                         sectionHeader={

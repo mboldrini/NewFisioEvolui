@@ -12,8 +12,8 @@ import {
 } from './styles';
 
 interface Props{
-    iconeTipo: string;
-    tipo: string;
+    iconeTipo?: string;
+    tipo?: string;
     nome: string;
 }
 
@@ -23,7 +23,7 @@ export function PacienteHeader({iconeTipo, tipo, nome}: Props){
             <Picture name="user" />
 
             <InfosWrapper>
-                <Tipo><IconeTipo name={iconeTipo}/> {tipo}</Tipo>
+                { tipo && <Tipo><IconeTipo name={iconeTipo}/> {tipo}</Tipo> }
                 <Nome>{nome}</Nome>
             </InfosWrapper>
          
