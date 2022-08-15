@@ -4,8 +4,6 @@ import { RFValue } from "react-native-responsive-fontsize";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { DefaultAppValues } from "../../../global/styles/theme";
 
-import {ExpandableSection} from 'react-native-ui-lib';
-
 export const Container = styled.View`
     flex: 1;
     background-color: ${({theme}) => theme.colors.primary};
@@ -192,3 +190,4 @@ export const Month = styled.Text`
     align-items: center;
     justify-content: center;
 `;
+

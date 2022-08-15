@@ -28,7 +28,6 @@ import {
     ChangeMonthRight,
     Month,
 
-
 } from './styles';
 
 import { PacienteHeader } from '../../../components/PacienteHeader';
@@ -44,14 +43,31 @@ import { Iscrol } from '../../CadastrarPaciente/styles';
 import { ModalAgendamento } from '../../../components/Modal/ModalAgendamento';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Modal } from 'react-native-ui-lib';
-import { months, days, daysLong} from '../../../global/variaveis/Dates';
+import { months, daysLong} from '../../../global/variaveis/Dates';
 // Date-fns
-import { getDay, getMonth, getYear, getDaysInMonth, getDate, format } from 'date-fns';
+import { getMonth, getYear, parseISO, format } from 'date-fns';
+/// Interfaces 
+import {IAppointments, parametrosDoTipo} from './Interfaces';
+
+import Toast from 'react-native-toast-message';
+import { List_PacienteItens } from '../../../components/List_Items/PacienteItens';
+
 
 interface IRouteInfos{
     idPaciente: number,
     nomePaciente: string,
     tipo: string,
+}
+
+interface IListInfos{
+    id: number,
+    about: string,
+    comments: string,
+    date: Date,
+    client_id: number,
+    user_id: number,
+    created_at: Date,
+    updated_at: Date,
 }
 
 export function ListInfosPaciente(){
@@ -65,42 +81,30 @@ export function ListInfosPaciente(){
     /// Redux
     const apiState = useSelector((state: State) => state.apiReducer);
 
-    const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState(true);
     const [menuVisible, setMenuVisible] = useState(false);
 
     const [dataHoje, setDataHoje] = useState(null);
     const [selectedYear, setSelectedYear] = useState(null);
     const [selectedMonth, setSelectedMonth] = useState(null);
-    const [selectedDay, setSelectedDay] = useState(null);
-    const [selectedDate, setSelectedDate] = useState(null);
 
+    /// Infos do Paciente
+    const [infosList, setInfosList] = useState<IListInfos[]>(null);
+    const [agendamentosList, setAgendamentosList] = useState<IAppointments[]>(null);
 
-    const parametrosDoTipo: any = {
-        diagnosticoClinico: { title: 'Diagnóstico Clínico' }, 
-        queixaPrincipal: { title: 'Queixa Principal' }, 
-        hda: { title: 'HDA' },
-        hpp: { title: 'HPP' },
-        avaliacaoFisica: { title: 'Avaliação Física' },
-        avaliacaoRespiratoria: { title: 'Avaliação Respiratória' },
-        diagnosticoFuncional: { title: 'Diagnóstico Funcional' },
-        objetivos: { title: 'Objetivos e Metas' },
-        evolucoes: { title: 'Evoluções' },
-        orientacoes: { title: 'Orientações' },
-        agendamentos: { title: 'Agendamentos' },
-    };
-
-    let mountDate = new Date(selectedYear, selectedMonth, 1);
-
+    function GetInitialInfos(){
+        SetDefaultDate();
+        if(tipo){
+        }
+    }
     
     const handleDateClick = (side: String) => {
-
+        let mountDate = new Date(selectedYear, selectedMonth, 1);
         if(side == "left"){
             mountDate.setMonth( mountDate.getMonth() -1 );
         }else{
             mountDate.setMonth( mountDate.getMonth() +1 );
         }
-
-        console.log(mountDate);
 
         setSelectedYear( getYear(mountDate) );
         setSelectedMonth( getMonth(mountDate) );
@@ -113,9 +117,60 @@ export function ListInfosPaciente(){
         setDataHoje(`${daysLong[today.getDay()]} - ${today.getDate()}/${months[today.getMonth()]}/${today.getFullYear()}`);
     }
 
+    async function GetListInfos(tipo: string){
+
+        let url = '';
+
+        if(tipo != "agendamentos"){
+            url = parametrosDoTipo[tipo].urlList + idPaciente;
+        }else{
+            url = parametrosDoTipo[tipo].urlList + idPaciente +"&"+ format(new Date(selectedYear, selectedMonth), 'yyyy-M-dd') ;
+            console.log("url: "+ url);
+        }
+
+        console.log("URL: " + url);
+
+        setLoading(true);
+        setInfosList([]);
+        setAgendamentosList([]);
+   
+        await api(apiState.token).get(url).then(res =>{
+
+            console.log(res.data);
+
+            if(tipo != "agendamentos"){
+                setInfosList(res.data);
+            }else{
+                setAgendamentosList(res.data);
+                console.log("salva os agendamentos");
+            }
+
+
+        }).catch(err =>{
+
+            console.log("erro ao obter informações");
+            console.log(err.data);
+
+            Toast.show({
+                type: 'error',
+                text1: '❌ Ops! Erro ao obter lista de informações',
+            });
+
+
+        });
+
+        setLoading(false);
+    }
+
     useEffect(()=>{
         SetDefaultDate();
     },[]);
+
+    useEffect(()=>{
+        if(selectedMonth && tipo){
+            GetListInfos(tipo);
+        }
+    }, [selectedMonth]);
 
 
 
@@ -123,7 +178,7 @@ export function ListInfosPaciente(){
     return(
 <Container >
     <SafeAreaView>
-        <Iscrol refreshControl={<RefreshControl refreshing={refreshing} onRefresh={()=>{ SetDefaultDate() }}/>}>
+        <Iscrol refreshControl={<RefreshControl refreshing={refreshing} onRefresh={()=>{ GetInitialInfos() }}/>}>
 
             <ContainerCabecalho >
                 <WrapLeft>
@@ -158,7 +213,16 @@ export function ListInfosPaciente(){
                 </WrapLoadingPctInfos>
             }
 
-            { !loading &&
+            { !loading && infosList?.length > 0 &&
+                infosList.map( (item, key) => {
+                    return(
+                        <List_PacienteItens data={item.date} about={item.about} key={key} onPress={()=> console.log(item.about)} />
+                    )
+                })
+            }
+
+
+            { !loading && tipo == "agendamentos" &&
                 <DateWrapper>
                     <Today>Hoje é {dataHoje}</Today>
                     <SelectDateWrapper>
@@ -172,6 +236,20 @@ export function ListInfosPaciente(){
                     </SelectDateWrapper>
                 </DateWrapper>
             }
+
+            { !loading && tipo == 'agendamentos' && agendamentosList.length > 0 && agendamentosList.map( (item, key) => {
+                return(
+                    <AppointmentList
+                        key={key}
+                        status={item.status}
+                        type={item.type}
+                        date_scheduled={ item.date_scheduled.toString() }
+                        start_hour={item.start_hour}
+                        end_hour={item.end_hour}
+                        onPress={()=>{ AlertExcludeAppointment(item, key) }}
+                    />   
+                )
+            })}
 
 
             <BottomSpacer/>

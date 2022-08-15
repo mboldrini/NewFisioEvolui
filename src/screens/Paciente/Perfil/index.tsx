@@ -64,6 +64,7 @@ import { ButtonSimple } from '../../../components/Buttons/ButtonSimple/Index';
 import { IPctInfos, IRoute, IAgendamentosApi, IPctInfosList, IExpandablesShow } from './Interfaces';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Modal } from 'react-native-ui-lib';
+import { List_PacienteItens } from '../../../components/List_Items/PacienteItens';
 
 
 export function PacientePerfil(){
@@ -387,15 +388,7 @@ export function PacientePerfil(){
                         { infosList?.clinicalDiagnostic.length >= 1 && 
                             infosList.clinicalDiagnostic.map( (item, key) => {
                                 return(
-                                    <WrapInfoList key={key +"-"+ item.date}>
-                                        <InfoArea>
-                                            <Description>{ format(new Date(item.date), 'dd/MM/yyyy' ) }</Description>
-                                            <InfoTexto>{ item.about }</InfoTexto>
-                                        </InfoArea>
-                                        <WrapIconeEdit onPress={()=> console.log(item)}>
-                                            <IconeItemEdit name="ellipsis-v" />
-                                        </WrapIconeEdit>
-                                    </WrapInfoList>
+                                    <List_PacienteItens data={item.date} about={item.about} key={key} onPress={()=> console.log(item.about)} />
                                 )
                             })
                         }
@@ -415,15 +408,7 @@ export function PacientePerfil(){
                         { infosList?.complaints.length >= 1 && 
                             infosList.complaints.map( (item, key) => {
                                 return(
-                                    <WrapInfoList key={key +"-"+ item.date}>
-                                        <InfoArea>
-                                            <Description>{ format(new Date(item.date), 'dd/MM/yyyy' ) }</Description>
-                                            <InfoTexto>{ item.about }</InfoTexto>
-                                        </InfoArea>
-                                        <WrapIconeEdit onPress={()=> console.log(item)}>
-                                            <IconeItemEdit name="ellipsis-v" />
-                                        </WrapIconeEdit>
-                                    </WrapInfoList>
+                                    <List_PacienteItens data={item.date} about={item.about} key={key} onPress={()=> console.log(item.about)} />
                                 )
                             })
                         }
@@ -443,15 +428,7 @@ export function PacientePerfil(){
                         { infosList?.hda.length >= 1 && 
                             infosList.hda.map( (item, key) => {
                                 return(
-                                    <WrapInfoList key={key +"-"+ item.date}>
-                                        <InfoArea>
-                                            <Description>{ format(new Date(item.date), 'dd/MM/yyyy' ) }</Description>
-                                            <InfoTexto>{ item.about }</InfoTexto>
-                                        </InfoArea>
-                                        <WrapIconeEdit onPress={()=> console.log(item)}>
-                                            <IconeItemEdit name="ellipsis-v" />
-                                            </WrapIconeEdit>
-                                        </WrapInfoList>
+                                    <List_PacienteItens data={item.date} about={item.about} key={key} onPress={()=> console.log(item.about)} />
                                 )
                             })
                         }
@@ -471,15 +448,7 @@ export function PacientePerfil(){
                         { infosList?.hpp.length >= 1 && 
                             infosList.hpp.map( (item, key) => {
                                 return(
-                                    <WrapInfoList key={key +"-"+ item.date}>
-                                        <InfoArea>
-                                            <Description>{ format(new Date(item.date), 'dd/MM/yyyy' ) }</Description>
-                                            <InfoTexto>{ item.about }</InfoTexto>
-                                        </InfoArea>
-                                        <WrapIconeEdit onPress={()=> console.log(item)}>
-                                            <IconeItemEdit name="ellipsis-v" />
-                                            </WrapIconeEdit>
-                                        </WrapInfoList>
+                                    <List_PacienteItens data={item.date} about={item.about} key={key} onPress={()=> console.log(item.about)} />
                                 )
                             })
                         }
@@ -499,15 +468,7 @@ export function PacientePerfil(){
                         { infosList?.physicalEvaluation.length >= 1 && 
                             infosList.physicalEvaluation.map( (item, key) => {
                                 return(
-                                    <WrapInfoList key={key +"-"+ item.date}>
-                                        <InfoArea>
-                                            <Description>{ format(new Date(item.date), 'dd/MM/yyyy' ) }</Description>
-                                            <InfoTexto>{ item.about }</InfoTexto>
-                                        </InfoArea>
-                                        <WrapIconeEdit onPress={()=> console.log(item)}>
-                                            <IconeItemEdit name="ellipsis-v" />
-                                            </WrapIconeEdit>
-                                        </WrapInfoList>
+                                    <List_PacienteItens data={item.date} about={item.about} key={key} onPress={()=> console.log(item.about)} />
                                 )
                             })
                         }
@@ -527,15 +488,7 @@ export function PacientePerfil(){
                         { infosList?.respiratoryEvaluation.length >= 1 && 
                             infosList.respiratoryEvaluation.map( (item, key) => {
                                 return(
-                                    <WrapInfoList key={key +"-"+ item.date}>
-                                        <InfoArea>
-                                            <Description>{ format(new Date(item.date), 'dd/MM/yyyy' ) }</Description>
-                                            <InfoTexto>{ item.about }</InfoTexto>
-                                        </InfoArea>
-                                        <WrapIconeEdit onPress={()=> console.log(item)}>
-                                            <IconeItemEdit name="ellipsis-v" />
-                                            </WrapIconeEdit>
-                                        </WrapInfoList>
+                                    <List_PacienteItens data={item.date} about={item.about} key={key} onPress={()=> console.log(item.about)} />
                                 )
                             })
                         }
@@ -556,15 +509,7 @@ export function PacientePerfil(){
                         { infosList?.functionalDiagnostic.length >= 1 && 
                             infosList.functionalDiagnostic.map( (item, key) => {
                                 return(
-                                    <WrapInfoList key={key +"-"+ item.date}>
-                                        <InfoArea>
-                                            <Description>{ format(new Date(item.date), 'dd/MM/yyyy' ) }</Description>
-                                            <InfoTexto>{ item.about }</InfoTexto>
-                                        </InfoArea>
-                                        <WrapIconeEdit onPress={()=> console.log(item)}>
-                                            <IconeItemEdit name="ellipsis-v" />
-                                            </WrapIconeEdit>
-                                        </WrapInfoList>
+                                    <List_PacienteItens data={item.date} about={item.about} key={key} onPress={()=> console.log(item.about)} />
                                 )
                             })
                         }
@@ -585,15 +530,7 @@ export function PacientePerfil(){
                         { infosList?.objectives.length >= 1 && 
                             infosList.objectives.map( (item, key) => {
                                 return(
-                                    <WrapInfoList key={key +"-"+ item.date}>
-                                        <InfoArea>
-                                            <Description>{ format(new Date(item.date), 'dd/MM/yyyy' ) }</Description>
-                                            <InfoTexto>{ item.about }</InfoTexto>
-                                        </InfoArea>
-                                        <WrapIconeEdit onPress={()=> console.log(item)}>
-                                            <IconeItemEdit name="ellipsis-v" />
-                                            </WrapIconeEdit>
-                                        </WrapInfoList>
+                                    <List_PacienteItens data={item.date} about={item.about} key={key} onPress={()=> console.log(item.about)} />
                                 )
                             })
                         }
@@ -613,15 +550,7 @@ export function PacientePerfil(){
                         { infosList?.guideline.length >= 1 && 
                             infosList.guideline.map( (item, key) => {
                                 return(
-                                    <WrapInfoList key={key +"-"+ item.date}>
-                                        <InfoArea>
-                                            <Description>{ format(new Date(item.date), 'dd/MM/yyyy' ) }</Description>
-                                            <InfoTexto>{ item.about }</InfoTexto>
-                                        </InfoArea>
-                                        <WrapIconeEdit onPress={()=> console.log(item)}>
-                                            <IconeItemEdit name="ellipsis-v" />
-                                            </WrapIconeEdit>
-                                        </WrapInfoList>
+                                    <List_PacienteItens data={item.date} about={item.about} key={key} onPress={()=> console.log(item.about)} />
                                 )
                             })
                         }
@@ -641,17 +570,7 @@ export function PacientePerfil(){
                         { infosList?.appointment.length >= 1 && 
                             infosList.appointment.map( (item, key) => {
                                 return(
-                                    <WrapAgendamentos>
-                                       <AppointmentList
-                                            key={key}
-                                            status={item.status}
-                                            type={item.type}
-                                            date_scheduled={item.date_scheduled}
-                                            start_hour={item.start_hour}
-                                            end_hour={item.end_hour}
-                                            onPress={()=>{ console.log("FFF") }}
-                                        />  
-                                    </WrapAgendamentos>
+                                    <List_PacienteItens data={item.date} about={item.about} key={key} onPress={()=> console.log(item.about)} />
                                 )
                             })
                         }
