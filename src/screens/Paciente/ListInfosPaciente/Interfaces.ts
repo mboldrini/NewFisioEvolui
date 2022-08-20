@@ -14,6 +14,8 @@ interface IAppointment{
 
 export const parametrosDoTipo: any = {
     diagnosticoClinico: { 
+        icone: 'plus',
+        slug: 'diagnosticoClinico',
         title: 'Diagnóstico Clínico',
         urlCreate: '/clients/diagnostic',
         urlRead: '/clients/diagnostic/',
@@ -21,7 +23,9 @@ export const parametrosDoTipo: any = {
         urlDelete: '/clients/diagnostic/',
         urlList: '/clients/diagnostic/list/'
     }, 
-    queixaPrincipal: { 
+    queixaPrincipal: {
+        icone: 'plus', 
+        slug: 'queixaPrincipal',
         title: 'Queixa Principal',
         urlCreate: '/clients/complaint',
         urlRead: '/clients/complaint/',
@@ -30,6 +34,8 @@ export const parametrosDoTipo: any = {
         urlList: '/clients/complaint/list/'
     }, 
     hda: { 
+        icone: 'plus',
+        slug: 'hda',
         title: 'HDA',
         urlCreate: '/clients/hda',
         urlRead: '/clients/hda/',
@@ -39,6 +45,8 @@ export const parametrosDoTipo: any = {
    
     },
     hpp: { 
+        icone: 'plus',
+        slug: 'hpp',
         title: 'HPP',
         urlCreate: '/clients/hpp/',
         urlRead: '/clients/hpp/',
@@ -47,6 +55,8 @@ export const parametrosDoTipo: any = {
         urlList: '/clients/hpp/list/'
     },
     avaliacaoFisica: { 
+        icone: 'plus',
+        slug: 'avaliacaoFisica',
         title: 'Avaliação Física',
         urlCreate: '/clients/pevaluation/',
         urlRead: '/clients/pevaluation/',
@@ -55,6 +65,8 @@ export const parametrosDoTipo: any = {
         urlList: '/clients/pevaluation/list/'
     },
     avaliacaoRespiratoria: { 
+        icone: 'plus',
+        slug: 'avaliacaoRespiratoria',
         title: 'Avaliação Respiratória',
         urlCreate: '/clients/respevaluation/',
         urlRead: '/clients/respevaluation/',
@@ -63,6 +75,8 @@ export const parametrosDoTipo: any = {
         urlList: '/clients/respevaluation/list/'
     },
     diagnosticoFuncional: { 
+        icone: 'plus',
+        slug: 'diagnosticoFuncional',
         title: 'Diagnóstico Funcional',
         urlCreate: '/clients/fcdiagnosis/',
         urlRead: '/clients/fcdiagnosis/',
@@ -71,6 +85,8 @@ export const parametrosDoTipo: any = {
         urlList: '/clients/fcdiagnosis/list/'
     },
     objetivos: { 
+        icone: 'plus',
+        slug: 'objetivosMetas',
         title: 'Objetivos e Metas',
         urlCreate: '/clients/objectives/',
         urlRead: '/clients/objectives/',
@@ -79,14 +95,18 @@ export const parametrosDoTipo: any = {
         urlList: '/clients/objectives/list/'
     },
     evolucoes: { 
+        icone: 'plus',
+        slug: 'evolucoes',
         title: 'Evoluções',
-        urlCreate: '',
-        urlRead: '',
-        urlUpdate: '',
-        urlDelete: '',
-        urlList: ''
+        urlCreate: '/clients/evolutions/',
+        urlRead: '/clients/evolutions/',
+        urlUpdate: '/clients/evolutions/',
+        urlDelete: '/clients/evolutions/',
+        urlList: '/clients/evolutions/list/'
     },
     orientacoes: { 
+        icone: 'plus',
+        slug: 'orientacoes',
         title: 'Orientações',
         urlCreate: '/clients/guideline/',
         urlRead: '/clients/guideline/',
@@ -95,6 +115,8 @@ export const parametrosDoTipo: any = {
         urlList: '/clients/guideline/list/'
     },
     agendamentos: { 
+        icone: 'plus',
+        slug: 'agendamentos',
         title: 'Agendamentos',
         urlCreate: '/appointments',
         urlRead: '',

@@ -65,6 +65,7 @@ import { IPctInfos, IRoute, IAgendamentosApi, IPctInfosList, IExpandablesShow } 
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Modal } from 'react-native-ui-lib';
 import { List_PacienteItens } from '../../../components/List_Items/PacienteItens';
+import { CabecalhoMenu } from '../../../components/CabecalhoMenu';
 
 
 export function PacientePerfil(){
@@ -83,6 +84,7 @@ export function PacientePerfil(){
     const [infosList, setInfosList] = useState<IPctInfosList>(null);
 
     const [menuVisible, setMenuVisible] = useState(false);
+    const [menuEscolhido, setMenuEscolhido] = useState(null);
 
     const [ isAgendamentoVisible, setIsAgendamentoVisible] = useState(false);
     // Appointment received from Modal
@@ -240,17 +242,16 @@ export function PacientePerfil(){
     }
 
     const listaMenuPerfil = [
-        { title: 'Diagnóstico Clínico',     action: () => HandleInfosPage("diagnosticoClinico") }, 
-        { title: 'Queixa Principal',        action: () => HandleInfosPage("queixaPrincipal") }, 
-        { title: 'HDA',                     action: () => HandleInfosPage("hda") },
-        { title: 'HPP',                     action: () => HandleInfosPage("hpp") },
-        { title: 'Avaliação Física',        action: () => HandleInfosPage("avaliacaoFisica") },
-        { title: 'Avaliação Respiratória',  action: () => HandleInfosPage("avaliacaoRespiratoria") },
-        { title: 'Diagnóstico Funcional',   action: () => HandleInfosPage("diagnosticoFuncional") },
-        { title: 'Objetivos/Metas',         action: () => HandleInfosPage("objetivos") },
-        { title: 'Evoluções',               action: () => HandleInfosPage("evolucoes") },
-        { title: 'Orientações',             action: () => HandleInfosPage("orientacoes") },
-        { title: 'Agendamentos',            action: () => HandleInfosPage("agendamentos") },
+        { title: 'Diagnóstico Clínico', slug:'diagnosticoClinico', icone: 'list-ul', }, 
+        { title: 'Queixa Principal', slug:'queixaPrincipal', icone: 'list-ul', }, 
+        { title: 'HDA', slug:'hda', icone: 'list-ul', },
+        { title: 'HPP', slug:'hpp', icone: 'list-ul', },
+        { title: 'Avaliação Física', slug:'avaliacaoFisica', icone: 'list-ul', },
+        { title: 'Avaliação Respiratória', slug:'avaliacaoRespiratoria', icone: 'list-ul', },
+        { title: 'Diagnóstico Funcional',  slug:'diagnosticoFuncional', icone: 'list-ul', },
+        { title: 'Objetivos/Metas',  slug:'objetivos', icone: 'list-ul', },
+        { title: 'Orientações', slug:'orientacoes', icone: 'list-ul', },
+        { title: 'Agendamentos', slug:'agendamentos', icone: 'list-ul', },
     ]
 
 
@@ -269,42 +270,25 @@ export function PacientePerfil(){
         }
     },[appointment]);
 
-
+    useEffect(()=>{
+        if(menuEscolhido){
+            console.log("Escolhido: "+ menuEscolhido);
+            HandleInfosPage(menuEscolhido);
+            setMenuEscolhido(null);
+        }
+    },[menuEscolhido]);
 
     return(
         <Container >
         <SafeAreaView>
         <Iscrol refreshControl={<RefreshControl refreshing={refreshing} onRefresh={()=>{ GetPacienteInfos() }}/>}>
 
-            <ContainerCabecalho >
-                <WrapLeft>
-                    <IconeLeft name="chevron-left" onPress={() => navigation.goBack() }/>
-                    <WrapTitle>
-                        <Titulo>Perfil do Paciente</Titulo>
-                    </WrapTitle>
-                </WrapLeft>
-
-                <IconeRight name="cog" onPress={() => setMenuVisible(true)} />
-
-                <Modal transparent visible={menuVisible} style={{position: 'absolute'}}>
-                    <SafeAreaView style={{flex: 1, zIndex: -2}} onTouchEnd={() => setMenuVisible(false)}>
-                        <AreaMenu style={{zIndex: 3}}>
-                            {listaMenuPerfil.map((op, i) => (
-                                <BtnMenuList key={i} onPress={op.action } lastItem={ i === listaMenuPerfil.length -1 }>
-                                    <IconeMenu name="list-ul" />
-                                    <TituloMenu>{ op.title }</TituloMenu>
-                                </BtnMenuList>
-                            ))}
-                        </AreaMenu>
-                    </SafeAreaView>
-                </Modal>
-                
-            </ContainerCabecalho>
-
-            {/* <Cabecalho 
-                titulo="Perfil do Paciente"
-                onPress={handleNavigate}
-            /> */}
+            <CabecalhoMenu
+                titulo='Perfil do Paciente'
+                onPress={()=> console.log("left")}
+                setMenuEscolhido={setMenuEscolhido}
+                menuList={listaMenuPerfil}
+            />
 
             { pctInfos && loading == false &&
             <>
@@ -570,17 +554,25 @@ export function PacientePerfil(){
                         { infosList?.appointment.length >= 1 && 
                             infosList.appointment.map( (item, key) => {
                                 return(
-                                    <List_PacienteItens data={item.date} about={item.about} key={key} onPress={()=> console.log(item.about)} />
+                                    <AppointmentList
+                                        key={key}
+                                        status={item.status}
+                                        type={item.type}
+                                        date_scheduled={ item.date_scheduled.toString() }
+                                        start_hour={item.start_hour}
+                                        end_hour={item.end_hour}
+                                        onPress={()=>{ AlertExcludeAppointment(item, key) }}
+                                    />   
                                 )
                             })
                         }
 
                         <WrapGroupBtn>
-                    <ButtonSimple
+                    {/* <ButtonSimple
                         type="default"
                         title="Agendar Atendimento" 
                         onPress={()=> setIsAgendamentoVisible(true) }
-                    />
+                    /> */}
                 </WrapGroupBtn>
 
                     <Line />

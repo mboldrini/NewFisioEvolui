@@ -194,7 +194,7 @@ export function ListInfosPaciente(){
                     <SafeAreaView style={{flex: 1, zIndex: -2}} onTouchEnd={() => setMenuVisible(false)}>
                         <AreaMenu style={{zIndex: 3}}>
                             <BtnMenuList onPress={() => console.log(parametrosDoTipo[tipo].title) } >
-                                <IconeMenu name="plus" />
+                                <IconeMenu name={ parametrosDoTipo[tipo].icone } />
                                 <TituloMenu>Criar {parametrosDoTipo[tipo].title}</TituloMenu>
                             </BtnMenuList>
                         </AreaMenu>
