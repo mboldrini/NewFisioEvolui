@@ -34,7 +34,7 @@ export function SignIn(){
 
     // // Redux de Usuários
     const dispatch = useDispatch();
-    const { setUserInfos, setApiInfos } = bindActionCreators(actionCreators, dispatch);
+    const { setUserInfos, setApiInfos, setFormasPgto, setAtendimentos } = bindActionCreators(actionCreators, dispatch);
     const usrState = useSelector((state: State) => state.user);// o .user é o nome usado no .index da pasta reducers
     const apiState = useSelector((state: State) => state.apiReducer);// o .user é o nome usado no .index da pasta reducers
 
@@ -155,6 +155,10 @@ export function SignIn(){
                 configs: res.data.configs, 
                 personal_infos: res.data.personal_infos
             });
+
+
+            setAtendimentos(res.data.serviceType);
+            setFormasPgto(res.data.paymentMethod);
 
             // setUserInfos(res.data);
 
