@@ -551,6 +551,8 @@ export function PacientePerfil(){
                             </WrapExpandTitle>
                         }
                     >
+                    <WrapGroupBtn>
+
                         { infosList?.appointment.length >= 1 && 
                             infosList.appointment.map( (item, key) => {
                                 return(
@@ -566,14 +568,13 @@ export function PacientePerfil(){
                                 )
                             })
                         }
+                    </WrapGroupBtn>
 
-                        <WrapGroupBtn>
                     {/* <ButtonSimple
                         type="default"
                         title="Agendar Atendimento" 
                         onPress={()=> setIsAgendamentoVisible(true) }
                     /> */}
-                </WrapGroupBtn>
 
                     <Line />
 

@@ -1,8 +1,9 @@
 import React, {useEffect, useState}from 'react';
-import {RefreshControl} from 'react-native';
+import {RefreshControl, Alert } from 'react-native';
 import {useNavigation, useRoute } from '@react-navigation/native';
 import { 
     Container,
+    Iscrol,
     WrapLoadingPctInfos,
     LoadingIcon,
     /// Cabeçalho
@@ -39,7 +40,6 @@ import { useSelector } from 'react-redux';
 import { State } from '../../../state';
 // Imports
 import { AppointmentList } from '../../../components/AppointmentList';
-import { Iscrol } from '../../CadastrarPaciente/styles';
 import { ModalAgendamento } from '../../../components/Modal/ModalAgendamento';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Modal } from 'react-native-ui-lib';
@@ -94,8 +94,6 @@ export function ListInfosPaciente(){
 
     function GetInitialInfos(){
         SetDefaultDate();
-        if(tipo){
-        }
     }
     
     const handleDateClick = (side: String) => {
@@ -162,6 +160,15 @@ export function ListInfosPaciente(){
         setLoading(false);
     }
 
+    function HandleVaiEditar(id: number){
+        navigation.navigate('EditPacienteInfos' as never, { 
+            id: id,
+            id_paciente: idPaciente,
+            tipo: tipo,
+            status: 'editar'
+        } as never)      
+    }
+
     useEffect(()=>{
         SetDefaultDate();
     },[]);
@@ -216,7 +223,16 @@ export function ListInfosPaciente(){
             { !loading && infosList?.length > 0 &&
                 infosList.map( (item, key) => {
                     return(
-                        <List_PacienteItens data={item.date} about={item.about} key={key} onPress={()=> console.log(item.about)} />
+                        <List_PacienteItens data={item.date} about={item.about} key={key} onPress={()=>
+                             Alert.alert(
+                                "Deseja Editar esse item?",
+                                parametrosDoTipo[tipo].title,
+                                [
+                                    { text: "Editar", onPress: () => HandleVaiEditar(item.id) },
+                                    { text: "Cancelar", style: "cancel" }
+                                ]
+                            )
+                        } />
                     )
                 })
             }
@@ -246,7 +262,7 @@ export function ListInfosPaciente(){
                         date_scheduled={ item.date_scheduled.toString() }
                         start_hour={item.start_hour}
                         end_hour={item.end_hour}
-                        onPress={()=>{ AlertExcludeAppointment(item, key) }}
+                        onPress={()=>{ console.log(item +"_"+ key) }}
                     />   
                 )
             })}

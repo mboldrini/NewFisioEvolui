@@ -80,10 +80,15 @@ export function Home(){
     }
 
     useEffect(()=>{
-        GetPatientList();
+       GetPatientList();
 
         // navigation.navigate('PacienteAtendimento' as never, { id: 13} as never)
-
+            navigation.navigate('EditPacienteInfos' as never, { 
+                id: 3,
+                id_paciente: 73,
+                tipo: 'queixaPrincipal',
+                status: 'editar'
+            } as never)    
     },[]);
 
     return(
