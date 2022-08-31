@@ -50,6 +50,8 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
 import { Button } from '../../../components/Buttons/Button/Index';
 import { ScrollView } from 'react-native-gesture-handler';
+import { Footer_CreatedAt } from '../../../components/Footers/Footer_CreatedAt';
+import { Footer_Modal } from '../../../components/Footers/Footer_Modal';
 
 interface IRouteInfos{
     id: number,
@@ -176,15 +178,15 @@ export function EditPacienteInfos(){
             </ContainerCabecalho>
 
 
-    {/* { loading == true && 
+            { loading == true && 
                 <WrapLoadingPctInfos>
                     <LoadingIcon size="large" color="#FFFFFF"/>  
                 </WrapLoadingPctInfos>
-            } */}
+            }
 
 
 
-            { !loading &&
+            { !loading && formInfos?.created_at &&
             <>
                 <Form>
                     <Fields>
@@ -216,13 +218,10 @@ export function EditPacienteInfos(){
              
                 </Form>
 
-                <WrapFooterCadastro>
-                    <Button 
-                        title="Cadastrar Paciente" 
-                        onPress={handleSubmit((d) =>  handleRegister(d as any) )}
-                        type="ok"
-                    />
-                </WrapFooterCadastro>
+                <Footer_CreatedAt created_at={formInfos?.created_at} updated_at={formInfos?.updated_at}/>
+
+                <Footer_Modal onPressOk={()=> console.log("OK")} onPressCancel={()=> navigation.goBack() } />
+
             </>
             } 
 
