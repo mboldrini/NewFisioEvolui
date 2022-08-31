@@ -5,12 +5,11 @@ export const Container = styled.View`
     flex: 1;
     flex-direction: column;
     align-items: center;
-    margin-top: 30px;
     border-top-color: ${({theme}) => theme.colors.secondary};
     border-top-width: 1px;
     border-top-style:solid;
     margin: 0 ${({theme})=> theme.margin.lateral_half}px;
-    margin-top: ${RFValue(10)}px;
+    margin-top: ${RFValue(5)}px;
 `;
 
 export const Wrap = styled.View`

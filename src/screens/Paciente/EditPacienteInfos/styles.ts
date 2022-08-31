@@ -124,7 +124,6 @@ export const Form = styled.View`
 `;
 
 export const Fields = styled.View`
-    margin-bottom: ${({theme}) => theme.margin.bottom}px;
 `;
 
 export const TitleGroup = styled.View`

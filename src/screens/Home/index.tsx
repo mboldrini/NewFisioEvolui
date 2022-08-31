@@ -84,7 +84,7 @@ export function Home(){
 
         // navigation.navigate('PacienteAtendimento' as never, { id: 13} as never)
             navigation.navigate('EditPacienteInfos' as never, { 
-                id: 3,
+                id: 43,
                 id_paciente: 73,
                 tipo: 'queixaPrincipal',
                 status: 'editar'

@@ -22,12 +22,6 @@ import {
     ///FORM
     Form,
     Fields,
-    Title,
-    TitleGroup,
-
-    WrapFooterCadastro,
-
-
     WrapCentro,
     Iscrol
 } from './styles';
@@ -36,22 +30,22 @@ import { api } from '../../../global/api';
 // REDUX
 import { useSelector } from 'react-redux';
 import { State } from '../../../state';
-
-import { BottomSpacer } from '../../../components/BottomSpacer';
 // Imports
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Modal } from 'react-native-ui-lib';
 import { parametrosDoTipo } from '../ListInfosPaciente/Interfaces';
 import { format } from 'date-fns';
 import { InputForm } from '../../../components/Forms/InputForm';
+import Toast from 'react-native-toast-message';
 /// FORM
 import * as Yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
-import { Button } from '../../../components/Buttons/Button/Index';
-import { ScrollView } from 'react-native-gesture-handler';
+/// FOOTER's
 import { Footer_CreatedAt } from '../../../components/Footers/Footer_CreatedAt';
 import { Footer_Modal } from '../../../components/Footers/Footer_Modal';
+import { CabecalhoMenu } from '../../../components/CabecalhoMenu';
+
 
 interface IRouteInfos{
     id: number,
@@ -124,15 +118,20 @@ export function EditPacienteInfos(){
         await api(apiState.token).get(url).then(res =>{
 
             setFormInfos(res.data);
+            setLoading(false);
+
 
         }).catch(err =>{
 
             console.log("erro ao obter informações");
             console.log(err.data);
+            Toast.show({
+                type: 'error',
+                text1: '⚠️ Ops! erro ao obter as informações',
+            });
 
         });
 
-        setLoading(false);
     }
 
     useEffect(()=>{
@@ -144,6 +143,19 @@ export function EditPacienteInfos(){
         }
     },[formInfos]);
 
+    const [menuEscolhido, setMenuEscolhido] = useState(null);
+
+    useEffect(()=>{
+        console.log("Menu Escolhido: "+ menuEscolhido);
+    },[menuEscolhido]);
+
+
+    const listaMenuPerfil = [
+        { title: 'Criar '+ parametrosDoTipo[tipo].title, slug:'diagnosticoClinico', icone: 'plus', }, 
+        { title: 'Excluir', slug:'queixaPrincipal', icone: 'trash', }, 
+
+    ]
+
 
     return(
 <Container>
@@ -154,7 +166,7 @@ export function EditPacienteInfos(){
             contentContainerStyle={{ flex: 1 }}
         >
 
-            <ContainerCabecalho >
+            {/* <ContainerCabecalho >
                 <WrapLeft>
                     <IconeLeft name="chevron-left" onPress={() => navigation.goBack() }/>
                     <WrapTitle>
@@ -175,7 +187,14 @@ export function EditPacienteInfos(){
                     </SafeAreaView>
                 </Modal>
                 
-            </ContainerCabecalho>
+            </ContainerCabecalho> */}
+
+            <CabecalhoMenu
+                titulo={ parametrosDoTipo[tipo].title }
+                onPress={()=> console.log("left")}
+                setMenuEscolhido={setMenuEscolhido}
+                menuList={listaMenuPerfil}
+            />
 
 
             { loading == true && 
@@ -183,7 +202,6 @@ export function EditPacienteInfos(){
                     <LoadingIcon size="large" color="#FFFFFF"/>  
                 </WrapLoadingPctInfos>
             }
-
 
 
             { !loading && formInfos?.created_at &&
@@ -215,10 +233,10 @@ export function EditPacienteInfos(){
                             
                     </Fields>
 
+                    <Footer_CreatedAt created_at={formInfos?.created_at} updated_at={formInfos?.updated_at}/>
              
                 </Form>
 
-                <Footer_CreatedAt created_at={formInfos?.created_at} updated_at={formInfos?.updated_at}/>
 
                 <Footer_Modal onPressOk={()=> console.log("OK")} onPressCancel={()=> navigation.goBack() } />
 

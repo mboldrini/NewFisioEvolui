@@ -51,7 +51,7 @@ export function CabecalhoMenu({titulo, onPress, onPressIcon = 'chevron-left', se
                     <AreaMenu style={{zIndex: 3}}>
                         {menuList.map((op, i) => (
                             <BtnMenuList key={i}  onPress={()=> setMenuEscolhido(op.slug)} lastItem={ i === menuList.length -1 }>
-                                <IconeMenu name={op.icone} />
+                                <IconeMenu name={op.icone} tipo={op.icone}/>
                                 <TituloMenu>{ op.title }</TituloMenu>
                             </BtnMenuList>
                         ))}

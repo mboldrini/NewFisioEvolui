@@ -88,8 +88,6 @@ import { DefaultAppValues } from '../../global/styles/theme';
 
 
 
-
-
 //// CABECALHO
 export const ContainerCabecalho = styled.View`
     flex-direction: row;
@@ -159,16 +157,27 @@ export const AreaMenu = styled.View`
     right: ${RFValue(15)}px;
     border-radius: ${RFValue(DefaultAppValues.bordas.padrao)}px;
     border: 2px solid ${({theme}) => theme.colors.text_dark};
+    shadow-color: #000;
+    shadow-offset: {width: 0px};
+    shadow-offset: {height: 5px};
+    shadow-opacity: 0.8;
+    shadow-radius: 15px;
+    elevation: 10;
 `;
 
 interface ILastItem{
     lastItem: boolean
 }
+interface ITipoIcone{
+    tipo: string;
+}
+
+
 export const BtnMenuList = styled.TouchableOpacity<ILastItem>`
     justify-content: flex-start;
     flex-direction: row;
     align-items: flex-start;
-    padding: 5px;
+    padding: ${RFValue(5)}px;
 
     ${({ lastItem }) => lastItem === false && css `
         border-bottom-color: ${({theme}) => theme.colors.text_dark};
@@ -180,13 +189,22 @@ export const BtnMenuList = styled.TouchableOpacity<ILastItem>`
 
 export const TituloMenu = styled.Text`
     font-family: ${({theme}) => theme.fonts.thin};
-    font-size: ${RFValue(DefaultAppValues.fontSize.dois)}px;
+    font-size: ${RFValue(DefaultAppValues.fontSize.tres)}px;
 `;
 
-export const IconeMenu = styled(FontAwesome5)`
+export const IconeMenu = styled(FontAwesome5)<ITipoIcone>`
     color: #000000;
-    font-size: ${RFValue(DefaultAppValues.fontSize.dois)}px;
+    font-size: ${RFValue(DefaultAppValues.fontSize.tres)}px;
     padding: ${RFValue(3)}px;
+    padding-right: ${RFValue(5)}px;
+
+    ${({ tipo }) => tipo === 'trash' && css `
+        color: ${({theme}) => theme.colors.attention};
+    `};
+
+    ${({ tipo }) => tipo === 'plus' && css `
+        color: ${({theme}) => theme.colors.success};
+    `};
 `;
 
 
