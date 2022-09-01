@@ -10,6 +10,7 @@ export const Container = styled.View`
     border-top-style:solid;
     margin: 0 ${({theme})=> theme.margin.lateral_half}px;
     margin-top: ${RFValue(5)}px;
+    min-height: ${RFValue(70)}px;
 `;
 
 export const Wrap = styled.View`

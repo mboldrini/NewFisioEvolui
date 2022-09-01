@@ -7,7 +7,6 @@ import { DefaultAppValues } from "../../../global/styles/theme";
 export const Container = styled.View`
     background-color: ${({theme}) => theme.colors.primary};
     flex: 1;
-    flex-direction: column;
 `;
 
 
@@ -146,9 +145,14 @@ export const WrapFooterCadastro = styled.View`
     margin-bottom: ${RFValue(15)}px;
 `;
 
-export const WrapCentro = styled.View`
-       /* flex: 1;
-    flex-direction: column;
-    justify-content: space-between; */
-    /* border: 1px solid red; */
+export const WrapDataEscolhida = styled.View`
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin-left: ${RFValue(DefaultAppValues.margin.lateral_half)}px;
+`;
+
+export const TextoDataEscolhida = styled.Text`
+    font-family: ${({theme}) => theme.fonts.regular};
+    font-size: ${RFValue(14)}px;
 `;

@@ -1,5 +1,5 @@
 import React, {useEffect, useState}from 'react';
-import {RefreshControl} from 'react-native';
+import {Alert, RefreshControl, Keyboard, Text} from 'react-native';
 import {useNavigation, useRoute } from '@react-navigation/native';
 import { 
     Container,
@@ -22,8 +22,9 @@ import {
     ///FORM
     Form,
     Fields,
-    WrapCentro,
-    Iscrol
+    Iscrol,
+    WrapDataEscolhida,
+    TextoDataEscolhida
 } from './styles';
 // API
 import { api } from '../../../global/api';
@@ -45,6 +46,8 @@ import { useForm } from 'react-hook-form';
 import { Footer_CreatedAt } from '../../../components/Footers/Footer_CreatedAt';
 import { Footer_Modal } from '../../../components/Footers/Footer_Modal';
 import { CabecalhoMenu } from '../../../components/CabecalhoMenu';
+import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
+
 
 
 interface IRouteInfos{
@@ -64,28 +67,17 @@ interface IDefaultFormInfos{
     updated_at: string,
 }
 
-
 const schema = Yup.object().shape({
-    descricao: Yup.string().required("Descrição é obrigatório"),
-    observacoes: Yup.string().optional(),
- 
+    about: Yup.string().required("Descrição é obrigatório"),
+    comments: Yup.string().optional(),
 });
 
+import DateTimePicker from '@react-native-community/datetimepicker';
+import { Button } from '../../../components/Buttons/Button/Index';
+import { View } from 'react-native-animatable';
+import { Button_Field } from '../../../components/Buttons/Button_Field/Index';
+
 export function EditPacienteInfos(){
-    
-    const navigation = useNavigation();
-    const [refreshing, setRefresh] = useState(false);
-
-    /// Route Params
-    const route = useRoute();
-    const { id, id_paciente, tipo, status } = route.params as IRouteInfos;
-    /// Redux
-    const apiState = useSelector((state: State) => state.apiReducer);
-
-    const [loading, setLoading] = useState(false);
-    const [menuVisible, setMenuVisible] = useState(false);
-
-    const [formInfos, setFormInfos] = useState<IDefaultFormInfos>(null);
 
     const {
         control,
@@ -95,7 +87,23 @@ export function EditPacienteInfos(){
     } = useForm({
         resolver: yupResolver(schema)
     });
+    
+    const navigation = useNavigation();
+    const [refreshing, setRefresh] = useState(false);
 
+    /// Route Params
+    const route = useRoute();
+    const { id, id_paciente, tipo, status } = route.params as IRouteInfos;
+    /// Redux
+    const apiState = useSelector((state: State) => state.apiReducer);
+    /// Loading
+    const [loading, setLoading] = useState(false);
+    /// MENU
+    const [menuEscolhido, setMenuEscolhido] = useState(null);
+    const listaMenuPerfil = [ { title: 'Excluir', slug:'excluir', icone: 'trash' } ]
+
+    const [formInfos, setFormInfos] = useState<IDefaultFormInfos>(null);
+ 
     useEffect(()=>{
         if(id){
             GetDefaultInfos(id, tipo);
@@ -134,67 +142,152 @@ export function EditPacienteInfos(){
 
     }
 
+    async function DeleteItem() {
+        let url = '';
+
+        if(tipo != "agendamentos"){
+            url = parametrosDoTipo[tipo].urlDelete + id +"&"+ id_paciente;
+        }else{
+            url = parametrosDoTipo[tipo].urlDelete + id +"&"+ format(new Date(), 'yyyy-M-dd') ;
+        }
+
+        console.log("URL DELETE: " + url);
+
+        setLoading(true);
+   
+        await api(apiState.token).delete(url).then(res =>{
+
+            navigation.goBack();
+
+        }).catch(err =>{
+
+            console.log("erro ao excluir registro");
+            console.log(err.data);
+
+            Toast.show({
+                type: 'error',
+                text1: '⚠️ Ops! erro ao excluir o registro!',
+            });
+
+        });
+    }
+
+    function HandleSaveItem(formInfos: any){
+        let url = '';
+
+        if(tipo != "agendamentos"){
+            if(status == 'editar'){
+                url = parametrosDoTipo[tipo].urlUpdate + id +"&"+ id_paciente;
+                UpdateItem(url, formInfos);
+                return;
+            }else if(status == 'novo'){
+                url = parametrosDoTipo[tipo].urlCreate;
+                CreateItem(url, formInfos);
+                return;
+            }
+        }else{
+         //  url = parametrosDoTipo[tipo].urlDelete + id +"&"+ format(new Date(), 'yyyy-M-dd') ;
+         alert("ALTETRA A URL DE AGENDAMENTOS");
+        }
+    }
+
+    async function UpdateItem(url: string, formInfos: any){
+        console.log("vai atualizar! " + tipo);
+
+        console.log(formInfos);
+
+        let params = {
+            about: formInfos.about,
+            comments: formInfos.comments,
+            //date:
+        }
+        
+        setLoading(true);
+   
+        await api(apiState.token).patch(url, params).then(res =>{
+
+            Toast.show({
+                type: 'success',
+                text1: '😀 Informações Salvas!',
+            });
+
+            setLoading(false);
+
+            setTimeout(()=>{
+                navigation.goBack();
+            }, 1500);
+
+        }).catch(err =>{
+
+            console.log("erro ao salvar informações! registro");
+            console.log(err.data);
+
+            setLoading(false);
+
+            Toast.show({
+                type: 'error',
+                text1: '⚠️ Ops! erro ao salvar as informações.',
+            });
+
+        });
+    }
+
+    async function CreateItem(url: string, formData: any){
+
+    }
+
     useEffect(()=>{
         if(formInfos?.about){
             reset({
-                descricao: formInfos.about,
-                observacoes: formInfos.comments
+                about: formInfos.about,
+                comments: formInfos.comments
             });
         }
     },[formInfos]);
 
-    const [menuEscolhido, setMenuEscolhido] = useState(null);
-
     useEffect(()=>{
-        console.log("Menu Escolhido: "+ menuEscolhido);
+        if(menuEscolhido == 'excluir'){
+            Alert.alert(
+                "Realmente deseja excluir esse item?",
+                parametrosDoTipo[tipo].title,
+                [
+                    { text: "Excluir", onPress: () => DeleteItem() },
+                    { text: "Cancelar", style: "cancel" }
+                ]
+            )
+        }
     },[menuEscolhido]);
 
 
-    const listaMenuPerfil = [
-        { title: 'Criar '+ parametrosDoTipo[tipo].title, slug:'diagnosticoClinico', icone: 'plus', }, 
-        { title: 'Excluir', slug:'queixaPrincipal', icone: 'trash', }, 
 
-    ]
+
+    
+
+    const [date, setDate] = useState(new Date());
+    const [show, setShow] = useState(false);
+  
+
+
+  
+
+    useEffect(()=>{
+        console.log("Date: " + date);
+    },[date]);
+    useEffect(()=>{
+        console.log("show: " + show);
+    },[show]);
+
 
 
     return(
-<Container>
-    <SafeAreaView style={{flex: 1}}>
-        <Iscrol 
-            refreshControl={<RefreshControl refreshing={refreshing} 
-            onRefresh={()=>{ GetDefaultInfos(id, tipo) }}/>} 
-            contentContainerStyle={{ flex: 1 }}
-        >
+<TouchableWithoutFeedback onPress={Keyboard.dismiss} style={{ height: '100%' }}>
+    <Container> 
+        <SafeAreaView style={{flex: 1}}> 
+            <Iscrol refreshControl={<RefreshControl refreshing={refreshing} onRefresh={()=>{ GetDefaultInfos(id, tipo) }}/>}  contentContainerStyle={{flexGrow:1}}>
 
-            {/* <ContainerCabecalho >
-                <WrapLeft>
-                    <IconeLeft name="chevron-left" onPress={() => navigation.goBack() }/>
-                    <WrapTitle>
-                        <Titulo>{ parametrosDoTipo[tipo].title }</Titulo>
-                    </WrapTitle>
-                </WrapLeft>
 
-                <IconeRight name="cog" onPress={() => setMenuVisible(true) } />
 
-                <Modal transparent visible={menuVisible} style={{position: 'absolute'}}>
-                    <SafeAreaView style={{flex: 1, zIndex: -2}} onTouchEnd={() => setMenuVisible(false)}>
-                        <AreaMenu style={{zIndex: 3}}>
-                            <BtnMenuList onPress={() => console.log(parametrosDoTipo[tipo].title) } >
-                                <IconeMenu name={ parametrosDoTipo[tipo].icone } />
-                                <TituloMenu>Criar {parametrosDoTipo[tipo].title}</TituloMenu>
-                            </BtnMenuList>
-                        </AreaMenu>
-                    </SafeAreaView>
-                </Modal>
-                
-            </ContainerCabecalho> */}
-
-            <CabecalhoMenu
-                titulo={ parametrosDoTipo[tipo].title }
-                onPress={()=> console.log("left")}
-                setMenuEscolhido={setMenuEscolhido}
-                menuList={listaMenuPerfil}
-            />
+            <CabecalhoMenu titulo={ parametrosDoTipo[tipo].title } onPress={()=> navigation.goBack() } setMenuEscolhido={setMenuEscolhido} menuList={listaMenuPerfil} />
 
 
             { loading == true && 
@@ -210,46 +303,70 @@ export function EditPacienteInfos(){
                     <Fields>
     
                         <InputForm 
-                            name="descricao"
+                            name="about"
                             control={control}
                             placeholder="Descrição"
                             autoCapitalize="words"
                             autoCorrect={false}
                             multiline={true}
                             numberOfLines={4}
-                            error={errors.descricao && errors.descricao.message}
+                            error={errors.about && errors.about.message}
                         />
 
                         <InputForm 
-                            name="observacoes"
+                            name="comments"
                             control={control}
                             placeholder="Observações"
                             autoCapitalize="words"
                             autoCorrect={false}
                             multiline={true}
                             numberOfLines={4}
-                            error={errors.observacoes && errors.observacoes.message}
+                            error={errors.comments && errors.comments.message}
                         />
-                            
+
                     </Fields>
 
+               
+                    
+                    <WrapDataEscolhida>
+                        <TextoDataEscolhida>Data Escolhida:</TextoDataEscolhida>
+                        <Button_Field onPress={()=>{setShow(true)}} title={ format(date, 'dd/MM/yyyy') } />
+                    </WrapDataEscolhida>
+
+                    {show && (
+                        <DateTimePicker
+                            testID="dateTimePicker"
+                            value={date}
+                            mode={'date'}
+                            onChange={(event, selectedDate) => { setShow(false); setDate(selectedDate)}}
+                        />
+                    )}
+          
+
                     <Footer_CreatedAt created_at={formInfos?.created_at} updated_at={formInfos?.updated_at}/>
-             
+
+
                 </Form>
 
 
-                <Footer_Modal onPressOk={()=> console.log("OK")} onPressCancel={()=> navigation.goBack() } />
+
+                
+      
+
+
+
+                <Footer_Modal onPressOk={handleSubmit((d) =>  HandleSaveItem(d as any) ) } onPressCancel={()=> navigation.goBack() } />
 
             </>
             } 
 
-        
-              
 
 
 
-        </Iscrol>
-    </SafeAreaView>
-</Container>
+
+            </Iscrol>
+        </SafeAreaView>
+    </Container>
+ </TouchableWithoutFeedback>
     )
 }

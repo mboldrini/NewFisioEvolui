@@ -12,7 +12,6 @@ const Stack = createStackNavigator();
 
 import styled from "styled-components/native";
 import Toast from 'react-native-toast-message';
-import { SafeAreaView } from 'react-native-safe-area-context';
 const WrapToast = styled.View`
     z-index: 1;
 `;
@@ -30,7 +29,6 @@ export default function HomeStack(){
                 headerShown: false
             }}
         >   
-
             <Stack.Group>
                 <Stack.Screen name="Home2"               component={Home}                options={{headerShown:false}} /> 
                 <Stack.Screen name="PacientePerfil"      component={PacientePerfil}      options={{headerShown:false}}  />

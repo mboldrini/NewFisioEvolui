@@ -92,10 +92,6 @@ export function ListInfosPaciente(){
     const [infosList, setInfosList] = useState<IListInfos[]>(null);
     const [agendamentosList, setAgendamentosList] = useState<IAppointments[]>(null);
 
-    function GetInitialInfos(){
-        SetDefaultDate();
-    }
-    
     const handleDateClick = (side: String) => {
         let mountDate = new Date(selectedYear, selectedMonth, 1);
         if(side == "left"){
@@ -185,7 +181,7 @@ export function ListInfosPaciente(){
     return(
 <Container >
     <SafeAreaView>
-        <Iscrol refreshControl={<RefreshControl refreshing={refreshing} onRefresh={()=>{ GetInitialInfos() }}/>}>
+        <Iscrol refreshControl={<RefreshControl refreshing={refreshing} onRefresh={()=>{  GetListInfos(tipo) }}/>}>
 
             <ContainerCabecalho >
                 <WrapLeft>
