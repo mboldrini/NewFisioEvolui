@@ -35,7 +35,7 @@ import { State } from '../../../state';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Modal } from 'react-native-ui-lib';
 import { parametrosDoTipo } from '../ListInfosPaciente/Interfaces';
-import { format } from 'date-fns';
+import { format, formatDistanceToNow } from 'date-fns';
 import { InputForm } from '../../../components/Forms/InputForm';
 import Toast from 'react-native-toast-message';
 /// FORM
@@ -48,8 +48,6 @@ import { Footer_Modal } from '../../../components/Footers/Footer_Modal';
 import { CabecalhoMenu } from '../../../components/CabecalhoMenu';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 
-
-
 interface IRouteInfos{
     id: number,
     tipo: string,
@@ -58,6 +56,10 @@ interface IRouteInfos{
 }
 
 interface IDefaultFormInfos{
+    about: string,
+    comments?: string,
+}
+interface IInfos{
     about: string,
     client_id: number,
     comments: string,
@@ -73,8 +75,6 @@ const schema = Yup.object().shape({
 });
 
 import DateTimePicker from '@react-native-community/datetimepicker';
-import { Button } from '../../../components/Buttons/Button/Index';
-import { View } from 'react-native-animatable';
 import { Button_Field } from '../../../components/Buttons/Button_Field/Index';
 
 export function EditPacienteInfos(){
@@ -97,16 +97,32 @@ export function EditPacienteInfos(){
     /// Redux
     const apiState = useSelector((state: State) => state.apiReducer);
     /// Loading
-    const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState(true);
     /// MENU
     const [menuEscolhido, setMenuEscolhido] = useState(null);
     const listaMenuPerfil = [ { title: 'Excluir', slug:'excluir', icone: 'trash' } ]
 
+    const [infos, setInfos] = useState<IInfos>(null);
     const [formInfos, setFormInfos] = useState<IDefaultFormInfos>(null);
+
+    const [date, setDate] = useState(new Date());
+    const [show, setShow] = useState(false);
+  
  
     useEffect(()=>{
-        if(id){
+        if(id && status != "novo"){
             GetDefaultInfos(id, tipo);
+        }else if(status == "novo"){
+            setInfos({
+                about: null,
+                client_id: id_paciente,
+                comments: null,
+                created_at: format(new Date(), 'yyyy-MM-dd' ),
+                date: format(new Date(), 'yyyy-MM-dd' ),
+                id: null,
+                updated_at: format(new Date(), 'yyyy-MM-dd' ),
+            });
+            setLoading(false);
         }
     }, [id]);
 
@@ -125,9 +141,8 @@ export function EditPacienteInfos(){
    
         await api(apiState.token).get(url).then(res =>{
 
-            setFormInfos(res.data);
+            setInfos(res.data);
             setLoading(false);
-
 
         }).catch(err =>{
 
@@ -157,6 +172,11 @@ export function EditPacienteInfos(){
    
         await api(apiState.token).delete(url).then(res =>{
 
+            Toast.show({
+                type: 'success',
+                text1: 'Registro Excluido! '+ parametrosDoTipo[tipo].title,
+            });
+
             navigation.goBack();
 
         }).catch(err =>{
@@ -172,7 +192,7 @@ export function EditPacienteInfos(){
         });
     }
 
-    function HandleSaveItem(formInfos: any){
+    function HandleSaveItem(formInfos: IDefaultFormInfos){
         let url = '';
 
         if(tipo != "agendamentos"){
@@ -194,17 +214,55 @@ export function EditPacienteInfos(){
     async function UpdateItem(url: string, formInfos: any){
         console.log("vai atualizar! " + tipo);
 
-        console.log(formInfos);
-
         let params = {
             about: formInfos.about,
             comments: formInfos.comments,
-            //date:
+            date: infos.date
         }
-        
+
         setLoading(true);
    
         await api(apiState.token).patch(url, params).then(res =>{
+
+            Toast.show({
+                type: 'success',
+                text1: '😀 Informações Salvas!',
+            });
+
+            setLoading(false);
+
+            setTimeout(()=>{
+                navigation.goBack();
+            }, 1500);
+
+        }).catch(err =>{
+
+            console.log("erro ao salvar informações!");
+            console.log(err.data);
+
+            setLoading(false);
+
+            Toast.show({
+                type: 'error',
+                text1: '⚠️ Ops! erro ao salvar as informações.',
+            });
+
+        });
+    }
+
+    async function CreateItem(url: string, formInfos: IDefaultFormInfos){
+        console.log("vai CRIAR! " + tipo);
+
+        let params = {
+            about: formInfos?.about,
+            comments: formInfos?.comments,
+            date: infos.date,
+            client_id: id_paciente
+        }
+
+        setLoading(true);
+   
+        await api(apiState.token).post(url, params).then(res =>{
 
             Toast.show({
                 type: 'success',
@@ -230,20 +288,18 @@ export function EditPacienteInfos(){
             });
 
         });
-    }
-
-    async function CreateItem(url: string, formData: any){
 
     }
 
     useEffect(()=>{
-        if(formInfos?.about){
+        if(infos?.about){
             reset({
-                about: formInfos.about,
-                comments: formInfos.comments
+                about: infos.about,
+                comments: infos.comments
             });
+            setDate( new Date(infos.date) );
         }
-    },[formInfos]);
+    },[infos]);
 
     useEffect(()=>{
         if(menuEscolhido == 'excluir'){
@@ -258,24 +314,6 @@ export function EditPacienteInfos(){
         }
     },[menuEscolhido]);
 
-
-
-
-    
-
-    const [date, setDate] = useState(new Date());
-    const [show, setShow] = useState(false);
-  
-
-
-  
-
-    useEffect(()=>{
-        console.log("Date: " + date);
-    },[date]);
-    useEffect(()=>{
-        console.log("show: " + show);
-    },[show]);
 
 
 
@@ -297,7 +335,7 @@ export function EditPacienteInfos(){
             }
 
 
-            { !loading && formInfos?.created_at &&
+            { !loading &&
             <>
                 <Form>
                     <Fields>
@@ -326,11 +364,9 @@ export function EditPacienteInfos(){
 
                     </Fields>
 
-               
-                    
                     <WrapDataEscolhida>
                         <TextoDataEscolhida>Data Escolhida:</TextoDataEscolhida>
-                        <Button_Field onPress={()=>{setShow(true)}} title={ format(date, 'dd/MM/yyyy') } />
+                        <Button_Field onPress={()=>{setShow(true)}} title={ format( new Date(infos.date), 'dd/MM/yyyy') } />
                     </WrapDataEscolhida>
 
                     {show && (
@@ -338,30 +374,26 @@ export function EditPacienteInfos(){
                             testID="dateTimePicker"
                             value={date}
                             mode={'date'}
-                            onChange={(event, selectedDate) => { setShow(false); setDate(selectedDate)}}
+                            onChange={(event, selectedDate) => { setShow(false); 
+                                setInfos({
+                                    ...infos,
+                                    date: format(selectedDate, 'yyyy-MM-dd') + "T04:00:00.000Z"
+                                });
+                                setDate(selectedDate)}}
                         />
                     )}
-          
 
-                    <Footer_CreatedAt created_at={formInfos?.created_at} updated_at={formInfos?.updated_at}/>
-
+                    {!loading &&
+                        <Footer_CreatedAt created_at={infos?.created_at} updated_at={infos?.updated_at}/>
+                    }
 
                 </Form>
-
-
-
-                
-      
-
 
 
                 <Footer_Modal onPressOk={handleSubmit((d) =>  HandleSaveItem(d as any) ) } onPressCancel={()=> navigation.goBack() } />
 
             </>
             } 
-
-
-
 
 
             </Iscrol>

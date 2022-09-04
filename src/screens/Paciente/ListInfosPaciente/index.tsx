@@ -51,6 +51,7 @@ import {IAppointments, parametrosDoTipo} from './Interfaces';
 
 import Toast from 'react-native-toast-message';
 import { List_PacienteItens } from '../../../components/List_Items/PacienteItens';
+import { CabecalhoMenu } from '../../../components/CabecalhoMenu';
 
 
 interface IRouteInfos{
@@ -91,6 +92,10 @@ export function ListInfosPaciente(){
     /// Infos do Paciente
     const [infosList, setInfosList] = useState<IListInfos[]>(null);
     const [agendamentosList, setAgendamentosList] = useState<IAppointments[]>(null);
+
+    /// MENU
+    const [menuEscolhido, setMenuEscolhido] = useState(null);
+    const listaMenuPerfil = [ { title: 'Criar '+ parametrosDoTipo[tipo].title, slug:'criar', icone: 'plus' } ]
 
     const handleDateClick = (side: String) => {
         let mountDate = new Date(selectedYear, selectedMonth, 1);
@@ -165,6 +170,15 @@ export function ListInfosPaciente(){
         } as never)      
     }
 
+    function HandleCriarNovo(){
+        navigation.navigate('EditPacienteInfos' as never, { 
+            id: 0,
+            id_paciente: idPaciente,
+            tipo: tipo,
+            status: 'novo'
+        } as never)   
+    }
+
     useEffect(()=>{
         SetDefaultDate();
     },[]);
@@ -175,7 +189,14 @@ export function ListInfosPaciente(){
         }
     }, [selectedMonth]);
 
+    useEffect(()=>{
+        if(menuEscolhido){
+            HandleCriarNovo();
+        }
+    },[menuEscolhido]);
 
+
+ 
 
 
     return(
@@ -183,28 +204,7 @@ export function ListInfosPaciente(){
     <SafeAreaView>
         <Iscrol refreshControl={<RefreshControl refreshing={refreshing} onRefresh={()=>{  GetListInfos(tipo) }}/>}>
 
-            <ContainerCabecalho >
-                <WrapLeft>
-                    <IconeLeft name="chevron-left" onPress={() => navigation.goBack() }/>
-                    <WrapTitle>
-                        <Titulo>{ parametrosDoTipo[tipo].title }</Titulo>
-                    </WrapTitle>
-                </WrapLeft>
-
-                <IconeRight name="cog" onPress={() => setMenuVisible(true) } />
-
-                <Modal transparent visible={menuVisible} style={{position: 'absolute'}}>
-                    <SafeAreaView style={{flex: 1, zIndex: -2}} onTouchEnd={() => setMenuVisible(false)}>
-                        <AreaMenu style={{zIndex: 3}}>
-                            <BtnMenuList onPress={() => console.log(parametrosDoTipo[tipo].title) } >
-                                <IconeMenu name={ parametrosDoTipo[tipo].icone } />
-                                <TituloMenu>Criar {parametrosDoTipo[tipo].title}</TituloMenu>
-                            </BtnMenuList>
-                        </AreaMenu>
-                    </SafeAreaView>
-                </Modal>
-                
-            </ContainerCabecalho>
+            <CabecalhoMenu titulo={ parametrosDoTipo[tipo].title } onPress={()=> navigation.goBack() } setMenuEscolhido={setMenuEscolhido} menuList={listaMenuPerfil} />
 
             { nomePaciente && loading == false &&
                 <PacienteHeader nome={nomePaciente} />
