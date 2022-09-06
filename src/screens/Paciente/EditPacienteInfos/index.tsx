@@ -46,7 +46,7 @@ import { useForm } from 'react-hook-form';
 import { Footer_CreatedAt } from '../../../components/Footers/Footer_CreatedAt';
 import { Footer_Modal } from '../../../components/Footers/Footer_Modal';
 import { CabecalhoMenu } from '../../../components/CabecalhoMenu';
-import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
+import { FlatList, ScrollView, TouchableWithoutFeedback } from 'react-native-gesture-handler';
 
 interface IRouteInfos{
     id: number,
@@ -76,6 +76,9 @@ const schema = Yup.object().shape({
 
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { Button_Field } from '../../../components/Buttons/Button_Field/Index';
+import { Select } from '../../../components/Forms/Select';
+import { List_TipoAgendamento } from '../../../components/List_Items/TipoAgendamento';
+import ActionSheet, { SheetManager } from "react-native-actions-sheet";
 
 export function EditPacienteInfos(){
 
@@ -103,16 +106,21 @@ export function EditPacienteInfos(){
     const listaMenuPerfil = [ { title: 'Excluir', slug:'excluir', icone: 'trash' } ]
 
     const [infos, setInfos] = useState<IInfos>(null);
-    const [formInfos, setFormInfos] = useState<IDefaultFormInfos>(null);
+    //const [formInfos, setFormInfos] = useState<IDefaultFormInfos>(null);
 
     const [date, setDate] = useState(new Date());
     const [show, setShow] = useState(false);
+
+    ///Tipos de Agendamentos
+    const [appointmentType, setAppointmentType] = useState({key: 1, title: 'Não Atendido'});
+
+    const listaTiposAtendimentos = [1,2,3,4,5,6];
   
  
     useEffect(()=>{
         if(id && status != "novo"){
             GetDefaultInfos(id, tipo);
-        }else if(status == "novo"){
+        }else if(status == "novo" && tipo != "agendamentos"){
             setInfos({
                 about: null,
                 client_id: id_paciente,
@@ -123,7 +131,11 @@ export function EditPacienteInfos(){
                 updated_at: format(new Date(), 'yyyy-MM-dd' ),
             });
             setLoading(false);
+        }else if(tipo == "agendamentos" && status == "novo"){
+            console.log("agendamento - NOVO");
+            setLoading(false);
         }
+        console.log("Tipo: "+ tipo);
     }, [id]);
 
     async function GetDefaultInfos(id: number, tipo: string){
@@ -141,8 +153,13 @@ export function EditPacienteInfos(){
    
         await api(apiState.token).get(url).then(res =>{
 
-            setInfos(res.data);
-            setLoading(false);
+            if( tipo != "agendamentos" ){
+                setInfos(res.data);
+                setLoading(false);
+            }else{
+                console.log("HEY! ALTERA O JEITO QUE SALVA AS INFOS DE AGENDAMENTO!");
+            }
+       
 
         }).catch(err =>{
 
@@ -324,7 +341,6 @@ export function EditPacienteInfos(){
             <Iscrol refreshControl={<RefreshControl refreshing={refreshing} onRefresh={()=>{ GetDefaultInfos(id, tipo) }}/>}  contentContainerStyle={{flexGrow:1}}>
 
 
-
             <CabecalhoMenu titulo={ parametrosDoTipo[tipo].title } onPress={()=> navigation.goBack() } setMenuEscolhido={setMenuEscolhido} menuList={listaMenuPerfil} />
 
 
@@ -335,7 +351,7 @@ export function EditPacienteInfos(){
             }
 
 
-            { !loading &&
+            { !loading && tipo != "agendamentos" &&
             <>
                 <Form>
                     <Fields>
@@ -394,6 +410,34 @@ export function EditPacienteInfos(){
 
             </>
             } 
+
+            {!loading && tipo == "agendamentos" &&
+            <Form>
+                <Fields>
+
+                    <Select 
+                        title={appointmentType.title}
+                        isActive={0}
+                        onPress={()=>{ SheetManager.show("modalTiposAtendimentos") }}
+                    />
+
+                </Fields>
+            </Form>
+            }
+
+
+
+            <ActionSheet id="modalTiposAtendimentos" initialOffsetFromBottom={1} gestureEnabled={true} headerAlwaysVisible={true} elevation={3} extraScroll={3}  containerStyle={{backgroundColor: '#63C2D1'}} >
+                <ScrollView nestedScrollEnabled={true} >
+                    <FlatList 
+                        data={listaTiposAtendimentos}
+                        keyExtractor={(item) => item +"-"}
+                        renderItem={({item}) =>(
+                            <List_TipoAgendamento id={item} onPress={()=> console.log("FF")} />
+                        )}
+                    />
+                </ScrollView>
+            </ActionSheet>
 
 
             </Iscrol>

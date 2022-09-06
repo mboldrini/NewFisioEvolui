@@ -176,7 +176,7 @@ export function ListInfosPaciente(){
             id_paciente: idPaciente,
             tipo: tipo,
             status: 'novo'
-        } as never)   
+        } as never);  
     }
 
     useEffect(()=>{
@@ -192,6 +192,7 @@ export function ListInfosPaciente(){
     useEffect(()=>{
         if(menuEscolhido){
             HandleCriarNovo();
+            console.log("Tipo: "+ tipo);
         }
     },[menuEscolhido]);
 
