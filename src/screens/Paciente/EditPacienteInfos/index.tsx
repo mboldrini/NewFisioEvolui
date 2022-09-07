@@ -52,6 +52,11 @@ const schema = Yup.object().shape({
     comments: Yup.string().optional(),
 });
 
+const schemaAgendamento = Yup.object().shape({
+    evolucao: Yup.string().optional(),
+    comentarios: Yup.string().optional(),
+});
+
 export function EditPacienteInfos(){
 
     const {
@@ -62,6 +67,16 @@ export function EditPacienteInfos(){
     } = useForm({
         resolver: yupResolver(schema)
     });
+
+    const {
+        control: controlAgendamento,
+        handleSubmit: handleAgendamento,
+        formState: { errors: errorsAgendamento },
+        reset: resetAgendamento
+    } = useForm({
+        resolver: yupResolver(schemaAgendamento)
+    });
+
     
     const navigation = useNavigation();
     const [refreshing, setRefresh] = useState(false);
@@ -200,9 +215,6 @@ export function EditPacienteInfos(){
                 CreateItem(url, formInfos);
                 return;
             }
-        }else{
-         //  url = parametrosDoTipo[tipo].urlDelete + id +"&"+ format(new Date(), 'yyyy-M-dd') ;
-         alert("ALTETRA A URL DE AGENDAMENTOS");
         }
     }
 
@@ -286,6 +298,66 @@ export function EditPacienteInfos(){
 
     }
 
+    /// Parte do AGENDAMENTO
+    function HandleSaveAgendamento(formInfos: any){
+        if(status == 'novo'){
+            console.log("CRIA UM AGENDAMENTO");
+            CreateAgendamento(formInfos);
+        }
+    }
+
+    async function CreateAgendamento(formInfos: any){
+        console.group("CreateAgendamento");
+
+        console.log("vai CRIAR! " + tipo);
+
+        console.log(formInfos);
+
+        let params = {
+            client_id: id_paciente,
+            serviceType_id: tipoAtendimento.key,
+            description: formInfos.evolucao? formInfos.evolucao : ' ',
+            comments: formInfos.comentarios ? formInfos.comentarios : ' ',
+            status: statusAgendamento.key,
+            type: agendamento.type,
+            date_scheduled: agendamento.date_scheduled,
+            start_hour: agendamento.start_hour
+        }
+        console.log(params);
+        console.log(parametrosDoTipo[tipo].urlCreate);
+
+        setLoading(true);
+   
+        await api(apiState.token).post(parametrosDoTipo[tipo].urlCreate, params).then(res =>{
+
+            Toast.show({
+                type: 'success',
+                text1: '😀 Agendamento Salvo!',
+            });
+
+            setLoading(false);
+
+            setTimeout(()=>{
+                navigation.goBack();
+            }, 1500);
+
+        }).catch(err =>{
+
+            console.log("erro ao salvar agendamento! registro");
+            console.log(err.data);
+
+            setLoading(false);
+
+            Toast.show({
+                type: 'error',
+                text1: '⚠️ Ops! erro ao salvar as informações.',
+            });
+
+        });
+
+        console.groupEnd();
+    }
+
     useEffect(()=>{
         if(infos?.about){
             reset({
@@ -316,6 +388,14 @@ export function EditPacienteInfos(){
             setTituloAgendamento({key: 1, title: dt +" - "+ agendamento.start_hour + tipo });
         }
     },[agendamento]);
+
+    useEffect(()=>{
+        if(statusAgendamento.key != 2){
+            resetAgendamento({
+                evolucao: ''
+            })
+        }
+    },[statusAgendamento]);
 
 
 
@@ -427,26 +507,26 @@ export function EditPacienteInfos(){
 
                         { statusAgendamento.key == 2 &&
                             <InputForm 
-                                name="about"
-                                control={control}
+                                name="evolucao"
+                                control={controlAgendamento}
                                 placeholder="Evolução"
                                 autoCapitalize="words"
                                 autoCorrect={false}
                                 multiline={true}
                                 numberOfLines={4}
-                                error={errors.about && errors.about.message}
+                                error={errorsAgendamento.evolucao && errorsAgendamento.evolucao.message}
                             />
                         }
 
                         <InputForm 
-                            name="commennts"
-                            control={control}
+                            name="comentarios"
+                            control={controlAgendamento}
                             placeholder="Comentários/Sobre"
                             autoCapitalize="words"
                             autoCorrect={false}
                             multiline={true}
                             numberOfLines={4}
-                            error={errors.comments && errors.comments.message}
+                            error={errorsAgendamento.comentarios && errorsAgendamento.comentarios.message}
                         />
                     
                     </>
@@ -455,7 +535,7 @@ export function EditPacienteInfos(){
                 </Fields>
             </Form>
 
-            <Footer_Modal onPressOk={handleSubmit((d) =>  HandleSaveItem(d as any) ) } onPressCancel={()=> navigation.goBack() } />
+            <Footer_Modal onPressOk={handleAgendamento((d) =>  HandleSaveAgendamento(d as any) ) } onPressCancel={()=> navigation.goBack() } />
 
             </>
             }
