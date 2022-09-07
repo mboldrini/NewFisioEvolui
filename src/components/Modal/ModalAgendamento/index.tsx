@@ -196,16 +196,12 @@ export function ModalAgendamento({ isVisible, setIsVisible, setSelectedApointmen
     },[selectedDate]);
 
     useEffect(()=>{
-        setAvailableTimesList([]);
-        setSelectedDate(null);
-        setSelectedHour(null);
-        setSelectedEndHour(null);
-        setIsAnEvaluation(false);
-
-        if(idServiceType == -1){
-            console.log("É MENOS ! CANCELA!");
-        }else{
-            console.log(idServiceType);
+        if(idServiceType){
+            setAvailableTimesList([]);
+            setSelectedDate(null);
+            setSelectedHour(null);
+            setSelectedEndHour(null);
+            setIsAnEvaluation(false);
         }
     },[isVisible]);
     

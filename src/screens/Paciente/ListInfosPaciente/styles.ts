@@ -166,7 +166,7 @@ export const SelectDateWrapper = styled.View`
     flex-direction: row;
     align-items: center;
     justify-content: center;
-    margin-bottom: 5px;
+    /* margin-bottom: 5px; */
 `;
 
 export const IconeChangeMonth = styled(FontAwesome5)`
@@ -196,3 +196,6 @@ export const Month = styled.Text`
     justify-content: center;
 `;
 
+export const WrapAppointment = styled.View`
+    margin: 0 ${({theme}) => theme.margin.lateral_half}px;
+`;

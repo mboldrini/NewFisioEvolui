@@ -31,7 +31,7 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import { Button_Field } from '../../../components/Buttons/Button_Field/Index';
 import { Select } from '../../../components/Forms/Select';
 import { List_TipoAgendamento } from '../../../components/List_Items/TipoAgendamento';
-import { IRouteInfos, IDefaultFormInfos, IInfos, IStatusAgendamento } from './interfaces';
+import { IRouteInfos, IDefaultFormInfos, IInfos, IStatusAgendamento, IEditAppointment } from './interfaces';
 import ActionSheet, { SheetManager } from "react-native-actions-sheet";
 import { List_TipoPagamento } from '../../../components/List_Items/TiposDePagamentos';
 import { tiposDeAtendimentos } from '../../../global/variaveis/globais';
@@ -99,58 +99,47 @@ export function EditPacienteInfos(){
     const [date, setDate] = useState(new Date());
     const [show, setShow] = useState(false);
 
-    ///Tipo de Atendimento
+    ///Tipo de Atendimento/Serviço
     const [tipoAtendimento, setTipoAtendimento] = useState<IStatusAgendamento>({key: -1, title: 'Não Escolhido'});
+
     ///Status do Agendamento
     const [statusAgendamento, setStatusAgendamento] = useState<IStatusAgendamento>({key: 1, title: 'Não Atendido'});
     
     ///Agendamento
     const [agendamentoVisible, setAgendamentoVisible] = useState(false);/// Exibe o modal do agendamento
-    const [agendamento, setAgendamento] = useState<IApointment>(null);/// Agendamento em si
+    const [agendamento, setAgendamento] = useState<IEditAppointment>(null);/// O AGENDAMENTO Q VEM DA API
+    const [agendamentoAgendado, setAgendamentoAgendado] = useState<IApointment>(null);/// Agendamento AGENDADO
     const [tituloAgendamento, setTituloAgendamento] = useState({key: -1, title: "Não Agendado"});// Exibe o titulo do select de agendamento
   
- 
-    useEffect(()=>{
-        if(id && status != "novo"){
-            GetDefaultInfos(id, tipo);
-        }else if(status == "novo" && tipo != "agendamentos"){
-            setInfos({
-                about: null,
-                client_id: id_paciente,
-                comments: null,
-                created_at: format(new Date(), 'yyyy-MM-dd' ),
-                date: format(new Date(), 'yyyy-MM-dd' ),
-                id: null,
-                updated_at: format(new Date(), 'yyyy-MM-dd' ),
-            });
-            setLoading(false);
-        }else if(tipo == "agendamentos" && status == "novo"){
-            console.log("agendamento - NOVO");
-            setLoading(false);
-        }
-        console.log("Tipo: "+ tipo);
-    }, [id]);
 
     async function GetDefaultInfos(id: number, tipo: string){
+        console.group("GetDefaultInfos");
+
+        setLoading(true);
+
         let url = '';
 
         if(tipo != "agendamentos"){
             url = parametrosDoTipo[tipo].urlRead + id +"&"+ id_paciente;
         }else{
-            url = parametrosDoTipo[tipo].urlRead + id +"&"+ format(new Date(), 'yyyy-M-dd') ;
+            url = parametrosDoTipo[tipo].urlRead + id +"&"+ id_paciente ;
         }
 
         console.log("URL: " + url);
 
-        setLoading(true);
-   
         await api(apiState.token).get(url).then(res =>{
 
             if( tipo != "agendamentos" ){
                 setInfos(res.data);
                 setLoading(false);
             }else{
-                console.log("HEY! ALTERA O JEITO QUE SALVA AS INFOS DE AGENDAMENTO!");
+
+                console.log("Obteve as infos do agendamento!");
+
+                console.log(res.data);
+                setAgendamento(res.data);
+
+                setLoading(false);
             }
        
 
@@ -158,6 +147,8 @@ export function EditPacienteInfos(){
 
             console.log("erro ao obter informações");
             console.log(err.data);
+            console.log(err);
+
             Toast.show({
                 type: 'error',
                 text1: '⚠️ Ops! erro ao obter as informações',
@@ -165,6 +156,7 @@ export function EditPacienteInfos(){
 
         });
 
+        console.groupEnd();
     }
 
     async function DeleteItem() {
@@ -319,9 +311,9 @@ export function EditPacienteInfos(){
             description: formInfos.evolucao? formInfos.evolucao : ' ',
             comments: formInfos.comentarios ? formInfos.comentarios : ' ',
             status: statusAgendamento.key,
-            type: agendamento.type,
-            date_scheduled: agendamento.date_scheduled,
-            start_hour: agendamento.start_hour
+            type: agendamentoAgendado.type,
+            date_scheduled: agendamentoAgendado.date_scheduled,
+            start_hour: agendamentoAgendado.start_hour
         }
         console.log(params);
         console.log(parametrosDoTipo[tipo].urlCreate);
@@ -358,6 +350,42 @@ export function EditPacienteInfos(){
         console.groupEnd();
     }
 
+
+    function SetaDefaultInfos(){
+        setTipoAtendimento({key: agendamento.serviceType_id, title: agendamento?.serviceType_name});
+        setStatusAgendamento({key: agendamento.status, title: tiposDeAtendimentos[agendamento.status].title });
+
+        const dt = format( new Date(agendamento.date_scheduled) , "dd/MM/yyyy");
+        const tipo = agendamento.type == 1 ? " - Avaliação" : "";
+        setTituloAgendamento({key: 1, title: dt +" - "+ agendamento.start_hour + tipo });
+
+        resetAgendamento({
+            evolucao: agendamento.description,
+            comentarios: agendamento.comments,
+        });
+    }
+
+
+    useEffect(()=>{
+        console.log("Tipo: "+ tipo);
+        if(id && status != "novo"){
+            GetDefaultInfos(id, tipo);            
+        }else if(status == "novo" && tipo != "agendamentos"){
+            setInfos({
+                about: null,
+                client_id: id_paciente,
+                comments: null,
+                created_at: format(new Date(), 'yyyy-MM-dd' ),
+                date: format(new Date(), 'yyyy-MM-dd' ),
+                id: null,
+                updated_at: format(new Date(), 'yyyy-MM-dd' ),
+            });
+            setLoading(false);
+        }else if(tipo == "agendamentos" && status == "novo"){
+            setLoading(false);
+        }
+    }, [id]);
+
     useEffect(()=>{
         if(infos?.about){
             reset({
@@ -382,10 +410,15 @@ export function EditPacienteInfos(){
     },[menuEscolhido]);
 
     useEffect(()=>{
-        if(agendamento){
+        if(agendamento && status == "novo"){
+
             const dt = format( new Date(agendamento.date_scheduled) , "dd/MM/yyyy");
             const tipo = agendamento.type == 1 ? " - Avaliação" : "";
             setTituloAgendamento({key: 1, title: dt +" - "+ agendamento.start_hour + tipo });
+
+        }if(tipo == "agendamentos" && status == "editar" && agendamento?.serviceType_id){
+            console.log("seta campos?");
+            SetaDefaultInfos();
         }
     },[agendamento]);
 
@@ -540,50 +573,53 @@ export function EditPacienteInfos(){
             </>
             }
 
-            {/* Tipo de AGENDAMENTO */}
-            <ActionSheet id="modalTipoAgendamento" initialOffsetFromBottom={1} gestureEnabled={true} headerAlwaysVisible={true} elevation={3} extraScroll={3}  containerStyle={{backgroundColor: '#63C2D1'}} >
-                <ScrollView nestedScrollEnabled={true} >
-                    <FlatList 
-                        data={tiposDeAtendimentos}
-                        keyExtractor={(item) => item.id +"-"}
-                        renderItem={({item}) =>(
-                            <List_TipoAgendamento id={item.id} 
-                            onPress={()=> {
-                                setStatusAgendamento({key: item.id , title: item.title }) 
-                                SheetManager.hide("modalTipoAgendamento")  
-                            }} />
-                        )}
-                    />
-                </ScrollView>
-            </ActionSheet>
 
-            <ActionSheet id="modalTiposAtendimentos" initialOffsetFromBottom={1} gestureEnabled={true} headerAlwaysVisible={true} elevation={3} extraScroll={3}  containerStyle={{backgroundColor: '#63C2D1'}} >
-                <ScrollView nestedScrollEnabled={true} >
-                    <FlatList 
-                        data={atendimentosState.atendimentos}
-                        keyExtractor={(item) => item.name}
-                        renderItem={({item}) =>(
-                            <WrapList>
-                                <List_TipoPagamento 
-                                    paymentMethod_name={item.name} 
-                                    description={item.description} 
-                                    onPress={()=>{ 
-                                        setTipoAtendimento({key: item.id , title: item.name })
-                                        SheetManager.hide("modalTiposAtendimentos")  
-                                    }} 
-                                />
-                            </WrapList>
-                        )}
-                    />
-                </ScrollView>
-            </ActionSheet>
+                {/* Tipo de AGENDAMENTO */}
+                <ActionSheet id="modalTipoAgendamento" initialOffsetFromBottom={1} gestureEnabled={true} headerAlwaysVisible={true} elevation={3} extraScroll={3}  containerStyle={{backgroundColor: '#63C2D1'}} >
+                    <ScrollView nestedScrollEnabled={true} >
+                        <FlatList 
+                            data={tiposDeAtendimentos}
+                            keyExtractor={(item) => item.id +"-"}
+                            renderItem={({item}) =>(
+                                <List_TipoAgendamento id={item.id} 
+                                onPress={()=> {
+                                    setStatusAgendamento({key: item.id , title: item.title }) 
+                                    SheetManager.hide("modalTipoAgendamento")  
+                                }} />
+                            )}
+                        />
+                    </ScrollView>
+                </ActionSheet>
+      
+                  <ActionSheet id="modalTiposAtendimentos" initialOffsetFromBottom={1} gestureEnabled={true} headerAlwaysVisible={true} elevation={3} extraScroll={3}  containerStyle={{backgroundColor: '#63C2D1'}} >
+                      <ScrollView nestedScrollEnabled={true} >
+                          <FlatList 
+                              data={atendimentosState.atendimentos}
+                              keyExtractor={(item) => item.name}
+                              renderItem={({item}) =>(
+                                  <WrapList>
+                                      <List_TipoPagamento 
+                                          paymentMethod_name={item.name} 
+                                          description={item.description} 
+                                          onPress={()=>{ 
+                                              setTipoAtendimento({key: item.id , title: item.name })
+                                              SheetManager.hide("modalTiposAtendimentos")  
+                                          }} 
+                                      />
+                                  </WrapList>
+                              )}
+                          />
+                      </ScrollView>
+                  </ActionSheet>
+      
 
-            <ModalAgendamento 
-                isVisible={agendamentoVisible} 
-                setIsVisible={()=> setAgendamentoVisible(false) }
-                setSelectedApointment={setAgendamento}
-                idServiceType={tipoAtendimento.key}
-            />
+                <ModalAgendamento 
+                    isVisible={agendamentoVisible} 
+                    setIsVisible={()=> setAgendamentoVisible(false) }
+                    setSelectedApointment={setAgendamentoAgendado}
+                    idServiceType={tipoAtendimento.key}
+                />
+
 
 
             </Iscrol>

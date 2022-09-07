@@ -119,7 +119,7 @@ export const parametrosDoTipo: any = {
         slug: 'agendamentos',
         title: 'Agendamentos',
         urlCreate: '/appointments',
-        urlRead: '',
+        urlRead: '/appointments/',
         urlUpdate: '/appointments/',
         urlDelete: '/appointments/delete/',
         urlList: '/appointments/month/'

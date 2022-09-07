@@ -24,3 +24,21 @@ export interface IStatusAgendamento{
     key: number,
     title: string
 }
+
+export interface IEditAppointment{
+    id: number,
+    description: string,
+    comments: string,
+    status: number,
+    type: number,
+    date_scheduled: string,
+    start_hour: string,
+    end_hour: string,
+    duration: string,
+    price: string,
+    scheduled: boolean,
+    serviceType_id: number,
+    serviceType_name: string,
+    created_at: string,
+    updated_at: string
+}

@@ -28,6 +28,7 @@ import {
     ChangeMonthLeft,
     ChangeMonthRight,
     Month,
+    WrapAppointment
 
 } from './styles';
 
@@ -208,7 +209,7 @@ export function ListInfosPaciente(){
             <CabecalhoMenu titulo={ parametrosDoTipo[tipo].title } onPress={()=> navigation.goBack() } setMenuEscolhido={setMenuEscolhido} menuList={listaMenuPerfil} />
 
             { nomePaciente && loading == false &&
-                <PacienteHeader nome={nomePaciente} />
+                <PacienteHeader nome={nomePaciente} tipo={"Hoje é "+ dataHoje} />
             }
 
             { loading == true && 
@@ -236,7 +237,7 @@ export function ListInfosPaciente(){
 
             { !loading && tipo == "agendamentos" &&
                 <DateWrapper>
-                    <Today>Hoje é {dataHoje}</Today>
+                    {/* <Today>Hoje é {dataHoje}</Today> */}
                     <SelectDateWrapper>
                         <ChangeMonthLeft onPress={ ()=> handleDateClick("left") }>
                             <IconeChangeMonth name="chevron-left"/>
@@ -251,15 +252,17 @@ export function ListInfosPaciente(){
 
             { !loading && tipo == 'agendamentos' && agendamentosList.length > 0 && agendamentosList.map( (item, key) => {
                 return(
-                    <AppointmentList
-                        key={key}
-                        status={item.status}
-                        type={item.type}
-                        date_scheduled={ item.date_scheduled.toString() }
-                        start_hour={item.start_hour}
-                        end_hour={item.end_hour}
-                        onPress={()=>{ console.log(item +"_"+ key) }}
-                    />   
+                    <WrapAppointment>
+                        <AppointmentList
+                            key={key}
+                            status={item.status}
+                            type={item.type}
+                            date_scheduled={ item.date_scheduled.toString() }
+                            start_hour={item.start_hour}
+                            end_hour={item.end_hour}
+                            onPress={()=>{ HandleVaiEditar(item.id) }}
+                        />   
+                    </WrapAppointment>
                 )
             })}
 
