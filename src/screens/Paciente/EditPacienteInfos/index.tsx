@@ -3,19 +3,6 @@ import {Alert, RefreshControl, Keyboard, Text} from 'react-native';
 import {useNavigation, useRoute } from '@react-navigation/native';
 import { 
     Container,
-    /// Cabeçalho
-    ContainerCabecalho,
-    WrapLeft,
-    IconeLeft,
-    IconeRight,
-    WrapTitle,
-    Titulo,
-    /// MENU
-    ViewBtn,
-    AreaMenu,
-    BtnMenuList,
-    TituloMenu,
-    IconeMenu,
     /// Resto
     WrapLoadingPctInfos,
     LoadingIcon,
@@ -24,7 +11,10 @@ import {
     Fields,
     Iscrol,
     WrapDataEscolhida,
-    TextoDataEscolhida
+    TextoDataEscolhida,
+    TitleGroup,
+    Title,
+    WrapList
 } from './styles';
 // API
 import { api } from '../../../global/api';
@@ -33,11 +23,20 @@ import { useSelector } from 'react-redux';
 import { State } from '../../../state';
 // Imports
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Modal } from 'react-native-ui-lib';
 import { parametrosDoTipo } from '../ListInfosPaciente/Interfaces';
-import { format, formatDistanceToNow } from 'date-fns';
+import { format } from 'date-fns';
 import { InputForm } from '../../../components/Forms/InputForm';
 import Toast from 'react-native-toast-message';
+import DateTimePicker from '@react-native-community/datetimepicker';
+import { Button_Field } from '../../../components/Buttons/Button_Field/Index';
+import { Select } from '../../../components/Forms/Select';
+import { List_TipoAgendamento } from '../../../components/List_Items/TipoAgendamento';
+import { IRouteInfos, IDefaultFormInfos, IInfos, IStatusAgendamento } from './interfaces';
+import ActionSheet, { SheetManager } from "react-native-actions-sheet";
+import { List_TipoPagamento } from '../../../components/List_Items/TiposDePagamentos';
+import { tiposDeAtendimentos } from '../../../global/variaveis/globais';
+import IApointment from '../../../global/DTO/Apointment';
+import { ModalAgendamento } from '../../../components/Modal/ModalAgendamento';
 /// FORM
 import * as Yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -48,37 +47,10 @@ import { Footer_Modal } from '../../../components/Footers/Footer_Modal';
 import { CabecalhoMenu } from '../../../components/CabecalhoMenu';
 import { FlatList, ScrollView, TouchableWithoutFeedback } from 'react-native-gesture-handler';
 
-interface IRouteInfos{
-    id: number,
-    tipo: string,
-    id_paciente: number,
-    status: 'editar' | 'novo';
-}
-
-interface IDefaultFormInfos{
-    about: string,
-    comments?: string,
-}
-interface IInfos{
-    about: string,
-    client_id: number,
-    comments: string,
-    created_at: string,
-    date: string,
-    id: number,
-    updated_at: string,
-}
-
 const schema = Yup.object().shape({
     about: Yup.string().required("Descrição é obrigatório"),
     comments: Yup.string().optional(),
 });
-
-import DateTimePicker from '@react-native-community/datetimepicker';
-import { Button_Field } from '../../../components/Buttons/Button_Field/Index';
-import { Select } from '../../../components/Forms/Select';
-import { List_TipoAgendamento } from '../../../components/List_Items/TipoAgendamento';
-import ActionSheet, { SheetManager } from "react-native-actions-sheet";
 
 export function EditPacienteInfos(){
 
@@ -99,6 +71,8 @@ export function EditPacienteInfos(){
     const { id, id_paciente, tipo, status } = route.params as IRouteInfos;
     /// Redux
     const apiState = useSelector((state: State) => state.apiReducer);
+    const atendimentosState = useSelector((state: State) => state.atendimentoReducer); 
+
     /// Loading
     const [loading, setLoading] = useState(true);
     /// MENU
@@ -106,15 +80,19 @@ export function EditPacienteInfos(){
     const listaMenuPerfil = [ { title: 'Excluir', slug:'excluir', icone: 'trash' } ]
 
     const [infos, setInfos] = useState<IInfos>(null);
-    //const [formInfos, setFormInfos] = useState<IDefaultFormInfos>(null);
 
     const [date, setDate] = useState(new Date());
     const [show, setShow] = useState(false);
 
-    ///Tipos de Agendamentos
-    const [appointmentType, setAppointmentType] = useState({key: 1, title: 'Não Atendido'});
-
-    const listaTiposAtendimentos = [1,2,3,4,5,6];
+    ///Tipo de Atendimento
+    const [tipoAtendimento, setTipoAtendimento] = useState<IStatusAgendamento>({key: -1, title: 'Não Escolhido'});
+    ///Status do Agendamento
+    const [statusAgendamento, setStatusAgendamento] = useState<IStatusAgendamento>({key: 1, title: 'Não Atendido'});
+    
+    ///Agendamento
+    const [agendamentoVisible, setAgendamentoVisible] = useState(false);/// Exibe o modal do agendamento
+    const [agendamento, setAgendamento] = useState<IApointment>(null);/// Agendamento em si
+    const [tituloAgendamento, setTituloAgendamento] = useState({key: -1, title: "Não Agendado"});// Exibe o titulo do select de agendamento
   
  
     useEffect(()=>{
@@ -331,6 +309,13 @@ export function EditPacienteInfos(){
         }
     },[menuEscolhido]);
 
+    useEffect(()=>{
+        if(agendamento){
+            const dt = format( new Date(agendamento.date_scheduled) , "dd/MM/yyyy");
+            const tipo = agendamento.type == 1 ? " - Avaliação" : "";
+            setTituloAgendamento({key: 1, title: dt +" - "+ agendamento.start_hour + tipo });
+        }
+    },[agendamento]);
 
 
 
@@ -412,32 +397,113 @@ export function EditPacienteInfos(){
             } 
 
             {!loading && tipo == "agendamentos" &&
+            <>
             <Form>
                 <Fields>
 
-                    <Select 
-                        title={appointmentType.title}
-                        isActive={0}
-                        onPress={()=>{ SheetManager.show("modalTiposAtendimentos") }}
-                    />
+                    <TitleGroup><Title>Tipo de Atendimento</Title></TitleGroup>
+
+                    <Select title={tipoAtendimento.title} isActive={0} onPress={()=>{ SheetManager.show("modalTiposAtendimentos") }} />
+
+
+                    { tipoAtendimento.key != -1 &&
+                    <>
+                        <TitleGroup><Title>Data Hora do Atendimento</Title></TitleGroup>
+                        <Select title={tituloAgendamento.title} isActive={0} onPress={()=>{ setAgendamentoVisible(true) }} />
+                    </>
+                    }
+
+                    { tipoAtendimento.key != -1 &&
+                    <>
+                        <TitleGroup><Title>Status do Atendimento</Title></TitleGroup>
+                        <Select title={statusAgendamento.title} isActive={0} onPress={()=>{ SheetManager.show("modalTipoAgendamento") }} />
+                    </>
+                    }
+
+                    { tipoAtendimento.key != -1 &&
+                    <>
+                    
+                        <TitleGroup><Title>Sobre o Atendimento</Title></TitleGroup>
+
+                        { statusAgendamento.key == 2 &&
+                            <InputForm 
+                                name="about"
+                                control={control}
+                                placeholder="Evolução"
+                                autoCapitalize="words"
+                                autoCorrect={false}
+                                multiline={true}
+                                numberOfLines={4}
+                                error={errors.about && errors.about.message}
+                            />
+                        }
+
+                        <InputForm 
+                            name="commennts"
+                            control={control}
+                            placeholder="Comentários/Sobre"
+                            autoCapitalize="words"
+                            autoCorrect={false}
+                            multiline={true}
+                            numberOfLines={4}
+                            error={errors.comments && errors.comments.message}
+                        />
+                    
+                    </>
+                    }
 
                 </Fields>
             </Form>
+
+            <Footer_Modal onPressOk={handleSubmit((d) =>  HandleSaveItem(d as any) ) } onPressCancel={()=> navigation.goBack() } />
+
+            </>
             }
 
-
-
-            <ActionSheet id="modalTiposAtendimentos" initialOffsetFromBottom={1} gestureEnabled={true} headerAlwaysVisible={true} elevation={3} extraScroll={3}  containerStyle={{backgroundColor: '#63C2D1'}} >
+            {/* Tipo de AGENDAMENTO */}
+            <ActionSheet id="modalTipoAgendamento" initialOffsetFromBottom={1} gestureEnabled={true} headerAlwaysVisible={true} elevation={3} extraScroll={3}  containerStyle={{backgroundColor: '#63C2D1'}} >
                 <ScrollView nestedScrollEnabled={true} >
                     <FlatList 
-                        data={listaTiposAtendimentos}
-                        keyExtractor={(item) => item +"-"}
+                        data={tiposDeAtendimentos}
+                        keyExtractor={(item) => item.id +"-"}
                         renderItem={({item}) =>(
-                            <List_TipoAgendamento id={item} onPress={()=> console.log("FF")} />
+                            <List_TipoAgendamento id={item.id} 
+                            onPress={()=> {
+                                setStatusAgendamento({key: item.id , title: item.title }) 
+                                SheetManager.hide("modalTipoAgendamento")  
+                            }} />
                         )}
                     />
                 </ScrollView>
             </ActionSheet>
+
+            <ActionSheet id="modalTiposAtendimentos" initialOffsetFromBottom={1} gestureEnabled={true} headerAlwaysVisible={true} elevation={3} extraScroll={3}  containerStyle={{backgroundColor: '#63C2D1'}} >
+                <ScrollView nestedScrollEnabled={true} >
+                    <FlatList 
+                        data={atendimentosState.atendimentos}
+                        keyExtractor={(item) => item.name}
+                        renderItem={({item}) =>(
+                            <WrapList>
+                                <List_TipoPagamento 
+                                    paymentMethod_name={item.name} 
+                                    description={item.description} 
+                                    onPress={()=>{ 
+                                        setTipoAtendimento({key: item.id , title: item.name })
+                                        SheetManager.hide("modalTiposAtendimentos")  
+                                    }} 
+                                />
+                            </WrapList>
+                        )}
+                    />
+                </ScrollView>
+            </ActionSheet>
+
+            <ModalAgendamento 
+                isVisible={agendamentoVisible} 
+                setIsVisible={()=> setAgendamentoVisible(false) }
+                setSelectedApointment={setAgendamento}
+                idServiceType={tipoAtendimento.key}
+            />
 
 
             </Iscrol>

@@ -18,18 +18,20 @@ interface IProps{
 }
 
 export function List_TipoAgendamento({ id, onPress}: IProps){
+
     return(
-
         <WrapGeral onPress={ onPress  }>
-        <TipoPagamentoList tipo={id} >
-            <WrapText>
-                <NomeTipoPagamento numberOfLines={1} ellipsizeMode="tail">{ tiposDeAtendimentos[id].title }</NomeTipoPagamento>
-            </WrapText>
-
-            <WrapIcone>
-                <Icone name="chevron-right"/>
-            </WrapIcone>
-        </TipoPagamentoList>
+            { id != 0 &&
+                    <TipoPagamentoList tipo={id} >
+                    <WrapText>
+                        <NomeTipoPagamento numberOfLines={1} ellipsizeMode="tail">{ tiposDeAtendimentos[id].title }</NomeTipoPagamento>
+                    </WrapText>
+        
+                    <WrapIcone>
+                        <Icone name="chevron-right"/>
+                    </WrapIcone>
+                </TipoPagamentoList>
+            }
         </WrapGeral>
     )
 }

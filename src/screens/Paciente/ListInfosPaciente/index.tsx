@@ -234,7 +234,6 @@ export function ListInfosPaciente(){
                 })
             }
 
-
             { !loading && tipo == "agendamentos" &&
                 <DateWrapper>
                     <Today>Hoje é {dataHoje}</Today>
