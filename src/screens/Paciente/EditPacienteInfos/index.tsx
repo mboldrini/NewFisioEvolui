@@ -295,6 +295,9 @@ export function EditPacienteInfos(){
         if(status == 'novo'){
             console.log("CRIA UM AGENDAMENTO");
             CreateAgendamento(formInfos);
+        }else if(status == 'editar'){
+            console.log("EDITA O AGENDAMENTO!");
+            EditAgendamento(formInfos);
         }
     }
 
@@ -346,6 +349,81 @@ export function EditPacienteInfos(){
             });
 
         });
+
+        console.groupEnd();
+    }
+
+    async function EditAgendamento(formInfos: any){
+        console.group("EditAgendamento - Salva o agendamento editado");
+
+        console.log("FormInfos:");
+        console.log(formInfos);
+
+        // console.group("AgendamentoAgendado");
+        // console.log(agendamentoAgendado);
+        // console.groupEnd();
+
+        let infos = {};
+        if(agendamentoAgendado?.date_scheduled){
+            infos = {
+                client_id: id_paciente,
+                serviceType_id: tipoAtendimento.key,
+                description: formInfos.evolucao || " ",
+                comments: formInfos.comentarios || " ",
+                status: statusAgendamento.key,
+                type: agendamentoAgendado.type,
+                date_scheduled: agendamentoAgendado.date_scheduled,
+                start_hour: agendamentoAgendado.start_hour
+            }
+        }else{
+            infos = {
+                client_id: id_paciente,
+                serviceType_id: tipoAtendimento.key,
+                description: formInfos.evolucao || " ",
+                comments: formInfos.comentarios || " ",
+                status: statusAgendamento.key,
+                type: agendamento.type,
+                date_scheduled: agendamento.date_scheduled,
+                start_hour: agendamento.start_hour
+            }
+        }
+        
+        console.log("INFOS:");
+        console.log(infos);
+
+        setLoading(true);
+
+        console.log(infos);
+        const url = parametrosDoTipo[tipo].urlUpdate + id;
+        console.log("URL: "+ url);
+   
+        await api(apiState.token).patch(url, infos).then(res =>{
+
+            Toast.show({
+                type: 'success',
+                text1: '😀 Agendamento Salvo!',
+            });
+
+            setLoading(false);
+
+            setTimeout(()=>{
+                navigation.goBack();
+            }, 1500);
+
+        }).catch(err =>{
+
+            console.log("erro ao salvar agendamento! registro");
+            console.log(err.data);
+
+            setLoading(false);
+
+            Toast.show({
+                type: 'error',
+                text1: '⚠️ Ops! erro ao salvar as informações.',
+            });
+
+        });
+
 
         console.groupEnd();
     }
@@ -429,7 +507,6 @@ export function EditPacienteInfos(){
             })
         }
     },[statusAgendamento]);
-
 
 
     return(
