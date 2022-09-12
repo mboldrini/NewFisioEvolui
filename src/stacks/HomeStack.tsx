@@ -23,12 +23,7 @@ export default function HomeStack(){
             <Toast position={'top'}  autoHide={true} visibilityTime={6000} onPress={()=>Toast.hide()} /*config={toastConfig}*/ />
         </WrapToast>
 
-        <Stack.Navigator
-            initialRouteName="Home"
-            screenOptions={{
-                headerShown: false
-            }}
-        >   
+        <Stack.Navigator initialRouteName="Home" screenOptions={{ headerShown: false }} >   
             <Stack.Group>
                 <Stack.Screen name="Home2"               component={Home}                options={{headerShown:false}} /> 
                 <Stack.Screen name="PacientePerfil"      component={PacientePerfil}      options={{headerShown:false}}  />

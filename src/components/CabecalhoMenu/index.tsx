@@ -36,8 +36,8 @@ export function CabecalhoMenu({titulo, onPress, onPressIcon = 'chevron-left', se
 
     return(
         <ContainerCabecalho >
-            <WrapLeft onPress={onPress}>
-                <IconeLeft name="chevron-left"/>
+            <WrapLeft>
+                <IconeLeft name="chevron-left"  onPress={onPress}/>
                 <WrapTitle>
                     <Titulo>{ titulo }</Titulo>
                 </WrapTitle>

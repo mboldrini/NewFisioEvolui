@@ -7,6 +7,9 @@ export enum ActionType{
     SETATENDIMENTOS = "setAtendimentos",
     SETATUALIZAATENDIMENTO = "setAtualizaAtendimento",
 
+    SETPACIENTES = "setPacientes",
+    SETATUALIZAPACIENTES = "setAtualizaPacientes",
+
     SETFORMASPGTO = "setFormasPgto",
     SETUPDATEFORMASPGTO = "setUpdateFormasPgto",
 
@@ -70,6 +73,23 @@ export interface IAtendimentos{
     atualiza: boolean;
     atendimentos: atendimento[];
 }
+/// Lista de Pacientes - Paciente II
+export interface IPacientes{
+    id: number,
+    name: string,
+    dataNascimento: string,
+    document: string,
+    email: string,
+    celphone: string,
+    address: string,
+    serviceType_id: number,
+    serviceType_name: string
+}
+export interface IPaciente{
+    atualiza: boolean;
+    pacientes: IPacientes[];
+}
+
 
 /// Formas de Pagamento
 export interface IPgtos{

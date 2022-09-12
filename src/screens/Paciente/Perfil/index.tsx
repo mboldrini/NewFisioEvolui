@@ -285,7 +285,7 @@ export function PacientePerfil(){
 
             <CabecalhoMenu
                 titulo='Perfil do Paciente'
-                onPress={()=> console.log("left")}
+                onPress={()=> navigation.goBack() }
                 setMenuEscolhido={setMenuEscolhido}
                 menuList={listaMenuPerfil}
             />

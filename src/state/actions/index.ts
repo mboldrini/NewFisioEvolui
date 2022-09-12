@@ -45,6 +45,14 @@ interface SetAtualizaFormasPgto{
     type: ActionType.SETUPDATEFORMASPGTO,
     payload: any,
 }
+/// Pacientes
+interface SetPacientes{
+    type: ActionType.SETPACIENTES,
+    payload: any
+}
+interface SetAtualizaPacientes{
+    type: ActionType.SETATUALIZAPACIENTES,
+    payload: any,
+}
 
-
-export type Action = SetInfos | SetConfigs | SetId | SetEmail | SetAPIToken | SetAtendimentos | SetAtualizaAtendimento | SetFormasPgto | SetAtualizaFormasPgto; // | OutraAction
+export type Action = SetInfos | SetConfigs | SetId | SetEmail | SetAPIToken | SetAtendimentos | SetAtualizaAtendimento | SetFormasPgto | SetAtualizaFormasPgto | SetPacientes | SetAtualizaPacientes; // | OutraAction

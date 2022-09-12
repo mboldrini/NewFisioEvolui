@@ -1,4 +1,4 @@
-import { atendimento, IPgtos, IConfigs } from './../action-types/index';
+import { atendimento, IPgtos, IConfigs, IPacientes } from './../action-types/index';
 import { IUserType, IApiInfos, IAtendimentos } from '../action-types/index';
 import { ActionType } from "../action-types";
 import { Dispatch } from "redux";
@@ -57,6 +57,7 @@ export const setApiInfos = ({token, date}: IApiInfos ) => {
     }
 }
 
+
 export const setAtendimentos = ( atendimentos : atendimento[] ) => {
     return (dispatch: Dispatch<Action>) => {
         dispatch({
@@ -67,7 +68,6 @@ export const setAtendimentos = ( atendimentos : atendimento[] ) => {
         })
     }
 }
-
 export const setAtualizaAtendimentos = ( atualiza: boolean ) => {
     return (dispatch: Dispatch<Action>) => {
         dispatch({
@@ -78,6 +78,28 @@ export const setAtualizaAtendimentos = ( atualiza: boolean ) => {
         })
     }
 }
+/// PACIENTES
+export const setPacientes = ( pacientes : IPacientes[] ) => {
+    return (dispatch: Dispatch<Action>) => {
+        dispatch({
+            type: ActionType.SETPACIENTES,
+            payload: {
+                pacientes
+            }
+        })
+    }
+}
+export const setAtualizaPacientes = ( atualiza: boolean ) => {
+    return (dispatch: Dispatch<Action>) => {
+        dispatch({
+            type: ActionType.SETATUALIZAPACIENTES,
+            payload: {
+                atualiza: atualiza
+            }
+        })
+    }
+}
+
 
 export const setFormasPgto = ( pagamentos : IPgtos[] ) => {
     return (dispatch: Dispatch<Action>) => {
