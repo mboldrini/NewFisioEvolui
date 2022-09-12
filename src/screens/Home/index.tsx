@@ -70,6 +70,7 @@ export function Home(){
 
         await api(apiState.token).get('/clients/user/all').then(res=>{
 
+            setAtualizaPacientes(false);
             setPacientes(res.data);
             setPatientList(res.data);
 
@@ -98,6 +99,12 @@ export function Home(){
             console.log("não tem pacientes salvos no redux");
         }
     },[]);
+
+    useEffect(()=>{
+        if(pacientesReducer.atualiza){
+            GetPatientList();
+        }
+    },[pacientesReducer.atualiza]);
 
     return(
 <SafeAreaView style={{flex: 1, backgroundColor: '#63C2D1'}}>
