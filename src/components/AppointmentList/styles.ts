@@ -2,6 +2,7 @@ import styled, {css} from 'styled-components/native';
 import { RFValue } from 'react-native-responsive-fontsize';
 import { FontAwesome5 } from "@expo/vector-icons";
 import { RectButton } from "react-native-gesture-handler";
+import { DefaultAppValues } from '../../global/styles/theme';
 
 interface Props{
     status?: number;
@@ -12,7 +13,7 @@ export const Container = styled.View<Props>`
     flex: 1;
     background-color: ${({theme}) => theme.colors.shape};
     border-radius: ${({theme}) => theme.bordas.padrao}px;
-    padding: ${RFValue(10)}px ${RFValue(10)}px;
+    padding: ${RFValue(5)}px ${RFValue(5)}px;
     margin-bottom: ${({theme}) => theme.margin.bottom}px;
     border-left-width: ${RFValue(5)}px;
     align-items: center;
@@ -69,23 +70,24 @@ export const Hour = styled.Text<Props>`
 `;
 
 export const WrapDate = styled.View`
-    align-items: flex-start;
+    align-items: center;
     flex-direction: row;
+    justify-content: flex-start;
 `;
 
 export const WeekDay = styled.Text`
     font-family: ${({theme}) => theme.fonts.bold};
-    font-size: ${RFValue(16)}px;
+    font-size: ${RFValue(DefaultAppValues.fontSize.tres)}px;
 `;
 
 export const Day = styled.Text`
     font-family: ${({theme}) => theme.fonts.bold};
-    font-size: ${RFValue(16)}px;
+    font-size: ${RFValue(DefaultAppValues.fontSize.tres)}px;
 `;
 
 export const DateStr = styled.Text`
     font-family: ${({theme}) => theme.fonts.bold};
-    font-size: ${RFValue(16)}px;
+    font-size: ${RFValue(DefaultAppValues.fontSize.tres)}px;
 `;
 
 export const WrapButton = styled(RectButton)`
@@ -109,6 +111,22 @@ export const Type = styled.Text`
     font-size: ${RFValue(12)}px;
     color: ${({theme}) => theme.colors.status_avaliacao};
     padding-top: ${RFValue(5)}px;
-    /* background-color: ${({theme}) => theme.colors.status_avaliacao}; */
 `;
 
+export const Status = styled.Text<Props>`
+    justify-content: flex-start;
+    align-items: center;
+    font-family: ${({ theme }) => theme.fonts.regular};
+    font-size: ${RFValue(10)}px;
+    /* padding-top: ${RFValue(3)}px; */
+    border-radius: ${RFValue(DefaultAppValues.bordas.padrao)}px;
+    padding: 0 ${RFValue(5)}px;
+    margin-top: ${RFValue(2)}px;
+
+    ${({ status }) => status == 1 && css ` background-color: ${({theme}) => theme.colors.status_default}; `};
+    ${({ status }) => status == 2 && css ` background-color: ${({theme}) => theme.colors.status_atendido}; `};
+    ${({ status }) => status == 3 && css ` background-color: ${({theme}) => theme.colors.status_remarcado}; `};
+    ${({ status }) => status == 4 && css ` background-color: ${({theme}) => theme.colors.status_cancelado}; `};
+    ${({ status }) => status == 5 && css ` background-color: ${({theme}) => theme.colors.status_desmarcado}; `};
+    ${({ status }) => status == 6 && css ` background-color: ${({theme}) => theme.colors.status_avaliacao}; `};
+`;

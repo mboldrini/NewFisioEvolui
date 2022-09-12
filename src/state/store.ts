@@ -9,7 +9,7 @@ import { persistStore, persistReducer } from 'redux-persist';
 const persistedReducer = persistReducer({
     key: 'root',
     storage: AsyncStorage,
-    whitelist: ['user', 'apiReducer', 'atendimentoReducer', 'formasPgtoReducer'],// testar caso n pegue, o nome 'userReducer''
+    whitelist: ['user', 'apiReducer', 'atendimentoReducer', 'formasPgtoReducer', 'pacientesReducer'],// testar caso n pegue, o nome 'userReducer''
     blacklist: []
 }, rootReducer);
 

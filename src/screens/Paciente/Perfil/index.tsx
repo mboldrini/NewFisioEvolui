@@ -4,25 +4,45 @@ import {useNavigation, useRoute } from '@react-navigation/native';
 import { 
     Container,
     WrapGroup,
+    WrapGroupBtn,
     Title,
     WrapInfo,
     Spacer,
     Icone,
+
+    WrapIconeEdit,
+    IconeItemEdit,
     InfoArea,
     Description,
     Info,
     InfoTexto,
     WrapLoadingPctInfos,
-    DateWrapper,
-    SelectDateWrapper,
-    IconeChangeMonth,
-    ChangeMonthLeft,
-    ChangeMonthRight,
-    Month,
+
+    SectionExpandable,
+    WrapExpandTitle,
+    ExpandableTitle,
+    Line,
+    WrapInfoList,
     WrapAgendamentos,
-    WrapToast,
     LoadingIcon,
-    TextSemAgendamentos
+
+
+    /// Cabeçalho
+    ContainerCabecalho,
+    WrapLeft,
+    IconeLeft,
+    IconeRight,
+    WrapTitle,
+    Titulo,
+
+
+    /// MENU
+    ViewBtn,
+    AreaMenu,
+    BtnMenuList,
+    TituloMenu,
+    IconeMenu,
+
 } from './styles';
 import Toast from 'react-native-toast-message';
 
@@ -35,48 +55,18 @@ import { api } from '../../../global/api';
 import { useSelector } from 'react-redux';
 import { State } from '../../../state';
 // Imports
-import { months} from '../../../global/variaveis/Dates';
-import { getMonth, getYear, lastDayOfMonth, format } from 'date-fns';
+import { format } from 'date-fns';
 import { AppointmentList } from '../../../components/AppointmentList';
 import { Iscrol } from '../../CadastrarPaciente/styles';
 import { ModalAgendamento } from '../../../components/Modal/ModalAgendamento';
 import IApointment from '../../../global/DTO/Apointment';
 import { ButtonSimple } from '../../../components/Buttons/ButtonSimple/Index';
+import { IPctInfos, IRoute, IAgendamentosApi, IPctInfosList, IExpandablesShow } from './Interfaces';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { Modal } from 'react-native-ui-lib';
+import { List_PacienteItens } from '../../../components/List_Items/PacienteItens';
+import { CabecalhoMenu } from '../../../components/CabecalhoMenu';
 
-
-interface IPctInfos{
-    id: number,
-    nome: string,
-    cpf: string,
-    dataNascimento: string,
-    celular: string,
-    email: string,
-    tipoAtendimento: string,
-    temComorbidade: boolean,
-    logradouro: string,
-    queixamotivo: string,
-    diagnosticos: string,
-    comorbidades: string
-}
-
-interface IAgendamentos{
-    id: number,
-    tipo: number,
-    status: number,
-    timestamp: number,
-}
-
-interface IAgendamentosApi{
-    id: number,
-    timestamp: string,
-    data: string,
-    tipo: number,
-    status: number
-}
-
-interface IRoute{
-    id: number
-}
 
 export function PacientePerfil(){
 
@@ -89,31 +79,45 @@ export function PacientePerfil(){
     const apiState = useSelector((state: State) => state.apiReducer);
 
     const [loading, setLoading] = useState(true);
+    /// Infos do Paciente
     const [pctInfos, setPctInfos] = useState<IPctInfos>(null);
-    // Agendamentos do paciente
-    const [loadingAgendamentos, setLoadingAgendamentos] = useState(true);
-    const [pctAgendamentos, setPctAgendamentos] = useState<IAgendamentos[]>([]);
-    
-    const [selectedYear, setSelectedYear] = useState(0);
-    const [selectedMonth, setSelectedMonth] = useState(0);
+    const [infosList, setInfosList] = useState<IPctInfosList>(null);
 
+    const [menuVisible, setMenuVisible] = useState(false);
+    const [menuEscolhido, setMenuEscolhido] = useState(null);
 
     const [ isAgendamentoVisible, setIsAgendamentoVisible] = useState(false);
     // Appointment received from Modal
     const [appointment, setAppointment] = useState({} as IApointment | null);
 
-    
-    function handleNavigate(){ navigation.goBack(); }
+    const [expandables, setExpandables] = useState<IExpandablesShow>({
+        clinicalDiagnostic: false,
+        complaint: false,
+        hda: false,
+        hpp: false,
+        functional: false,
+        physical: false,
+        respiratory: false,
+        objectives: false,
+        evolution: false,
+        guideline: false,
+        appointments: false,
+    });
 
     async function GetPacienteInfos(){
+        console.group("GetPacienteInfos");
 
         setLoading(true);
 
-        await api(apiState.token).get('/paciente/'+ id ).then(res => {
+        await api(apiState.token).get('/clients/'+ id ).then(res => {
 
             setPctInfos(res.data);
 
             setLoading(false);
+
+            console.log(res.data);
+
+            GetPacienteInfosList(id);
 
         }).catch(err => {
             console.log(err);
@@ -124,40 +128,40 @@ export function PacientePerfil(){
                 text2: `${err}`
             });
 
-            setTimeout(() => {
-                navigation.goBack();
-            }, 3000);
+        });
+        console.groupEnd();
+    }
+
+    async function GetPacienteInfosList(id: number){
+        console.group("GetPacienteInfosList");
+
+        const params = {
+            "client_id": id,
+            "date": new Date()
+        }
+
+        console.log("Paramsn:");
+        console.log(JSON.stringify(params));
+
+        await api(apiState.token).post('/clients/infos', params ).then(res => {
+
+            console.log("Retorno:");
+            console.log(res.data);
+
+            setInfosList(res.data);
+
+        }).catch(err => {
+            console.log(err);
+
+            Toast.show({
+                type: 'error',
+                text1: 'OPS! erro ao obter a lista informações do paciente.',
+                text2: `${err}`
+            });
 
         });
-    }
 
-    const handleDateClick = (side: String) => {
-        let mountDate = new Date(selectedYear, selectedMonth, 1);
-
-        if(side == "left"){
-            mountDate.setMonth( mountDate.getMonth() -1 );
-        }else{
-            mountDate.setMonth( mountDate.getMonth() +1 );
-        }
-
-        setSelectedYear( getYear(mountDate) );
-        setSelectedMonth( getMonth(mountDate) );
-    }
-
-    function GetDateRange(id: number){
-        let data = new Date(selectedYear, selectedMonth);
-        let startDate = format(data, 'yyyy-MM-dd');
-        let endDate = format(lastDayOfMonth( data ), 'yyyy-MM-dd');
-
-        let agendaSelecionada = {
-            "paciente_id": id,
-            "dataInicio": startDate,
-            "dataFim": endDate
-        }
-
-        console.log(agendaSelecionada   );
-
-        return agendaSelecionada
+        console.groupEnd();
     }
 
     function MontaListaAgendamentos(listaAgendamentos: IAgendamentosApi[]){
@@ -195,32 +199,6 @@ export function PacientePerfil(){
         }
     }
 
-    async function GetAgendamentos(){
-
-        setPctAgendamentos([]);
-        setLoadingAgendamentos(true);
-        
-        await api(apiState.token).post('/agendamento/all', GetDateRange(id) ).then(res =>{
-            
-            MontaListaAgendamentos(res.data);
-
-        }).catch(err => {
-
-            console.log("erro?");
-            console.log(err);     
-            
-            Toast.show({
-                type: 'error',
-                text1: 'OPS! erro ao obter agendamentos do paciente.',
-                text2: `${err}`
-            });    
-
-            setLoadingAgendamentos(false);
-
-        });
-
-    }
-
     async function CadastraAgendamento(){
         console.log("Cadastra novo agendamento p/ o pct");
 
@@ -254,58 +232,71 @@ export function PacientePerfil(){
         });
     }
 
+    function HandleInfosPage(tipo: string){
+        navigation.navigate('ListaInfosPaciente' as never, { 
+            idPaciente: pctInfos.id,
+            nomePaciente: pctInfos.name,
+            tipo: tipo,
+        } as never)
+        
+    }
+
+    const listaMenuPerfil = [
+        { title: 'Diagnóstico Clínico', slug:'diagnosticoClinico', icone: 'list-ul', }, 
+        { title: 'Queixa Principal', slug:'queixaPrincipal', icone: 'list-ul', }, 
+        { title: 'HDA', slug:'hda', icone: 'list-ul', },
+        { title: 'HPP', slug:'hpp', icone: 'list-ul', },
+        { title: 'Avaliação Física', slug:'avaliacaoFisica', icone: 'list-ul', },
+        { title: 'Avaliação Respiratória', slug:'avaliacaoRespiratoria', icone: 'list-ul', },
+        { title: 'Diagnóstico Funcional',  slug:'diagnosticoFuncional', icone: 'list-ul', },
+        { title: 'Objetivos/Metas',  slug:'objetivos', icone: 'list-ul', },
+        { title: 'Orientações', slug:'orientacoes', icone: 'list-ul', },
+        { title: 'Agendamentos', slug:'agendamentos', icone: 'list-ul', },
+    ]
+
+
 
     useEffect(()=>{
-
-        function DefineDataHoje(){
-            let d = new Date();
-            setSelectedMonth(getMonth(d));
-            setSelectedYear(getYear(d));
-        }
-
         if(!id){
             console.log("Sem route ID");
         }else{
             GetPacienteInfos();
-            DefineDataHoje();
         }   
-
     }, []);
 
     useEffect(()=>{
-        if(pctInfos?.nome.length > 2 && id){
-            GetAgendamentos();
-        }
-    }, [selectedMonth]);
-
-
-    useEffect(()=>{
-        if(appointment?.data){
+        if(appointment?.date_scheduled){
             CadastraAgendamento();
         }
     },[appointment]);
 
-
+    useEffect(()=>{
+        if(menuEscolhido){
+            console.log("Escolhido: "+ menuEscolhido);
+            HandleInfosPage(menuEscolhido);
+            setMenuEscolhido(null);
+        }
+    },[menuEscolhido]);
 
     return(
         <Container >
-            <WrapToast>
-                <Toast position={'top'}  autoHide={true} visibilityTime={6000} onPress={()=>Toast.hide()}/>
-            </WrapToast>
+        <SafeAreaView>
         <Iscrol refreshControl={<RefreshControl refreshing={refreshing} onRefresh={()=>{ GetPacienteInfos() }}/>}>
 
-            <Cabecalho 
-                titulo="Perfil do Paciente"
-                onPress={handleNavigate}
+            <CabecalhoMenu
+                titulo='Perfil do Paciente'
+                onPress={()=> navigation.goBack() }
+                setMenuEscolhido={setMenuEscolhido}
+                menuList={listaMenuPerfil}
             />
-        
+
             { pctInfos && loading == false &&
             <>
 
                 <PacienteHeader 
                     iconeTipo="hospital"
-                    tipo={pctInfos.tipoAtendimento}
-                    nome={pctInfos.nome}
+                    tipo={pctInfos.serviceType.name}
+                    nome={pctInfos.name}
                 />
 
                 <WrapGroup>
@@ -317,7 +308,7 @@ export function PacientePerfil(){
                         <Icone name="calendar-day"/>
                         <InfoArea>
                             <Description>Data de Nascimento</Description>
-                            <Info>{ pctInfos?.dataNascimento }</Info>
+                            <Info>{ format( new Date(pctInfos?.dataNascimento), 'dd/MM/yyyy') }</Info>
                         </InfoArea>
                     </WrapInfo>
 
@@ -327,7 +318,7 @@ export function PacientePerfil(){
                         <Icone name="id-card"/>
                         <InfoArea>
                             <Description>CPF</Description>
-                            <Info>{ pctInfos?.cpf}</Info>
+                            <Info>{ pctInfos?.document}</Info>
                         </InfoArea>
                     </WrapInfo>
 
@@ -340,7 +331,7 @@ export function PacientePerfil(){
                         <Icone name="whatsapp"/>
                         <InfoArea>
                             <Description>Celular</Description>
-                            <Info>{ pctInfos.celular }</Info>
+                            <Info>{ pctInfos.celphone }</Info>
                         </InfoArea>
                     </WrapInfo>
 
@@ -362,48 +353,239 @@ export function PacientePerfil(){
                         <Icone name="map-pin"/>
                         <InfoArea>
                             <Description>Endereço</Description>
-                            <Info>{ pctInfos.logradouro }</Info>
+                            <Info>{ pctInfos.address }</Info>
                         </InfoArea>
                     </WrapInfo>
                 </WrapGroup>
 
-                { (pctInfos.temComorbidade || pctInfos?.queixamotivo?.length > 1 || pctInfos?.diagnosticos?.length > 1) && 
-                <WrapGroup>
-                    <Title>Informações de Médicas</Title>
-                    
-                    { pctInfos.temComorbidade && 
-                        <WrapInfo>
-                            <Icone name="star-of-life"/>
-                            <InfoArea>
-                                <Description>Comorbidade</Description>
-                                <InfoTexto>{ pctInfos?.comorbidades }</InfoTexto>
-                            </InfoArea>
-                        </WrapInfo>
-                    }
 
-                    { pctInfos?.queixamotivo?.length > 1 && 
-                        <WrapInfo>
-                            <Icone name="star-of-life"/>
-                            <InfoArea>
-                                <Description>Queixa/Motivo do atendimento</Description>
-                                <InfoTexto>{ pctInfos?.queixamotivo }</InfoTexto>
-                            </InfoArea>
-                        </WrapInfo>
-                    }
+ 
+                { infosList?.clinicalDiagnostic && infosList?.clinicalDiagnostic.length > 0 && 
+                    <SectionExpandable top={false} expanded={expandables.clinicalDiagnostic}
+                        sectionHeader={
+                            <WrapExpandTitle>
+                                <ExpandableTitle>Diagnóstico Clínico</ExpandableTitle>
+                                <Icone name={expandables.clinicalDiagnostic ? 'chevron-up' : 'chevron-down'} onPress={() => setExpandables({...expandables, clinicalDiagnostic: !expandables.clinicalDiagnostic})}/>
+                            </WrapExpandTitle>
+                        }
+                    >
+                        { infosList?.clinicalDiagnostic.length >= 1 && 
+                            infosList.clinicalDiagnostic.map( (item, key) => {
+                                return(
+                                    <List_PacienteItens data={item.date} about={item.about} key={key} onPress={()=> console.log(item.about)} />
+                                )
+                            })
+                        }
+                        <Line />
+                    </SectionExpandable>
+                } 
 
-                    { pctInfos?.diagnosticos?.length > 1 && 
-                        <WrapInfo>
-                            <Icone name="star-of-life"/>
-                            <InfoArea>
-                                <Description>Diagnóstico Inicial</Description>
-                                <InfoTexto>{ pctInfos?.diagnosticos }</InfoTexto>
-                            </InfoArea>
-                        </WrapInfo>
-                    }
-                </WrapGroup>
+                { infosList?.complaints && infosList?.complaints.length > 0 && 
+                    <SectionExpandable top={false} expanded={expandables.complaint}
+                        sectionHeader={
+                            <WrapExpandTitle>
+                                <ExpandableTitle>Queixa Principal</ExpandableTitle>
+                                <Icone name={expandables.complaint ? 'chevron-up' : 'chevron-down'} onPress={() => setExpandables({...expandables, complaint: !expandables.complaint})}/>
+                            </WrapExpandTitle>
+                        }
+                    >
+                        { infosList?.complaints.length >= 1 && 
+                            infosList.complaints.map( (item, key) => {
+                                return(
+                                    <List_PacienteItens data={item.date} about={item.about} key={key} onPress={()=> console.log(item.about)} />
+                                )
+                            })
+                        }
+                        <Line />
+                    </SectionExpandable>
+                } 
+
+                {infosList?.hda && infosList?.hda.length > 0 &&
+                    <SectionExpandable top={false} expanded={expandables.hda}
+                        sectionHeader={
+                            <WrapExpandTitle>
+                                <ExpandableTitle>HDA - História da Doença Atual</ExpandableTitle>
+                                <Icone name={expandables.hda ? 'chevron-up' : 'chevron-down'} onPress={() => setExpandables({...expandables, hda: !expandables.hda})}/>
+                            </WrapExpandTitle>
+                        }
+                    >
+                        { infosList?.hda.length >= 1 && 
+                            infosList.hda.map( (item, key) => {
+                                return(
+                                    <List_PacienteItens data={item.date} about={item.about} key={key} onPress={()=> console.log(item.about)} />
+                                )
+                            })
+                        }
+                        <Line />
+                    </SectionExpandable>
                 }
 
-                <WrapGroup>
+                {infosList?.hpp && infosList?.hpp.length > 0 &&
+                    <SectionExpandable top={false} expanded={expandables.hpp}
+                        sectionHeader={
+                            <WrapExpandTitle>
+                                <ExpandableTitle>HPP - História Patológico Pregresso</ExpandableTitle>
+                                <Icone name={expandables.hpp ? 'chevron-up' : 'chevron-down'} onPress={() => setExpandables({...expandables, hpp: !expandables.hpp})}/>
+                            </WrapExpandTitle>
+                        }
+                    >
+                        { infosList?.hpp.length >= 1 && 
+                            infosList.hpp.map( (item, key) => {
+                                return(
+                                    <List_PacienteItens data={item.date} about={item.about} key={key} onPress={()=> console.log(item.about)} />
+                                )
+                            })
+                        }
+                        <Line />
+                    </SectionExpandable>
+                }
+
+                {infosList?.physicalEvaluation && infosList?.physicalEvaluation.length > 0 &&
+                    <SectionExpandable top={false} expanded={expandables.physical}
+                        sectionHeader={
+                            <WrapExpandTitle>
+                                <ExpandableTitle>Avaliação Física</ExpandableTitle>
+                                <Icone name={expandables.physical ? 'chevron-up' : 'chevron-down'} onPress={() => setExpandables({...expandables, physical: !expandables.physical})}/>
+                            </WrapExpandTitle>
+                        }
+                    >
+                        { infosList?.physicalEvaluation.length >= 1 && 
+                            infosList.physicalEvaluation.map( (item, key) => {
+                                return(
+                                    <List_PacienteItens data={item.date} about={item.about} key={key} onPress={()=> console.log(item.about)} />
+                                )
+                            })
+                        }
+                        <Line />
+                    </SectionExpandable>
+                }
+
+                {infosList?.respiratoryEvaluation && infosList?.respiratoryEvaluation.length > 0 &&
+                    <SectionExpandable top={false} expanded={expandables.respiratory}
+                        sectionHeader={
+                            <WrapExpandTitle>
+                                <ExpandableTitle>Avaliação Respiratória</ExpandableTitle>
+                                <Icone name={expandables.respiratory ? 'chevron-up' : 'chevron-down'} onPress={() => setExpandables({...expandables, respiratory: !expandables.respiratory})}/>
+                            </WrapExpandTitle>
+                        }
+                    >
+                        { infosList?.respiratoryEvaluation.length >= 1 && 
+                            infosList.respiratoryEvaluation.map( (item, key) => {
+                                return(
+                                    <List_PacienteItens data={item.date} about={item.about} key={key} onPress={()=> console.log(item.about)} />
+                                )
+                            })
+                        }
+                        <Line />
+                    </SectionExpandable>
+                }
+
+
+                {infosList?.functionalDiagnostic && infosList?.functionalDiagnostic.length > 0 &&
+                    <SectionExpandable top={false} expanded={expandables.functional}
+                        sectionHeader={
+                            <WrapExpandTitle>
+                                <ExpandableTitle>Diagnóstico Funcional</ExpandableTitle>
+                                <Icone name={expandables.functional ? 'chevron-up' : 'chevron-down'} onPress={() => setExpandables({...expandables, functional: !expandables.functional})}/>
+                            </WrapExpandTitle>
+                        }
+                    >
+                        { infosList?.functionalDiagnostic.length >= 1 && 
+                            infosList.functionalDiagnostic.map( (item, key) => {
+                                return(
+                                    <List_PacienteItens data={item.date} about={item.about} key={key} onPress={()=> console.log(item.about)} />
+                                )
+                            })
+                        }
+                        <Line />
+                    </SectionExpandable>
+                }
+
+                
+                {infosList?.objectives && infosList?.objectives.length > 0 &&
+                    <SectionExpandable top={false} expanded={expandables.objectives}
+                        sectionHeader={
+                            <WrapExpandTitle>
+                                <ExpandableTitle>Objetivos e Metas</ExpandableTitle>
+                                <Icone name={expandables.objectives ? 'chevron-up' : 'chevron-down'} onPress={() => setExpandables({...expandables, objectives: !expandables.objectives})}/>
+                            </WrapExpandTitle>
+                        }
+                    >
+                        { infosList?.objectives.length >= 1 && 
+                            infosList.objectives.map( (item, key) => {
+                                return(
+                                    <List_PacienteItens data={item.date} about={item.about} key={key} onPress={()=> console.log(item.about)} />
+                                )
+                            })
+                        }
+                        <Line />
+                    </SectionExpandable>
+                }
+
+                {infosList?.guideline && infosList?.guideline.length > 0 &&
+                    <SectionExpandable top={false} expanded={expandables.objectives}
+                        sectionHeader={
+                            <WrapExpandTitle>
+                                <ExpandableTitle>Orientações</ExpandableTitle>
+                                <Icone name={expandables.guideline ? 'chevron-up' : 'chevron-down'} onPress={() => setExpandables({...expandables, guideline: !expandables.guideline})}/>
+                            </WrapExpandTitle>
+                        }
+                    >
+                        { infosList?.guideline.length >= 1 && 
+                            infosList.guideline.map( (item, key) => {
+                                return(
+                                    <List_PacienteItens data={item.date} about={item.about} key={key} onPress={()=> console.log(item.about)} />
+                                )
+                            })
+                        }
+                        <Line />
+                    </SectionExpandable>
+                }
+
+                {infosList?.appointment &&
+                    <SectionExpandable top={false} expanded={expandables.appointments}
+                        sectionHeader={
+                            <WrapExpandTitle>
+                                <ExpandableTitle>Agendamentos do Mês</ExpandableTitle>
+                                <Icone name={expandables.appointments ? 'chevron-up' : 'chevron-down'} onPress={() => setExpandables({...expandables, appointments: !expandables.appointments})}/>
+                            </WrapExpandTitle>
+                        }
+                    >
+                    <WrapGroupBtn>
+
+                        { infosList?.appointment.length >= 1 && 
+                            infosList.appointment.map( (item, key) => {
+                                return(
+                                    <AppointmentList
+                                        key={key}
+                                        status={item.status}
+                                        type={item.type}
+                                        date_scheduled={ item.date_scheduled.toString() }
+                                        start_hour={item.start_hour}
+                                        end_hour={item.end_hour}
+                                        onPress={()=>{ AlertExcludeAppointment(item, key) }}
+                                    />   
+                                )
+                            })
+                        }
+                    </WrapGroupBtn>
+
+                    {/* <ButtonSimple
+                        type="default"
+                        title="Agendar Atendimento" 
+                        onPress={()=> setIsAgendamentoVisible(true) }
+                    /> */}
+
+                    <Line />
+
+                    </SectionExpandable>
+                }
+
+
+                {/*
+
+
+                {/* <WrapGroup>
                     <Title>Agendamentos do Paciente</Title>
 
                     <DateWrapper>
@@ -445,15 +627,9 @@ export function PacientePerfil(){
                         })
                     }
                     </WrapAgendamentos>
-                </WrapGroup>
+                </WrapGroup> */}
 
-                <WrapGroup>
-                    <ButtonSimple
-                        type="default"
-                        title="Agendar Atendimento" 
-                        onPress={()=> setIsAgendamentoVisible(true) }
-                    />
-                </WrapGroup>
+            
 
 
             </>
@@ -467,13 +643,17 @@ export function PacientePerfil(){
 
             <BottomSpacer/>
               
-            <ModalAgendamento 
-                isVisible={isAgendamentoVisible} 
-                setIsVisible={()=> setIsAgendamentoVisible(false) }
-                setSelectedApointment={setAppointment}
-            />
+            { pctInfos?.serviceType &&
+                <ModalAgendamento 
+                    isVisible={isAgendamentoVisible} 
+                    setIsVisible={()=> setIsAgendamentoVisible(false) }
+                    setSelectedApointment={setAppointment}
+                    idServiceType={pctInfos.serviceType.id}
+                />
+            }
 
         </Iscrol>
+        </SafeAreaView>
         </Container>
     )
 }

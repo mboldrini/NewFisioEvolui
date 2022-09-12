@@ -5,12 +5,16 @@ import {FlatList, RefreshControl} from 'react-native';
 // API
 import { api } from '../../global/api';
 // REDUX
-import { useSelector } from 'react-redux';
-import { State } from '../../state';
+import { useDispatch, useSelector } from 'react-redux';
+import { actionCreators, State } from '../../state';
+//Outros
 import LottieView from 'lottie-react-native';
+import { Toast } from 'react-native-toast-message/lib/src/Toast';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { 
     Container,
+    Iscrol,
     Header,
     Titulo,
     Icon,
@@ -22,18 +26,28 @@ import {
 
 } from './styles';
 import { ModalLoading } from '../../components/Modal/ModalLoading';
+import { bindActionCreators } from 'redux';
 
 interface IPatient{
-    id: number
-    nome: string,
-    tipoAtendimento: string,
-    logradouro: string
+    id: number,
+    name: string,
+    dataNascimento: Date,
+    document: string,
+    email: string,
+    celphone: string,
+    address: string,
+    serviceType_id: number,
+    serviceType_name: string,
 }
 
 
 export function Home(){
 
     const navigation = useNavigation();
+
+    const dispatch = useDispatch();
+    const { setPacientes, setAtualizaPacientes } = bindActionCreators(actionCreators, dispatch);
+    const pacientesReducer = useSelector((state: State) => state.pacientesReducer);
 
     const apiState = useSelector((state: State) => state.apiReducer);
 
@@ -52,68 +66,90 @@ export function Home(){
 
         console.log(apiState);
 
+        setPatientList([]);
+
         await api(apiState.token).get('/clients/user/all').then(res=>{
 
+            setAtualizaPacientes(false);
+            setPacientes(res.data);
             setPatientList(res.data);
-            console.log("ok?");
+
+            console.log("ok! obteve a lista dos pacientes");
             console.log(res.data);
 
         }).catch(err=>{
-            console.error(err);
+            console.log(err);
+
+            Toast.show({
+                type: 'error',
+                text1: 'Ops!',
+                text2: `Erro ao obter a lista de pacientes` 
+            });
         })
 
         console.groupEnd();
     }
 
     useEffect(()=>{
-        GetPatientList();
-
-        // navigation.navigate('PacienteAtendimento' as never, { id: 13} as never)
-
+        if(pacientesReducer.pacientes.length > 0){
+           setPatientList(pacientesReducer.pacientes);
+            console.log("tem pacientes já salvos no redux");
+        }else{
+           GetPatientList();
+            console.log("não tem pacientes salvos no redux");
+        }
     },[]);
 
+    useEffect(()=>{
+        if(pacientesReducer.atualiza){
+            GetPatientList();
+        }
+    },[pacientesReducer.atualiza]);
+
     return(
-        <Container refreshControl={<RefreshControl refreshing={refreshing} onRefresh={ ()=>console.log("Refresh") }/>}>
+<SafeAreaView style={{flex: 1, backgroundColor: '#63C2D1'}}>
+    <Container >
+        <Iscrol refreshControl={<RefreshControl refreshing={refreshing} onRefresh={ ()=> GetPatientList() }/>}>
 
 
-            <Header>
-                <Titulo>Pesquisar nome do paciente</Titulo>
-                <Icon name="search"/>
-            </Header>
- 
-            { patientList.length > 0 &&
-              <FlatList 
-                    data={patientList}
-                    keyExtractor={pct => pct.id+""}
-                    renderItem={({item}) =>(
-                        <PacienteList
-                            key={item.id}
-                            companyIcon={"hospital"}/*{item.companyIcon}*/
-                            companyName={ item.serviceType_name }
-                            // lastConsult={"01/01/2001"}
-                            personName={ item.name }
-                            address={ item.address }
-                            onPress={()=>{ HandleNavigate(item.id) }}
-                        />
-                    )}
-                    
-                />
-            }
+        <Header>
+            <Titulo>Pesquisar nome do paciente</Titulo>
+            <Icon name="search"/>
+        </Header>
 
-            { patientList.length < 1 &&
-                <Wrap>
-                    <WrapLoading>
-                        <LottieView
-                            source={require('../../assets/loadingAnimado250.json')}
-                            autoSize={false}
-                            autoPlay
-                            loop
-                        />
-                    </WrapLoading>
-                    <TextoLoading>Carregando lista de pacientes...</TextoLoading>
-                </Wrap>
-            }
+        { patientList.length > 0 &&
+            <FlatList 
+                data={patientList}
+                keyExtractor={pct => pct.id+""}
+                renderItem={({item}) =>(
+                    <PacienteList
+                        key={item.id}
+                        companyIcon={"hospital"}/*{item.companyIcon}*/
+                        companyName={ item.serviceType_name }
+                        personName={ item.name }
+                        address={ item.address }
+                        onPress={()=>{ HandleNavigate(item.id) }}
+                    />
+                )}
+                
+            />
+        }
 
-        </Container>
-    )
-}
+        { patientList.length < 1 &&
+            <Wrap>
+                <WrapLoading>
+                    <LottieView
+                        source={require('../../assets/loadingAnimado250.json')}
+                        autoSize={false}
+                        autoPlay
+                        loop
+                    />
+                </WrapLoading>
+                <TextoLoading>Carregando lista de pacientes...</TextoLoading>
+            </Wrap>
+        }
+
+        </Iscrol>
+    </Container>
+</SafeAreaView>
+)}

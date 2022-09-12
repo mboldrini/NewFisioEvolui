@@ -2,9 +2,13 @@ import styled from "styled-components/native";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { RFPercentage, RFValue } from "react-native-responsive-fontsize";
 
-export const Container = styled.ScrollView`
+export const Container = styled.View`
     flex: 1;
     background-color: ${({theme}) => theme.colors.primary};
+`;
+
+export const Iscrol = styled.ScrollView`
+    z-index: -1;
 `;
 
 export const Header = styled.View`
@@ -13,7 +17,7 @@ export const Header = styled.View`
     padding-top: ${RFValue(12)}px;
     padding: 15px ${({theme}) => theme.padding.lateral}px;
     align-items: center;
-    margin-top: 20px;
+    /* margin-top: 5px; */
 `;
 
 export const Titulo = styled.Text`

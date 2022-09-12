@@ -1,3 +1,5 @@
+import { DefaultAppValues } from "../styles/theme";
+
    
 /// TRANSFORMAR EM ENUM
 export const statusAtendimento = [
@@ -23,6 +25,16 @@ export const StorageKeys = {
 };
 
 
+
+export const tiposDeAtendimentos = [
+    {id: 0, title: 'Não Atendido', slug: 'naoAtendido',    cor: DefaultAppValues.statusAtendimento.status_default      },
+    {id: 1, title: 'Não Atendido', slug: 'naoAtendido',    cor: DefaultAppValues.statusAtendimento.status_default      },
+    {id: 2, title: 'Atendido',     slug: 'atendido',       cor: DefaultAppValues.statusAtendimento.status_atendido     },
+    {id: 3, title: 'Remarcado',    slug: 'remarcado',      cor: DefaultAppValues.statusAtendimento.status_remarcado    },
+    {id: 4, title: 'Cancelado',    slug: 'cancelado',      cor: DefaultAppValues.statusAtendimento.status_cancelado    },
+    {id: 5, title: 'Desmarcado',   slug: 'desmarcado',     cor: DefaultAppValues.statusAtendimento.status_desmarcado   },
+    {id: 6, title: 'Avaliação',    slug: 'avaliacao',      cor: DefaultAppValues.statusAtendimento.status_avaliacao    },
+]
 
 
 
