@@ -668,26 +668,26 @@ export function EditPacienteInfos(){
                     </ScrollView>
                 </ActionSheet>
       
-                  <ActionSheet id="modalTiposAtendimentos" initialOffsetFromBottom={1} gestureEnabled={true} headerAlwaysVisible={true} elevation={3} extraScroll={3}  containerStyle={{backgroundColor: '#63C2D1'}} >
-                      <ScrollView nestedScrollEnabled={true} >
-                          <FlatList 
-                              data={atendimentosState.atendimentos}
-                              keyExtractor={(item) => item.name}
-                              renderItem={({item}) =>(
-                                  <WrapList>
-                                      <List_TipoPagamento 
-                                          paymentMethod_name={item.name} 
-                                          description={item.description} 
-                                          onPress={()=>{ 
-                                              setTipoAtendimento({key: item.id , title: item.name })
-                                              SheetManager.hide("modalTiposAtendimentos")  
-                                          }} 
-                                      />
-                                  </WrapList>
-                              )}
-                          />
-                      </ScrollView>
-                  </ActionSheet>
+                <ActionSheet id="modalTiposAtendimentos" initialOffsetFromBottom={1} gestureEnabled={true} headerAlwaysVisible={true} elevation={3} extraScroll={3}  containerStyle={{backgroundColor: '#63C2D1'}} >
+                    <ScrollView nestedScrollEnabled={true} >
+                        <FlatList 
+                            data={atendimentosState.atendimentos}
+                            keyExtractor={(item) => item.name}
+                            renderItem={({item}) =>(
+                                <WrapList>
+                                    <List_TipoPagamento 
+                                        paymentMethod_name={item.name} 
+                                        description={item.description} 
+                                        onPress={()=>{ 
+                                            setTipoAtendimento({key: item.id , title: item.name })
+                                            SheetManager.hide("modalTiposAtendimentos")  
+                                        }} 
+                                    />
+                                </WrapList>
+                            )}
+                        />
+                    </ScrollView>
+                </ActionSheet>
       
 
                 <ModalAgendamento 

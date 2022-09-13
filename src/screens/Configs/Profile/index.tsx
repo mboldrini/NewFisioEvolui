@@ -48,27 +48,27 @@ export function Profile(){
 
     async function handleLogoff(){
 
-        setUserInfos({
-            id: null,
-            name: '',
-            email: null,
-            family_name: '',
-            given_name: '',
-            picture: '',
-            token: '',
-        });
+        // setUserInfos({
+        //     id: -1,
+        //     name: '',
+        //     email: null,
+        //     family_name: '',
+        //     given_name: '',
+        //     picture: '',
+        //     token: '',
+        // });
 
-        navigation.navigate('SignIn' as never);
+        // navigation.navigate('SignIn' as never);
     }
 
     async function GetProfileStatistics(){
-        await api(usrState.token).get('/users/profileStatistics').then(res =>{
+        // await api(usrState.token).get('/users/profileStatistics').then(res =>{
             
-            setProfileStatistics(res.data);
+        //     setProfileStatistics(res.data);
 
-        }).catch(err => {
-            setProfileStatistics(null);
-        });
+        // }).catch(err => {
+        //     setProfileStatistics(null);
+        // });
     }
 
     useEffect(()=>{
@@ -124,14 +124,9 @@ export function Profile(){
                     <WrapIcone><Icone name="chevron-right" enabled={true}/></WrapIcone>
                 </BtnList>
 
-                <BtnList enabled={false} onPress={()=> console.log("tipos") /*navigation.navigate('ListarTiposAtendimentos' as never)*/ }>
-                    <TituloList enabled={false}>Tipo de Atendimento</TituloList>
-                    <WrapIcone><Icone name="chevron-right" enabled={false}/></WrapIcone>
-                </BtnList>
-
-                <BtnList enabled={false}>
-                    <TituloList enabled={false}>Estatísticas</TituloList>
-                    <WrapIcone><Icone name="chevron-right" enabled={false}/></WrapIcone>
+                <BtnList enabled={true} onPress={()=> navigation.navigate('DiaHoraTrabalho' as never)}>
+                    <TituloList enabled={true}>Dia/Hora de Trabalho</TituloList>
+                    <WrapIcone><Icone name="chevron-right" enabled={true}/></WrapIcone>
                 </BtnList>
 
                 <BtnList  enabled={true} onPress={() => navigation.navigate('ConfiguracoesPessoais' as never) }>
