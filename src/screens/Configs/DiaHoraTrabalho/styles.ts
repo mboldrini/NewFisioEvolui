@@ -18,7 +18,7 @@ export const Iscrol = styled.ScrollView`
 `;
 
 export const Wrap = styled.View`
-    margin: 0 ${RFValue(DefaultAppValues.margin.lateral_half)}px;
+    /* margin: 0 ${RFValue(DefaultAppValues.margin.lateral_half)}px; */
     margin-top: ${RFValue(15)}px;
     flex: 1;
 `;
@@ -56,6 +56,7 @@ export const BtnList = styled.View`
     flex-direction: column;
     background-color: #FFFFFF;
     border-radius: ${RFValue(DefaultAppValues.bordas.padrao)}px;
+    margin: 0 ${RFValue(DefaultAppValues.margin.lateral_half)}px;
     margin-bottom: ${RFValue(10)}px;
     shadow-color: #000;
     shadow-offset: {width: 0px};

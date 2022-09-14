@@ -29,6 +29,8 @@ import { api } from '../../../global/api';
 import { InputFake } from '../../../components/Forms/InputFake';
 import { FlatList } from 'react-native-gesture-handler';
 import { CabecalhoMenu } from '../../../components/CabecalhoMenu';
+import { isAfter, isBefore, differenceInHours } from 'date-fns';
+import { Footer_Modal } from '../../../components/Footers/Footer_Modal';
 
 interface IDiaSemana{
     ativo: boolean,
@@ -138,6 +140,37 @@ export function DiaHoraTrabalho(){
         });
         setShowModalHora(true);
     }
+
+    /// Faz as validações de range de horas de trabalho
+    function HoraFinalEAntes(inicio: string, fim: string){
+        const [horaInicio, minutoInicio] = inicio.split(":");
+        const [horaFim, minutoFim] = fim.split(":");
+
+        let dataInicio = new Date(1995,7,1);
+            dataInicio.setHours(parseInt(horaInicio));
+            dataInicio.setMinutes(parseInt(minutoInicio));
+
+        let dataFim = new Date(1995,7,1);
+            dataFim.setHours(parseInt(horaFim));
+            dataFim.setMinutes(parseInt(minutoFim));
+
+        if( isBefore(dataFim, dataInicio), isAfter(dataInicio, dataFim) ){
+            return true;
+        }else{
+
+            if(differenceInHours(dataFim, dataInicio) >= 10){
+                Toast.show({
+                    type: 'info',
+                    text1: '🙃 Eita! você trabalha bastante!',
+                    text2: 'lembre-se de fazer uma pausa de vez em quando...'
+                });
+            }
+
+            return false;
+        }
+
+
+    }
     
     function HandleSetHoraEscolhida(hora: number, minuto: number){
         console.group("HandleSetHoraEscolhida");
@@ -151,24 +184,40 @@ export function DiaHoraTrabalho(){
         let dias = [...diasTrabalha];
 
         if(diaEscolhido.periodo == "inicio"){
-            dias[diaEscolhido.id] = {
-                ativo: diasTrabalha[diaEscolhido.id].ativo,     
-                inicio: nhora +":"+ nminuto, 
-                fim: diasTrabalha[diaEscolhido.id].fim, 
-                dia: diasTrabalha[diaEscolhido.id].dia, 
-                id: diaEscolhido.id
+            if(!HoraFinalEAntes( nhora +":"+ nminuto, diasTrabalha[diaEscolhido.id].fim)){
+                dias[diaEscolhido.id] = {
+                    ativo: diasTrabalha[diaEscolhido.id].ativo,     
+                    inicio: nhora +":"+ nminuto, 
+                    fim: diasTrabalha[diaEscolhido.id].fim, 
+                    dia: diasTrabalha[diaEscolhido.id].dia, 
+                    id: diaEscolhido.id
+                }
+            }else{
+                Toast.show({
+                    type: 'error',
+                    text1: '⚠️ A hora de início não pode ser depois da hora final',
+                });
             }
+            setDiasTrabalha(dias);
+
         }else{
-            dias[diaEscolhido.id] = {
-                ativo: diasTrabalha[diaEscolhido.id].ativo,     
-                inicio: diasTrabalha[diaEscolhido.id].inicio, 
-                fim: nhora +":"+ nminuto, 
-                dia: diasTrabalha[diaEscolhido.id].dia, 
-                id: diaEscolhido.id
+            if(!HoraFinalEAntes(diasTrabalha[diaEscolhido.id].inicio, nhora +":"+ nminuto ) ){
+                dias[diaEscolhido.id] = {
+                    ativo: diasTrabalha[diaEscolhido.id].ativo,     
+                    inicio: diasTrabalha[diaEscolhido.id].inicio, 
+                    fim: nhora +":"+ nminuto, 
+                    dia: diasTrabalha[diaEscolhido.id].dia, 
+                    id: diaEscolhido.id
+                }
+            }else{
+                Toast.show({
+                    type: 'error',
+                    text1: '⚠️ A hora final não pode ser antes da hora inícial',
+                });
             }
+            setDiasTrabalha(dias);
         }
         setDiaEscolhido(null);
-        setDiasTrabalha(dias);
         setShowModalHora(false);
 
         console.groupEnd();
@@ -230,6 +279,9 @@ export function DiaHoraTrabalho(){
                     animationType="fade" // optional, default is 'none'
                     locale={'pt-BR'} // optional, default is automically detected by your system
                 />
+
+
+                <Footer_Modal onPressOk={()=> console.log("OK!") } onPressCancel={()=> navigation.goBack() } />
 
             </Wrap>
         }
