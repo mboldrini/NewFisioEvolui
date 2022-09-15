@@ -27,23 +27,47 @@ import {
 /// API
 import { api } from '../../../global/api';
 import { InputFake } from '../../../components/Forms/InputFake';
-import { FlatList } from 'react-native-gesture-handler';
 import { CabecalhoMenu } from '../../../components/CabecalhoMenu';
 import { isAfter, isBefore, differenceInHours } from 'date-fns';
 import { Footer_Modal } from '../../../components/Footers/Footer_Modal';
+import { Footer_CreatedAt } from '../../../components/Footers/Footer_CreatedAt';
 
-interface IDiaSemana{
-    ativo: boolean,
-    inicio: string,
-    fim: string,
-    dia: string,
-    id: number
-}
 interface IDiaEscolhido{
-    id: number,
-    periodo: "inicio"|"fim"
+    dia: 'sunday'|'monday'|'tuesday'|'wednesday'|'thursday'|'friday'|'saturday',
+    periodo: "inicio"|"fim",
+    start: string,
+    end: string,
 }
 
+interface ICreatedAndUpdated{
+    created_at: string;
+    updated_at: string;
+}
+interface IDayRetornoAPi{
+    enabled: boolean, 
+    start: string, 
+    end: string
+}
+interface IRetornoAPI{
+    "created_at": string,
+    "updated_at": string,
+    "sunday": IDayRetornoAPi,
+    "monday": IDayRetornoAPi,
+    "tuesday": IDayRetornoAPi,
+    "wednesday": IDayRetornoAPi,
+    "thursday": IDayRetornoAPi,
+    "friday": IDayRetornoAPi,
+    "saturday": IDayRetornoAPi,
+}
+interface IDiasRetornoAPI{
+    "sunday": IDayRetornoAPi,
+    "monday": IDayRetornoAPi,
+    "tuesday": IDayRetornoAPi,
+    "wednesday": IDayRetornoAPi,
+    "thursday": IDayRetornoAPi,
+    "friday": IDayRetornoAPi,
+    "saturday": IDayRetornoAPi,
+}
 
 
 export function DiaHoraTrabalho(){
@@ -51,52 +75,98 @@ export function DiaHoraTrabalho(){
     const navigation = useNavigation();
     const [refreshing, setRefresh] = useState(false);
 
-    let [loading, setLoading] = useState(false);
+    let [loading, setLoading] = useState(true);
 
     ///Reducer
-    // const dispatch = useDispatch();
-    // const apiState = useSelector((state: State) => state.apiReducer);
+    const dispatch = useDispatch();
+    const apiState = useSelector((state: State) => state.apiReducer);
     // const { setUserConfigs } = bindActionCreators(actionCreators, dispatch);
 
     const [showModalHora, setShowModalHora] = useState(false);
     const [diaEscolhido, setDiaEscolhido] = useState<IDiaEscolhido>(null);
-    const [horaMinutoPadrao, setHoraMinutoPadrao] = useState({
-        hora: 0,
-        minuto: 0        
-    });
+    const [horaMinutoPadrao, setHoraMinutoPadrao] = useState({ hora: 0, minuto: 0 });
 
-    const [diasTrabalha, setDiasTrabalha] = useState<IDiaSemana[]>([
-        { id: 0, ativo: true ,  inicio: "08:00", fim: "18:30", dia: "Segunda"   },
-        { id: 1, ativo: false,  inicio: "08:00", fim: "08:00", dia: "Terça"     },
-        { id: 2, ativo: false,  inicio: "08:00", fim: "08:00", dia: "Quarta"    },
-        { id: 3, ativo: false,  inicio: "08:00", fim: "08:00", dia: "Quinta"    },
-        { id: 4, ativo: false,  inicio: "08:00", fim: "08:00", dia: "Sexta"     },
-        { id: 5, ativo: false,  inicio: "08:00", fim: "08:00", dia: "Sabado"    },
-        { id: 6, ativo: false,  inicio: "08:00", fim: "08:00", dia: "Domingo"   },
-    ]);
+    const [updateAndCreated, setUpdateAndCreated] = useState<ICreatedAndUpdated>(null);
+
+    const [diasTrabalha, setDiasTrabalha] = useState<IDiasRetornoAPI>(null);
+
 
     async function GetConfigs(){
+        console.group("GetConfigs");
 
-        // setLoading(true);
+        setLoading(true);
        
-        // await api(apiState.token).get('users/configs').then(res =>{
+        await api(apiState.token).get('users/workdays').then(res =>{
 
-        //     setConfigs(res.data);
-        //     setUserConfigs(res.data);
+            let retornoApi: IRetornoAPI = res.data;
 
-        // }).catch(err => {
-        //     console.log("ERRO");
-        //     console.log(err);
+            setUpdateAndCreated({
+                created_at: res.data.created_at,
+                updated_at: res.data.updated_at
+            });
 
-        //     Toast.show({
-        //         type: 'error',
-        //         text1: '⚠️ Erro ao obter informações atualizadas',
-        //         text2: 'tenta de novo, quem sabe dessa vez, acaba funcionando...'
-        //     });
+            setDiasTrabalha({
+                "sunday":    retornoApi.sunday,
+                "monday":    retornoApi.monday,
+                "tuesday":   retornoApi.tuesday,
+                "wednesday": retornoApi.wednesday,
+                "thursday":  retornoApi.thursday,
+                "friday":    retornoApi.friday,
+                "saturday":  retornoApi.saturday,
+            })
 
-        // });
+            setTimeout(()=>{
+                setLoading(false);
+            }, 300);
 
-        // setLoading(false);
+
+        }).catch(err => {
+            console.log("ERRO");
+            console.log(err);
+
+            Toast.show({
+                type: 'error',
+                text1: '⚠️ Erro ao obter informações atualizadas',
+                text2: 'tenta de novo, quem sabe dessa vez, acaba funcionando...'
+            });
+
+        });
+
+
+        console.groupEnd();
+    }
+
+    async function SalvaInfos(){
+        console.group("SalvaInfos");
+
+        setLoading(true);
+       
+        await api(apiState.token).patch('users/workdays', diasTrabalha).then(res =>{
+
+            console.log(res.data);
+
+            Toast.show({
+                type: 'success',
+                text1: '😃 Informações salvas com sucesso!',
+            });
+ 
+            setLoading(false);
+
+        }).catch(err => {
+            console.log("ERRO");
+            console.log(err);
+
+            Toast.show({
+                type: 'error',
+                text1: '⚠️ Erro ao salvar as informações',
+                text2: 'tenta de novo, quem sabe dessa vez, acaba funcionando...'
+            });
+
+            setLoading(false);
+
+        });
+
+        console.groupEnd();
     }
 
     const onConfirm = React.useCallback(
@@ -107,32 +177,90 @@ export function DiaHoraTrabalho(){
     );
 
 
-    function HandleCheck(id: number){
+    function HandleCheck(dia: 'sunday'|'monday'|'tuesday'|'wednesday'|'thursday'|'friday'|'saturday'){
         console.group("HandleDisableCheck");
 
-        let dias = [...diasTrabalha];
-
-        dias[id] = {
-            ativo: !diasTrabalha[id].ativo,     
-            inicio: diasTrabalha[id].inicio, 
-            fim: diasTrabalha[id].fim, 
-            dia: diasTrabalha[id].dia, 
-            id: id
+        if(dia == "sunday"){
+            setDiasTrabalha({
+                ...diasTrabalha,
+                "sunday": { enabled: !diasTrabalha.sunday.enabled, start: diasTrabalha.sunday.start, end: diasTrabalha.sunday.end }
+            });
+            return;
+        }else if(dia == 'monday'){
+            setDiasTrabalha({
+                ...diasTrabalha,
+                "monday": { enabled: !diasTrabalha.monday.enabled, start: diasTrabalha.monday.start, end: diasTrabalha.monday.end }
+            });
+            return;
+        }else if(dia == 'tuesday'){
+            setDiasTrabalha({
+                ...diasTrabalha,
+                "tuesday": { enabled: !diasTrabalha.tuesday.enabled, start: diasTrabalha.tuesday.start, end: diasTrabalha.tuesday.end }
+            });
+            return;
+        }else if(dia == 'wednesday'){
+            setDiasTrabalha({
+                ...diasTrabalha,
+                "wednesday": { enabled: !diasTrabalha.wednesday.enabled, start: diasTrabalha.wednesday.start, end: diasTrabalha.wednesday.end }
+            });
+            return;
+        }else if(dia == 'thursday'){
+            setDiasTrabalha({
+                ...diasTrabalha,
+                "thursday": { enabled: !diasTrabalha.thursday.enabled, start: diasTrabalha.thursday.start, end: diasTrabalha.thursday.end }
+            });
+            return;
+        }else if(dia == 'friday'){
+            setDiasTrabalha({
+                ...diasTrabalha,
+                "friday": { enabled: !diasTrabalha.friday.enabled, start: diasTrabalha.friday.start, end: diasTrabalha.friday.end }
+            });
+            return;
+        }else if(dia == 'saturday'){
+            setDiasTrabalha({
+                ...diasTrabalha,
+                "saturday": { enabled: !diasTrabalha.saturday.enabled, start: diasTrabalha.saturday.start, end: diasTrabalha.saturday.end }
+            });
+            return;
         }
-        setDiasTrabalha(dias);
 
         console.groupEnd();
     }
 
-    function HandleHoraEscolhida(id: number, periodo: "inicio"|"fim"){
-        if(!diasTrabalha[id].ativo) return;
+    function HandleHoraEscolhida(ativo: boolean, dia: any, periodo: "inicio"|"fim", start: string, end: string){
+        if(!ativo) return;
 
         setDiaEscolhido({
-            id: id,
-            periodo: periodo
+            dia: dia,
+            periodo: periodo,
+            start: start,
+            end: end
         });
 
-        const [hora, minuto] = periodo == "inicio" ? diasTrabalha[id].inicio.split(":") : diasTrabalha[id].fim.split(":")
+        let horarioEscolhido;
+        if(periodo === 'inicio'){
+            if(dia == 'sunday'      ) horarioEscolhido = diasTrabalha.sunday.start;
+            if(dia == 'monday'      ) horarioEscolhido = diasTrabalha.monday.start;
+            if(dia == 'tuesday'     ) horarioEscolhido = diasTrabalha.tuesday.start;
+            if(dia == 'wednesday'   ) horarioEscolhido = diasTrabalha.wednesday.start;
+            if(dia == 'thursday'    ) horarioEscolhido = diasTrabalha.thursday.start;
+            if(dia == 'friday'      ) horarioEscolhido = diasTrabalha.friday.start;
+            if(dia == 'saturday'    ) horarioEscolhido = diasTrabalha.saturday.start;
+        }else{
+            if(dia == 'sunday'      ) horarioEscolhido = diasTrabalha.sunday.end;
+            if(dia == 'monday'      ) horarioEscolhido = diasTrabalha.monday.end;
+            if(dia == 'tuesday'     ) horarioEscolhido = diasTrabalha.tuesday.end;
+            if(dia == 'wednesday'   ) horarioEscolhido = diasTrabalha.wednesday.end;
+            if(dia == 'thursday'    ) horarioEscolhido = diasTrabalha.thursday.end;
+            if(dia == 'friday'      ) horarioEscolhido = diasTrabalha.friday.end;
+            if(dia == 'saturday'    ) horarioEscolhido = diasTrabalha.saturday.end;
+        }
+
+        if(horarioEscolhido.length > 5){
+            horarioEscolhido = horarioEscolhido.substring(0,5);
+        }
+
+        const [hora, minuto] = horarioEscolhido.split(":");
 
         setHoraMinutoPadrao({
             hora: parseInt(hora),
@@ -175,53 +303,101 @@ export function DiaHoraTrabalho(){
     function HandleSetHoraEscolhida(hora: number, minuto: number){
         console.group("HandleSetHoraEscolhida");
 
-        let nhora: string
+        let nhora: string;
         let  nminuto: string;
         
         hora < 10 ? nhora = "0"+ hora : nhora = hora +""
-        minuto < 10 ? nminuto = "0"+ minuto : nminuto = minuto +""
+        minuto < 10 ? nminuto = "0"+ minuto : nminuto = minuto +"";
 
-        let dias = [...diasTrabalha];
+        let tempo = nhora +":"+ nminuto;
+
 
         if(diaEscolhido.periodo == "inicio"){
-            if(!HoraFinalEAntes( nhora +":"+ nminuto, diasTrabalha[diaEscolhido.id].fim)){
-                dias[diaEscolhido.id] = {
-                    ativo: diasTrabalha[diaEscolhido.id].ativo,     
-                    inicio: nhora +":"+ nminuto, 
-                    fim: diasTrabalha[diaEscolhido.id].fim, 
-                    dia: diasTrabalha[diaEscolhido.id].dia, 
-                    id: diaEscolhido.id
-                }
-            }else{
+
+            if(HoraFinalEAntes(tempo, diaEscolhido.end)){
                 Toast.show({
                     type: 'error',
                     text1: '⚠️ A hora de início não pode ser depois da hora final',
                 });
+                setDiaEscolhido(null);
+                setShowModalHora(false);
+                return;
             }
-            setDiasTrabalha(dias);
 
-        }else{
-            if(!HoraFinalEAntes(diasTrabalha[diaEscolhido.id].inicio, nhora +":"+ nminuto ) ){
-                dias[diaEscolhido.id] = {
-                    ativo: diasTrabalha[diaEscolhido.id].ativo,     
-                    inicio: diasTrabalha[diaEscolhido.id].inicio, 
-                    fim: nhora +":"+ nminuto, 
-                    dia: diasTrabalha[diaEscolhido.id].dia, 
-                    id: diaEscolhido.id
+            for(let dia in diasTrabalha){
+                if(dia == diaEscolhido.dia){
+                    if(dia == "sunday"){
+                        setDiasTrabalha({ ...diasTrabalha, "sunday":{ enabled: diasTrabalha.sunday.enabled, start: tempo, end: diasTrabalha.sunday.end } }) ;
+                    }
+                    if(dia == "monday"){
+                        setDiasTrabalha({ ...diasTrabalha, "monday":{ enabled: diasTrabalha.monday.enabled, start: tempo, end: diasTrabalha.monday.end } }) ;
+                    }
+                    if(dia == "tuesday"){
+                        setDiasTrabalha({ ...diasTrabalha, "tuesday":{ enabled: diasTrabalha.tuesday.enabled, start: tempo, end: diasTrabalha.tuesday.end } }) ;
+                    }
+                    if(dia == "wednesday"){
+                        setDiasTrabalha({ ...diasTrabalha, "wednesday":{ enabled: diasTrabalha.wednesday.enabled, start: tempo, end: diasTrabalha.wednesday.end } }) ;
+                    }
+                    if(dia == "thursday"){
+                        setDiasTrabalha({ ...diasTrabalha, "thursday":{ enabled: diasTrabalha.thursday.enabled, start: tempo, end: diasTrabalha.thursday.end } }) ;
+                    }
+                    if(dia == "friday"){
+                        setDiasTrabalha({ ...diasTrabalha, "friday":{ enabled: diasTrabalha.friday.enabled, start: tempo, end: diasTrabalha.friday.end } }) ;
+                    }
+                    if(dia == "saturday"){
+                        setDiasTrabalha({ ...diasTrabalha, "saturday":{ enabled: diasTrabalha.saturday.enabled, start: tempo, end: diasTrabalha.saturday.end } }) ;
+                    }
                 }
-            }else{
+            }
+        }else{
+
+            if(HoraFinalEAntes(diaEscolhido.start, tempo )){
                 Toast.show({
                     type: 'error',
                     text1: '⚠️ A hora final não pode ser antes da hora inícial',
                 });
+                setDiaEscolhido(null);
+                setShowModalHora(false);
+                return;
             }
-            setDiasTrabalha(dias);
+
+            for(let dia in diasTrabalha){
+                if(dia == diaEscolhido.dia){
+                    if(dia == "sunday"){
+                        setDiasTrabalha({ ...diasTrabalha, "sunday":{ enabled: diasTrabalha.sunday.enabled, start: diasTrabalha.sunday.start, end: tempo } }) ;
+                    }
+                    if(dia == "monday"){
+                        setDiasTrabalha({ ...diasTrabalha, "monday":{ enabled: diasTrabalha.monday.enabled, start: diasTrabalha.monday.start, end: tempo } }) ;
+                    }
+                    if(dia == "tuesday"){
+                        setDiasTrabalha({ ...diasTrabalha, "tuesday":{ enabled: diasTrabalha.tuesday.enabled, start: diasTrabalha.tuesday.start, end: tempo } }) ;
+                    }
+                    if(dia == "wednesday"){
+                        setDiasTrabalha({ ...diasTrabalha, "wednesday":{ enabled: diasTrabalha.wednesday.enabled, start: diasTrabalha.wednesday.start, end: tempo } }) ;
+                    }
+                    if(dia == "thursday"){
+                        setDiasTrabalha({ ...diasTrabalha, "thursday":{ enabled: diasTrabalha.thursday.enabled, start: diasTrabalha.thursday.start, end: tempo } }) ;
+                    }
+                    if(dia == "friday"){
+                        setDiasTrabalha({ ...diasTrabalha, "friday":{ enabled: diasTrabalha.friday.enabled, start: diasTrabalha.friday.start, end: tempo} }) ;
+                    }
+                    if(dia == "saturday"){
+                        setDiasTrabalha({ ...diasTrabalha, "saturday":{ enabled: diasTrabalha.saturday.enabled, start: diasTrabalha.saturday.start, end: tempo } }) ;
+                    }
+                }
+            }
         }
+
         setDiaEscolhido(null);
         setShowModalHora(false);
 
         console.groupEnd();
     }
+
+    useEffect(()=>{
+        GetConfigs();
+    },[]);
+
 
 
     return(
@@ -236,36 +412,184 @@ export function DiaHoraTrabalho(){
             <LoadingIcon size="large" color="#FFFFFF"/>            
         }
 
-        { !loading && 
+        { !loading && diasTrabalha.friday &&
             <Wrap>
+                
+                <BtnList>
+                    <WrapInfos>
+                        <TituloList>Domingo</TituloList>
+                        <Switch value={diasTrabalha.sunday.enabled}  onValueChange={() => HandleCheck("sunday") } trackColor={{ false:'#000000', true: '#3a86ff' }} thumbColor="#268596" />
+                    </WrapInfos>
+                    <WrapHoras>
+                        <WrapTempo>
+                            <TituloHora>Início:</TituloHora>
+                            <InputFake 
+                                title={diasTrabalha.sunday.start} 
+                                onPress={()=>{ HandleHoraEscolhida(diasTrabalha.sunday.enabled, "sunday", "inicio", diasTrabalha.sunday.start, diasTrabalha.sunday.end) }} 
+                                enabled={diasTrabalha.sunday.enabled}
+                            />
+                        </WrapTempo>
+                        <WrapTempo>
+                            <TituloHora>Fim:</TituloHora>
+                            <InputFake 
+                                title={diasTrabalha.sunday.end} 
+                                onPress={()=>{  HandleHoraEscolhida(diasTrabalha.sunday.enabled, "sunday", "fim", diasTrabalha.sunday.start, diasTrabalha.sunday.end) }} 
+                                enabled={diasTrabalha.sunday.enabled}
+                            />
+                        </WrapTempo>
+                    </WrapHoras>
+                </BtnList>  
 
-                <FlatList
-                    data={diasTrabalha}
-                    keyExtractor={(item) => item.dia +""}
-                    horizontal={false}
-                    renderItem={({item}) =>{
-                    return (
-                        <BtnList>
-                            <WrapInfos>
-                                <TituloList>{item.dia}</TituloList>
-                                <Switch value={item.ativo}  onValueChange={() => HandleCheck(item.id) } trackColor={{ false:'#000000', true: '#3a86ff' }} thumbColor="#268596" />
-                            </WrapInfos>
-                            {/* { item.ativo && */}
-                                <WrapHoras>
-                                    <WrapTempo>
-                                        <TituloHora>Início:</TituloHora>
-                                        <InputFake title={item.inicio} onPress={()=>{ HandleHoraEscolhida(item.id, "inicio") }} enabled={item.ativo}/>
-                                    </WrapTempo>
-                                    <WrapTempo>
-                                        <TituloHora>Fim:</TituloHora>
-                                        <InputFake title={item.fim} onPress={()=>{ HandleHoraEscolhida(item.id, "fim") }} enabled={item.ativo}/>
-                                    </WrapTempo>
-                                </WrapHoras>
-                            {/* } */}
-                        </BtnList>  
-                    )} }
-                />
+                <BtnList>
+                    <WrapInfos>
+                        <TituloList>Segunda</TituloList>
+                        <Switch value={diasTrabalha.monday.enabled}  onValueChange={() => HandleCheck("monday") } trackColor={{ false:'#000000', true: '#3a86ff' }} thumbColor="#268596" />
+                    </WrapInfos>
+                    <WrapHoras>
+                        <WrapTempo>
+                            <TituloHora>Início:</TituloHora>
+                            <InputFake 
+                                title={diasTrabalha.monday.start} 
+                                onPress={()=>{ HandleHoraEscolhida(diasTrabalha.monday.enabled, "monday", "inicio", diasTrabalha.monday.start, diasTrabalha.monday.end) }} 
+                                enabled={diasTrabalha.monday.enabled}
+                            />
+                        </WrapTempo>
+                        <WrapTempo>
+                            <TituloHora>Fim:</TituloHora>
+                            <InputFake 
+                                title={diasTrabalha.monday.end} 
+                                onPress={()=>{  HandleHoraEscolhida(diasTrabalha.monday.enabled, "monday", "fim", diasTrabalha.monday.start, diasTrabalha.monday.end) }} 
+                                enabled={diasTrabalha.monday.enabled}
+                            />
+                        </WrapTempo>
+                    </WrapHoras>
+                </BtnList>  
 
+                <BtnList>
+                    <WrapInfos>
+                        <TituloList>Terça</TituloList>
+                        <Switch value={diasTrabalha.tuesday.enabled}  onValueChange={() => HandleCheck("tuesday") } trackColor={{ false:'#000000', true: '#3a86ff' }} thumbColor="#268596" />
+                    </WrapInfos>
+                    <WrapHoras>
+                        <WrapTempo>
+                            <TituloHora>Início:</TituloHora>
+                            <InputFake 
+                                title={diasTrabalha.tuesday.start} 
+                                onPress={()=>{ HandleHoraEscolhida(diasTrabalha.tuesday.enabled, "monday", "inicio", diasTrabalha.tuesday.start, diasTrabalha.tuesday.end) }} 
+                                enabled={diasTrabalha.tuesday.enabled}
+                            />
+                        </WrapTempo>
+                        <WrapTempo>
+                            <TituloHora>Fim:</TituloHora>
+                            <InputFake 
+                                title={diasTrabalha.tuesday.end} 
+                                onPress={()=>{  HandleHoraEscolhida(diasTrabalha.tuesday.enabled, "tuesday", "fim", diasTrabalha.tuesday.start, diasTrabalha.tuesday.end) }} 
+                                enabled={diasTrabalha.tuesday.enabled}
+                            />
+                        </WrapTempo>
+                    </WrapHoras>
+                </BtnList>  
+
+                <BtnList>
+                    <WrapInfos>
+                        <TituloList>Quarta</TituloList>
+                        <Switch value={diasTrabalha.wednesday.enabled}  onValueChange={() => HandleCheck("wednesday") } trackColor={{ false:'#000000', true: '#3a86ff' }} thumbColor="#268596" />
+                    </WrapInfos>
+                    <WrapHoras>
+                        <WrapTempo>
+                            <TituloHora>Início:</TituloHora>
+                            <InputFake 
+                                title={diasTrabalha.wednesday.start} 
+                                onPress={()=>{ HandleHoraEscolhida(diasTrabalha.wednesday.enabled, "wednesday", "inicio", diasTrabalha.wednesday.start, diasTrabalha.wednesday.end) }} 
+                                enabled={diasTrabalha.wednesday.enabled}
+                            />
+                        </WrapTempo>
+                        <WrapTempo>
+                            <TituloHora>Fim:</TituloHora>
+                            <InputFake 
+                                title={diasTrabalha.wednesday.end} 
+                                onPress={()=>{  HandleHoraEscolhida(diasTrabalha.wednesday.enabled, "wednesday", "fim", diasTrabalha.wednesday.start, diasTrabalha.wednesday.end) }} 
+                                enabled={diasTrabalha.wednesday.enabled}
+                            />
+                        </WrapTempo>
+                    </WrapHoras>
+                </BtnList>  
+
+                <BtnList>
+                    <WrapInfos>
+                        <TituloList>Quinta</TituloList>
+                        <Switch value={diasTrabalha.thursday.enabled}  onValueChange={() => HandleCheck("thursday") } trackColor={{ false:'#000000', true: '#3a86ff' }} thumbColor="#268596" />
+                    </WrapInfos>
+                    <WrapHoras>
+                        <WrapTempo>
+                            <TituloHora>Início:</TituloHora>
+                            <InputFake 
+                                title={diasTrabalha.thursday.start} 
+                                onPress={()=>{ HandleHoraEscolhida(diasTrabalha.thursday.enabled, "thursday", "inicio", diasTrabalha.thursday.start, diasTrabalha.thursday.end) }} 
+                                enabled={diasTrabalha.thursday.enabled}
+                            />
+                        </WrapTempo>
+                        <WrapTempo>
+                            <TituloHora>Fim:</TituloHora>
+                            <InputFake 
+                                title={diasTrabalha.thursday.end} 
+                                onPress={()=>{  HandleHoraEscolhida(diasTrabalha.thursday.enabled, "thursday", "fim", diasTrabalha.thursday.start, diasTrabalha.thursday.end) }} 
+                                enabled={diasTrabalha.thursday.enabled}
+                            />
+                        </WrapTempo>
+                    </WrapHoras>
+                </BtnList>  
+
+                <BtnList>
+                    <WrapInfos>
+                        <TituloList>Sexta</TituloList>
+                        <Switch value={diasTrabalha.friday.enabled}  onValueChange={() => HandleCheck("friday") } trackColor={{ false:'#000000', true: '#3a86ff' }} thumbColor="#268596" />
+                    </WrapInfos>
+                    <WrapHoras>
+                        <WrapTempo>
+                            <TituloHora>Início:</TituloHora>
+                            <InputFake 
+                                title={diasTrabalha.friday.start} 
+                                onPress={()=>{ HandleHoraEscolhida(diasTrabalha.friday.enabled, "friday", "inicio", diasTrabalha.friday.start, diasTrabalha.friday.end) }} 
+                                enabled={diasTrabalha.friday.enabled}
+                            />
+                        </WrapTempo>
+                        <WrapTempo>
+                            <TituloHora>Fim:</TituloHora>
+                            <InputFake 
+                                title={diasTrabalha.friday.end} 
+                                onPress={()=>{  HandleHoraEscolhida(diasTrabalha.friday.enabled, "friday", "fim", diasTrabalha.friday.start, diasTrabalha.friday.end) }} 
+                                enabled={diasTrabalha.friday.enabled}
+                            />
+                        </WrapTempo>
+                    </WrapHoras>
+                </BtnList>  
+
+                <BtnList>
+                    <WrapInfos>
+                        <TituloList>Sábado</TituloList>
+                        <Switch value={diasTrabalha.saturday.enabled}  onValueChange={() => HandleCheck("saturday") } trackColor={{ false:'#000000', true: '#3a86ff' }} thumbColor="#268596" />
+                    </WrapInfos>
+                    <WrapHoras>
+                        <WrapTempo>
+                            <TituloHora>Início:</TituloHora>
+                            <InputFake 
+                                title={diasTrabalha.saturday.start} 
+                                onPress={()=>{ HandleHoraEscolhida(diasTrabalha.saturday.enabled, "saturday", "inicio", diasTrabalha.saturday.start, diasTrabalha.saturday.end) }} 
+                                enabled={diasTrabalha.saturday.enabled}
+                            />
+                        </WrapTempo>
+                        <WrapTempo>
+                            <TituloHora>Fim:</TituloHora>
+                            <InputFake 
+                                title={diasTrabalha.saturday.end} 
+                                onPress={()=>{  HandleHoraEscolhida(diasTrabalha.saturday.enabled, "saturday", "fim", diasTrabalha.saturday.start, diasTrabalha.saturday.end) }} 
+                                enabled={diasTrabalha.saturday.enabled}
+                            />
+                        </WrapTempo>
+                    </WrapHoras>
+                </BtnList>  
+                
                 
                 <TimePickerModal
                     visible={showModalHora}
@@ -280,27 +604,15 @@ export function DiaHoraTrabalho(){
                     locale={'pt-BR'} // optional, default is automically detected by your system
                 />
 
+                {updateAndCreated?.created_at &&
+                    <Footer_CreatedAt created_at={ updateAndCreated.created_at  } updated_at={ updateAndCreated.updated_at } />
+                }
 
-                <Footer_Modal onPressOk={()=> console.log("OK!") } onPressCancel={()=> navigation.goBack() } />
+                <Footer_Modal onPressOk={()=> SalvaInfos() } onPressCancel={()=> navigation.goBack() } />
 
             </Wrap>
         }
 
-        
-
-
-        {/* { !loading &&
-            <WrapFooterCadastro>
-                <Button 
-                    title="Salvar" 
-                    onPress={ () => { SaveConfigs() }}
-                    type="ok"
-                />
-            </WrapFooterCadastro>
-        } */}
-
-
-       
         
 
        </Iscrol>
