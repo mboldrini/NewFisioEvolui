@@ -1,4 +1,4 @@
-import React, {useEffect, useState}from 'react';
+import React, {useEffect, useRef, useState}from 'react';
 import {FlatList, RefreshControl} from 'react-native';
 import {useNavigation } from '@react-navigation/native';
 import { months, days, daysLong} from '../../global/variaveis/Dates';
@@ -33,11 +33,14 @@ import { State } from '../../state';
 import { AgendaItem } from '../../components/AgendaItem';
 // Date-fns
 import { getDay, getMonth, getYear, getDaysInMonth, getDate, format } from 'date-fns';
+import { Button } from '../../components/Buttons/Button/Index';
 
 
 export function Agenda(){
 
     const navigation = useNavigation();
+
+    const [ref, setRef] = useState(null);
 
     const [refreshing, setRefresh] = useState(false);
     const [loading, setLoading] = useState(false);
@@ -56,6 +59,8 @@ export function Agenda(){
     const [listdias, setListdias] = useState([]);
     // Agendamentos marcados para o dia escolhido
     const [agendamentos, setAgendamentos] = useState<ITipoAgendamento[]>(null);
+
+    const carrosselRef = useRef();
 
 
     const getAtualDay = () => {
@@ -141,6 +146,7 @@ export function Agenda(){
 
         setLoading(false);
 
+
         console.groupEnd();
 
     }
@@ -161,8 +167,30 @@ export function Agenda(){
             setSelectedDate(d);
 
             GetAgendaDia(d);
+
+            if(listdias.length > 5 && selectedDay > 0){
+                ref.scrollToIndex({
+                    animated: true,
+                    index: selectedDay -1,
+                    viewPosition: 0 
+                });
+            }
         }
     }, [selectedDay]);
+
+
+    useEffect(()=>{
+        if(listdias.length > 5){
+            ref.scrollToIndex({
+                animated: true,
+                index: selectedDay -1,
+                viewPosition: 0
+            });
+        }
+    },[]);
+
+
+
 
 
     return(
@@ -186,25 +214,28 @@ export function Agenda(){
                     </ChangeMonthRight>
                 </SelectDateWrapper>
 
-                <DateList>
+                {/* <DateList> */}
                     <FlatList
                         data={listdias}
                         keyExtractor={(item) => item.name}
                         horizontal={true}
                         renderItem={({item}) =>{
-                        return (
-                            <DateItem 
-                                key={item.key} 
-                                onPress={()=>{ item.status ? setSelectedDay(item.number) : null}} 
-                                style={{backgroundColor: item.number === selectedDay ? '#4EADBE' : '#FFFFFF' }}
-                            >
-                                <DateItemWeekDay style={{color: item.number === selectedDay ? '#FFFFFF' : '#000000'}}>{item.weekday}</DateItemWeekDay>
-                                <DateItemWeekNumber style={{ color: item.number === selectedDay ? '#FFFFFF' : '#000000'}}>{item.number}</DateItemWeekNumber>
-                            </DateItem>   
-                        )} }
+                            return (
+                                <DateItem 
+                                    key={item.key} 
+                                    onPress={()=>{ item.status ? setSelectedDay(item.number) : null}} 
+                                    style={{backgroundColor: item.number === selectedDay ? '#4EADBE' : '#FFFFFF' }}
+                                >
+                                    <DateItemWeekDay style={{color: item.number === selectedDay ? '#FFFFFF' : '#000000'}}>{item.weekday}</DateItemWeekDay>
+                                    <DateItemWeekNumber style={{ color: item.number === selectedDay ? '#FFFFFF' : '#000000'}}>{item.number}</DateItemWeekNumber>
+                                </DateItem>   
+                            )} 
+                        }
+                        ref={(ref) => { setRef(ref); }}
                     />
-                </DateList>
+                {/* </DateList> */}
             </DateWrapper>
+
 
             { loading &&
                 <Wrap>
