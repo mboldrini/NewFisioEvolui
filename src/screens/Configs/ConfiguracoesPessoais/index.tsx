@@ -23,6 +23,7 @@ import {
 } from './styles';
 /// API
 import { api } from '../../../global/api';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 
 interface IConfigs{
@@ -192,8 +193,9 @@ export function ConfiguracoesPessoais(){
 
 
     return(
-<Container>
-    <ScrollView refreshControl={<RefreshControl refreshing={refreshing} onRefresh={()=>{ GetConfigs() }}/> } contentContainerStyle={{flexGrow: 1}}>
+<SafeAreaView style={{flex: 1, backgroundColor: '#63C2D1'}}>
+    <Container >
+        <ScrollView refreshControl={<RefreshControl refreshing={refreshing} onRefresh={()=>{ GetConfigs() }}/> } contentContainerStyle={{flexGrow: 1}}>
 
         <Cabecalho titulo="Configurações do APP" onPress={()=> navigation.goBack() } />
 
@@ -289,7 +291,8 @@ export function ConfiguracoesPessoais(){
         }
        
         
-    </ScrollView>
-</Container>
+        </ScrollView>
+    </Container>
+</SafeAreaView>
     )
 }

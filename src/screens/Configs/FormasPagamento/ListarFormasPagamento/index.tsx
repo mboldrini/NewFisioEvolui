@@ -19,6 +19,7 @@ import { List_TipoPagamento } from '../../../../components/List_Items/TiposDePag
 import { bindActionCreators } from 'redux';
 import { useDispatch, useSelector } from 'react-redux';
 import { actionCreators, State } from '../../../../state';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 interface IListaTipos{
     id: number,
@@ -97,7 +98,8 @@ export function ListarFormasPagamento(){
  
 
     return(
-        <Container>
+<SafeAreaView style={{flex: 1, backgroundColor: '#63C2D1'}}>
+    <Container >
         <ScrollView refreshControl={<RefreshControl refreshing={refreshing} onRefresh={()=>{ GetListaPagamentos() }}/> } 
          contentContainerStyle={{flexGrow: 1}}>
 
@@ -140,6 +142,7 @@ export function ListarFormasPagamento(){
             
             </WrapCentral>
         </ScrollView>
-        </Container>
+    </Container>
+</SafeAreaView>
     )
 }

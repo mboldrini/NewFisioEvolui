@@ -169,11 +169,14 @@ export function Agenda(){
             GetAgendaDia(d);
 
             if(listdias.length > 5 && selectedDay > 0){
-                ref.scrollToIndex({
-                    animated: true,
-                    index: selectedDay -1,
-                    viewPosition: 0 
-                });
+                setTimeout(()=>{
+                    ref.scrollToIndex({
+                        animated: true,
+                        index: selectedDay -1,
+                        viewPosition: 0
+                    });
+                    console.log("setou a posicao do dia");
+                },300);
             }
         }
     }, [selectedDay]);
@@ -181,11 +184,14 @@ export function Agenda(){
 
     useEffect(()=>{
         if(listdias.length > 5){
-            ref.scrollToIndex({
-                animated: true,
-                index: selectedDay -1,
-                viewPosition: 0
-            });
+            setTimeout(()=>{
+                ref.scrollToIndex({
+                    animated: true,
+                    index: selectedDay -1,
+                    viewPosition: 0
+                });
+                console.log("setou a posicao do dia");
+            },300);
         }
     },[]);
 

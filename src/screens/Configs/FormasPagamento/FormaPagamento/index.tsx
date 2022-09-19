@@ -34,6 +34,7 @@ import * as Yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
 import { Button } from '../../../../components/Buttons/Button/Index';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 interface IRouteParam{
     id?: number;
@@ -236,8 +237,8 @@ export function FormaPagamento(){
 
 
     return(
-        <Container>
-
+<SafeAreaView style={{flex: 1, backgroundColor: '#63C2D1'}}>
+    <Container >
         <ScrollView refreshControl={<RefreshControl refreshing={refreshing} onRefresh={()=>{ GetFormaPagamento(id) }}/> } 
          contentContainerStyle={{flexGrow: 1}}>
 
@@ -324,6 +325,7 @@ export function FormaPagamento(){
 
         </WrapCentral>
         </ScrollView>
-        </Container>
+    </Container>
+</SafeAreaView>
     )
 }
