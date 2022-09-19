@@ -27,7 +27,7 @@ interface Props extends RectButtonProps{
     onPress: () => void;
     onPressIcon?: 'chevron-up' | 'chevron-right' | 'chevron-down' | 'chevron-left';
     setMenuEscolhido?: (menu: string) => void;
-    menuList: IMenuList[];
+    menuList?: IMenuList[];
 }
 
 export function CabecalhoMenu({titulo, onPress, onPressIcon = 'chevron-left', setMenuEscolhido, menuList, ...rest}: Props){
@@ -43,9 +43,11 @@ export function CabecalhoMenu({titulo, onPress, onPressIcon = 'chevron-left', se
                 </WrapTitle>
             </WrapLeft>
 
-            <IconeRight name="cog" onPress={() => setMenuVisible(true) } />
+            {menuList &&
+                <IconeRight name="cog" onPress={() => setMenuVisible(true) } />
+            }
 
-        
+            {menuList &&
             <Modal transparent visible={menuVisible} style={{position: 'absolute'}}>
                 <SafeAreaView style={{flex: 1, zIndex: -2}} onTouchEnd={() => setMenuVisible(false)}>
                     <AreaMenu style={{zIndex: 3}}>
@@ -58,6 +60,7 @@ export function CabecalhoMenu({titulo, onPress, onPressIcon = 'chevron-left', se
                     </AreaMenu>
                 </SafeAreaView>
             </Modal>
+            }
         </ContainerCabecalho>
     )
 }

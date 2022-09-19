@@ -13,6 +13,7 @@ const Stack = createStackNavigator();
 
 import styled from "styled-components/native";
 import Toast from 'react-native-toast-message';
+import { DiaHoraTrabalho } from '../screens/Configs/DiaHoraTrabalho';
 // import { View, Text } from 'react-native';
 
 const WrapToast = styled.View`
@@ -45,6 +46,8 @@ export default function ProfileStack(){
                 <Stack.Screen name="FormaPagamento" component={FormaPagamento} options={{headerShown:false}} /> 
 
                 <Stack.Screen name="ListarTiposAtendimento" component={ListarTiposAtendimento} options={{headerShown:false}} /> 
+
+                <Stack.Screen name="DiaHoraTrabalho" component={DiaHoraTrabalho} options={{headerShown:false}} /> 
             </Stack.Group>
         </Stack.Navigator>
     </>

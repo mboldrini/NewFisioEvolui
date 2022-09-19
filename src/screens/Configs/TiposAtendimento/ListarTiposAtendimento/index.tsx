@@ -19,6 +19,7 @@ import { Modal_TipoAtendimento } from '../Modal_TipoAtendimento';
 import { bindActionCreators } from 'redux';
 import { useDispatch, useSelector } from 'react-redux';
 import { actionCreators, State } from '../../../../state';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 interface IListaTipos{
     id: number,
@@ -108,7 +109,8 @@ export function ListarTiposAtendimento(){
  
 
     return(
-        <Container>
+<SafeAreaView style={{flex: 1, backgroundColor: '#63C2D1'}}>
+    <Container >
 
         <ScrollView refreshControl={<RefreshControl refreshing={refreshing} onRefresh={()=>{ GetListaAtendimentos() }}/> } 
          contentContainerStyle={{flexGrow: 1}}>
@@ -163,5 +165,6 @@ export function ListarTiposAtendimento(){
 
         </ScrollView>
     </Container>
+</SafeAreaView>
     )
 }
