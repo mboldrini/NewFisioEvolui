@@ -109,11 +109,6 @@ export function EditarPaciente(){
     const atendimentosState = useSelector((state: State) => state.atendimentoReducer); 
     const { setAtualizaPacientes } = bindActionCreators(actionCreators, dispatch);
 
-
-    const pacientesReducer = useSelector((state: State) => state.pacientesReducer);
-
-
-
     /// Form Infos Obtido da API
     const [formInfosApi, setFormInfosApi] = useState<IPacientApi>(null);
 
@@ -215,6 +210,8 @@ export function EditarPaciente(){
                 text1: '😃 Informações salvas com sucesso!',
             });
 
+            navigation.navigate('Home2' as never)
+
 
         }).catch(err =>{
             console.error("Erro ao cadastrar paciente");
@@ -234,6 +231,57 @@ export function EditarPaciente(){
         console.groupEnd();
     }
 
+    function VerificaSeVaiExcluir(){
+
+        Alert.alert(
+            "Deseja excluir esse paciente?",
+            "Essa ação não poderá ser desfeita",
+            [
+              {
+                text: "Excluir",
+                onPress: () => HandleDelete(),
+                style: "cancel"
+              },
+              { text: "Cancelar", onPress: () => {setMenuEscolhido(null); return} }
+            ]
+        );
+
+    }
+
+    async function HandleDelete(){
+        console.group("EXCLUI USUARIO");
+
+        setLoading(true);
+
+
+        await api(apiState.token).delete('/clients/'+ id).then(res =>{
+
+            setAtualizaPacientes(true);
+
+            Toast.show({
+                type: 'success',
+                text1: '😃 Paciente Excluído!',
+            });
+
+            navigation.navigate('Home2' as never)
+
+        }).catch(err =>{
+            console.error("Erro ao cadastrar paciente");
+            console.log(err.response.data);
+            if(err.response.data){
+                console.error(err.response.data.message, err.response.data.statusCode);
+            }
+            Toast.show({
+                type: 'error',
+                text1: 'Erro ao excluir paciente',
+                text2: err.response.data.message
+            });
+            setLoading(false);
+        });
+
+
+        console.groupEnd();
+    }
 
     useEffect(()=>{
         console.log("ID: "+ id);
@@ -243,10 +291,10 @@ export function EditarPaciente(){
     }, [id]);
 
     useEffect(()=>{
-        console.group("pacientesReducer");
-        console.log(pacientesReducer);
-        console.groupEnd();
-    },[pacientesReducer]);
+        if(menuEscolhido == "excluir"){
+            VerificaSeVaiExcluir();
+        }
+    },[menuEscolhido]);
 
     return(
 <Container >
