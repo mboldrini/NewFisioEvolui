@@ -103,7 +103,7 @@ export function Home(){
     useEffect(()=>{
         if(pacientesReducer.atualiza){
             GetPatientList();
-        }
+        } 
     },[pacientesReducer.atualiza]);
 
     return(

@@ -21,7 +21,7 @@ export const Header = styled.View`
     flex-direction: row;
     border-bottom-left-radius: ${RFValue(20)}px;
     border-bottom-right-radius: ${RFValue(20)}px;
-    elevation: 3;
+    z-index: 2;
 `;
 
 export const UserWrapper = styled.View`
@@ -73,12 +73,13 @@ export const InfosWrap = styled.View`
     justify-content: space-around;
     flex-direction: row;
     padding: 0 ${({theme}) => theme.margin.lateral}px;
-    padding-bottom: ${RFValue(5)}px;
-    padding-top: ${RFValue(20)}px;
     margin-top: ${RFValue(-15)}px;
+    padding-top: ${RFValue(20)}px;
+    padding-bottom: ${RFValue(5)}px;
     border-bottom-left-radius: ${RFValue(20)}px;
     border-bottom-right-radius: ${RFValue(20)}px;
-    elevation: 2;
+    /* elevation: -2; */
+    z-index: 1;
 `;
 
 export const Infos = styled.View`
@@ -89,13 +90,13 @@ export const Infos = styled.View`
 export const QtdInfos = styled.Text`
     font-family: ${({theme}) => theme.fonts.bold};
     color: ${({theme}) => theme.colors.shape};
-    font-size: ${RFValue(16)}px;
+    font-size: ${RFValue(12)}px;
 `;
 
 export const InfoDesc = styled.Text`
     font-family: ${({theme}) => theme.fonts.regular};
     color: ${({theme}) => theme.colors.shape};
-    font-size: ${RFValue(14)}px;
+    font-size: ${RFValue(12)}px;
 `;
 
 export const Body = styled.ScrollView.attrs({
@@ -106,7 +107,7 @@ export const Body = styled.ScrollView.attrs({
     }
 })`
     flex: 1;
-    margin-top: ${RFValue(15)}px;
+    margin-top: ${RFValue(10)}px;
 `;
 
 export const BtnList = styled.TouchableOpacity<Props>`

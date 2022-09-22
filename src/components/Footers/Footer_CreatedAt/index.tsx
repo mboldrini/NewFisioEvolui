@@ -15,15 +15,25 @@ interface IProps{
 }
 
 export function Footer_CreatedAt({ created_at, updated_at }: IProps){
+
+    function FormataHora(datetime: string){
+        const [data, tempo] = datetime.split(" ");
+
+        const [dia, mes, ano] = data.split("/");
+        const [hora, minuto, segundo] = tempo.split(":");
+
+        return format( new Date( parseInt(ano), parseInt(mes), parseInt(dia), parseInt(hora), parseInt(minuto) ), 'dd/MM/yyyy - HH:mm');
+    }
+
     return(
         <Container>
             <Wrap>
-                <TitleBold>Criado em: <TitleThin>{ format(new Date(created_at), 'dd/MM/yyyy - HH:mm') }</TitleThin></TitleBold>
+                <TitleBold>Criado em: <TitleThin>{ FormataHora(created_at) }</TitleThin></TitleBold>
             </Wrap>
 
         { updated_at !== created_at &&
             <Wrap>
-                <TitleBold>Atualizado em: <TitleThin>{ format(new Date(updated_at), 'dd/MM/yyyy - HH:mm') }</TitleThin></TitleBold>
+                <TitleBold>Atualizado em: <TitleThin>{ FormataHora(updated_at) }</TitleThin></TitleBold>
             </Wrap>
         }
         </Container>

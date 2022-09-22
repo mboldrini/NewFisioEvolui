@@ -21,7 +21,7 @@ const pacientesReducer = (state = initialState, action: Action) => {
                 ...state,
                 pacientes: action.payload.pacientes
             }
-        case ActionType.SETATUALIZAATENDIMENTO:
+        case ActionType.SETATUALIZAPACIENTES:
             return {
                 ...state,
                 atualiza: action.payload.atualiza,

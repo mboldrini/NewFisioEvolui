@@ -164,41 +164,6 @@ export function PacientePerfil(){
         console.groupEnd();
     }
 
-    function MontaListaAgendamentos(listaAgendamentos: IAgendamentosApi[]){
-
-        function FormatHoraAgendamento(dtHora: string){
-            let horario = new Date(parseInt(dtHora));
-            let horarioString = horario.getHours() +":"+ horario.getMinutes();
-            return horarioString;
-        }
-    
-        function FormatDataAgendamento(dtHora: string){
-            return format(new Date(parseInt(dtHora)), 'dd/M/yyyy');
-        }
-
-        if(listaAgendamentos?.length < 1){
-            Toast.show({
-                type: 'info',
-                text1: 'Sem agendamentos para o mês escolhido',
-            });    
-
-            setLoadingAgendamentos(false);
-
-        }else{
-
-            let agendamentoFormatado = listaAgendamentos.map( agendamento => ({
-                id: agendamento.id,
-                status: agendamento.status,
-                tipo: agendamento.tipo,
-                timestamp: parseInt(agendamento.timestamp)
-            }));
-
-            setPctAgendamentos(agendamentoFormatado);
-            setLoadingAgendamentos(false);
-
-        }
-    }
-
     async function CadastraAgendamento(){
         console.log("Cadastra novo agendamento p/ o pct");
 
@@ -233,15 +198,21 @@ export function PacientePerfil(){
     }
 
     function HandleInfosPage(tipo: string){
-        navigation.navigate('ListaInfosPaciente' as never, { 
-            idPaciente: pctInfos.id,
-            nomePaciente: pctInfos.name,
-            tipo: tipo,
-        } as never)
-        
+        if(tipo != "editar"){
+            navigation.navigate('ListaInfosPaciente' as never, { 
+                idPaciente: pctInfos.id,
+                nomePaciente: pctInfos.name,
+                tipo: tipo,
+            } as never);
+        }else{
+            navigation.navigate('EditarPaciente' as never, { 
+                id: pctInfos.id,
+            } as never);
+        }
     }
 
     const listaMenuPerfil = [
+        { title: 'Editar Informações', slug:'editar', icone: 'edit', }, 
         { title: 'Diagnóstico Clínico', slug:'diagnosticoClinico', icone: 'list-ul', }, 
         { title: 'Queixa Principal', slug:'queixaPrincipal', icone: 'list-ul', }, 
         { title: 'HDA', slug:'hda', icone: 'list-ul', },
@@ -372,7 +343,7 @@ export function PacientePerfil(){
                         { infosList?.clinicalDiagnostic.length >= 1 && 
                             infosList.clinicalDiagnostic.map( (item, key) => {
                                 return(
-                                    <List_PacienteItens data={item.date} about={item.about} key={key} onPress={()=> console.log(item.about)} />
+                                    <List_PacienteItens data={item.date} about={item.about} key={key} onPress={()=> HandleInfosPage("diagnosticoClinico") } />
                                 )
                             })
                         }
@@ -392,7 +363,7 @@ export function PacientePerfil(){
                         { infosList?.complaints.length >= 1 && 
                             infosList.complaints.map( (item, key) => {
                                 return(
-                                    <List_PacienteItens data={item.date} about={item.about} key={key} onPress={()=> console.log(item.about)} />
+                                    <List_PacienteItens data={item.date} about={item.about} key={key} onPress={()=> HandleInfosPage("queixaPrincipal") } />
                                 )
                             })
                         }
@@ -412,7 +383,7 @@ export function PacientePerfil(){
                         { infosList?.hda.length >= 1 && 
                             infosList.hda.map( (item, key) => {
                                 return(
-                                    <List_PacienteItens data={item.date} about={item.about} key={key} onPress={()=> console.log(item.about)} />
+                                    <List_PacienteItens data={item.date} about={item.about} key={key} onPress={()=> HandleInfosPage("hda") } />
                                 )
                             })
                         }
@@ -432,7 +403,7 @@ export function PacientePerfil(){
                         { infosList?.hpp.length >= 1 && 
                             infosList.hpp.map( (item, key) => {
                                 return(
-                                    <List_PacienteItens data={item.date} about={item.about} key={key} onPress={()=> console.log(item.about)} />
+                                    <List_PacienteItens data={item.date} about={item.about} key={key} onPress={()=> HandleInfosPage("hpp") } />
                                 )
                             })
                         }
@@ -452,7 +423,7 @@ export function PacientePerfil(){
                         { infosList?.physicalEvaluation.length >= 1 && 
                             infosList.physicalEvaluation.map( (item, key) => {
                                 return(
-                                    <List_PacienteItens data={item.date} about={item.about} key={key} onPress={()=> console.log(item.about)} />
+                                    <List_PacienteItens data={item.date} about={item.about} key={key} onPress={()=> HandleInfosPage("avaliacaoFisica")  } />
                                 )
                             })
                         }
@@ -472,7 +443,7 @@ export function PacientePerfil(){
                         { infosList?.respiratoryEvaluation.length >= 1 && 
                             infosList.respiratoryEvaluation.map( (item, key) => {
                                 return(
-                                    <List_PacienteItens data={item.date} about={item.about} key={key} onPress={()=> console.log(item.about)} />
+                                    <List_PacienteItens data={item.date} about={item.about} key={key} onPress={()=> HandleInfosPage("avaliacaoRespiratoria")  } />
                                 )
                             })
                         }
@@ -493,7 +464,7 @@ export function PacientePerfil(){
                         { infosList?.functionalDiagnostic.length >= 1 && 
                             infosList.functionalDiagnostic.map( (item, key) => {
                                 return(
-                                    <List_PacienteItens data={item.date} about={item.about} key={key} onPress={()=> console.log(item.about)} />
+                                    <List_PacienteItens data={item.date} about={item.about} key={key} onPress={()=> HandleInfosPage("diagnosticoFuncional")  } />
                                 )
                             })
                         }
@@ -514,7 +485,7 @@ export function PacientePerfil(){
                         { infosList?.objectives.length >= 1 && 
                             infosList.objectives.map( (item, key) => {
                                 return(
-                                    <List_PacienteItens data={item.date} about={item.about} key={key} onPress={()=> console.log(item.about)} />
+                                    <List_PacienteItens data={item.date} about={item.about} key={key} onPress={()=> HandleInfosPage("objetivos") } />
                                 )
                             })
                         }
@@ -534,7 +505,7 @@ export function PacientePerfil(){
                         { infosList?.guideline.length >= 1 && 
                             infosList.guideline.map( (item, key) => {
                                 return(
-                                    <List_PacienteItens data={item.date} about={item.about} key={key} onPress={()=> console.log(item.about)} />
+                                    <List_PacienteItens data={item.date} about={item.about} key={key} onPress={()=>  HandleInfosPage("orientacoes") } />
                                 )
                             })
                         }
@@ -563,7 +534,7 @@ export function PacientePerfil(){
                                         date_scheduled={ item.date_scheduled.toString() }
                                         start_hour={item.start_hour}
                                         end_hour={item.end_hour}
-                                        onPress={()=>{ AlertExcludeAppointment(item, key) }}
+                                        onPress={()=>{ HandleInfosPage("agendamentos") }}
                                     />   
                                 )
                             })
@@ -580,56 +551,6 @@ export function PacientePerfil(){
 
                     </SectionExpandable>
                 }
-
-
-                {/*
-
-
-                {/* <WrapGroup>
-                    <Title>Agendamentos do Paciente</Title>
-
-                    <DateWrapper>
-                        <SelectDateWrapper>
-                            <ChangeMonthLeft onPress={ ()=> {handleDateClick("left")} }>
-                                <IconeChangeMonth name="chevron-left"/>
-                            </ChangeMonthLeft>
-                            <Month>{ months[selectedMonth] } - { selectedYear }</Month>
-                            <ChangeMonthRight onPress={ ()=> {handleDateClick("right")} }>
-                                <IconeChangeMonth name="chevron-right"/>
-                            </ChangeMonthRight>
-                        </SelectDateWrapper>
-                    </DateWrapper>
-
-                    { (pctAgendamentos.length < 1 && loadingAgendamentos == true) &&
-                        <WrapAgendamentos>
-                            <LoadingIcon size="large" color="#FFFFFF"/>                    
-                        </WrapAgendamentos>
-                    }
-
-                    { (pctAgendamentos.length < 1 && loadingAgendamentos === false) &&
-                        <WrapAgendamentos>
-                            <TextSemAgendamentos>Nenhum agendamento encontrado</TextSemAgendamentos>
-                        </WrapAgendamentos>
-                    }
-
-                    <WrapAgendamentos>
-                    { pctAgendamentos.length >= 1 && 
-                        pctAgendamentos.map( (item, key) => {
-                            return(
-                                <AppointmentList
-                                    key={key}
-                                    status={item.status}
-                                    type={item.tipo}
-                                    timestamp={item.timestamp}
-                                    onPress={()=>{ navigation.navigate('PacienteAtendimento' as never, { id: item.id} as never) }}
-                                />   
-                            )
-                        })
-                    }
-                    </WrapAgendamentos>
-                </WrapGroup> */}
-
-            
 
 
             </>
@@ -653,7 +574,7 @@ export function PacientePerfil(){
             }
 
         </Iscrol>
-        </SafeAreaView>
-        </Container>
+    </SafeAreaView>
+</Container>
     )
 }

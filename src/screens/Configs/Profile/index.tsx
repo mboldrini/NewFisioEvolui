@@ -33,7 +33,8 @@ import Toast from 'react-native-toast-message';
 
 interface IProfileStats{
     qtdAtendimentos: number,
-    qtdPacientes: number
+    qtdPacientes: number,
+    qtdEvolucoes: number
 }
 
 export function Profile(){
@@ -41,34 +42,56 @@ export function Profile(){
     const navigation = useNavigation();
 
     const dispatch = useDispatch();
-    const { setUserInfos, setApiInfos } = bindActionCreators(actionCreators, dispatch);
+    const { setUserInfos, setPacientes, setAtendimentos, setFormasPgto, setUserConfigs } = bindActionCreators(actionCreators, dispatch);
     const usrState = useSelector((state: State) => state.user);
+    const apiState = useSelector((state: State) => state.apiReducer);
 
     const [profileStatistics, setProfileStatistics] = useState<IProfileStats>();
 
     async function handleLogoff(){
 
-        // setUserInfos({
-        //     id: -1,
-        //     name: '',
-        //     email: null,
-        //     family_name: '',
-        //     given_name: '',
-        //     picture: '',
-        //     token: '',
-        // });
+        setUserInfos({
+            user_code: null,
+            name: null,
+            family_name: null,
+            given_name: null,
+            picture: null,
+            email: null,
+            enabled: null,
+            created_at: null,
+            address: null, 
+            configs: null, 
+            personal_infos: {
+                professional_mail: null,
+                celphone: null,
+            }
+        });
+        setPacientes([]);
+        setAtendimentos([]);
+        setFormasPgto([]);
+        setUserConfigs({
+            start_workHour: null, 
+            end_workHour: null, 
+            allow_retroactiveDate: null, 
+            allow_notifications: null, 
+            schedule_startDay: null, 
+            user_premium: null, 
+            premium_type: null,
+            premium_until: null,
+        })
 
-        // navigation.navigate('SignIn' as never);
+        navigation.navigate('SignIn' as never);
     }
 
     async function GetProfileStatistics(){
-        // await api(usrState.token).get('/users/profileStatistics').then(res =>{
+        await api(apiState.token).get('users/infos/statistic').then(res =>{
             
-        //     setProfileStatistics(res.data);
+            setProfileStatistics(res.data);
+            console.log("setou as estatisticas!");
 
-        // }).catch(err => {
-        //     setProfileStatistics(null);
-        // });
+        }).catch(err => {
+            setProfileStatistics(null);
+        });
     }
 
     useEffect(()=>{
@@ -102,6 +125,11 @@ export function Profile(){
                     <Infos>
                         <QtdInfos>{ profileStatistics.qtdAtendimentos }</QtdInfos>
                         <InfoDesc>Atendimentos</InfoDesc>
+                    </Infos>
+
+                    <Infos>
+                        <QtdInfos>{ profileStatistics.qtdEvolucoes }</QtdInfos>
+                        <InfoDesc>Evoluções</InfoDesc>
                     </Infos>
                 </InfosWrap>
             }
