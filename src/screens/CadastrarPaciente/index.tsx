@@ -31,8 +31,9 @@ import { Select } from '../../components/Forms/Select';
 // API
 import { api } from '../../global/api';
 // REDUX
-import { useDispatch, useSelector } from 'react-redux';
-import { State } from '../../state';
+import { bindActionCreators } from 'redux';
+import { useDispatch, useSelector, } from 'react-redux';
+import { actionCreators, State } from '../../state';
 // Interface's
 import IApointment from '../../global/DTO/Apointment';
 import { INewPatient } from '../../global/DTO/Pacient';
@@ -52,7 +53,8 @@ import ActionSheet, { SheetManager } from "react-native-actions-sheet";
 const schema = Yup.object().shape({
     nome: Yup.string().required("Nome é obrigatório"),
     cpf: Yup.string().required("CPF é obrigatório").length(14, "CPF deve ter 11 dígitos"),
-    dataNascimento: Yup.string().optional().length(10, "Formato de data: 00/00/0000"),
+    dataNascimento: Yup.string().required("Data de Nascimento é obrigatório").length(10, "Formato de data: 00/00/0000"),
+    instagram: Yup.string().optional(),
     celular: Yup.string().required("Telefone de contato é obrigatório"),
     email: Yup.string().required("Email é obrigatório"),
     endereco: Yup.string().required("Endereço é obrigatório"),
@@ -79,8 +81,10 @@ LogBox.ignoreLogs([
 export function CadastrarPaciente(){
 
     /// Redux 
+    const dispatch = useDispatch();
     const apiState = useSelector((state: State) => state.apiReducer);
     const atendimentosState = useSelector((state: State) => state.atendimentoReducer); 
+    const { setAtualizaPacientes } = bindActionCreators(actionCreators, dispatch);
 
     /// Modal's
     const [loading, setLoading] = useState(false);
@@ -107,6 +111,7 @@ export function CadastrarPaciente(){
     });
 
     function handleRegister(form: FormData){
+        console.group("HandleRegister");
 
         if(temComorbidade.key == -1){
             Alert.alert( "Ops!", "Você precisa informar se o paciente tem comorbidade(s)", [ { text: "OK" } ] );
@@ -209,7 +214,7 @@ export function CadastrarPaciente(){
                 }
             }
         }
-        if(form.orientacoes ){
+        if(form.orientacoes){
             data = {
                 ...data,
                 "guideline": {
@@ -230,14 +235,9 @@ export function CadastrarPaciente(){
             }
         }
 
-        console.log(form);
-        console.log("NOVO:");
-        console.log(data);
-
-        console.log(JSON.stringify(data));
-
         CreateNewPatient(data);
 
+        console.groupEnd();
     }
 
     async function CreateNewPatient(data: INewPatient){
@@ -250,7 +250,9 @@ export function CadastrarPaciente(){
                 type: 'success',
                 text1: 'Paciente cadastrado!',
                 text2: `${data.name} foi cadastrado(a) na lista de pacientes` // 'This is some something 👋'
-              });
+            });
+
+            setAtualizaPacientes(true);
 
             reset({
                 nome: '',
@@ -408,7 +410,7 @@ export function CadastrarPaciente(){
                     <InputForm 
                         name="instagram"
                         control={control}
-                        placeholder="instagram"
+                        placeholder="Instagram"
                         autoCorrect={false}
                         error={errors.instagram && errors.instagram.message}
                     />
@@ -541,6 +543,7 @@ export function CadastrarPaciente(){
 
                 </Fields>
 
+                { appointmentType.key != -1 && <>
                 <TitleGroup>
                     <Title>Agendamentos</Title>
                 </TitleGroup>
@@ -560,7 +563,7 @@ export function CadastrarPaciente(){
                         )
                     }) } 
 
-                    { appointmentType.key != -1 &&
+                   
                         <WrapBtn>
                             <ButtonSimple
                                 type="default"
@@ -568,9 +571,10 @@ export function CadastrarPaciente(){
                                 onPress={()=>setIsAgendarVisible(true)}
                             />
                         </WrapBtn>
-                    }
                   
-                </Wrap>
+                </Wrap></>
+                }
+
                
             </Form>
 

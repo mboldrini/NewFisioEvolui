@@ -1,8 +1,9 @@
 import React from 'react';
 import { InputMask } from '../InputMask';
 import { TextInputProps } from 'react-native';
-import { Container, Error } from './styles';
+import { Container } from './styles';
 import { Control, Controller } from 'react-hook-form';
+import { PHolder } from '../InputForm/styles';
 
 interface Props extends TextInputProps{
     control: Control;
@@ -18,16 +19,18 @@ export function InputMasked({
     error,
     type,
     options,
+    placeholder,
     ...rest
 }: Props){
     return(
         <Container>
-            {error && <Error>{error}</Error>}
+            { error ? <PHolder hasErr={error}>{error}</PHolder> : <PHolder hasErr={error}>{ placeholder }</PHolder>}
             <Controller
                 control={control}
                 render={({field: {onChange, value}}) =>(
                     <InputMask 
                         onChangeText={onChange}
+                        placeholder={placeholder}
                         value={value}
                         type={type}
                         options={options}

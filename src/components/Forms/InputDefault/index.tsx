@@ -20,17 +20,20 @@ export function InputDefault({
     error,
     ...rest
 }: Props){
+
     return(
         <Container>
             {error && <Error>{error}</Error> }
             <Controller
                 control={control}
                 render={({field: {onChange, value}}) => (
+                    <>
                     <Input 
                         onChangeText={onChange}
                         value={value}
                         {...rest}
                     />
+                    </>
                 )}
                 name={name}
             />

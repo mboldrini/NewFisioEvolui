@@ -1,14 +1,22 @@
 import { RFValue } from 'react-native-responsive-fontsize';
-import styled from "styled-components/native";
+import styled, {css} from "styled-components/native";
+import { DefaultAppValues } from '../../../global/styles/theme';
+
+interface IHasError{
+    hasErr: string;
+}
 
 export const Container = styled.View`
     width: 100%;
 `;
 
-export const Error = styled.Text`
-    color: #f00;
-    font-size: ${RFValue(14)}px;
-    margin: 0 ${({theme}) => theme.margin.lateral}px;
-    font-family: ${({theme}) => theme.fonts.thin};
-`;
+export const PHolder = styled.Text<IHasError>`
+    color: #ffffff;
+    font-size: ${RFValue(12)}px;
+    padding-left: ${RFValue(DefaultAppValues.padding.lateral_half)}px;
 
+    
+    ${({ hasErr }) => hasErr && css `
+        color: #f00;
+    `};
+`;
