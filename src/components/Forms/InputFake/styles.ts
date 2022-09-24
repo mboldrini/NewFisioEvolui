@@ -33,7 +33,7 @@ export const Icon = styled(FontAwesome5)`
     padding-right: ${RFValue(5)}px;
 
     ${({ enabled }) => enabled == false && css `
-        color:#ffffff;
+        color:#c3c3c3;
     `};
 
 `;

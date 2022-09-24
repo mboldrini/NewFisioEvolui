@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
-import { RefreshControl, ScrollView} from 'react-native';
+import { RefreshControl, ScrollView, Switch} from 'react-native';
 /// Redux e States
 import { bindActionCreators } from 'redux';
 import { useDispatch, useSelector } from 'react-redux';
@@ -16,8 +16,6 @@ import {
     Wrap,
     BtnList,
     TituloList,
-    WrapHoras,
-    TextoBtn,
     WrapFooterCadastro,
     LoadingIcon, 
 } from './styles';
@@ -29,8 +27,6 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 interface IConfigs{
     allow_notifications: boolean,
     allow_retroactiveDate: boolean,
-    start_workHour: string,
-    end_workHour: string,
     schedule_startDay: boolean,
     user_premium: boolean,
     premium_type: number,
@@ -55,77 +51,13 @@ export function ConfiguracoesPessoais(){
     /// Configs Variables
     const [configs, setConfigs] = useState<IConfigs>({} as IConfigs);
 
-    /// Hour Start AND End
-    const [modalHoraStart, setModalHoraStart] = React.useState(false);
-    const [modalHoraEnd, setModalHoraEnd] = React.useState(false);
-  
-    const onConfirmStart = React.useCallback(
-        ({ hours, minutes }) => {
-            setModalHoraStart(false);
-            SetaHoras(hours, minutes, "start");
-        },
-        [setModalHoraStart]
-    );
-
-    const onConfirmEnd = React.useCallback(
-        ({ hours, minutes }) => {
-            setModalHoraEnd(false);
-            SetaHoras(hours, minutes, "end");
-        },
-        [setModalHoraEnd]
-    );
-
-    function SetaHoras(hora: number, minuto: number, type: "start" | "end"){
-        let hour = ''+ hora;
-        let minute = ''+ minuto;
-        if(hora < 10 ){
-          hour = "0"+ hora;
-        }
-        if( minuto < 9 ){
-            minute = "0"+ minuto;
-        }
-        let newHour = hour +':'+ minute +":00";
-        if(type === "start"){
-            let ff = {
-                ...configs,
-                start_workHour: newHour
-            };
-            setConfigs(ff);
-        }else if(type === 'end'){
-            let ff = {
-                ...configs,
-                end_workHour: newHour
-            };
-            console.log(configs);
-            setConfigs(ff);
-        }
-       
-    }
-
-    function GetDefaultHours(time: string, type: 'hour' | 'minute'){
-        const [hora, minuto, segundo] = time.split(":");
-        if( type == "hour"){
-            return parseInt(hora);
-        }else{
-            return parseInt(minuto);
-        }
-    }
-
-    function GetHourAmPm(hour: string){
-        const [hora, minuto, segundo] = hour.split(":");
-
-        if(parseInt(hora) > 0 && parseInt(hora) < 12){
-            return hora +":"+ minuto + " AM";
-        }else{
-            return hora +":"+ minuto + " PM";
-        }
-    }
-
     async function GetConfigs(){
 
         setLoading(true);
        
         await api(apiState.token).get('users/configs').then(res =>{
+
+            console.log(res.data);
 
             setConfigs(res.data);
             setUserConfigs(res.data);
@@ -149,8 +81,6 @@ export function ConfiguracoesPessoais(){
         setLoading(true);
 
         const newConfigs = {
-            "start_workHour": configs.start_workHour,
-            "end_workHour":	configs.end_workHour,
             "allow_retroactiveDate": configs.allow_retroactiveDate,
             "allow_notifications": configs.allow_notifications,
             "schedule_startDay": configs.schedule_startDay,
@@ -184,7 +114,9 @@ export function ConfiguracoesPessoais(){
 
         });
 
+        
         setLoading(false);
+
     }
 
     useEffect(()=>{
@@ -204,47 +136,38 @@ export function ConfiguracoesPessoais(){
             <LoadingIcon size="large" color="#FFFFFF"/>            
         }
 
-        { !loading && configs && configs.created_at &&
+        { !loading && configs &&
             <Wrap>
 
                 <BtnList>
-                    <TituloList>Início dos Atendimentos:</TituloList>
-                    <WrapHoras onPress={()=> { setModalHoraStart(true) }}>
-                        <TextoBtn>
-                            { GetHourAmPm( configs.start_workHour ) }
-                        </TextoBtn>
-                    </WrapHoras>
-                </BtnList>
-
-                <BtnList>
-                    <TituloList>Fim dos Atendimentos:</TituloList>
-                    <WrapHoras onPress={()=> { setModalHoraEnd(true) }}>
-                        <TextoBtn>{ GetHourAmPm( configs.end_workHour ) }</TextoBtn>
-                    </WrapHoras>
-                </BtnList>
-
-                <BtnList>
                     <TituloList>Agendamento Retroativo:</TituloList>
-                    <WrapHoras bool={ configs.allow_retroactiveDate ? true : false } 
-                    onPress={() => setConfigs({ ...configs, allow_retroactiveDate: !configs.allow_retroactiveDate }) }>
-                        <TextoBtn>{ configs.allow_retroactiveDate ? "Sim" : "Não"}</TextoBtn>
-                    </WrapHoras>
+
+                    <Switch 
+                        value={ configs.allow_retroactiveDate ? true : false }  
+                        onValueChange={() => setConfigs({ ...configs, allow_retroactiveDate: !configs.allow_retroactiveDate }) } 
+                        trackColor={{ false:'#000000', true: '#3a86ff' }} 
+                        thumbColor="#268596" 
+                    />
                 </BtnList>
                 
                 <BtnList>
                     <TituloList>Exibir notificaçõoes:</TituloList>
-                    <WrapHoras bool={ configs.allow_notifications ? true : false } 
-                        onPress={() => { setConfigs({ ...configs, allow_notifications: !configs.allow_notifications }); } }>
-                        <TextoBtn>{ configs.allow_notifications ? "Sim" : "Não"}</TextoBtn>
-                    </WrapHoras>
+                    <Switch 
+                        value={ configs.allow_notifications ? true : false }  
+                        onValueChange={() => setConfigs({ ...configs, allow_notifications: !configs.allow_notifications }) } 
+                        trackColor={{ false:'#000000', true: '#3a86ff' }} 
+                        thumbColor="#268596" 
+                    />
                 </BtnList>
 
                 <BtnList>
                     <TituloList>Agendamentos ao início do dia:</TituloList>
-                    <WrapHoras bool={ configs.schedule_startDay ? true : false } 
-                        onPress={() => { setConfigs({ ...configs, schedule_startDay: !configs.schedule_startDay}); } } >
-                        <TextoBtn>{ configs.schedule_startDay ? "Sim" : "Não"}</TextoBtn>
-                    </WrapHoras>
+                    <Switch 
+                        value={ configs.schedule_startDay ? true : false }  
+                        onValueChange={() => setConfigs({ ...configs, schedule_startDay: !configs.schedule_startDay}) } 
+                        trackColor={{ false:'#000000', true: '#3a86ff' }} 
+                        thumbColor="#268596" 
+                    />
                 </BtnList>
             
             </Wrap>
@@ -252,44 +175,9 @@ export function ConfiguracoesPessoais(){
 
         { !loading &&
             <WrapFooterCadastro>
-                <Button 
-                    title="Salvar" 
-                    onPress={ () => { SaveConfigs() }}
-                    type="ok"
-                />
+                <Button title="Salvar" onPress={ () => { SaveConfigs() }} type="ok" />
             </WrapFooterCadastro>
         }
-
-        { !loading && configs.schedule_startDay &&
-            <TimePickerModal
-                visible={modalHoraStart}
-                onDismiss={()=> {setModalHoraStart(false) } }
-                onConfirm={onConfirmStart}
-                hours={ GetDefaultHours(configs.start_workHour, "hour") } // default: current hours
-                minutes={ GetDefaultHours(configs.start_workHour, "minute") } // default: current minutes
-                label="Início do Expediente" // optional, default 'Select time'
-                cancelLabel="Cancelar" // optional, default: 'Cancel'
-                confirmLabel="Ok" // optional, default: 'Ok'
-                animationType="fade" // optional, default is 'none'
-                locale={'pt-BR'} // optional, default is automically detected by your system
-            />
-        }
-     
-        { !loading && configs.end_workHour &&
-            <TimePickerModal
-                visible={modalHoraEnd}
-                onDismiss={()=> {setModalHoraEnd(false) } }
-                onConfirm={onConfirmEnd}
-                hours={ GetDefaultHours(configs.end_workHour, "hour") } // default: current hours
-                minutes={ GetDefaultHours(configs.end_workHour, "minute") } // default: current minutes
-                label="Fim do Expediente" // optional, default 'Select time'
-                cancelLabel="Cancelar" // optional, default: 'Cancel'
-                confirmLabel="Ok" // optional, default: 'Ok'
-                animationType="fade" // optional, default is 'none'
-                locale={'pt-BR'} // optional, default is automically detected by your system
-            />
-        }
-       
         
         </ScrollView>
     </Container>

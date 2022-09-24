@@ -54,16 +54,16 @@ export const LoadingIcon = styled.ActivityIndicator`
 
 export const BtnList = styled.View`
     flex-direction: column;
-    background-color: #FFFFFF;
+    background-color: ${({theme}) => theme.colors.secondary};
     border-radius: ${RFValue(DefaultAppValues.bordas.padrao)}px;
     margin: 0 ${RFValue(DefaultAppValues.margin.lateral_half)}px;
     margin-bottom: ${RFValue(10)}px;
     shadow-color: #000;
     shadow-offset: {width: 0px};
     shadow-offset: {height: 2px};
-    shadow-opacity: 0.8;
+    shadow-opacity: 0.2;
     shadow-radius: 1px;
-    elevation: 5;
+    elevation: 2;
 `;
 
 export const WrapInfos = styled.View`

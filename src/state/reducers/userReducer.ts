@@ -22,8 +22,6 @@ const initialState = {
         country: ''
     },
     configs: {
-        start_workHour: '',
-        end_workHour: '',
         allow_retroactiveDate: false,
         allow_notifications: false,
         schedule_startDay: false,
@@ -66,8 +64,6 @@ const reducer = (state = initialState, action: Action) => {
             return{
                 ...state,
                 configs: {
-                    start_workHour: action.payload.start_workHour,
-                    end_workHour: action.payload.end_workHour,
                     allow_retroactiveDate: action.payload.allow_retroactiveDate,
                     allow_notifications: action.payload.allow_notifications,
                     schedule_startDay: action.payload.schedule_startDay,
