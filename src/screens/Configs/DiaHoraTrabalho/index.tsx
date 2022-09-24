@@ -271,33 +271,33 @@ export function DiaHoraTrabalho(){
 
     /// Faz as validações de range de horas de trabalho
     function HoraFinalEAntes(inicio: string, fim: string){
-        const [horaInicio, minutoInicio] = inicio.split(":");
-        const [horaFim, minutoFim] = fim.split(":");
+        if(inicio.length > 3 && fim.length > 3){
+            const [horaInicio, minutoInicio] = inicio.split(":");
+            const [horaFim, minutoFim] = fim.split(":");
 
-        let dataInicio = new Date(1995,7,1);
-            dataInicio.setHours(parseInt(horaInicio));
-            dataInicio.setMinutes(parseInt(minutoInicio));
+            let dataInicio = new Date(1995,7,1);
+                dataInicio.setHours(parseInt(horaInicio));
+                dataInicio.setMinutes(parseInt(minutoInicio));
 
-        let dataFim = new Date(1995,7,1);
-            dataFim.setHours(parseInt(horaFim));
-            dataFim.setMinutes(parseInt(minutoFim));
+            let dataFim = new Date(1995,7,1);
+                dataFim.setHours(parseInt(horaFim));
+                dataFim.setMinutes(parseInt(minutoFim));
 
-        if( isBefore(dataFim, dataInicio), isAfter(dataInicio, dataFim) ){
-            return true;
-        }else{
+            if( isBefore(dataFim, dataInicio), isAfter(dataInicio, dataFim) ){
+                return true;
+            }else{
 
-            if(differenceInHours(dataFim, dataInicio) >= 10){
-                Toast.show({
-                    type: 'info',
-                    text1: '🙃 Eita! você trabalha bastante!',
-                    text2: 'lembre-se de fazer uma pausa de vez em quando...'
-                });
+                if(differenceInHours(dataFim, dataInicio) >= 10){
+                    Toast.show({
+                        type: 'info',
+                        text1: '🙃 Eita! você trabalha bastante!',
+                        text2: 'lembre-se de fazer uma pausa de vez em quando...'
+                    });
+                }
+
+                return false;
             }
-
-            return false;
         }
-
-
     }
     
     function HandleSetHoraEscolhida(hora: number, minuto: number){

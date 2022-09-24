@@ -17,12 +17,24 @@ interface IProps{
 export function Footer_CreatedAt({ created_at, updated_at }: IProps){
 
     function FormataHora(datetime: string){
-        const [data, tempo] = datetime.split(" ");
+        console.log(datetime);
+        
+        if(datetime.includes("T")){
+            let [data, tempo] = datetime.split("T");
 
+            const [ano, mes, dia] = data.split("-");
+            const [hora, minuto, segundo] = tempo.split(":");
+
+            return format( new Date( parseInt(ano), parseInt(mes), parseInt(dia), parseInt(hora), parseInt(minuto) ), 'dd/MM/yyyy - HH:mm');
+        }
+
+        let [data, tempo] = datetime.split(" ");
+      
         const [dia, mes, ano] = data.split("/");
         const [hora, minuto, segundo] = tempo.split(":");
 
         return format( new Date( parseInt(ano), parseInt(mes), parseInt(dia), parseInt(hora), parseInt(minuto) ), 'dd/MM/yyyy - HH:mm');
+
     }
 
     return(

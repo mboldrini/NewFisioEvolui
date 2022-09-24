@@ -17,7 +17,7 @@ export const ContainerCabecalho = styled.View`
     margin-top: ${RFValue(10)}px ;
 `;
 
-export const WrapLeft = styled.TouchableOpacity`
+export const WrapLeft = styled.View`
     flex: 1;
     flex-direction: row;
     align-items: center;
