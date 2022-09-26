@@ -117,7 +117,7 @@ export function CadastrarPaciente(){
             Alert.alert( "Ops!", "Você precisa informar se o paciente tem comorbidade(s)", [ { text: "OK" } ] );
             return;
         }
-        if(temComorbidade.key == 1 && (form.hpp?.length < 20 || !form.hpp) ){
+        if(temComorbidade.key == 1 && (form.hpp?.length < 5 || !form.hpp) ){
             Alert.alert( "Ops!", "Você precisa informar a(s) comorbidade(s) do paciente", [ { text: "OK" } ] );
             return;
         }
@@ -126,11 +126,13 @@ export function CadastrarPaciente(){
             return;
         }
         
-        const date = format(new Date(), "yyyy-MM-dd");;
+        const date = format(new Date(), "yyyy-MM-dd");
+
+        const [dia, mes, ano] = form.dataNascimento.split("/");
 
         let data: any = {
             name: form.nome,
-            dataNascimento: form.dataNascimento, 
+            dataNascimento: format( new Date(parseInt(ano), parseInt(mes), parseInt(dia)), 'yyyy-MM-dd'), 
             document: form.cpf,
             email: form.email,
             celphone: form.celular,
@@ -234,6 +236,8 @@ export function CadastrarPaciente(){
                 "appointment": appList
             }
         }
+
+        console.log(data);
 
         CreateNewPatient(data);
 
@@ -442,14 +446,14 @@ export function CadastrarPaciente(){
 
                     { temComorbidade.key == 1 && 
                         <InputForm 
-                        name="comorbidades"
+                        name="hpp"
                         control={control}
-                        placeholder="Comorbidade(s) do paciente"
+                        placeholder="Comorbidade(s)/HPP"
                         autoCapitalize="words"
                         autoCorrect={false}
                         multiline={true}
                         numberOfLines={4}
-                        error={errors.comorbidades && errors.comorbidades.message}
+                        error={errors.hpp && errors.hpp.message}
                         />
                     }
 

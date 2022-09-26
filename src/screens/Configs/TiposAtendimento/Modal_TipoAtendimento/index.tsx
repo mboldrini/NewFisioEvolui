@@ -39,6 +39,7 @@ import { bindActionCreators } from 'redux';
 import { Button } from '../../../../components/Buttons/Button/Index';
 import ActionSheet, { SheetManager } from "react-native-actions-sheet";
 import { List_TipoPagamento } from '../../../../components/List_Items/TiposDePagamentos';
+import { InputFake } from '../../../../components/Forms/InputFake';
 
 
 interface Props{
@@ -105,8 +106,8 @@ export function Modal_TipoAtendimento({ visible, closeModal, id }: Props){
       hour = "0"+ hora;
     }
     if( minuto < 9 ){
-      if(minuto < 1){
-        minute = 10 +"";
+      if(minuto >= 1 && minuto <= 9){
+        minute =  "0" + minuto;
       }else{
         minute = "0"+ minuto;
       }
@@ -324,7 +325,6 @@ export function Modal_TipoAtendimento({ visible, closeModal, id }: Props){
           }
 
           { !loading &&
-
             <Body>
      
               <Form>
@@ -355,10 +355,12 @@ export function Modal_TipoAtendimento({ visible, closeModal, id }: Props){
                 /> 
 
                 <WrapDuracao>
-                  <BotaoDuracao>
-                    <ImageIcon source={require('../../../../assets/stopwatch.png')}/>
-                    <TempoDuracao onPress={()=> setVisible2(true)  }>{ hora }</TempoDuracao>
-                  </BotaoDuracao>
+                  <InputFake 
+                      title={ hora }
+                      onPress={()=> setVisible2(true)  }
+                      enabled={true}
+                      placeholder="Tempo de Atendimento"
+                  />
 
                   <InputMasked 
                       name="valor"

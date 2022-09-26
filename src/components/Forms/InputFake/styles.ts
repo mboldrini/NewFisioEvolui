@@ -1,11 +1,15 @@
 import { FontAwesome5 } from "@expo/vector-icons";
 import styled, {css} from "styled-components/native";
 import { RFValue } from 'react-native-responsive-fontsize';
-import theme from "../../../global/styles/theme";
+import theme, { DefaultAppValues } from "../../../global/styles/theme";
 
 interface IProp{
     enabled?: boolean;
 }
+
+export const VW = styled.View`
+    flex-direction: column;
+`;
 
 export const Container = styled.TouchableOpacity.attrs({
     activeOpacity: 0.7
@@ -18,8 +22,7 @@ export const Container = styled.TouchableOpacity.attrs({
     padding: 0 ${RFValue(10)}px;
     flex-direction: row;
     align-items: center;
-    justify-content: space-between;
-
+    justify-content: center;
 `;
 
 export const Category = styled.Text<IProp>`
@@ -37,6 +40,14 @@ export const Icon = styled(FontAwesome5)`
     `};
 
 `;
+
+export const PlaceHolder = styled.Text`
+    color: #ffffff;
+    font-size: ${RFValue(12)}px;
+    padding-left: ${RFValue(DefaultAppValues.padding.lateral_half)}px;
+`;
+
+
 
 
 

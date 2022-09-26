@@ -1,23 +1,29 @@
 import React from 'react';
 
 import {
+    VW,
     Container,
     Category,
-    Icon
+    Icon,
+    PlaceHolder
 } from './styles';
 
 interface Props{
     title: string;
     onPress: () => void;
     enabled?: boolean;
+    placeholder?: string;
 }
 
-export function InputFake({title, onPress, enabled}: Props){
+export function InputFake({title, onPress, enabled, placeholder}: Props){
     return(
-        <Container onPress={onPress} enabled={enabled}>
-            <Icon name="clock" enabled={enabled}/>
-            <Category enabled={enabled} >{title}</Category>
-        </Container>
+        <VW>
+            <PlaceHolder>{ placeholder }</PlaceHolder>
+            <Container onPress={onPress} enabled={enabled}>
+                <Icon name="clock" enabled={enabled}/>
+                <Category enabled={enabled} >{title}</Category>
+            </Container>    
+        </VW>
     )
 }
 
