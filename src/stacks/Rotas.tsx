@@ -28,7 +28,7 @@ export default function Rotas(){
                     height: 60,
                 }                
             }}    
-            initialRouteName="Search"       
+            initialRouteName="Agenda"       
         >
 
             <Screen 

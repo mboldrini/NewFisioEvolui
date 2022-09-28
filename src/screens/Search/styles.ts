@@ -86,3 +86,7 @@ export const Wrap = styled.View`
 `;
 
 export const LoadingIcon = styled.ActivityIndicator``;
+
+export const WrapFlatList = styled.View`
+    margin-top: ${RFValue(15)}px;
+`;
