@@ -275,7 +275,7 @@ export function PacienteAtendimento(){
 
         <IsCroll refreshControl={<RefreshControl refreshing={refreshing} onRefresh={()=>{ navigation.goBack() }}/>}>
             
-            <Cabecalho titulo="Atendimento do Paciente" onPress={()=>{ navigation.goBack() }} onPressDel={()=> HandleDeleteAppointment(id) } />
+            <Cabecalho titulo="Atendimento do Paciente" onPress={()=>{ navigation.goBack() }} onPressSecond={()=> HandleDeleteAppointment(id) } />
 
             { atendimentoInfos && !loading &&
                 <PacienteHeader iconeTipo="hospital" tipo={atendimentoInfos.nome_tipoAtendimento} nome={atendimentoInfos.paciente_nome} />

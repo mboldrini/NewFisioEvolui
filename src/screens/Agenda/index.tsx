@@ -63,7 +63,21 @@ export function Agenda(){
     const carrosselRef = useRef();
 
 
-    const getAtualDay = () => {
+    function HandleVaiEditar(idAgendamento: number, idPaciente: number){
+        navigation.navigate('Home' as never, { 
+            screen: 'EditPacienteInfos',
+            params: {
+                id: idAgendamento,
+                id_paciente: idPaciente,
+                tipo: "agendamentos",
+                status: 'editar'
+            }
+          
+        } as never)      
+    }
+
+
+    function getAtualDay(){
         let today = new Date();
 
         setSelectedYear( getYear(today) );
@@ -120,8 +134,8 @@ export function Agenda(){
         }
     }
 
-    async function GetAgendaDia(dtEscolhida: Date){
-
+    async function GetAgendaDia(){
+        console.group("GetAgendaDia");
         setLoading(true);
 
         console.group("GetAllMonthAppointments -"+ selectedDate);
@@ -153,6 +167,17 @@ export function Agenda(){
 
     useEffect(() => {
         getAtualDay();
+
+        if(listdias.length > 5){
+            setTimeout(()=>{
+                ref.scrollToIndex({
+                    animated: true,
+                    index: selectedDay -1,
+                    viewPosition: 0
+                });
+                console.log("setou a posicao do dia");
+            },300);
+        }
     },[]);
    
     useEffect(()=>{
@@ -181,32 +206,14 @@ export function Agenda(){
         }
     }, [selectedDay]);
 
-
-    useEffect(()=>{
-        if(listdias.length > 5){
-            setTimeout(()=>{
-                ref.scrollToIndex({
-                    animated: true,
-                    index: selectedDay -1,
-                    viewPosition: 0
-                });
-                console.log("setou a posicao do dia");
-            },300);
-        }
-    },[]);
-
-
-
-
-
     return(
-        <Container >
+<Container >
             
-        <WrapToast>
-            <Toast position={'top'}  autoHide={true} visibilityTime={6000} onPress={()=>Toast.hide()}/>
-        </WrapToast>
+    <WrapToast>
+        <Toast position={'top'}  autoHide={true} visibilityTime={6000} onPress={()=>Toast.hide()}/>
+    </WrapToast>
 
-        <Iscroll refreshControl={<RefreshControl refreshing={refreshing} onRefresh={getAtualDay}/>}>
+        <Iscroll refreshControl={<RefreshControl refreshing={refreshing} onRefresh={()=> {getAtualDay(); GetAgendaDia() } }/>}>
 
             <DateWrapper>
                 <Today>Hoje é {dataHoje}</Today>
@@ -264,6 +271,7 @@ export function Agenda(){
                                 end_hour={item.end_hour}
                                 duration={item.duration}
                                 type={item.type}
+                                onPress={()=> HandleVaiEditar(item.id, item.client_id) }
                             />
                         )} 
                     }
@@ -276,7 +284,7 @@ export function Agenda(){
                 </Wrap>
             }
                     
-        </Iscroll>
-        </Container>
+    </Iscroll>
+</Container>
     )
 }

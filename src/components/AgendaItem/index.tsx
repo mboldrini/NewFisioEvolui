@@ -22,11 +22,12 @@ interface Props{
     end_hour: string,
     start_hour: string,
     status: number,
-    type: number
+    type: number,
+    onPress: () => void
 }
 
 
-export function AgendaItem( {client_name, date_scheduled, duration, end_hour, start_hour, status, type}: Props ){
+export function AgendaItem( {client_name, date_scheduled, duration, end_hour, start_hour, status, type, onPress}: Props ){
 
     const navigation = useNavigation();
 
@@ -79,7 +80,7 @@ export function AgendaItem( {client_name, date_scheduled, duration, end_hour, st
     }
 
     return(
-        <Container status={status}>
+        <Container status={status} onPress={onPress}>
             <Header>
                 <HoraWrapper horaPassou={ horarioPassou(date_scheduled, start_hour) }>
                     <Icone name={ iconeHorario(date_scheduled, start_hour) } horaPassou={ horarioPassou(date_scheduled, start_hour) }/> 
