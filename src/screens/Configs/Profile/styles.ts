@@ -87,7 +87,7 @@ export const Infos = styled.View`
     justify-content: center;
 `;
 
-export const QtdInfos = styled.Text`
+export const Quantidade = styled.Text`
     font-family: ${({theme}) => theme.fonts.bold};
     color: ${({theme}) => theme.colors.shape};
     font-size: ${RFValue(12)}px;

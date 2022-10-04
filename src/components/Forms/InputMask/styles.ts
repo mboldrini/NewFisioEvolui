@@ -11,7 +11,7 @@ export const Container = styled(TextInputMask)`
     margin: 0 ${({theme}) => theme.padding.lateral_half}px;
     margin-bottom: ${({theme}) => theme.margin.input_bottom}px;
     padding: ${RFValue(10)}px;
-    padding-left: ${RFValue(12)}px;
+    padding-left: ${RFValue(10)}px;
     color: #000000;
     min-width: ${RFValue(45)}px;
     font-size: ${RFValue(14)}px;

@@ -210,10 +210,15 @@ export function SignUp(){
     }
     
     async function CreateUser(infos: IUserBasicInfos){
+        console.group("CreateUser");
+
         console.log(JSON.stringify(infos));
         await api().post('/users/', infos).then(res =>{
             console.log("OK!");
             console.log(res);
+
+            navigation.navigate("SignIn" as never);
+
         }).catch(err=>{
             console.log("DEU RUIM!");
             console.log(err.response.data.message);
@@ -225,6 +230,8 @@ export function SignUp(){
             });
 
         });
+
+        console.groupEnd();
     }
 
     // async function handleRegister(form: FormData){
@@ -291,7 +298,6 @@ export function SignUp(){
                         title="Vamos lá!" 
                         type="ok"
                         onPress={() =>{ ChangePage(2) } }
-                        largura={'half'}
                         rightIcon={'arrow-right'}
                     />
                 </WrapHalfButton>
@@ -394,7 +400,6 @@ export function SignUp(){
                         title="Próximo" 
                         type="ok"
                         onPress={handleSubmit((d) =>  HandlePersonalInfos(d as any) )}
-                        largura={'half'}
                         rightIcon={'arrow-right'}
                     />
                 </WrapHalfButton>
@@ -462,7 +467,6 @@ export function SignUp(){
                         title="Próximo" 
                         type="ok"
                         onPress={HandleSubmitUserAddress((d) =>  HandleUserAddress(d as FormDataAddress) )}
-                        largura={'half'}
                         rightIcon={'arrow-right'}
                     />
                 </WrapHalfButton>

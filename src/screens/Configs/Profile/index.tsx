@@ -14,7 +14,7 @@ import {
 
     InfosWrap,
     Infos,
-    QtdInfos,
+    Quantidade,
     InfoDesc,
 
     Body,
@@ -29,7 +29,7 @@ import { bindActionCreators } from 'redux';
 import { useDispatch, useSelector } from 'react-redux';
 import { actionCreators, State } from '../../../state';
 import { api } from '../../../global/api';
-import Toast from 'react-native-toast-message';
+import { Text } from 'react-native';
 
 interface IProfileStats{
     qtdAtendimentos: number,
@@ -46,7 +46,8 @@ export function Profile(){
     const usrState = useSelector((state: State) => state.user);
     const apiState = useSelector((state: State) => state.apiReducer);
 
-    const [profileStatistics, setProfileStatistics] = useState<IProfileStats>();
+    const [profileStatistics, setProfileStatistics] = useState<IProfileStats>(null);
+    const [showStatistic, setShowStatistic] = useState(false);
 
     async function handleLogoff(){
 
@@ -70,8 +71,6 @@ export function Profile(){
         setAtendimentos([]);
         setFormasPgto([]);
         setUserConfigs({
-            start_workHour: null, 
-            end_workHour: null, 
             allow_retroactiveDate: null, 
             allow_notifications: null, 
             schedule_startDay: null, 
@@ -84,24 +83,40 @@ export function Profile(){
     }
 
     async function GetProfileStatistics(){
+        console.group("GetProfileStatistics");
+
+        setShowStatistic(false);
+
         await api(apiState.token).get('users/infos/statistic').then(res =>{
             
+            console.log(res.data);
             setProfileStatistics(res.data);
             console.log("setou as estatisticas!");
+
+            setShowStatistic(true);
 
         }).catch(err => {
             setProfileStatistics(null);
         });
+
+        console.groupEnd();
     }
 
     useEffect(()=>{
-        GetProfileStatistics();
+       GetProfileStatistics();
     },[]);
+
+    useEffect(()=>{
+        if(profileStatistics?.qtdAtendimentos != 0){
+            setShowStatistic(true);
+        }
+    }, [profileStatistics]);
 
     return(
         <Container>
+            { usrState.name &&
             <Header>
-                <UserWrapper>
+                 <UserWrapper>
                     <UserInfo>
                         <Photo source={{ uri: usrState.picture }}/> 
                         <User>
@@ -112,29 +127,29 @@ export function Profile(){
                     <AreaLogout onPress={()=>{handleLogoff()}}>
                         <Logout source={require('../../../assets/icons/logout.png')}/>
                     </AreaLogout>
-                </UserWrapper>
-            </Header>
+                 </UserWrapper>
+             </Header>
+            }
 
-            { profileStatistics?.qtdAtendimentos &&
+            { showStatistic &&
                 <InfosWrap>
                     <Infos>
-                        <QtdInfos>{ profileStatistics.qtdPacientes }</QtdInfos>
+                        <Quantidade>{profileStatistics?.qtdPacientes}</Quantidade>
                         <InfoDesc>Pacientes</InfoDesc>
                     </Infos>
-                    
-                    <Infos>
-                        <QtdInfos>{ profileStatistics.qtdAtendimentos }</QtdInfos>
-                        <InfoDesc>Atendimentos</InfoDesc>
-                    </Infos>
 
                     <Infos>
-                        <QtdInfos>{ profileStatistics.qtdEvolucoes }</QtdInfos>
-                        <InfoDesc>Evoluções</InfoDesc>
-                    </Infos>
+                         <Quantidade>{ profileStatistics?.qtdAtendimentos }</Quantidade>
+                         <InfoDesc>Atendimentos</InfoDesc>
+                     </Infos>
+
+                     <Infos>
+                         <Quantidade>{ profileStatistics?.qtdEvolucoes }</Quantidade>
+                         <InfoDesc>Evoluções</InfoDesc>
+                     </Infos> 
                 </InfosWrap>
             }
-           
-
+       
 
             <Body>
                 <BtnList enabled={false}>

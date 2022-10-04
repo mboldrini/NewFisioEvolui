@@ -18,7 +18,7 @@ export const Container = styled(TextInput)`
         flex-wrap: wrap;
     `};
 
-    padding-left: 10px;
+    padding-left: ${RFValue(10)}px;
     font-size: ${RFValue(14)}px;
 
 `;
