@@ -13,6 +13,7 @@ const Stack = createStackNavigator();
 
 import styled from "styled-components/native";
 import Toast from 'react-native-toast-message';
+import { toastConfig } from '../global/toastConfig';
 const WrapToast = styled.View`
     z-index: 1;
 `;
@@ -21,7 +22,7 @@ export default function HomeStack(){
     return(
     <>
         <WrapToast>
-            <Toast position={'top'}  autoHide={true} visibilityTime={6000} onPress={()=>Toast.hide()} /*config={toastConfig}*/ />
+            <Toast position={'top'}  autoHide={true} visibilityTime={6000} onPress={()=>Toast.hide()} config={toastConfig} />
         </WrapToast>
 
         <Stack.Navigator initialRouteName="Home" screenOptions={{ headerShown: false }} >   

@@ -7,34 +7,23 @@ import { ListarFormasPagamento } from '../screens/Configs/FormasPagamento/Listar
 import { FormaPagamento } from '../screens/Configs/FormasPagamento/FormaPagamento';
 import { ListarTiposAtendimento } from '../screens/Configs/TiposAtendimento/ListarTiposAtendimento';
 
-
 const Stack = createStackNavigator();
-
 
 import styled from "styled-components/native";
 import Toast from 'react-native-toast-message';
 import { DiaHoraTrabalho } from '../screens/Configs/DiaHoraTrabalho';
-// import { View, Text } from 'react-native';
+import { toastConfig } from '../global/toastConfig';
 
 const WrapToast = styled.View`
     z-index: 1;
 `;
-
-// const toastConfig = {
-//     'success': (internalState: any) => (
-//       <View style={{ borderLeftColor: 'pink' }}>
-//         <Text>{internalState.text1}</Text>
-//       </View>  
-//     )
-//   }
-
 
 export default function ProfileStack(){
     return(
     <>
 
         <WrapToast>
-            <Toast position={'top'}  autoHide={true} visibilityTime={6000} onPress={()=>Toast.hide()} /*config={toastConfig}*/ />
+            <Toast position={'top'}  autoHide={true} visibilityTime={6000} onPress={()=>Toast.hide()} config={toastConfig}  />
         </WrapToast>
 
         <Stack.Navigator initialRouteName="Profile" screenOptions={{ headerShown: false }} >   

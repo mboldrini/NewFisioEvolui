@@ -12,7 +12,6 @@ import { CadastrarPaciente } from '../screens/CadastrarPaciente';
 import { Profile as Prof } from '../screens/Configs/Profile';
 
 
-
 export default () => (
     <Navigator
         screenOptions={{
@@ -31,6 +30,4 @@ export default () => (
         <Screen name="Prof" component={Prof} />
 
     </Navigator>
-
-
 );

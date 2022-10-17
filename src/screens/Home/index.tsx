@@ -68,7 +68,7 @@ export function Home(){
 
         setPatientList([]);
 
-        await api(apiState.token).get('/clients/user/all').then(res=>{
+        await api(apiState.token).get('/clients/user/allf').then(res=>{
 
             setAtualizaPacientes(false);
             setPacientes(res.data);
@@ -81,9 +81,9 @@ export function Home(){
             console.log(err);
 
             Toast.show({
-                type: 'error',
+                type: 'success',
                 text1: 'Ops!',
-                text2: `Erro ao obter a lista de pacientes` 
+                text2: `lalala` 
             });
         })
 
@@ -110,12 +110,6 @@ export function Home(){
 <SafeAreaView style={{flex: 1, backgroundColor: '#63C2D1'}}>
     <Container >
         <Iscrol refreshControl={<RefreshControl refreshing={refreshing} onRefresh={ ()=> GetPatientList() }/>}>
-
-
-        <Header>
-            <Titulo>Pesquisar nome do paciente</Titulo>
-            <Icon name="search"/>
-        </Header>
 
         { patientList.length > 0 &&
             <FlatList 

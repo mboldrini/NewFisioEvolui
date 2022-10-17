@@ -25,6 +25,11 @@ import {
 } from './styles';
 import { PacienteList } from '../../components/PacienteList';
 import { Toast } from 'react-native-toast-message/lib/src/Toast';
+import { TextoSemAgendamentos } from '../Agenda/styles';
+import { ToastCustom } from '../../components/Toast';
+
+
+
 
 interface IListPcts{
     address: string,
@@ -118,11 +123,23 @@ export function Search(){
         } as never);
     }
 
-
+    useEffect(()=>{
+        onChangeText(""); 
+    }, [opcao]);
 
     useEffect(()=>{
-        onChangeText("");
-    }, [opcao]);
+        console.log("toastt?");
+        
+        Toast.show({
+            type: 'error',
+            text1: 'Ops!',
+            text2: `Erro ao obter a lista de pacientes` 
+        });
+    },[opcao]);
+
+    
+
+
 
     return(
 <SafeAreaView style={{flex: 1, backgroundColor: '#63C2D1'}}>
@@ -177,7 +194,9 @@ export function Search(){
                 />
             </WrapFlatList>
         }
-      
+
+
+
 
     </Container>
 </SafeAreaView>

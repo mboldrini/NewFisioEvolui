@@ -3,7 +3,6 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 import { View } from 'react-native';
 
-import { Search } from '../screens/Search';
 import { Agenda } from '../screens/Agenda';
 import { CadastrarPaciente } from '../screens/CadastrarPaciente';
 
@@ -11,6 +10,7 @@ import { Ionicons } from '@expo/vector-icons';
 
 import HomeStack from './HomeStack';
 import ProfileStack from './ProfileStack';
+import SearchStack from './SearchStatck';
 
 const {Navigator, Screen} = createBottomTabNavigator();
 
@@ -28,7 +28,7 @@ export default function Rotas(){
                     height: 60,
                 }                
             }}    
-            initialRouteName="Agenda"       
+            initialRouteName="Search"       
         >
 
             <Screen 
@@ -47,7 +47,7 @@ export default function Rotas(){
             
             <Screen 
                 name="Search" 
-                component={Search} 
+                component={SearchStack} 
                 options={{
                     tabBarIcon: (({size, color}) => (
                         <Ionicons 
