@@ -68,7 +68,7 @@ export function Home(){
 
         setPatientList([]);
 
-        await api(apiState.token).get('/clients/user/allf').then(res=>{
+        await api(apiState.token).get('/clients/user/all').then(res=>{
 
             setAtualizaPacientes(false);
             setPacientes(res.data);
@@ -94,6 +94,8 @@ export function Home(){
         }else{
            GetPatientList();
             console.log("não tem pacientes salvos no redux");
+            toast("Não existe nenhum paciente cadastrado!");
+            setRefresh(false);
         }
     },[]);
 
