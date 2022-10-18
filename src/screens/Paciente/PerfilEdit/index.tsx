@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Keyboard, Alert, ScrollView, FlatList, RefreshControl } from 'react-native';
-import Toast from 'react-native-toast-message';
+import { toast } from '@backpackapp-io/react-native-toast';
 import { InputMasked } from '../../../components/Forms/InputMasked';
 import { useForm } from 'react-hook-form';
 import { InputForm } from '../..//../components/Forms/InputForm';
@@ -164,12 +164,8 @@ export function EditarPaciente(){
             if(err.response.data){
                 console.error(err.response.data.message, err.response.data.statusCode);
             }
-
-            Toast.show({
-                type: 'error',
-                text1: 'OPS! erro ao obter informações do paciente.',
-                text2: `${JSON.stringify(err.response.data.message)}`
-            });
+            
+            toast.error('Ops! Erro ao obter as informações do paciente.', {duration: 6000, icon: '❌'});
 
             setTimeout(()=>{
                 navigation.goBack();
@@ -205,10 +201,7 @@ export function EditarPaciente(){
 
             setAtualizaPacientes(true);
 
-            Toast.show({
-                type: 'success',
-                text1: '😃 Informações salvas com sucesso!',
-            });
+            toast.success('Informações salvas com sucesso!', {duration: 6000, icon: '✅'});
 
             navigation.navigate('Home2' as never)
 
@@ -219,11 +212,8 @@ export function EditarPaciente(){
             if(err.response.data){
                 console.error(err.response.data.message, err.response.data.statusCode);
             }
-            Toast.show({
-                type: 'error',
-                text1: 'Erro ao cadastrar paciente',
-                text2: err.response.data.message
-            });
+
+            toast.error('Ops! Erro ao cadastrar paciente', {duration: 6000, icon: '❌'});
         });
 
         setLoading(false);
@@ -258,10 +248,7 @@ export function EditarPaciente(){
 
             setAtualizaPacientes(true);
 
-            Toast.show({
-                type: 'success',
-                text1: '😃 Paciente Excluído!',
-            });
+            toast.success('Paciente excluído!', {duration: 6000, icon: '✅'});
 
             navigation.navigate('Home2' as never)
 
@@ -271,11 +258,9 @@ export function EditarPaciente(){
             if(err.response.data){
                 console.error(err.response.data.message, err.response.data.statusCode);
             }
-            Toast.show({
-                type: 'error',
-                text1: 'Erro ao excluir paciente',
-                text2: err.response.data.message
-            });
+            
+            toast.error('Ops! Erro ao excluir paciente', {duration: 6000, icon: '❌'});
+
             setLoading(false);
         });
 

@@ -69,7 +69,7 @@ const schema = Yup.object().shape({
     orientacoes: Yup.string().optional(),
 });
 
-import Toast from 'react-native-toast-message';
+import { toast } from '@backpackapp-io/react-native-toast';
 import { List_TipoPagamento } from '../../components/List_Items/TiposDePagamentos';
 
 import {LogBox} from "react-native";
@@ -250,11 +250,7 @@ export function CadastrarPaciente(){
 
         await api(apiState.token).post('/clients/', data ).then(res =>{
 
-            Toast.show({
-                type: 'success',
-                text1: 'Paciente cadastrado!',
-                text2: `${data.name} foi cadastrado(a) na lista de pacientes` // 'This is some something 👋'
-            });
+            toast.success( data.name + ' foi cadastrado!', {duration: 6000, icon: '✅'});
 
             setAtualizaPacientes(true);
 
@@ -285,11 +281,8 @@ export function CadastrarPaciente(){
             if(err.response.data){
                 console.error(err.response.data.message, err.response.data.statusCode);
             }
-            Toast.show({
-                type: 'error',
-                text1: 'Erro ao cadastrar paciente',
-                text2: err.response.data.message
-            });
+
+            toast.error('Ops! Erro ao cadastrar paciente', {duration: 6000, icon: '❌'});
         });
 
         setLoading(false);
@@ -344,9 +337,8 @@ export function CadastrarPaciente(){
     }, [appointmentType]);
 
     return(
-        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-        <Container>
-            <Toast position={'top'}  autoHide={true} visibilityTime={6000} onPress={()=>Toast.hide()}/>
+<TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+    <Container>
         <Iscrol>
 
             <Header>
@@ -635,7 +627,7 @@ export function CadastrarPaciente(){
             />
 
         </Iscrol>
-        </Container>
-        </TouchableWithoutFeedback>
+    </Container>
+</TouchableWithoutFeedback>
     )
 }

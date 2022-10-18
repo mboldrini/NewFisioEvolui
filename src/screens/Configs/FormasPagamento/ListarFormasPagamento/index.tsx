@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import {FlatList, RefreshControl, ScrollView} from 'react-native';
-import Toast from 'react-native-toast-message';
+import { toast } from '@backpackapp-io/react-native-toast';
 import { 
     Container,
     WrapCentral,
@@ -73,10 +73,8 @@ export function ListarFormasPagamento(){
         }).catch(err => {
             console.log("ERRO");
             console.log(err);
-            Toast.show({
-                type: 'error',
-                text1: '⚠️ Erro ao obter lista de formas de pagamento',
-            });
+         
+            toast.error('Ops! Erro ao obter a lista de formas de pagamento', {duration: 6000, icon: '❌'});
         });
 
         setLoading(false);

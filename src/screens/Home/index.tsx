@@ -9,7 +9,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { actionCreators, State } from '../../state';
 //Outros
 import LottieView from 'lottie-react-native';
-import { Toast } from 'react-native-toast-message/lib/src/Toast';
+import { toast } from '@backpackapp-io/react-native-toast';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { 
@@ -80,11 +80,8 @@ export function Home(){
         }).catch(err=>{
             console.log(err);
 
-            Toast.show({
-                type: 'success',
-                text1: 'Ops!',
-                text2: `lalala` 
-            });
+            toast.error('Ops! Erro ao obter a lista de pacientes', {duration: 6000, icon: '❌'});
+
         })
 
         console.groupEnd();

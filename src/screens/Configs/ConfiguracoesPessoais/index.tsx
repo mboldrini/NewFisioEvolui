@@ -9,8 +9,8 @@ import { actionCreators, State } from '../../../state';
 import { Cabecalho } from '../../../components/Cabecalho';
 import { Button } from '../../../components/Buttons/Button/Index';
 /// Estética - Timer Picker
-import Toast from 'react-native-toast-message';
-import { TimePickerModal } from 'react-native-paper-dates';
+// import { TimePickerModal } from 'react-native-paper-dates';
+import { toast } from '@backpackapp-io/react-native-toast';
 import { 
     Container,
     Wrap,
@@ -66,11 +66,7 @@ export function ConfiguracoesPessoais(){
             console.log("ERRO");
             console.log(err);
 
-            Toast.show({
-                type: 'error',
-                text1: '⚠️ Erro ao obter informações atualizadas',
-                text2: 'tenta de novo, quem sabe dessa vez, acaba funcionando...'
-            });
+            toast.error('Ops! Erro ao obter informações atualizadas', {duration: 6000, icon: '❌'});
 
         });
 
@@ -95,22 +91,14 @@ export function ConfiguracoesPessoais(){
 
             setUserConfigs(newConfigs);
 
-            Toast.show({
-                type: 'success',
-                text1: '😄 Informações salvas com sucesso',
-                text2: 'uhull!'
-            });
+            toast.success( 'Informações salvas com sucesso!', {duration: 6000, icon: '✅'});
 
         }).catch(err => {
             console.log("ERRO");
 
             console.log( JSON.stringify(err) );
 
-            Toast.show({
-                type: 'error',
-                text1: '⚠️ Erro ao salvar as informações',
-                text2: 'tenta de novo, quem sabe dessa vez, acaba funcionando...'
-            });
+            toast.error('Ops! Erro ao salvar as informações', {duration: 6000, icon: '❌'});
 
         });
 

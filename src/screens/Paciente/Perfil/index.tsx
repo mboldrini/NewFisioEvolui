@@ -44,7 +44,7 @@ import {
     IconeMenu,
 
 } from './styles';
-import Toast from 'react-native-toast-message';
+import { toast } from '@backpackapp-io/react-native-toast';
 
 import { Cabecalho } from '../../../components/Cabecalho';
 import { PacienteHeader } from '../../../components/PacienteHeader';
@@ -122,11 +122,7 @@ export function PacientePerfil(){
         }).catch(err => {
             console.log(err);
 
-            Toast.show({
-                type: 'error',
-                text1: 'OPS! erro ao obter informações do paciente.',
-                text2: `${err}`
-            });
+            toast.error('Ops! Erro ao obter as informações do paciente.', {duration: 6000, icon: '❌'});
 
         });
         console.groupEnd();
@@ -153,11 +149,7 @@ export function PacientePerfil(){
         }).catch(err => {
             console.log(err);
 
-            Toast.show({
-                type: 'error',
-                text1: 'OPS! erro ao obter a lista informações do paciente.',
-                text2: `${err}`
-            });
+            toast.error('Ops! Erro ao obter a lista informações do paciente.', {duration: 6000, icon: '❌'});
 
         });
 
@@ -176,21 +168,14 @@ export function PacientePerfil(){
             console.log("cadastrou");
             console.log(res);
 
-            Toast.show({
-                type: 'success',
-                text1: '😄 Agendamento cadastrado com sucesso',
-                text2: 'É só atualizar a lista novamente'
-            });
-
+            toast.success('Informações salvas com sucesso!', {duration: 6000, icon: '✅'});
+            
         }).catch(err =>{
 
             console.log("erro ao cadastrar");
             console.log(err);
 
-            Toast.show({
-                type: 'error',
-                text1: '❌ Erro ao cadastrar atendimento',
-            });
+            toast.error('Ops! Erro ao cadastrar atendimento', {duration: 6000, icon: '❌'});
 
             setAppointment(null);
 

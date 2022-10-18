@@ -29,7 +29,7 @@ import { InputMasked } from '../../../../components/Forms/InputMasked';
 import { TimePickerModal } from 'react-native-paper-dates'
 /// Avisos
 import { Alert, FlatList, ScrollView } from 'react-native';
-import Toast from 'react-native-toast-message';
+import { toast } from '@backpackapp-io/react-native-toast';
 ///Redux
 import { useSelector, useDispatch } from 'react-redux';
 import { State, actionCreators } from '../../../../state';
@@ -145,11 +145,7 @@ export function Modal_TipoAtendimento({ visible, closeModal, id }: Props){
     
     await api(apiState.token).post('servicesTypes', infos).then(res =>{
 
-        Toast.show({
-          type: 'success',
-          text1: '😃 Atendimento cadastrado com sucesso!',
-          text2: 'uhull!'
-        });
+        toast.success('Informações salvas com sucesso!', {duration: 6000, icon: '✅'});
 
         reset({
           nome: '',
@@ -164,10 +160,9 @@ export function Modal_TipoAtendimento({ visible, closeModal, id }: Props){
     }).catch(err => {
         console.log("ERRO");
         console.log(err);
-        Toast.show({
-            type: 'error',
-            text1: '⚠️ Erro ao obter informações do atendimento',
-        });
+
+        toast.error('Ops! Erro ao obter as informações', {duration: 6000, icon: '❌'});
+
         closeModal()
     });
 
@@ -188,10 +183,9 @@ export function Modal_TipoAtendimento({ visible, closeModal, id }: Props){
       console.log("ERRO ao obter forma de pagamento");
       console.log(err);
       console.groupEnd();
-        // Toast.show({
-        //     type: 'error',
-        //     text1: '⚠️ Erro ao obter lista de formas de pagamento',
-        // });
+      
+      toast.error('Ops! Erro ao obter as informações', {duration: 6000, icon: '❌'});
+      
         setFormaPagamento({key: -1, name: 'Forma de Pagamento'});
     });
 
@@ -226,10 +220,9 @@ export function Modal_TipoAtendimento({ visible, closeModal, id }: Props){
         setFormaPagamento({key: res.data.paymentMethod_id, name: res.data.paymentMethod_name});
         
       }else{
-        Toast.show({
-          type: 'error',
-          text1: 'Erro ao obter informações',
-        });
+  
+        toast.error('Ops! Erro ao obter informações', {duration: 6000, icon: '❌'});
+
         closeModal();
       }
 
@@ -238,11 +231,10 @@ export function Modal_TipoAtendimento({ visible, closeModal, id }: Props){
         console.log("ERRO");
         console.log(err);
       console.groupEnd();
-        // Toast.show({
-        //     type: 'error',
-        //     text1: '⚠️ Erro ao obter informações da forma de pagamento',
-        // });
-        // closeModal();
+
+      toast.error('Ops! Erro ao obter informações da forma de pagamento', {duration: 6000, icon: '❌'});
+
+      // closeModal();
     });
 
     setLoading(false);
@@ -270,10 +262,7 @@ export function Modal_TipoAtendimento({ visible, closeModal, id }: Props){
 
     await api(apiState.token).delete('servicesTypes/'+ id).then(res =>{
 
-      Toast.show({
-        type: 'success',
-        text1: 'Tipo de atendimento excluido! 👍',
-      });
+      toast.success('Tipo de atendimento excluido! 👍', {duration: 6000, icon: '✅'});
 
       reset({
         nome: '',
@@ -288,10 +277,9 @@ export function Modal_TipoAtendimento({ visible, closeModal, id }: Props){
     }).catch(err => {
       console.log("ERRO");
       console.log(err.data);
-      // Toast.show({
-      //     type: 'error',
-      //     text1: '⚠️ Erro ao excluir tipo de atendimento',
-      // });
+
+      toast.error('Ops! Erro ao excluir tipo de atendimento', {duration: 6000, icon: '❌'});
+
       // closeModal();
   });
 

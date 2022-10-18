@@ -9,10 +9,6 @@ export const Container = styled.View`
 
 export const IsCroll = styled.ScrollView``;
 
-export const WrapToast = styled.View`
-    z-index: 1;
-`;
-
 export const WrapDiaAtendimento = styled.View`
     align-items: center;
     justify-content: center;

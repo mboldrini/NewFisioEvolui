@@ -1,5 +1,5 @@
 import React, {useEffect, useRef, useState}from 'react';
-import { FlatList } from 'react-native';
+import { FlatList, Text, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 // API
@@ -24,12 +24,8 @@ import {
     WrapFlatList
 } from './styles';
 import { PacienteList } from '../../components/PacienteList';
-import { Toast } from 'react-native-toast-message/lib/src/Toast';
-import { TextoSemAgendamentos } from '../Agenda/styles';
-import { ToastCustom } from '../../components/Toast';
 
-
-
+import { toast } from '@backpackapp-io/react-native-toast';
 
 interface IListPcts{
     address: string,
@@ -95,7 +91,7 @@ export function Search(){
 
         console.log(params);
 
-        await api(apiState.token).post('clients/find', params).then(res => {
+        await api(apiState.token).post('clients/findFF', params).then(res => {
 
             console.log(res.data);
             setOptionsList(res.data);
@@ -103,12 +99,8 @@ export function Search(){
         }).catch(err =>{
             console.log("ERRO!");
             console.log(err.message);
-            
-            Toast.show({
-                type: 'error',
-                text1: 'Ops!',
-                text2: `Erro ao obter a lista de pacientes` 
-            });
+      
+            toast.error('Ops! Erro ao obter a lista de pacientes', {duration: 6000, icon: '❌'});
         });
 
         setLoading(false);
@@ -127,23 +119,12 @@ export function Search(){
         onChangeText(""); 
     }, [opcao]);
 
-    useEffect(()=>{
-        console.log("toastt?");
-        
-        Toast.show({
-            type: 'error',
-            text1: 'Ops!',
-            text2: `Erro ao obter a lista de pacientes` 
-        });
-    },[opcao]);
-
-    
-
-
 
     return(
 <SafeAreaView style={{flex: 1, backgroundColor: '#63C2D1'}}>
     <Container >
+
+
 
         <WrapCabecalho>
             <Header>
@@ -198,7 +179,7 @@ export function Search(){
 
 
 
+
     </Container>
 </SafeAreaView>
-    )
-}
+)}

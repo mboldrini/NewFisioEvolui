@@ -26,7 +26,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { parametrosDoTipo } from '../ListInfosPaciente/Interfaces';
 import { format } from 'date-fns';
 import { InputForm } from '../../../components/Forms/InputForm';
-import Toast from 'react-native-toast-message';
+import { toast } from '@backpackapp-io/react-native-toast';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { Button_Field } from '../../../components/Buttons/Button_Field/Index';
 import { Select } from '../../../components/Forms/Select';
@@ -149,10 +149,7 @@ export function EditPacienteInfos(){
             console.log(err.data);
             console.log(err);
 
-            Toast.show({
-                type: 'error',
-                text1: '⚠️ Ops! erro ao obter as informações',
-            });
+            toast.error('Ops! Erro ao obter as informações', {duration: 6000, icon: '❌'});
 
         });
 
@@ -174,10 +171,7 @@ export function EditPacienteInfos(){
    
         await api(apiState.token).delete(url).then(res =>{
 
-            Toast.show({
-                type: 'success',
-                text1: 'Registro Excluido! '+ parametrosDoTipo[tipo].title,
-            });
+            toast.success('Registro excluído!', {duration: 6000, icon: '✅'});
 
             navigation.goBack();
 
@@ -186,10 +180,7 @@ export function EditPacienteInfos(){
             console.log("erro ao excluir registro");
             console.log(err.data);
 
-            Toast.show({
-                type: 'error',
-                text1: '⚠️ Ops! erro ao excluir o registro!',
-            });
+            toast.error('Ops! Erro ao excluir o registro!', {duration: 6000, icon: '❌'});
 
         });
     }
@@ -223,10 +214,7 @@ export function EditPacienteInfos(){
    
         await api(apiState.token).patch(url, params).then(res =>{
 
-            Toast.show({
-                type: 'success',
-                text1: '😀 Informações Salvas!',
-            });
+            toast.success('Informações salvas com sucesso!', {duration: 6000, icon: '✅'});
 
             setLoading(false);
 
@@ -241,10 +229,7 @@ export function EditPacienteInfos(){
 
             setLoading(false);
 
-            Toast.show({
-                type: 'error',
-                text1: '⚠️ Ops! erro ao salvar as informações.',
-            });
+            toast.error('Ops! Erro ao salvar as informações', {duration: 6000, icon: '❌'});
 
         });
     }
@@ -263,10 +248,7 @@ export function EditPacienteInfos(){
    
         await api(apiState.token).post(url, params).then(res =>{
 
-            Toast.show({
-                type: 'success',
-                text1: '😀 Informações Salvas!',
-            });
+            toast.success('Informações salvas com sucesso!', {duration: 6000, icon: '✅'});
 
             setLoading(false);
 
@@ -281,10 +263,7 @@ export function EditPacienteInfos(){
 
             setLoading(false);
 
-            Toast.show({
-                type: 'error',
-                text1: '⚠️ Ops! erro ao salvar as informações.',
-            });
+            toast.error('Ops! Erro ao salvar as informações', {duration: 6000, icon: '❌'});
 
         });
 
@@ -325,10 +304,7 @@ export function EditPacienteInfos(){
    
         await api(apiState.token).post(parametrosDoTipo[tipo].urlCreate, params).then(res =>{
 
-            Toast.show({
-                type: 'success',
-                text1: '😀 Agendamento Salvo!',
-            });
+            toast.success('Informações salvas com sucesso!', {duration: 6000, icon: '✅'});
 
             setLoading(false);
 
@@ -343,10 +319,7 @@ export function EditPacienteInfos(){
 
             setLoading(false);
 
-            Toast.show({
-                type: 'error',
-                text1: '⚠️ Ops! erro ao salvar as informações.',
-            });
+            toast.error('Ops! Erro ao salvar as informações', {duration: 6000, icon: '❌'});
 
         });
 
@@ -399,10 +372,7 @@ export function EditPacienteInfos(){
    
         await api(apiState.token).patch(url, infos).then(res =>{
 
-            Toast.show({
-                type: 'success',
-                text1: '😀 Agendamento Salvo!',
-            });
+            toast.success('Informações salvas com sucesso!', {duration: 6000, icon: '✅'});
 
             setLoading(false);
 
@@ -417,10 +387,7 @@ export function EditPacienteInfos(){
 
             setLoading(false);
 
-            Toast.show({
-                type: 'error',
-                text1: '⚠️ Ops! erro ao salvar as informações.',
-            });
+            toast.error('Ops! Erro ao salvar as informações', {duration: 6000, icon: '❌'});
 
         });
 

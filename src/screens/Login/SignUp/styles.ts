@@ -11,10 +11,6 @@ export const Container = styled.View`
     background-color: ${({theme}) => theme.colors.primary};
 `;
 
-export const WrapToast = styled.View`
-    z-index: 1;
-`;
-
 export const Part1 = styled(Animatable.View)<IProps>`
     flex: 1;
     ${({ page }) => page !== 1 && css ` display: none; `};
