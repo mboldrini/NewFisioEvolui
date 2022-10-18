@@ -1,5 +1,5 @@
 import React, {useEffect, useRef, useState}from 'react';
-import { FlatList } from 'react-native';
+import { FlatList, Text, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 // API
@@ -24,11 +24,10 @@ import {
     WrapFlatList
 } from './styles';
 import { PacienteList } from '../../components/PacienteList';
-import { Toast } from 'react-native-toast-message/lib/src/Toast';
-import { TextoSemAgendamentos } from '../Agenda/styles';
+//import { Toast } from 'react-native-toast-message/lib/src/Toast';
+
+import { toast, Toasts } from '@backpackapp-io/react-native-toast';
 import { ToastCustom } from '../../components/Toast';
-
-
 
 
 interface IListPcts{
@@ -104,11 +103,11 @@ export function Search(){
             console.log("ERRO!");
             console.log(err.message);
             
-            Toast.show({
-                type: 'error',
-                text1: 'Ops!',
-                text2: `Erro ao obter a lista de pacientes` 
-            });
+            // Toast.show({
+            //     type: 'error',
+            //     text1: 'Ops!',
+            //     text2: `Erro ao obter a lista de pacientes` 
+            // });
         });
 
         setLoading(false);
@@ -127,23 +126,27 @@ export function Search(){
         onChangeText(""); 
     }, [opcao]);
 
+
+
+
     useEffect(()=>{
         console.log("toastt?");
         
-        Toast.show({
-            type: 'error',
-            text1: 'Ops!',
-            text2: `Erro ao obter a lista de pacientes` 
-        });
-    },[opcao]);
 
-    
+
+      toast.success('Successfully created!', {duration: 6000});
+
+
+
+    },[opcao]);
 
 
 
     return(
 <SafeAreaView style={{flex: 1, backgroundColor: '#63C2D1'}}>
     <Container >
+
+
 
         <WrapCabecalho>
             <Header>
@@ -196,9 +199,9 @@ export function Search(){
         }
 
 
+<Toasts /> 
 
 
     </Container>
 </SafeAreaView>
-    )
-}
+)}

@@ -81,9 +81,9 @@ export function Home(){
             console.log(err);
 
             Toast.show({
-                type: 'success',
+                type: 'error',
                 text1: 'Ops!',
-                text2: `lalala` 
+                text2: `erro ao obter a lista de pacientes` 
             });
         })
 

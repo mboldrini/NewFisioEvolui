@@ -5,12 +5,14 @@ import { RectButton } from "react-native-gesture-handler";
 import { DefaultAppValues } from "../../global/styles/theme";
 
 interface ITipo{
-    tipo: string;
+    tipo: string,
+    widt: number,
 }
 
 export const Container = styled.View<ITipo>`
     background-color: ${({theme}) => theme.colors.shape};
     margin: 0 ${({theme}) => theme.margin.lateral_half}px;
+    margin-right: ${({theme}) => theme.margin.lateral_half}px;
     border-radius: ${({theme}) => theme.bordas.padrao}px;
     flex-direction:column;
     padding: ${RFValue(5)}px ${RFValue(15)}px;
@@ -23,9 +25,8 @@ export const Container = styled.View<ITipo>`
     shadow-radius: 1px;
     elevation: 5;
 
+
     min-height: ${RFValue(50)}px;
-    width: 95%;
-    margin: 0 ${RFValue(DefaultAppValues.margin.lateral) +20}px;
 
     border-left-width: ${RFValue(5)}px;
 

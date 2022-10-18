@@ -14,13 +14,14 @@ import {
 interface IProps{
     title: string,
     description?: string,
-    type?: 'success' | 'info' | 'warning' | 'error';
+    type?: 'success' | 'info' | 'warning' | 'error'
+    widt: number,
 }
 
-export function ToastCustom({title, description, type = "info"}: IProps){
+export function ToastCustom({title, description, type = "info", widt}: IProps){
 
     return(
-        <Container tipo={type}>
+        <Container tipo={type} widt={widt}>
             <Wrap>
                 
                 { type === "success" && <Icone>😀</Icone> }
