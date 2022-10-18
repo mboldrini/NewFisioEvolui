@@ -4,6 +4,7 @@ import { ThemeProvider } from 'styled-components';
 import { NavigationContainer } from '@react-navigation/native';
 import 'react-native-gesture-handler';
 
+
 import {
   useFonts,
   Poppins_400Regular,

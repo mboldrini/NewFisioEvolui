@@ -6,7 +6,6 @@ import { ITipoAgendamento } from '../../global/interfaces';
 import { 
     Container,
     Iscroll,
-    WrapToast,
     DateWrapper,
     Today,
     SelectDateWrapper,
@@ -22,8 +21,6 @@ import {
     LoadingIcon,
     TextoSemAgendamentos
 } from './styles';
-// Toast
-import Toast from 'react-native-toast-message';
 // API
 import { api } from '../../global/api';
 // REDUX
@@ -34,6 +31,7 @@ import { AgendaItem } from '../../components/AgendaItem';
 // Date-fns
 import { getDay, getMonth, getYear, getDaysInMonth, getDate, format } from 'date-fns';
 import { Button } from '../../components/Buttons/Button/Index';
+import { toast } from '@backpackapp-io/react-native-toast';
 
 
 export function Agenda(){
@@ -156,6 +154,7 @@ export function Agenda(){
         }).catch(err =>{
             console.log("ERRO!");
             console.log(err.message);
+            toast.error('Ops! Erro ao obter a lista de agendamentos', {duration: 6000, icon: '❌'});
         });
 
         setLoading(false);
@@ -207,12 +206,7 @@ export function Agenda(){
     }, [selectedDay]);
 
     return(
-<Container >
-            
-    <WrapToast>
-        <Toast position={'top'}  autoHide={true} visibilityTime={6000} onPress={()=>Toast.hide()}/>
-    </WrapToast>
-
+    <Container >
         <Iscroll refreshControl={<RefreshControl refreshing={refreshing} onRefresh={()=> {getAtualDay(); GetAgendaDia() } }/>}>
 
             <DateWrapper>

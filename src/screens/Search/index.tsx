@@ -24,11 +24,8 @@ import {
     WrapFlatList
 } from './styles';
 import { PacienteList } from '../../components/PacienteList';
-//import { Toast } from 'react-native-toast-message/lib/src/Toast';
 
-import { toast, Toasts } from '@backpackapp-io/react-native-toast';
-import { ToastCustom } from '../../components/Toast';
-
+import { toast } from '@backpackapp-io/react-native-toast';
 
 interface IListPcts{
     address: string,
@@ -94,7 +91,7 @@ export function Search(){
 
         console.log(params);
 
-        await api(apiState.token).post('clients/find', params).then(res => {
+        await api(apiState.token).post('clients/findFF', params).then(res => {
 
             console.log(res.data);
             setOptionsList(res.data);
@@ -102,12 +99,8 @@ export function Search(){
         }).catch(err =>{
             console.log("ERRO!");
             console.log(err.message);
-            
-            // Toast.show({
-            //     type: 'error',
-            //     text1: 'Ops!',
-            //     text2: `Erro ao obter a lista de pacientes` 
-            // });
+      
+            toast.error('Ops! Erro ao obter a lista de pacientes', {duration: 6000, icon: '❌'});
         });
 
         setLoading(false);
@@ -125,21 +118,6 @@ export function Search(){
     useEffect(()=>{
         onChangeText(""); 
     }, [opcao]);
-
-
-
-
-    useEffect(()=>{
-        console.log("toastt?");
-        
-
-
-      toast.success('Successfully created!', {duration: 6000});
-
-
-
-    },[opcao]);
-
 
 
     return(
@@ -199,7 +177,7 @@ export function Search(){
         }
 
 
-<Toasts /> 
+
 
 
     </Container>

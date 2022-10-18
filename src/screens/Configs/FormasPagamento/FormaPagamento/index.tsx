@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { Alert, RefreshControl, ScrollView } from 'react-native';
-import Toast from 'react-native-toast-message';
+import { toast } from '@backpackapp-io/react-native-toast';
 
 // /// REDUX
 import { bindActionCreators } from 'redux';
@@ -10,7 +10,6 @@ import { actionCreators, State } from '../../../../state';
 
 import { 
     Container,
-    WrapToast,
     WrapCentral,
     WrapItens,
     LoadingIcon,
@@ -96,10 +95,8 @@ export function FormaPagamento(){
         }).catch(err => {
             console.log("ERRO");
             console.log(err.message);
-            Toast.show({
-                type: 'error',
-                text1: '⚠️ Erro ao obter informações',
-            });
+            
+            toast.error('Ops! Erro ao obter as informações', {duration: 6000, icon: '❌'});
         });
 
         setLoading(false);
@@ -130,11 +127,7 @@ export function FormaPagamento(){
 
             setUpdateFormasPgto(true);
 
-            Toast.show({
-                type: 'success',
-                text1: '😃 informações salvas com sucesso!',
-                text2: 'uhull!'
-            });
+            toast.success('Informações salvas com sucesso!', {duration: 6000, icon: '✅'});
 
             setTimeout(()=>{
                 navigation.goBack();
@@ -143,10 +136,8 @@ export function FormaPagamento(){
         }).catch(err => {
             console.log("ERRO");
             console.log(err);
-            Toast.show({
-                type: 'error',
-                text1: '⚠️ Erro ao atualizar as informações',
-            });
+        
+            toast.error('Ops! Erro ao atualizar as informações', {duration: 6000, icon: '❌'});
         });
 
         setLoading(false);
@@ -169,11 +160,7 @@ export function FormaPagamento(){
 
             setUpdateFormasPgto(true);
 
-            Toast.show({
-                type: 'success',
-                text1: '😃 informações salvas com sucesso!',
-                text2: 'uhull!'
-            });
+            toast.success('Informações salvas com sucesso!', {duration: 6000, icon: '✅'});
 
             setTimeout(()=>{
                 navigation.goBack();
@@ -182,10 +169,7 @@ export function FormaPagamento(){
         }).catch(err => {
             console.log("ERRO");
             console.log(err);
-            Toast.show({
-                type: 'error',
-                text1: '⚠️ Erro ao criar forma de pagamento',
-            });
+            toast.error('Ops! Erro ao criar forma de pagamento', {duration: 6000, icon: '❌'});
         });
 
         setLoading(false);
@@ -201,10 +185,7 @@ export function FormaPagamento(){
 
             setUpdateFormasPgto(true);
 
-            Toast.show({
-                type: 'success',
-                text1: '❌ Forma de pagamento excluída!',
-            });
+            toast.success('Forma de pagamento excluída!', {duration: 6000, icon: '✅'});
 
             setTimeout(()=>{
                 navigation.goBack();
@@ -213,11 +194,9 @@ export function FormaPagamento(){
         }).catch(err => {
             console.log("ERRO");
             console.log(err.response.data);
-            Toast.show({
-                type: 'error',
-                text1: '⚠️ Erro ao excluir forma de pagamento',
-                text2: err.response.data.message
-            });
+        
+            toast.error('Ops! Erro ao excluir forma de pagamento', {duration: 6000, icon: '❌'});
+
             if(err.response.data.status === 'error'){
                 navigation.goBack();
             }

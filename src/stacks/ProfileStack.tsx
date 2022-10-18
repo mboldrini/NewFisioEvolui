@@ -6,26 +6,17 @@ import { ConfiguracoesPessoais } from '../screens/Configs/ConfiguracoesPessoais'
 import { ListarFormasPagamento } from '../screens/Configs/FormasPagamento/ListarFormasPagamento';
 import { FormaPagamento } from '../screens/Configs/FormasPagamento/FormaPagamento';
 import { ListarTiposAtendimento } from '../screens/Configs/TiposAtendimento/ListarTiposAtendimento';
+import { Toasts } from '@backpackapp-io/react-native-toast';
 
 const Stack = createStackNavigator();
 
-import styled from "styled-components/native";
-import Toast from 'react-native-toast-message';
 import { DiaHoraTrabalho } from '../screens/Configs/DiaHoraTrabalho';
-import { toastConfig } from '../global/toastConfig';
-
-const WrapToast = styled.View`
-    z-index: 1;
-`;
 
 export default function ProfileStack(){
     return(
     <>
-
-        <WrapToast>
-            <Toast position={'top'}  autoHide={true} visibilityTime={6000} onPress={()=>Toast.hide()} config={toastConfig}  />
-        </WrapToast>
-
+        <Toasts />
+       
         <Stack.Navigator initialRouteName="Profile" screenOptions={{ headerShown: false }} >   
             <Stack.Group>
                 <Stack.Screen name="Profile" component={Profile} options={{headerShown:false}} /> 
