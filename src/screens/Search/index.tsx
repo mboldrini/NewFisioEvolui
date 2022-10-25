@@ -120,6 +120,8 @@ export function Search(){
     }, [opcao]);
 
 
+
+
     return(
 <SafeAreaView style={{flex: 1, backgroundColor: '#63C2D1'}}>
     <Container >

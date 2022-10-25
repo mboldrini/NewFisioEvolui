@@ -11,7 +11,6 @@ import { Agenda } from '../screens/Agenda';
 import { CadastrarPaciente } from '../screens/CadastrarPaciente';
 import { Profile as Prof } from '../screens/Configs/Profile';
 
-
 export default () => (
     <Navigator
         screenOptions={{
