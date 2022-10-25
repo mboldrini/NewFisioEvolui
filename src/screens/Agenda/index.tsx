@@ -272,7 +272,7 @@ export function Agenda(){
                 /> 
             } 
 
-            { !loading && !agendamentos &&
+            { !loading && agendamentos.length < 1 &&
                 <Wrap>
                     <TextoSemAgendamentos>Nenhum agendamento encontrado</TextoSemAgendamentos>
                 </Wrap>
