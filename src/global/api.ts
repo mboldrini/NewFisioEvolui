@@ -9,6 +9,7 @@ const OAuthGoogleInfos = {
 }
 
 function api(token?: string){
+    console.log("URL: "+ VARIAVEIS.apiUrl);
     if(token){
         return axios.create({
             baseURL: VARIAVEIS.apiUrl,

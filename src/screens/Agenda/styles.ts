@@ -129,5 +129,5 @@ export const LoadingIcon = styled.ActivityIndicator``;
 export const TextoSemAgendamentos = styled.Text`
     color: #ffffff;
     font-size: ${RFValue(16)}px;
-    font-family: ${({theme}) => theme.fonts.regular};
+    font-family: ${({theme}) => theme.fonts.bold};
 `;

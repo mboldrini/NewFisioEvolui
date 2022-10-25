@@ -65,7 +65,7 @@ export const WrapSemPct = styled.View`
 export const TextSemPct = styled.Text`
     font-family: ${({theme}) => theme.fonts.bold};
     font-size: ${RFValue(22)}px;
-    color: ${({theme}) => theme.colors.text_dark};
+    color: ${({theme}) => theme.colors.shape};
 `;
 
 

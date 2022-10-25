@@ -273,7 +273,13 @@ export function Agenda(){
             </Wrap>
         }
 
-        { loading == false && agendamentos?.length > 0 &&
+        { !loading && agendamentos?.length < 1 &&
+            <Wrap>
+                <TextoSemAgendamentos>Nenhum agendamento encontrado</TextoSemAgendamentos>
+            </Wrap> 
+        }   
+
+        { loading == false && agendamentos &&
             <FlatList
                 data={agendamentos}
                 keyExtractor={(item, index) => item.id +"_"+ item.client_name}
@@ -296,11 +302,6 @@ export function Agenda(){
             /> 
         } 
 
-        { !loading && agendamentos?.length < 1 &&
-            <Wrap>
-                <TextoSemAgendamentos>Nenhum agendamento encontrado</TextoSemAgendamentos>
-            </Wrap> 
-        }
                     
     </Container>
     )

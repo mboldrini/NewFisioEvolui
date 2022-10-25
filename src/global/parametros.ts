@@ -2,7 +2,7 @@ interface IAmbientParams{
     apiUrl: string;
 }
 
-const ambiente = "DEV";
+const ambiente: string = "PROD";
 const versaoAPP = "1.0.1.5";
 
 
@@ -18,11 +18,13 @@ const PROD_VARS: IAmbientParams = {
     apiUrl: 'http://fisioevolui.herokuapp.com'
 }
 
-if(ambiente === "DEV"){
+if(ambiente == "DEV"){
     VARIAVEIS = DEV_VARS;
 }else{
-    VARIAVEIS == PROD_VARS;
+    VARIAVEIS = PROD_VARS;
 }
+
+console.log(VARIAVEIS);
 
 
 export { VARIAVEIS, versaoAPP }
