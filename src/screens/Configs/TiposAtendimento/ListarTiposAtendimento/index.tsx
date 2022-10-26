@@ -146,7 +146,7 @@ export function ListarTiposAtendimento(){
 
                 { !loading && listaTipos.length < 1 &&
                     <WrapSemAtendimentos>
-                        <AvisoSemAtendimentos>Nenhuma forma de pagamento cadastrada </AvisoSemAtendimentos>
+                        <AvisoSemAtendimentos>Nenhum tipo de atendimento cadastrado</AvisoSemAtendimentos>
                     </WrapSemAtendimentos>
                 }
 

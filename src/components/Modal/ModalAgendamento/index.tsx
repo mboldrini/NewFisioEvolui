@@ -207,15 +207,10 @@ export function ModalAgendamento({ isVisible, setIsVisible, setSelectedApointmen
     
 
     return(
-        <Modal 
-            isVisible={isVisible} 
-            animationIn='slideInUp' 
-            animationOut='slideOutDown' 
-            animationInTiming={700} 
-            style={{width: '100%', margin: 0, justifyContent: 'space-between', flex: 1, flexDirection: 'column'}}
-        >
-        <Container>
-            <Body>
+    <Modal isVisible={isVisible} animationIn='slideInUp' animationOut='slideOutDown' 
+        animationInTiming={700} style={{width: '100%', margin: 0, justifyContent: 'space-between', flex: 1, flexDirection: 'column'}} >
+    <Container>
+        <Body>
 
             <WrapCentral>
 
@@ -233,7 +228,6 @@ export function ModalAgendamento({ isVisible, setIsVisible, setSelectedApointmen
                         </WrapIcone> */}
                     {/* } */}
                 </Header>
-
 
 
                 <WrapCalendar>
@@ -352,26 +346,23 @@ export function ModalAgendamento({ isVisible, setIsVisible, setSelectedApointmen
                     </WrapIsEvaluation>
                 }
 
-</WrapCentral>
+            </WrapCentral>
 
-            
-                <WrapButtons>
+            <WrapButtons>
 
-                    <Button type="ok" onPress={()=> HandleApointment() } >
-                        <Title>Agendar</Title>
-                    </Button>
+                <Button type="ok" onPress={()=> HandleApointment() } >
+                    <Title>Agendar</Title>
+                </Button>
 
-                    <Button type="cancel" onPress={()=> setIsVisible() } >
-                        <Title>Cancelar</Title>
-                    </Button>
+                <Button type="cancel" onPress={()=> setIsVisible() } >
+                    <Title>Cancelar</Title>
+                </Button>
 
-                </WrapButtons>
-
+            </WrapButtons>
 
 
-
-            </Body>
-        </Container>
-        </Modal>
+        </Body>
+    </Container>
+</Modal>
     )
 }

@@ -51,7 +51,7 @@ export const Header = styled.View<Props>`
 
 `;
 
-export const WrapIcone = styled(RectButton)``;
+export const WrapIcone = styled.TouchableOpacity``;
 
 export const Icone = styled(FontAwesome5)`
     color: #ffffff;
