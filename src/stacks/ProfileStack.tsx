@@ -6,6 +6,8 @@ import { ConfiguracoesPessoais } from '../screens/Configs/ConfiguracoesPessoais'
 import { ListarFormasPagamento } from '../screens/Configs/FormasPagamento/ListarFormasPagamento';
 import { FormaPagamento } from '../screens/Configs/FormasPagamento/FormaPagamento';
 import { ListarTiposAtendimento } from '../screens/Configs/TiposAtendimento/ListarTiposAtendimento';
+import { SobreAPP } from '../screens/Configs/SobreApp';
+
 import { Toasts } from '@backpackapp-io/react-native-toast';
 
 const Stack = createStackNavigator();
@@ -28,6 +30,8 @@ export default function ProfileStack(){
                 <Stack.Screen name="ListarTiposAtendimento" component={ListarTiposAtendimento} options={{headerShown:false}} /> 
 
                 <Stack.Screen name="DiaHoraTrabalho" component={DiaHoraTrabalho} options={{headerShown:false}} /> 
+
+                <Stack.Screen name="SobreAPP" component={SobreAPP} options={{headerShown:false}} /> 
             </Stack.Group>
         </Stack.Navigator>
     </>

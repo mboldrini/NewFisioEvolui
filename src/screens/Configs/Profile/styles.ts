@@ -154,3 +154,14 @@ export const TituloList = styled.Text<Props>`
     `};
 `;
 
+export const WrapBody = styled.View`
+    flex: 1;
+    align-items: center;
+`;
+
+export const Versionamento = styled.Text`
+    font-family: ${({theme}) => theme.fonts.bold};
+    font-size: ${RFValue(14)}px;
+    padding-bottom: ${RFValue(10)}px;
+    color: ${({theme}) => theme.colors.text_dark};
+`;
