@@ -7,6 +7,7 @@ import { ListarFormasPagamento } from '../screens/Configs/FormasPagamento/Listar
 import { FormaPagamento } from '../screens/Configs/FormasPagamento/FormaPagamento';
 import { ListarTiposAtendimento } from '../screens/Configs/TiposAtendimento/ListarTiposAtendimento';
 import { SobreAPP } from '../screens/Configs/SobreApp';
+import { UserProfile } from '../screens/Configs/UserProfile';
 
 import { Toasts } from '@backpackapp-io/react-native-toast';
 
@@ -32,6 +33,8 @@ export default function ProfileStack(){
                 <Stack.Screen name="DiaHoraTrabalho" component={DiaHoraTrabalho} options={{headerShown:false}} /> 
 
                 <Stack.Screen name="SobreAPP" component={SobreAPP} options={{headerShown:false}} /> 
+
+                <Stack.Screen name="UserProfile" component={UserProfile} options={{headerShown:false}} /> 
             </Stack.Group>
         </Stack.Navigator>
     </>

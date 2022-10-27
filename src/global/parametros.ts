@@ -2,8 +2,8 @@ interface IAmbientParams{
     apiUrl: string;
 }
 
-const ambiente: string = "DEV";
-const versaoAPP = "1.0.1.7";
+const ambiente: string = "PROD";
+const versaoAPP = "1.0.1.8";
 
 
 let VARIAVEIS : IAmbientParams = {
