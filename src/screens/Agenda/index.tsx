@@ -156,14 +156,9 @@ export function Agenda(){
         // console.group("GetAgendaDia");
         setLoading(true);
 
-        // console.group("GetAllMonthAppointments -"+ selectedDate);
-
         let rangeData = {
             date: format(new Date(selectedYear, selectedMonth, selectedDay ), 'yyyy-MM-dd') +"T00:00:00.000-03:00"
         }
-
-        // console.log(rangeData);
-
         
         await api(apiState.token).post('/appointments/day', rangeData).then(res => {
 
@@ -179,9 +174,7 @@ export function Agenda(){
 
         setLoading(false);
 
-
         // console.groupEnd();
-
     }
 
     useEffect(() => {
