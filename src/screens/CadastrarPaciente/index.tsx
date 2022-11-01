@@ -78,6 +78,10 @@ LogBox.ignoreLogs([
     "ColorPropType will be removed",
     ])
 
+    
+import { Toasts } from '@backpackapp-io/react-native-toast';
+
+
 export function CadastrarPaciente(){
 
     /// Redux 
@@ -336,8 +340,16 @@ export function CadastrarPaciente(){
         setAppointmentList([]);
     }, [appointmentType]);
 
+
+    useEffect(()=>{
+        if(Object.keys(errors).length > 0){
+            toast.error('Ops! faltou preencher algum campo obrigatório', {duration: 3000, icon: '❕'});
+        }
+    },[errors]);
+
     return(
 <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+<><Toasts />
     <Container>
         <Iscrol>
 
@@ -570,7 +582,6 @@ export function CadastrarPaciente(){
                   
                 </Wrap></>
                 }
-
                
             </Form>
 
@@ -627,7 +638,6 @@ export function CadastrarPaciente(){
             />
 
         </Iscrol>
-    </Container>
+    </Container></>
 </TouchableWithoutFeedback>
-    )
-}
+)}
