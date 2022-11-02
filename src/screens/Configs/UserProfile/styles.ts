@@ -27,8 +27,8 @@ export const LoadingIcon = styled.ActivityIndicator`
 
 export const Wrap = styled.View`
     flex: 1;
-`;
 
+`;
 
 export const ContentCreated = styled.View`
     flex-direction: column;
@@ -66,7 +66,6 @@ export const WrapFooterCadastro = styled.View`
     margin-top: ${RFValue(10)}px;
 `;
 
-
 export const WrapExpandTitle = styled.View`
     flex-direction: row;
     margin: 0 ${({theme}) => theme.margin.lateral_half}px;
@@ -82,4 +81,28 @@ export const ExpandableTitle = styled.Text`
     color: #ffffff;
     font-size: ${RFValue(DefaultAppValues.fontSize.dois)}px;
 `;
+
+export const WrapGroup = styled.View`
+    background-color: ${({theme}) => theme.colors.secondary};
+    margin: 0 ${({theme}) => theme.margin.lateral_half}px;
+    border-radius: ${({theme}) => theme.bordas.padrao}px;
+    margin-bottom: ${({theme}) => theme.margin.bottom}px;
+    padding: 0 ${({theme}) => theme.padding.lateral_half}px;
+    padding-top: ${RFValue(5)}px;
+    /* padding: ${RFValue(10)}px ${({theme}) => theme.padding.lateral_half}px; */
+`;
+
+export const Spacer = styled.View`
+    width: 100%;
+    border-bottom-color: ${({theme}) => theme.colors.primary};
+    border-bottom-width: 1px;
+`;
+
+export const Title = styled.Text`
+    font-size: ${RFValue(DefaultAppValues.fontSize.dois)}px;
+    font-family: ${({theme}) => theme.fonts.bold};
+    color: ${({theme}) => theme.colors.shape};
+`;
+
+
 
