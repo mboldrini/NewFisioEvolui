@@ -173,7 +173,8 @@ export function EditPacienteInfos(){
 
             toast.success('Registro excluído!', {duration: 6000, icon: '✅'});
 
-            navigation.goBack();
+            // navigation.goBack();
+            navigation.navigate('Home2' as never)  
 
         }).catch(err =>{
 
@@ -219,7 +220,8 @@ export function EditPacienteInfos(){
             setLoading(false);
 
             setTimeout(()=>{
-                navigation.goBack();
+                // navigation.goBack();
+                navigation.navigate('Home2' as never)  
             }, 1500);
 
         }).catch(err =>{
@@ -253,7 +255,8 @@ export function EditPacienteInfos(){
             setLoading(false);
 
             setTimeout(()=>{
-                navigation.goBack();
+                // navigation.goBack();
+                navigation.navigate('Home2' as never)  
             }, 1500);
 
         }).catch(err =>{
@@ -309,7 +312,8 @@ export function EditPacienteInfos(){
             setLoading(false);
 
             setTimeout(()=>{
-                navigation.goBack();
+                // navigation.goBack();
+                navigation.navigate('Home2' as never)  
             }, 1500);
 
         }).catch(err =>{
@@ -377,7 +381,8 @@ export function EditPacienteInfos(){
             setLoading(false);
 
             setTimeout(()=>{
-                navigation.goBack();
+                // navigation.goBack();
+                navigation.navigate('Home2' as never)  
             }, 1500);
 
         }).catch(err =>{
@@ -483,7 +488,7 @@ export function EditPacienteInfos(){
             <Iscrol refreshControl={<RefreshControl refreshing={refreshing} onRefresh={()=>{ GetDefaultInfos(id, tipo) }}/>}  contentContainerStyle={{flexGrow:1}}>
 
 
-            <CabecalhoMenu titulo={ parametrosDoTipo[tipo].title } onPress={()=> navigation.goBack() } setMenuEscolhido={setMenuEscolhido} menuList={listaMenuPerfil} />
+            <CabecalhoMenu titulo={ parametrosDoTipo[tipo].title } onPress={()=> navigation.navigate('Home2' as never)  } setMenuEscolhido={setMenuEscolhido} menuList={listaMenuPerfil} />
 
 
             { loading == true && 

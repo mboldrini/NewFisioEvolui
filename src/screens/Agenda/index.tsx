@@ -162,7 +162,7 @@ export function Agenda(){
         
         await api(apiState.token).post('/appointments/day', rangeData).then(res => {
 
-            // console.log(res.data);
+            console.log(res.data);
 
             setAgendamentos(res.data);
 
