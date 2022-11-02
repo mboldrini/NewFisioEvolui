@@ -4,7 +4,6 @@ import {useNavigation, useRoute } from '@react-navigation/native';
 import { 
     Container,
     IsCroll,
-    WrapToast,
     WrapDiaAtendimento,
     WrapBorder,
     Dia,
@@ -29,7 +28,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { ModalStatusAtendimento } from '../../../components/Modal/ModalStatusAtendimento';
 import { ModalTipoEvolucao } from '../../../components/Modal/ModalTipoEvolucao';
 // ToastMessage para avisos ao usuário
-import Toast from 'react-native-toast-message';
+import { toast } from '@backpackapp-io/react-native-toast';
 
 import { api } from '../../../global/api';
 
@@ -122,29 +121,17 @@ export function PacienteAtendimento(){
     function HandleRegister(form: IFormData){
 
         if( tipoEvolucao.key == -1 ){
-            Toast.show({
-                type: 'error',
-                text1: '⚠️ É necessário informar o tipo da evolução.',
-                text2: 'Ex.: Atendimento comum, avaliação...'
-            });
+            toast.error('É necessário informar o tipo da evolução.', {duration: 6000, icon: '⚠️'});
             return;
         }
 
         if( status.key == -1){
-            Toast.show({
-                type: 'error',
-                text1: '⚠️ É necessário informar o status do atendimento.',
-                text2: 'Ex.: Atendido, Cancelado, Remarcado...'
-            });
+            toast.error('É necessário informar o status do atendimento.', {duration: 6000, icon: '⚠️'});
             return;
         }
 
         if( !form?.evolucao && !form?.observacao ){
-            Toast.show({
-                type: 'error',
-                text1: '⚠️ É necessário preencher a descrição',
-                text2: 'Ou informar alguma observação.'
-            });
+            toast.error('É necessário preencher a descrição.', {duration: 6000, icon: '⚠️'});
             return;
         }
 
@@ -165,10 +152,7 @@ export function PacienteAtendimento(){
 
             setLoading(true);
 
-            Toast.show({
-                type: 'success',
-                text1: 'Atendimento salvo! 💾',
-            });
+            toast.success('Informações salvas com sucesso!', {duration: 6000, icon: '✅'});
 
             setTimeout(()=>{
                 navigation.goBack();
@@ -176,10 +160,8 @@ export function PacienteAtendimento(){
 
         }).catch(err=>{
             console.error(err);
-            Toast.show({
-                type: 'error',
-                text1: 'OPS! erro ao salvar informações do atendimento.',
-            });
+
+            toast.error('Ops! Erro ao salvar as informações do atendimento.', {duration: 6000, icon: '❌'});
 
             setTimeout(()=>{
                 navigation.goBack();
@@ -196,10 +178,8 @@ export function PacienteAtendimento(){
 
         }).catch(err=>{
             console.error(err);
-            Toast.show({
-                type: 'error',
-                text1: 'OPS! erro ao obter informações do atendimento.',
-            });
+
+            toast.error('Ops! Erro ao obter as informações do atendimento.', {duration: 6000, icon: '❌'});
 
             setTimeout(()=>{
                 navigation.goBack();
@@ -268,10 +248,6 @@ export function PacienteAtendimento(){
 
     return(
         <Container>
-
-        <WrapToast>
-            <Toast position={'top'}  autoHide={true} visibilityTime={6000} onPress={()=>Toast.hide()}/>
-        </WrapToast>
 
         <IsCroll refreshControl={<RefreshControl refreshing={refreshing} onRefresh={()=>{ navigation.goBack() }}/>}>
             

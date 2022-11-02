@@ -2,6 +2,8 @@ import React from 'react';
 import AppLoading from 'expo-app-loading';
 import { ThemeProvider } from 'styled-components';
 import { NavigationContainer } from '@react-navigation/native';
+import 'react-native-gesture-handler';
+
 
 import {
   useFonts,
@@ -14,12 +16,9 @@ import {
 import theme from './src/global/styles/theme';
 import MainStack from './src/stacks/Mainstack';
 
-import Rotas from './src/stacks/Rotas';
-
 import { Provider } from 'react-redux';
 import {store, persistor} from './src/state';
 import { PersistGate } from 'redux-persist/integration/react';
-
 
 export default () => {
   const [fontsLoaded] = useFonts({
@@ -33,17 +32,17 @@ export default () => {
     return <AppLoading/>
   }
 
+
   return (
-    <ThemeProvider theme={theme}>
-      <NavigationContainer>
-        <Provider store={store}>
-          <PersistGate loading={null} persistor={persistor}>
-              <MainStack/>
-              {/* <Rotas/> */}
-          </PersistGate>
-        </Provider>
-      </NavigationContainer>
-    </ThemeProvider>
+  <ThemeProvider theme={theme}>
+    <NavigationContainer>
+      <Provider store={store}>
+        <PersistGate loading={null} persistor={persistor}>
+          <MainStack/>
+        </PersistGate>
+      </Provider>
+    </NavigationContainer>
+  </ThemeProvider>
   );
 }
 

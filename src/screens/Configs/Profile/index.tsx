@@ -22,6 +22,8 @@ import {
     Icone,
     BtnList,
     TituloList,
+    WrapBody,
+    Versionamento,
 
 } from './styles';
 // /// REDUX
@@ -29,7 +31,7 @@ import { bindActionCreators } from 'redux';
 import { useDispatch, useSelector } from 'react-redux';
 import { actionCreators, State } from '../../../state';
 import { api } from '../../../global/api';
-import { Text } from 'react-native';
+import { versaoAPP } from '../../../global/parametros';
 
 interface IProfileStats{
     qtdAtendimentos: number,
@@ -113,48 +115,50 @@ export function Profile(){
     }, [profileStatistics]);
 
     return(
-        <Container>
-            { usrState.name &&
-            <Header>
-                 <UserWrapper>
-                    <UserInfo>
-                        <Photo source={{ uri: usrState.picture }}/> 
-                        <User>
-                            <UserGreeting>Olá</UserGreeting>
-                            <UserName>{ usrState.name }</UserName>
-                        </User>
-                    </UserInfo>
-                    <AreaLogout onPress={()=>{handleLogoff()}}>
-                        <Logout source={require('../../../assets/icons/logout.png')}/>
-                    </AreaLogout>
-                 </UserWrapper>
-             </Header>
-            }
+    <Container>
+        { usrState.name &&
+        <Header>
+                <UserWrapper>
+                <UserInfo>
+                    <Photo source={{ uri: usrState.picture }}/> 
+                    <User>
+                        <UserGreeting>Olá</UserGreeting>
+                        <UserName>{ usrState.name }</UserName>
+                    </User>
+                </UserInfo>
+                <AreaLogout onPress={()=>{handleLogoff()}}>
+                    <Logout source={require('../../../assets/icons/logout.png')}/>
+                </AreaLogout>
+                </UserWrapper>
+        </Header>
+        }
 
-            { showStatistic &&
-                <InfosWrap>
-                    <Infos>
-                        <Quantidade>{profileStatistics?.qtdPacientes}</Quantidade>
-                        <InfoDesc>Pacientes</InfoDesc>
-                    </Infos>
+        { showStatistic &&
+        <InfosWrap>
+            <Infos>
+                <Quantidade>{profileStatistics?.qtdPacientes}</Quantidade>
+                <InfoDesc>Pacientes</InfoDesc>
+            </Infos>
 
-                    <Infos>
-                         <Quantidade>{ profileStatistics?.qtdAtendimentos }</Quantidade>
-                         <InfoDesc>Atendimentos</InfoDesc>
-                     </Infos>
+            <Infos>
+                <Quantidade>{ profileStatistics?.qtdAtendimentos }</Quantidade>
+                <InfoDesc>Atendimentos</InfoDesc>
+            </Infos>
 
-                     <Infos>
-                         <Quantidade>{ profileStatistics?.qtdEvolucoes }</Quantidade>
-                         <InfoDesc>Evoluções</InfoDesc>
-                     </Infos> 
-                </InfosWrap>
-            }
-       
+            <Infos>
+                <Quantidade>{ profileStatistics?.qtdEvolucoes }</Quantidade>
+                <InfoDesc>Evoluções</InfoDesc>
+            </Infos> 
+        </InfosWrap>
+        }
+    
+
+       <WrapBody>
 
             <Body>
-                <BtnList enabled={false}>
-                    <TituloList enabled={false}>Meu Perfil</TituloList>
-                    <WrapIcone><Icone name="chevron-right" enabled={false}/></WrapIcone>
+                <BtnList enabled={true} onPress={()=> navigation.navigate('UserProfile' as never)}>
+                    <TituloList enabled={true}>Meu Perfil</TituloList>
+                    <WrapIcone><Icone name="chevron-right" enabled={true}/></WrapIcone>
                 </BtnList>
 
                 <BtnList onPress={()=> navigation.navigate('ListarFormasPagamento' as never)}>
@@ -177,12 +181,17 @@ export function Profile(){
                     <WrapIcone><Icone name="chevron-right" enabled={true}/></WrapIcone>
                 </BtnList>
 
-                <BtnList enabled={false}>
-                    <TituloList enabled={false}>Sobre</TituloList>
-                    <WrapIcone><Icone name="chevron-right" enabled={false}/></WrapIcone>
+                <BtnList enabled={true} onPress={() => navigation.navigate('SobreAPP' as never) }>
+                    <TituloList enabled={true}>Sobre</TituloList>
+                    <WrapIcone><Icone name="chevron-right" enabled={true}/></WrapIcone>
                 </BtnList>
+
             </Body>
 
-        </Container>
+            <Versionamento>Versão Atual: {versaoAPP}</Versionamento>
+
+        </WrapBody>
+
+    </Container>
     )
 }

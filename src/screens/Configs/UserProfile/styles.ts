@@ -1,7 +1,7 @@
 import { RFPercentage, RFValue } from 'react-native-responsive-fontsize';
 import styled from "styled-components/native";
 import { FontAwesome5 } from '@expo/vector-icons';
-import theme from '../../../../global/styles/theme';
+import theme, { DefaultAppValues } from '../../../global/styles/theme';
 import { RectButton } from "react-native-gesture-handler";
 
 
@@ -63,5 +63,23 @@ export const DateCreated = styled.Text`
 export const WrapFooterCadastro = styled.View`
     margin: 0 ${({theme}) => theme.margin.lateral_half}px;
     margin-bottom: ${({theme}) => theme.margin.lateral_half}px;
+    margin-top: ${RFValue(10)}px;
+`;
+
+
+export const WrapExpandTitle = styled.View`
+    flex-direction: row;
+    margin: 0 ${({theme}) => theme.margin.lateral_half}px;
+    justify-content: space-between;
+    border-bottom-width: 1px;
+    border-bottom-color: ${({theme}) => theme.colors.secondary};
+    margin-bottom: ${({theme}) => theme.margin.bottom}px;
+    margin-top: ${RFValue(10)}px;
+`;
+
+export const ExpandableTitle = styled.Text`
+    font-family: ${({theme}) => theme.fonts.bold};
+    color: #ffffff;
+    font-size: ${RFValue(DefaultAppValues.fontSize.dois)}px;
 `;
 

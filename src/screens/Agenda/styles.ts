@@ -15,10 +15,6 @@ export const Container = styled.SafeAreaView`
 
 export const Iscroll = styled.ScrollView``;
 
-export const WrapToast = styled.View`
-    z-index: 1;
-`;
-
 export const Header = styled.View`
     align-items: center;
     justify-content: center;
@@ -133,5 +129,5 @@ export const LoadingIcon = styled.ActivityIndicator``;
 export const TextoSemAgendamentos = styled.Text`
     color: #ffffff;
     font-size: ${RFValue(16)}px;
-    font-family: ${({theme}) => theme.fonts.regular};
+    font-family: ${({theme}) => theme.fonts.bold};
 `;

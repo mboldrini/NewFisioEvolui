@@ -5,6 +5,8 @@ import { RFPercentage, RFValue } from "react-native-responsive-fontsize";
 export const Container = styled.View`
     flex: 1;
     background-color: ${({theme}) => theme.colors.primary};
+
+    margin-top: ${RFValue(20)}px;
 `;
 
 export const Iscrol = styled.ScrollView`
@@ -52,5 +54,19 @@ export const TextoLoading = styled.Text`
     color: ${({theme}) => theme.colors.text_dark};
     font-size: ${RFValue(22)}px;
 `;
+
+export const WrapSemPct = styled.View`
+    flex: 1;
+    align-items: center;
+    justify-content: center;
+    margin-top: ${RFPercentage(35)}px;
+`;
+
+export const TextSemPct = styled.Text`
+    font-family: ${({theme}) => theme.fonts.bold};
+    font-size: ${RFValue(22)}px;
+    color: ${({theme}) => theme.colors.shape};
+`;
+
 
 

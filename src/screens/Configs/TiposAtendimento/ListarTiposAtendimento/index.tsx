@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import {FlatList, RefreshControl, ScrollView} from 'react-native';
-import Toast from 'react-native-toast-message';
+import { toast } from '@backpackapp-io/react-native-toast';
 import { 
     Container,
     WrapCentral,
@@ -79,11 +79,8 @@ export function ListarTiposAtendimento(){
         }).catch(err => {
             console.log("ERRO");
             console.log(err);
-            Toast.show({
-                type: 'error',
-                text1: '⚠️ Ops!',
-                text2: 'erro ao obter lista de formas de pagamento',
-            });
+            
+            toast.error('Ops! Erro ao obter a lista de formas de pagamento', {duration: 6000, icon: '❌'});
         });
 
         setLoading(false);
@@ -149,7 +146,7 @@ export function ListarTiposAtendimento(){
 
                 { !loading && listaTipos.length < 1 &&
                     <WrapSemAtendimentos>
-                        <AvisoSemAtendimentos>Nenhuma forma de pagamento cadastrada </AvisoSemAtendimentos>
+                        <AvisoSemAtendimentos>Nenhum tipo de atendimento cadastrado</AvisoSemAtendimentos>
                     </WrapSemAtendimentos>
                 }
 

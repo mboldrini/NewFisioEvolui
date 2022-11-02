@@ -27,6 +27,18 @@ type AuthResponse = {
     }
 }
 
+
+import Constants from 'expo-constants';
+import {
+    useAuthRequest,
+    makeRedirectUri,
+    AuthRequestConfig,
+    DiscoveryDocument
+  } from 'expo-auth-session';
+import { Button, Platform, Text } from 'react-native';
+import { maybeCompleteAuthSession } from 'expo-web-browser';
+
+
 export function SignIn(){
 
     // Navegação
@@ -214,6 +226,28 @@ export function SignIn(){
     }, []);
 
 
+    // maybeCompleteAuthSession();
+    // const useProxy = Constants.appOwnership === 'expo' && false;
+    // const discovery: DiscoveryDocument = {
+    //   authorizationEndpoint: 'https://www.facebook.com/v6.0/dialog/oauth',
+    //   tokenEndpoint: 'https://graph.facebook.com/v6.0/oauth/access_token'
+    // }
+    // const config: AuthRequestConfig = {
+    //   clientId: '813227466277127',
+    //   scopes: ['public_profile'],
+    //   redirectUri: makeRedirectUri({
+    //     native: 'https://auth.expo.io/@mboldrini/fisioevolui',
+    //     useProxy: true
+    //   })
+    // }
+  
+    // const [request, response, promptAsync] = useAuthRequest(config, discovery);
+  
+    // useEffect(()=>{
+    //     alert(JSON.stringify(response));
+    // }, [response]);
+
+
 
     return(
         <Container>
@@ -226,6 +260,8 @@ export function SignIn(){
                     <ButtonGoogle
                         onPress={HandleSignInWithGoogle}
                     />
+                     {/* <Button title="AAA" onPress={()=> promptAsync({useProxy: true, showInRecents:true}) }/> */}
+                     {/* <Text>{JSON.stringify(response)}</Text> */}
                 </WrapInput>
             }
           

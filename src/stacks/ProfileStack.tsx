@@ -6,37 +6,20 @@ import { ConfiguracoesPessoais } from '../screens/Configs/ConfiguracoesPessoais'
 import { ListarFormasPagamento } from '../screens/Configs/FormasPagamento/ListarFormasPagamento';
 import { FormaPagamento } from '../screens/Configs/FormasPagamento/FormaPagamento';
 import { ListarTiposAtendimento } from '../screens/Configs/TiposAtendimento/ListarTiposAtendimento';
+import { SobreAPP } from '../screens/Configs/SobreApp';
+import { UserProfile } from '../screens/Configs/UserProfile';
 
+import { Toasts } from '@backpackapp-io/react-native-toast';
 
 const Stack = createStackNavigator();
 
-
-import styled from "styled-components/native";
-import Toast from 'react-native-toast-message';
 import { DiaHoraTrabalho } from '../screens/Configs/DiaHoraTrabalho';
-// import { View, Text } from 'react-native';
-
-const WrapToast = styled.View`
-    z-index: 1;
-`;
-
-// const toastConfig = {
-//     'success': (internalState: any) => (
-//       <View style={{ borderLeftColor: 'pink' }}>
-//         <Text>{internalState.text1}</Text>
-//       </View>  
-//     )
-//   }
-
 
 export default function ProfileStack(){
     return(
     <>
-
-        <WrapToast>
-            <Toast position={'top'}  autoHide={true} visibilityTime={6000} onPress={()=>Toast.hide()} /*config={toastConfig}*/ />
-        </WrapToast>
-
+        <Toasts />
+       
         <Stack.Navigator initialRouteName="Profile" screenOptions={{ headerShown: false }} >   
             <Stack.Group>
                 <Stack.Screen name="Profile" component={Profile} options={{headerShown:false}} /> 
@@ -48,6 +31,10 @@ export default function ProfileStack(){
                 <Stack.Screen name="ListarTiposAtendimento" component={ListarTiposAtendimento} options={{headerShown:false}} /> 
 
                 <Stack.Screen name="DiaHoraTrabalho" component={DiaHoraTrabalho} options={{headerShown:false}} /> 
+
+                <Stack.Screen name="SobreAPP" component={SobreAPP} options={{headerShown:false}} /> 
+
+                <Stack.Screen name="UserProfile" component={UserProfile} options={{headerShown:false}} /> 
             </Stack.Group>
         </Stack.Navigator>
     </>

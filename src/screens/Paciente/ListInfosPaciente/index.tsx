@@ -50,7 +50,7 @@ import { getMonth, getYear, parseISO, format } from 'date-fns';
 /// Interfaces 
 import {IAppointments, parametrosDoTipo} from './Interfaces';
 
-import Toast from 'react-native-toast-message';
+import { toast } from '@backpackapp-io/react-native-toast';
 import { List_PacienteItens } from '../../../components/List_Items/PacienteItens';
 import { CabecalhoMenu } from '../../../components/CabecalhoMenu';
 
@@ -151,11 +151,7 @@ export function ListInfosPaciente(){
             console.log("erro ao obter informações");
             console.log(err.data);
 
-            Toast.show({
-                type: 'error',
-                text1: '❌ Ops! Erro ao obter lista de informações',
-            });
-
+            toast.error('Ops! Erro ao obter as informações', {duration: 6000, icon: '❌'});
 
         });
 

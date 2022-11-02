@@ -10,10 +10,6 @@ export const Container = styled.View`
     background-color: ${({theme}) => theme.colors.primary};
 `;
 
-export const WrapToast = styled.View`
-    z-index: 1;
-`;
-
 export const WrapCentral = styled.View`
     flex: 1;
     flex-direction: column;

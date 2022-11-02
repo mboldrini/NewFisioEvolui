@@ -8,7 +8,6 @@ import * as Yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { 
     Container,
-    WrapToast,
     Part1,
     CenterSpaced,
     Header,
@@ -37,7 +36,7 @@ import * as Animatable from 'react-native-animatable';
 import { Select } from '../../../components/Forms/Select';
 import { ModalUF } from '../../../components/Modal/ModalUF';
 import { IUserBasicInfos, IUserParamsInfos } from './interfaces';
-import Toast from 'react-native-toast-message';
+import { toast } from '@backpackapp-io/react-native-toast';
 
 
 interface FormData{
@@ -223,11 +222,7 @@ export function SignUp(){
             console.log("DEU RUIM!");
             console.log(err.response.data.message);
 
-            Toast.show({
-                type: 'error',
-                text1: 'Erro ao criar usuário',
-                text2: err.response.data.message
-            });
+            toast.error('Ops! Erro ao criar usuário', {duration: 6000, icon: '❌'});
 
         });
 
@@ -274,10 +269,6 @@ export function SignUp(){
     return(
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <Container>
-
-        <WrapToast>
-            <Toast position={'top'}  autoHide={true} visibilityTime={6000} onPress={()=>Toast.hide()}/>
-        </WrapToast>
 
         <Part1 animation={pageUmEffect} duration={1} page={page}>
             <Header>

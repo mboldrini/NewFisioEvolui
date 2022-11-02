@@ -6,7 +6,7 @@ import { bindActionCreators } from 'redux';
 import { useDispatch, useSelector } from 'react-redux';
 import { actionCreators, State } from '../../../state';
 /// Estética - Timer Picker
-import Toast from 'react-native-toast-message';
+import { toast } from '@backpackapp-io/react-native-toast';
 import { TimePickerModal } from 'react-native-paper-dates';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { 
@@ -124,11 +124,7 @@ export function DiaHoraTrabalho(){
             console.log("ERRO");
             console.log(err);
 
-            Toast.show({
-                type: 'error',
-                text1: '⚠️ Erro ao obter informações atualizadas',
-                text2: 'tenta de novo, quem sabe dessa vez, acaba funcionando...'
-            });
+            toast.error('Ops! Erro ao obter informações atualizadas', {duration: 6000, icon: '❌'});
 
         });
 
@@ -145,10 +141,7 @@ export function DiaHoraTrabalho(){
 
             console.log(res.data);
 
-            Toast.show({
-                type: 'success',
-                text1: '😃 Informações salvas com sucesso!',
-            });
+            toast.success('Informações salvas com sucesso!', {duration: 6000, icon: '✅'});
  
             setLoading(false);
 
@@ -156,11 +149,7 @@ export function DiaHoraTrabalho(){
             console.log("ERRO");
             console.log(err);
 
-            Toast.show({
-                type: 'error',
-                text1: '⚠️ Erro ao salvar as informações',
-                text2: 'tenta de novo, quem sabe dessa vez, acaba funcionando...'
-            });
+            toast.error('Ops! Erro ao salvar as informações', {duration: 6000, icon: '❌'});
 
             setLoading(false);
 
@@ -288,11 +277,8 @@ export function DiaHoraTrabalho(){
             }else{
 
                 if(differenceInHours(dataFim, dataInicio) >= 10){
-                    Toast.show({
-                        type: 'info',
-                        text1: '🙃 Eita! você trabalha bastante!',
-                        text2: 'lembre-se de fazer uma pausa de vez em quando...'
-                    });
+                    toast.success('Eita! você trabalha bastante! lembre-se de fazer uma pausa de vez em quando...', 
+                    {duration: 6000, icon: '😃'});
                 }
 
                 return false;
@@ -315,10 +301,9 @@ export function DiaHoraTrabalho(){
         if(diaEscolhido.periodo == "inicio"){
 
             if(HoraFinalEAntes(tempo, diaEscolhido.end)){
-                Toast.show({
-                    type: 'error',
-                    text1: '⚠️ A hora de início não pode ser depois da hora final',
-                });
+
+                toast.error('A hora de início não pode ser depois da hora final', {duration: 6000, icon: '❌'});
+
                 setDiaEscolhido(null);
                 setShowModalHora(false);
                 return;
@@ -352,10 +337,9 @@ export function DiaHoraTrabalho(){
         }else{
 
             if(HoraFinalEAntes(diaEscolhido.start, tempo )){
-                Toast.show({
-                    type: 'error',
-                    text1: '⚠️ A hora final não pode ser antes da hora inícial',
-                });
+           
+                toast.error('A hora final não pode ser antes da hora inícial', {duration: 6000, icon: '❌'});
+
                 setDiaEscolhido(null);
                 setShowModalHora(false);
                 return;

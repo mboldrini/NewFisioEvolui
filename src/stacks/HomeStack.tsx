@@ -8,21 +8,14 @@ import { ListInfosPaciente } from '../screens/Paciente/ListInfosPaciente';
 import { EditPacienteInfos } from '../screens/Paciente/EditPacienteInfos';
 import { EditarPaciente } from '../screens/Paciente/PerfilEdit'; 
 
+import { Toasts } from '@backpackapp-io/react-native-toast';
+
 const Stack = createStackNavigator();
-
-
-import styled from "styled-components/native";
-import Toast from 'react-native-toast-message';
-const WrapToast = styled.View`
-    z-index: 1;
-`;
 
 export default function HomeStack(){
     return(
     <>
-        <WrapToast>
-            <Toast position={'top'}  autoHide={true} visibilityTime={6000} onPress={()=>Toast.hide()} /*config={toastConfig}*/ />
-        </WrapToast>
+        <Toasts />
 
         <Stack.Navigator initialRouteName="Home" screenOptions={{ headerShown: false }} >   
             <Stack.Group>

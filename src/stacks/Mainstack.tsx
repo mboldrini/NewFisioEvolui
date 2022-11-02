@@ -18,7 +18,6 @@ export default () => (
         }}
     >   
         <Stack.Group>
-    
             <Stack.Screen name="Loading" component={Loading} options={{headerShown:false}} /> 
             <Stack.Screen name="MainTab" component={Rotas}/> 
             <Stack.Screen name="PacientePerfil" component={PacientePerfil} />
@@ -26,5 +25,4 @@ export default () => (
             <Stack.Screen name="SignUp" component={SignUp} />
         </Stack.Group>
     </Stack.Navigator>
-
 );

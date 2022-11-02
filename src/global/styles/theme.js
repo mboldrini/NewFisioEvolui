@@ -1,4 +1,7 @@
 export default{
+
+    space: [0, 4, 8, 12, 16, 20, 24, 32, 40, 48],
+
     colors: {
         primary: '#63C2D1',
 
@@ -33,7 +36,19 @@ export default{
         \*******************************/
         status_recorrente: '#219ebc',
 
-        button_ok: '#268596'
+        button_ok: '#268596',
+
+
+        /*******************************\
+        | Toast Message                 |
+        \*******************************/
+        background: '#FFF',
+        border: '#E2E8F0',
+        muted: '#F0F1F3',
+        toast_success: '#5cb85c',
+        toast_error: '#FC0021',
+        toast_info: '#00FFFF',
+        toast_warning: '#f0ad4e',
 
 
     },

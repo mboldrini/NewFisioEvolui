@@ -9,7 +9,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { actionCreators, State } from '../../state';
 //Outros
 import LottieView from 'lottie-react-native';
-import { Toast } from 'react-native-toast-message/lib/src/Toast';
+import { toast } from '@backpackapp-io/react-native-toast';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { 
@@ -22,11 +22,14 @@ import {
     WrapLoading,
     TextoLoading,
 
-    WrapScroll
+    WrapScroll,
+    WrapSemPct,
+    TextSemPct,
 
 } from './styles';
 import { ModalLoading } from '../../components/Modal/ModalLoading';
 import { bindActionCreators } from 'redux';
+import { ShimmerPacienteList } from '../../components/Shimmer/PacienteList';
 
 interface IPatient{
     id: number,
@@ -55,6 +58,8 @@ export function Home(){
 
     const [patientList, setPatientList] = useState<IPatient[]>([]);
 
+    const [loading, setLoading] = useState(true);
+
     function HandleNavigate(id: number){
         navigation.navigate('PacientePerfil' as never,{
             id: id
@@ -67,12 +72,14 @@ export function Home(){
         console.log(apiState);
 
         setPatientList([]);
+        setLoading(true);
 
         await api(apiState.token).get('/clients/user/all').then(res=>{
 
             setAtualizaPacientes(false);
             setPacientes(res.data);
             setPatientList(res.data);
+            setLoading(false);
 
             console.log("ok! obteve a lista dos pacientes");
             console.log(res.data);
@@ -80,23 +87,23 @@ export function Home(){
         }).catch(err=>{
             console.log(err);
 
-            Toast.show({
-                type: 'error',
-                text1: 'Ops!',
-                text2: `Erro ao obter a lista de pacientes` 
-            });
-        })
+            toast.error('Ops! Erro ao obter a lista de pacientes', {duration: 6000, icon: '❌'});
+            setLoading(false);
+
+        });
 
         console.groupEnd();
     }
 
     useEffect(()=>{
         if(pacientesReducer.pacientes.length > 0){
-           setPatientList(pacientesReducer.pacientes);
+            setPatientList(pacientesReducer.pacientes);
             console.log("tem pacientes já salvos no redux");
+            setLoading(false);
         }else{
-           GetPatientList();
-            console.log("não tem pacientes salvos no redux");
+            GetPatientList();
+            setLoading(false);
+            setRefresh(false);
         }
     },[]);
 
@@ -111,13 +118,7 @@ export function Home(){
     <Container >
         <Iscrol refreshControl={<RefreshControl refreshing={refreshing} onRefresh={ ()=> GetPatientList() }/>}>
 
-
-        <Header>
-            <Titulo>Pesquisar nome do paciente</Titulo>
-            <Icon name="search"/>
-        </Header>
-
-        { patientList.length > 0 &&
+        { !loading && patientList.length > 0 &&
             <FlatList 
                 data={patientList}
                 keyExtractor={pct => pct.id+""}
@@ -135,7 +136,24 @@ export function Home(){
             />
         }
 
-        { patientList.length < 1 &&
+
+        { loading &&
+            <>
+            <ShimmerPacienteList />
+            <ShimmerPacienteList />
+            <ShimmerPacienteList />
+            </>
+        }
+
+        { !loading && patientList.length < 1 &&
+            <WrapSemPct>
+                <TextSemPct>Nenhum paciente cadastrado</TextSemPct>
+            </WrapSemPct>
+        }
+
+        
+
+        {/* { patientList.length < 1 &&
             <Wrap>
                 <WrapLoading>
                     <LottieView
@@ -147,7 +165,7 @@ export function Home(){
                 </WrapLoading>
                 <TextoLoading>Carregando lista de pacientes...</TextoLoading>
             </Wrap>
-        }
+        } */}
 
         </Iscrol>
     </Container>
