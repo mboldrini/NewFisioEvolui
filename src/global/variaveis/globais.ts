@@ -12,6 +12,13 @@ export const statusAtendimento = [
     'Avaliação'/// JAMAIS ALTERAR ESSA SEQUÊNCIA
 ];
 
+export const statusType = [
+    'Atendimento Comum',
+    'Avaliação',
+    'Remarcado',
+    'Avaliação Remarcada'
+]
+
 export const tiposAtendimentos = [
     "Atendimento Comum",
     "Avaliação",

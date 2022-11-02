@@ -207,3 +207,35 @@ export const Status = styled.Text<Props>`
 `;
 
 
+export const TypeWrapper = styled.View<Props>`
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    margin-left: ${RFValue(5)}px;
+
+    ${({ status }) => status == 0 && css `
+        background-color: ${({theme}) => theme.colors.status_default};
+    `};
+
+    ${({ status }) => status == 1 && css `
+        background-color: ${({theme}) => theme.colors.status_avaliacao};
+    `};
+
+    ${({ status }) => status == 2 && css `
+        background-color: ${({theme}) => theme.colors.status_remarcado};
+    `};
+ 
+`;
+
+export const Type = styled.Text<Props>`
+    font-family: ${({theme}) => theme.fonts.regular};
+    font-size: ${RFValue(10)}px;
+    padding:0 ${RFValue(5)}px;
+    padding-top: ${RFValue(2)}px;
+    color: #000000;
+
+    ${({ status }) => status == 1 && css `
+        color: ${({theme}) => theme.colors.shape};
+    `};
+`;

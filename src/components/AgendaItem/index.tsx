@@ -1,5 +1,5 @@
 import React from 'react';
-import { statusAtendimento } from '../../global/variaveis/globais';
+import { statusAtendimento, statusType } from '../../global/variaveis/globais';
 import { parseISO, format, isBefore, isSameHour, differenceInHours } from 'date-fns';
 import {useNavigation } from '@react-navigation/native';
 import {
@@ -12,7 +12,9 @@ import {
     HoraWrapper,
     Horario,
     StatusWrapper,
-    Status
+    Status,
+    TypeWrapper,
+    Type
 } from './styles';
 
 interface Props{
@@ -94,6 +96,22 @@ export function AgendaItem( {client_name, date_scheduled, duration, end_hour, st
                         <Status status={status}>{ statusAtendimento[status] }</Status> 
                     }
                 </StatusWrapper> 
+                { type != 3 &&
+                    <TypeWrapper status={type}>
+                        <Type status={type}>{ statusType[type] }</Type> 
+                    </TypeWrapper> 
+                }
+                { type == 3 &&
+                <>
+                    <TypeWrapper status={1}>
+                        <Type status={1}>{ statusType[1] }</Type> 
+                    </TypeWrapper> 
+                    <TypeWrapper status={2}>
+                        <Type status={2}>{ statusType[2] }</Type> 
+                    </TypeWrapper> 
+                </>
+                }
+               
             </Footer>
         </Container>
     )
