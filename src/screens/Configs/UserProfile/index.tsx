@@ -48,6 +48,7 @@ import { WrapInfosProfile } from '../../../components/Wraps/WrapInfosProfile';
 import { CabecalhoMenu } from '../../../components/CabecalhoMenu';
 import { InputForm } from '../../../components/Forms/InputForm';
 import { InputMasked } from '../../../components/Forms/InputMasked';
+import { Footer_Modal } from '../../../components/Footers/Footer_Modal';
 
 interface IRouteParam{
     id?: number;
@@ -64,11 +65,11 @@ interface IPayment{
 
 interface IUserInfos{
     celphone: string;
+    second_celphone:string;
     created_at: Date;
     description: string;
     instagram: string;
     professional_mail: string;
-    second_celphone:string;
     tiktok: string;
     twitter: string;
     updated_at: Date;
@@ -76,9 +77,22 @@ interface IUserInfos{
 }
 
 const schema = Yup.object().shape({
-    formaPagamento: Yup.string().required("Nome é obrigatório"),
-    descricao: Yup.string().optional(),
+    email: Yup.string().email().required('Email de contato é obrigatório'),
+    celphone: Yup.string().required('Telefone é obrigatório'),
+    second_celphone: Yup.string().optional(),
+    website: Yup.string().optional(),
+    instagram: Yup.string().optional(),
+    twitter: Yup.string().optional(),
+    tiktok: Yup.string().optional(),
 });
+
+// "professional_mail": "equipeviciobr@gmail.com",
+// "celphone": "99999999999",
+// "second_celphone": "00000000000",
+// "website": ".",
+// "instagram": ".",
+// "twitter": ".",
+// "tiktok": ".",
 
 export function UserProfile(){
     
@@ -91,7 +105,6 @@ export function UserProfile(){
     /// Redux
     const apiState = useSelector((state: State) => state.apiReducer);
     const usrState = useSelector((state: State) => state.user);
-
 
     /// Informações do usuário
     const [userInfos, setUserInfos] = useState<IUserInfos>(null);
@@ -109,8 +122,8 @@ export function UserProfile(){
     const { control, handleSubmit, formState: { errors }, reset } = useForm({ resolver: yupResolver(schema) });
 
     
-    async function GetPacienteInfos(){
-        console.group("GetPacienteInfos");
+    async function GetUserInfos(){
+        console.group("GetUserInfos");
 
         await api(apiState.token).get('/users/infos' ).then(res => {
 
@@ -121,7 +134,7 @@ export function UserProfile(){
             setLoading(false);
 
         }).catch(err => {
-            console.log(err);
+            console.log(err.message); 
 
             toast.error('Ops! Erro ao obter as informações do perfil.', {duration: 3000, icon: '❌'});
 
@@ -130,23 +143,77 @@ export function UserProfile(){
         console.groupEnd();
     }
 
+    async function AtualizaInfos(d: any){
+
+        setLoading(true);
+
+        const infos = {
+            "description": ".",
+            "professional_mail": d.email,
+            "celphone": d.celphone,
+            "second_celphone": d.second_celphone,
+            "website": d.website,
+            "instagram": d.instagram,
+            "twitter": d.twitter,
+            "tiktok": d.tiktok,
+        }
+
+        console.log(infos);
+
+        await api(apiState.token).patch('/users/infos', infos).then(res => {
+            console.log('SALVOU!');
+
+            setLoading(false);
+            setMenuEscolhido('editar');
+
+            toast.success('Informações salvas!', {duration: 3000});
+
+        }).catch(err => {
+            console.log(err.message);
+            console.log('ERRO AO SALVAR INFORMAÇÕES');
+
+            toast.error('Ops! Erro ao salvar informações', {duration: 3000, icon: '❌'});
+        })
+
+        console.log(infos);
+    }
+
     useEffect(()=>{
-        GetPacienteInfos();
+        GetUserInfos();
     },[]);
 
     useEffect(()=>{
-        console.log("MenuEscolhido: "+ menuEscolhido);
         if(menuEscolhido == 'editar'){
             setEditInfos(!editInfos);
             setMenuEscolhido(null);
+            GetUserInfos();
         }
     },[menuEscolhido]);
 
+    useEffect(()=>{
+        if(userInfos?.celphone){
+            reset({
+                email: userInfos.professional_mail,
+                celphone: userInfos.celphone,
+                second_celphone: userInfos.second_celphone,
+                website: userInfos.website,
+                instagram: userInfos.instagram,
+                twitter: userInfos.twitter,
+                tiktok: userInfos.tiktok,
+            });
+        }
+    },[userInfos]);
+
+    useEffect(()=>{
+        if(Object.keys(errors).length > 0){
+            toast.error('Ops! faltou preencher algum campo obrigatório', {duration: 3000, icon: '❕'});
+        }
+    },[errors]);
 
     return(
 <SafeAreaView style={{flex: 1, backgroundColor: '#63C2D1'}}>
     <Container >
-        <ScrollView refreshControl={<RefreshControl refreshing={refreshing} onRefresh={()=>{ GetPacienteInfos(); }}/> } 
+        <ScrollView refreshControl={<RefreshControl refreshing={refreshing} onRefresh={()=>{ GetUserInfos(); }}/> } 
          contentContainerStyle={{flexGrow: 1}}>
 
         <CabecalhoMenu titulo='Meu Perfil' onPress={()=> navigation.goBack() } setMenuEscolhido={setMenuEscolhido} menuList={listaMenuPerfil} />
@@ -194,10 +261,10 @@ export function UserProfile(){
                 />
 
                 <InputMasked
-                    name="whatsapp"
+                    name="celphone"
                     control={control}
                     placeholder="Whatsapp/Celular"
-                    error={errors.whatsapp && errors.whatsapp.message}
+                    error={errors.celphone && errors.celphone.message}
                     type="cel-phone"
                     options={{
                         maskType: 'BRL',
@@ -207,10 +274,10 @@ export function UserProfile(){
                 />
 
                 <InputMasked
-                    name="celular"
+                    name="second_celphone"
                     control={control}
                     placeholder="Celular"
-                    error={errors.celular && errors.celular.message}
+                    error={errors.second_celphone && errors.second_celphone.message}
                     type="cel-phone"
                     options={{
                         maskType: 'BRL',
@@ -219,6 +286,7 @@ export function UserProfile(){
                     }}
                 />
 
+        
                 <InputForm name="website" control={control} placeholder="Website" autoCorrect={false}
                     error={errors.website && errors.website.message}
                 />
@@ -226,7 +294,6 @@ export function UserProfile(){
                 <InputForm name="instagram" control={control} placeholder="Instagram" autoCorrect={false}
                     error={errors.instagram && errors.instagram.message}
                 />
-
 
                 <InputForm name="twitter" control={control} placeholder="Twitter" autoCorrect={false}
                     error={errors.twitter && errors.twitter.message}
@@ -240,14 +307,10 @@ export function UserProfile(){
             }
 
             { !loading && editInfos &&
-            <WrapFooterCadastro>
-                <Button 
-                    title="Salvar" 
-                    // onPress={handleSubmit((d) =>  HandleRegister(d as any) )}
-                    onPress={()=> { console.log("ué")}}
-                    type="ok"
+                <Footer_Modal
+                    onPressOk={handleSubmit((d) =>  AtualizaInfos(d as any) )}
+                    onPressCancel={()=> { setMenuEscolhido('editar') } }
                 />
-            </WrapFooterCadastro>
             } 
            
            
