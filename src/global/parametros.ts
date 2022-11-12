@@ -2,7 +2,7 @@ interface IAmbientParams{
     apiUrl: string;
 }
 
-const ambiente: string = "DEV";
+const ambiente: string = "PROD";
 const versaoAPP = "1.1.1.8";
 
 
