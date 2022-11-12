@@ -4,7 +4,7 @@ import { FontAwesome5 } from "@expo/vector-icons";
 import { DefaultAppValues } from "../../global/styles/theme";
 
 export const Container = styled.View`
-    flex: 1;
+    /* flex: 1; */
     flex-direction: row;
     align-items: center;
     justify-content: flex-start;
