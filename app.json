@@ -3,11 +3,9 @@
     "name": "Fisio Evolui",
     "slug": "fisioevolui",
     "scheme": "fisioevolui",
-    "version": "1.1.1.11",
-  
+    "version": "1.1.1.9",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
-  
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
@@ -29,13 +27,14 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#63C2D1"
       },
-      "versionCode": 4,
-      "package": "com.mboldrini.FisioEvolui"
+      "versionCode": 10,
+      "package": "com.mboldrini.FisioEvolui",
+      "blockedPermissions": ["ACCESS_BACKGROUND_LOCATION", "ACCESS_FINE_LOCATION", "ACCESS_COARSE_LOCATION"],
+      "permissions": ["NOTIFICATIONS"]
     },
     "web": {
       "favicon": "./assets/favicon.png"
     },
- 
     "packagerOpts": {
       "config": "metro.config.js",
       "sourceExts": [
@@ -52,6 +51,5 @@
         "svg"
       ]
     }
-  },
-  "permissions": ["FOREGROUND_SERVICE"]
+  }
 }

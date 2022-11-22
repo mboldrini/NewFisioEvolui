@@ -23,7 +23,8 @@ interface IProps{
 
 export function List_TipoPagamento({ paymentMethod_name, description, onPress}: IProps){
     return(
-        <TipoPagamentoList>
+        <TipoPagamentoList  onPress={ onPress  }>
+            <>
             <WrapText>
                 <NomeTipoPagamento numberOfLines={1} ellipsizeMode="tail">{ paymentMethod_name }</NomeTipoPagamento>
                 { description && 
@@ -33,11 +34,10 @@ export function List_TipoPagamento({ paymentMethod_name, description, onPress}: 
                     <Descricao numberOfLines={1} ellipsizeMode="tail" >item sem descrição cadastrada</Descricao> 
                 }
             </WrapText>
-
-            <WrapIcone onPress={ onPress  }>
+            <WrapIcone>
                 <Icone name="ellipsis-v"/>
             </WrapIcone>
-
+            </>
         </TipoPagamentoList>
     )
 }

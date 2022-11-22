@@ -17,13 +17,12 @@ import {
     WrapFooterCadastro,
 
     Iscrol,
-
     
     FieldGroup,
     TitleGroup,
     Title,
 
-    WrapList
+    WrapList,
 
 } from './styles';
 
@@ -49,14 +48,14 @@ import { format } from 'date-fns';
 import { ButtonSimple } from '../../components/Buttons/ButtonSimple/Index';
 import { AppointmentList } from '../../components/AppointmentList';
 import ActionSheet, { SheetManager } from "react-native-actions-sheet";
-
+ 
 const schema = Yup.object().shape({
     nome: Yup.string().required("Nome é obrigatório"),
-    cpf: Yup.string().required("CPF é obrigatório").length(14, "CPF deve ter 11 dígitos"),
+    cpf: Yup.string().optional().length(14, "CPF deve ter 11 dígitos"),
     dataNascimento: Yup.string().required("Data de Nascimento é obrigatório").length(10, "Formato de data: 00/00/0000"),
     instagram: Yup.string().optional(),
     celular: Yup.string().required("Telefone de contato é obrigatório"),
-    email: Yup.string().required("Email é obrigatório"),
+    email: Yup.string().optional(),
     endereco: Yup.string().required("Endereço é obrigatório"),
     hpp: Yup.string().optional(),
     diagnostico: Yup.string().optional(),
@@ -80,6 +79,7 @@ LogBox.ignoreLogs([
 
     
 import { Toasts } from '@backpackapp-io/react-native-toast';
+import { ButtonSmall } from '../../components/Buttons/Button_Small/Index';
 
 
 export function CadastrarPaciente(){
@@ -596,6 +596,9 @@ export function CadastrarPaciente(){
             <ModalLoading visible={loading} infos={{mensagem:"Carregando informaões do paciente...", tipo: 'loading'}}/>
 
             <ActionSheet id="modalTiposAtendimentos" initialOffsetFromBottom={1} gestureEnabled={true} headerAlwaysVisible={true} elevation={3} extraScroll={3}  containerStyle={{backgroundColor: '#63C2D1'}} >
+         
+                <ButtonSmall titulo='Editar Lista' icone='edit' onPress={()=>console.log("Editar Lista")} />
+
                 <ScrollView nestedScrollEnabled={true} >
                     <FlatList 
                         data={atendimentosState.atendimentos}
@@ -636,7 +639,7 @@ export function CadastrarPaciente(){
                 isVisible={ isTemComorbidadeVisible }
                 setIsVisible={()=> setTemComorbidadeVisible(false) }
             />
-
+ 
         </Iscrol>
     </Container></>
 </TouchableWithoutFeedback>

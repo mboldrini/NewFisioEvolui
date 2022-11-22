@@ -90,7 +90,6 @@ export function SignIn(){
 
         }catch(err){
             console.error(err);
-        }finally{
             setLoading(false);
         }
 
@@ -101,6 +100,7 @@ export function SignIn(){
         console.group("GetApiToken");
 
         console.log(data);
+        setLoading(false);
 
 
         if(data.email){
@@ -133,6 +133,7 @@ export function SignIn(){
                     console.log("ERRO ao fazer GET p/ a api /sessions");
                     console.error(JSON.stringify(err.response.data));
                     setLoading(false);
+                    setLoading(false);
                 }
 
             });
@@ -148,6 +149,8 @@ export function SignIn(){
         console.group("TOKEN");
         console.log(token);
         console.groupEnd();
+
+        setLoading(true);
         
         await api(token).get('/users').then(res =>{
 

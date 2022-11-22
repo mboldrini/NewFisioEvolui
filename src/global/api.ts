@@ -4,7 +4,7 @@ import {VARIAVEIS} from './parametros';
 
 const OAuthGoogleInfos = {
     CLIENT_ID: '19918590573-m2k3b72f7jq816hvu3rcucov4itvjvji.apps.googleusercontent.com',
-    REDIRECT_URL: 'https://auth.expo.io/@mboldrini/fisioevolui',
+    REDIRECT_URL: 'https://auth.expo.io/@fisioevolui/fisioevolui',
     RESPONSE_TYPE: 'token'
 }
 

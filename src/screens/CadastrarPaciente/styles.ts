@@ -1,3 +1,4 @@
+import { FontAwesome5 } from '@expo/vector-icons';
 import { RFValue } from "react-native-responsive-fontsize";
 import styled from "styled-components/native";
 import { DefaultAppValues } from "../../global/styles/theme";
@@ -76,5 +77,4 @@ export const Title = styled.Text`
 export const WrapList = styled.View`
     margin: 0 ${RFValue(DefaultAppValues.margin.lateral_half)}px;
 `;
-
 
