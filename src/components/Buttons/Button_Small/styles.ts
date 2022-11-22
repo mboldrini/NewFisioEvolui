@@ -1,7 +1,11 @@
 import { FontAwesome5 } from '@expo/vector-icons';
 import { RFValue } from "react-native-responsive-fontsize";
-import styled from "styled-components/native";
+import styled, {css} from "styled-components/native";
 import { DefaultAppValues } from '../../../global/styles/theme';
+
+interface ITipoBtn{
+    tipo:  'padrao' | 'ok' | 'cancelar' | 'alerta';
+}
 
 export const WrapAction = styled.View`
     align-items: flex-end;
@@ -10,8 +14,8 @@ export const WrapAction = styled.View`
     margin-top: ${RFValue( DefaultAppValues.margin.lateral_half)}px;
 `;
 
-export const ButtonSmallBd = styled.TouchableOpacity`
-    background-color: #ffffff;
+export const ButtonSmallBd = styled.TouchableOpacity<ITipoBtn>`
+
     align-items: center;
     justify-content: center;
     height: ${RFValue(36)}px;
@@ -25,6 +29,25 @@ export const ButtonSmallBd = styled.TouchableOpacity`
     shadow-opacity: 0.4;
     shadow-radius: 1px;
     elevation: 2;
+    
+
+    ${({ tipo }) => tipo == 'padrao' && css `
+        background-color: #ffffff;
+    `}; 
+
+    ${({ tipo }) => tipo == 'ok' && css `
+        background-color: ${({theme}) => theme.colors.status_atendido};
+    `}; 
+
+    ${({ tipo }) => tipo == 'cancelar' && css `
+        background-color: ${({theme}) => theme.colors.status_cancelado};
+    `}; 
+
+    
+    ${({ tipo }) => tipo == 'alerta' && css `
+        background-color: ${({theme}) => theme.colors.status_remarcado};
+    `}; 
+
 `;
 
 export const WrapTitle = styled.View`
