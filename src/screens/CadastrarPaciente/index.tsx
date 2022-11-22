@@ -639,7 +639,7 @@ export function CadastrarPaciente(){
                 isVisible={ isTemComorbidadeVisible }
                 setIsVisible={()=> setTemComorbidadeVisible(false) }
             />
-
+ 
         </Iscrol>
     </Container></>
 </TouchableWithoutFeedback>
