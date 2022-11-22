@@ -6,6 +6,7 @@ import { InputForm } from '../../components/Forms/InputForm';
 import { Button } from '../../components/Buttons/Button/Index';
 import * as Yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { useNavigation } from '@react-navigation/native';
 import { 
     Container,
     Header,
@@ -83,6 +84,8 @@ import { ButtonSmall } from '../../components/Buttons/Button_Small/Index';
 
 
 export function CadastrarPaciente(){
+
+    const navigation = useNavigation();
 
     /// Redux 
     const dispatch = useDispatch();
@@ -597,7 +600,14 @@ export function CadastrarPaciente(){
 
             <ActionSheet id="modalTiposAtendimentos" initialOffsetFromBottom={1} gestureEnabled={true} headerAlwaysVisible={true} elevation={3} extraScroll={3}  containerStyle={{backgroundColor: '#63C2D1'}} >
          
-                <ButtonSmall titulo='Editar Lista' icone='edit' onPress={()=>console.log("Editar Lista")} />
+                <ButtonSmall titulo='Editar Lista' icone='edit' onPress={()=>
+                     //navigation.navigate('HomeStack/ListarTiposAtendimento' as never) 
+                     
+                     navigation.navigate('Profile' as never, {
+                        screen: 'ListarTiposAtendimento'
+                    } as never)
+
+                     } />
 
                 <ScrollView nestedScrollEnabled={true} >
                     <FlatList 
