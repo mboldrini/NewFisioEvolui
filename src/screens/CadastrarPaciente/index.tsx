@@ -48,7 +48,7 @@ import { format } from 'date-fns';
 import { ButtonSimple } from '../../components/Buttons/ButtonSimple/Index';
 import { AppointmentList } from '../../components/AppointmentList';
 import ActionSheet, { SheetManager } from "react-native-actions-sheet";
-
+ 
 const schema = Yup.object().shape({
     nome: Yup.string().required("Nome é obrigatório"),
     cpf: Yup.string().optional().length(14, "CPF deve ter 11 dígitos"),
