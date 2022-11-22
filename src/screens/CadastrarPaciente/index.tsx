@@ -17,13 +17,12 @@ import {
     WrapFooterCadastro,
 
     Iscrol,
-
     
     FieldGroup,
     TitleGroup,
     Title,
 
-    WrapList
+    WrapList,
 
 } from './styles';
 
@@ -80,6 +79,7 @@ LogBox.ignoreLogs([
 
     
 import { Toasts } from '@backpackapp-io/react-native-toast';
+import { ButtonSmall } from '../../components/Buttons/Button_Small/Index';
 
 
 export function CadastrarPaciente(){
@@ -596,6 +596,9 @@ export function CadastrarPaciente(){
             <ModalLoading visible={loading} infos={{mensagem:"Carregando informaões do paciente...", tipo: 'loading'}}/>
 
             <ActionSheet id="modalTiposAtendimentos" initialOffsetFromBottom={1} gestureEnabled={true} headerAlwaysVisible={true} elevation={3} extraScroll={3}  containerStyle={{backgroundColor: '#63C2D1'}} >
+         
+                <ButtonSmall titulo='Editar Lista' icone='edit' onPress={()=>console.log("Editar Lista")} />
+
                 <ScrollView nestedScrollEnabled={true} >
                     <FlatList 
                         data={atendimentosState.atendimentos}

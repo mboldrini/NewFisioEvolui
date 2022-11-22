@@ -4,7 +4,7 @@ import { FontAwesome5 } from '@expo/vector-icons';
 import { DefaultAppValues } from '../../../global/styles/theme';
 
 
-export const TipoPagamentoList = styled.View`
+export const TipoPagamentoList = styled.TouchableOpacity`
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
@@ -13,6 +13,13 @@ export const TipoPagamentoList = styled.View`
     margin-bottom: ${RFValue(10)}px;
     padding: ${RFValue(5)}px;
     padding-left: ${RFValue(10)}px;
+
+    shadow-color: #000;
+    shadow-offset: {width: 0px};
+    shadow-offset: {height: 1px};
+    shadow-opacity: 0.4;
+    shadow-radius: 1px;
+    elevation: 2;
 `;
 
 export const WrapText = styled.View`
@@ -30,7 +37,7 @@ export const Descricao = styled.Text`
     font-family: ${({theme}) => theme.fonts.thin};
 `;
 
-export const WrapIcone = styled.TouchableHighlight`
+export const WrapIcone = styled.TouchableOpacity`
     align-items: center;
     justify-content: center;
 `;
