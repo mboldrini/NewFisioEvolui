@@ -28,15 +28,15 @@ type AuthResponse = {
 }
 
 
-import Constants from 'expo-constants';
-import {
-    useAuthRequest,
-    makeRedirectUri,
-    AuthRequestConfig,
-    DiscoveryDocument
-  } from 'expo-auth-session';
-import { Button, Platform, Text } from 'react-native';
-import { maybeCompleteAuthSession } from 'expo-web-browser';
+// import Constants from 'expo-constants';
+// import {
+//     useAuthRequest,
+//     makeRedirectUri,
+//     AuthRequestConfig,
+//     DiscoveryDocument
+//   } from 'expo-auth-session';
+// import { Button, Platform, Text } from 'react-native';
+// import { maybeCompleteAuthSession } from 'expo-web-browser';
 
 
 export function SignIn(){
@@ -74,7 +74,6 @@ export function SignIn(){
             console.error("Login Cancelado!");
             setLoading(false);
         }
-
     }
 
     async function GetGoogleToken(googleToken: string){
@@ -179,7 +178,7 @@ export function SignIn(){
 
            navigation.navigate("MainTab" as never);
 
-            setLoading(false);
+            // setLoading(false);
 
         }).catch(err =>{
 
@@ -262,6 +261,7 @@ export function SignIn(){
                 <WrapInput>
                     <ButtonGoogle
                         onPress={HandleSignInWithGoogle}
+                        // onPress={() => { promptAsync() }}
                     />
                      {/* <Button title="AAA" onPress={()=> promptAsync({useProxy: true, showInRecents:true}) }/> */}
                      {/* <Text>{JSON.stringify(response)}</Text> */}
