@@ -3,7 +3,7 @@ interface IAmbientParams{
 }
 
 const ambiente: string = "PROD";
-const versaoAPP = "1.1.1.9";
+const versaoAPP = "1.1.1.12";
 
 
 let VARIAVEIS : IAmbientParams = {

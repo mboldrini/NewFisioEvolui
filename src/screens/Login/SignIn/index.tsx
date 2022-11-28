@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { ButtonGoogle } from '../../../components/Buttons/ButtonGoogle/Index';
 import { useNavigation } from '@react-navigation/native';
 import * as AuthSession from 'expo-auth-session';
-import { addHours, isBefore, parseISO } from 'date-fns';
+import { addHours, addMinutes, isBefore, parseISO } from 'date-fns';
 import { 
     Container,
     WrapLogo,
@@ -51,7 +51,7 @@ export function SignIn(){
     const apiState = useSelector((state: State) => state.apiReducer);// o .user é o nome usado no .index da pasta reducers
 
     // Padrão do Login + Usuário
-    const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState(true);
 
     const [googleUserInfos, setGoogleUserInfos] = useState<IGoogleData>({} as IGoogleData);
     const [appApiToken, setAppApiToken] = useState(null);
@@ -63,17 +63,21 @@ export function SignIn(){
     }
 
     async function HandleSignInWithGoogle(){
+        console.group("HandleSignInWithGoogle");
         setLoading(true);
 
         const authUrl = await GetGoogleUrlLogin();
         const { type, params } = await AuthSession.startAsync({ authUrl }) as AuthResponse;
 
         if(type === 'success'){
+            console.log(params);
             GetGoogleToken(params.access_token);
         }else{
             console.error("Login Cancelado!");
             setLoading(false);
         }
+
+        console.groupEnd();
     }
 
     async function GetGoogleToken(googleToken: string){
@@ -174,9 +178,8 @@ export function SignIn(){
             setAtendimentos(res.data.serviceType);
             setFormasPgto(res.data.paymentMethod);
 
-            // setUserInfos(res.data);
 
-           navigation.navigate("MainTab" as never);
+            navigation.navigate("MainTab" as never);
 
             // setLoading(false);
 
@@ -199,7 +202,10 @@ export function SignIn(){
     }
 
     async function ValidaSessionInfos(){
+        console.group("ValidaSessionInfos");
         setLoading(true); 
+
+        console.log(usrState);
 
         if(!usrState.email){
             setLoading(false);
@@ -214,13 +220,28 @@ export function SignIn(){
 
         if( isBefore( addHours( parseISO(apiState.date), 20) , new Date() ) ){
             console.log("É depois! pega o token novo!");
-            setLoading(false);
+
+            const getApiToken = {
+                email: usrState.email,
+                family_name: usrState.family_name,
+                given_name: usrState.given_name,
+                id: usrState.user_code,
+                locale: "",
+                name: "",
+                picture: "",
+                verified_email: true
+            }
+
+            GetApiToken(getApiToken);
+            
+            // setLoading(false);
             return;
         }else{
-            console.log("pega user infos e faz login!");
+            console.log("pega user infos pré-salvas e faz login!");
             GetUserInfos(apiState.token);
         }
 
+        console.groupEnd();
     }
 
     useEffect(()=>{
