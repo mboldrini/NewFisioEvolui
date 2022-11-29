@@ -1,5 +1,5 @@
 import React from "react";
-import { Button } from "../../Buttons/Button/Index";
+import { ButtonMedium } from "../../Buttons/Button_Medium/Index";
 
 import {
     Container,
@@ -16,12 +16,14 @@ export function Footer_Modal({ onPressOk, onPressCancel }: IProps){
         <Container>
             { onPressOk &&
             <Wrap>
-                <Button title="Salvar" type="ok"onPress={onPressOk} />
+                {/* <Button title="Salvar" type="ok" onPress={onPressOk} /> */}
+                <ButtonMedium titulo="Salvar" tipo="ok" icone='plus' onPress={onPressOk} />
             </Wrap>
             }
            
             <Wrap>
-                <Button title="Cancelar" type="cancel"onPress={onPressCancel} />
+                {/* <Button title="Cancelar" type="cancel" onPress={onPressCancel} /> */}
+                <ButtonMedium titulo="Cancelar" tipo="cancelar" icone='trash' onPress={onPressCancel} />
             </Wrap>
         </Container>
     )

@@ -417,10 +417,16 @@ export function EditPacienteInfos(){
 
 
     useEffect(()=>{
+        console.group('Effect - ID');
+
         console.log("Tipo: "+ tipo);
+
         if(id && status != "novo"){
-            GetDefaultInfos(id, tipo);            
+
+            GetDefaultInfos(id, tipo);      
+
         }else if(status == "novo" && tipo != "agendamentos"){
+          
             setInfos({
                 about: null,
                 client_id: id_paciente,
@@ -430,10 +436,15 @@ export function EditPacienteInfos(){
                 id: null,
                 updated_at: format(new Date(), 'yyyy-MM-dd' ),
             });
+
             setLoading(false);
         }else if(tipo == "agendamentos" && status == "novo"){
+
             setLoading(false);
+
         }
+
+        console.groupEnd();
     }, [id]);
 
     useEffect(()=>{
@@ -444,6 +455,8 @@ export function EditPacienteInfos(){
             });
             setDate( new Date(infos.date) );
         }
+
+        console.log(infos);
     },[infos]);
 
     useEffect(()=>{
@@ -546,7 +559,7 @@ export function EditPacienteInfos(){
                         />
                     )}
 
-                    {!loading &&
+                    {!loading && infos?.created_at &&
                         <Footer_CreatedAt created_at={infos?.created_at} updated_at={infos?.updated_at}/>
                     }
 
