@@ -42,6 +42,7 @@ import { format, parseISO } from 'date-fns';
 import { api } from '../../../global/api';
 // Interfaces
 import IApointment from '../../../global/DTO/Apointment';
+import { Footer_Modal } from '../../Footers/Footer_Modal';
 // Received Props on This Modal
 interface Props{
     isVisible: boolean;
@@ -350,13 +351,18 @@ export function ModalAgendamento({ isVisible, setIsVisible, setSelectedApointmen
 
             <WrapButtons>
 
-                <Button type="ok" onPress={()=> HandleApointment() } >
+                <Footer_Modal 
+                    onPressCancel={()=> HandleApointment()}
+                    onPressOk={()=> setIsVisible() }
+                />
+
+                {/* <Button type="ok" onPress={()=> HandleApointment() } >
                     <Title>Agendar</Title>
                 </Button>
 
                 <Button type="cancel" onPress={()=> setIsVisible() } >
                     <Title>Cancelar</Title>
-                </Button>
+                </Button> */}
 
             </WrapButtons>
 

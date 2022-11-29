@@ -166,7 +166,8 @@ export const TextEvaluation = styled.Text`
 
 
 export const WrapButtons = styled.View`
-    margin: 0 ${({theme}) => theme.margin.lateral_half}px;
+    /* margin: 0 ${({theme}) => theme.margin.lateral_half}px; */
+    border: 1px solid black;
     margin-top: ${({theme}) => theme.margin.lateral_half + RFValue(5)}px;
     margin-bottom: ${({theme}) => theme.margin.lateral_half}px;
     flex-direction: row;

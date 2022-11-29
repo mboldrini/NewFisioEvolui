@@ -28,6 +28,11 @@ export function Footer_CreatedAt({ created_at, updated_at }: IProps){
             return format( new Date( parseInt(ano), parseInt(mes), parseInt(dia), parseInt(hora), parseInt(minuto) ), 'dd/MM/yyyy - HH:mm');
         }
 
+        if(datetime.includes('-')){
+            let [ano, mes, dia] = datetime.split('-');
+            return  dia +"/"+ mes +'/'+ ano;
+        }
+
         let [data, tempo] = datetime.split(" ");
       
         const [dia, mes, ano] = data.split("/");
